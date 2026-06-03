@@ -1,0 +1,102 @@
+/*
+ * stampa.css — Foglio di stile per la stampa
+ * Applicato solo con media="print".
+ * Nasconde nav, immagini inutili, banner; mostra URL link tra parentesi.
+ */
+
+@media print {
+
+    * {
+        background: #fff !important;
+        color: #000 !important;
+        box-shadow: none !important;
+        text-shadow: none !important;
+    }
+
+    @page { size: A4; margin: 2cm 2.5cm; }
+
+    body { font-family: Georgia, 'Times New Roman', serif; font-size: 11pt; line-height: 1.5; }
+
+    h1, h2, h3 { font-family: Georgia, serif; page-break-after: avoid; color: #000 !important; }
+    h1 { font-size: 18pt; border-bottom: 2pt solid #000; padding-bottom: 6pt; }
+    h2 { font-size: 14pt; }
+    h3 { font-size: 12pt; }
+
+    p, li { orphans: 3; widows: 3; }
+
+    /* Nasconde elementi non necessari su carta */
+    .header nav,
+    .menu-toggle,
+    .stato-autenticazione,
+    .skip-link,
+    .banner-cookie,
+    .faq-button,
+    .btn,
+    .barra-controlli,
+    #btn-elimina-cookie,
+    #btn-elimina-cookie-privacy,
+    .azioni-account,
+    .azioni-principali,
+    form { display: none !important; }
+
+    /* Header: mantieni solo logo */
+    .header {
+        display: block !important;
+        border-bottom: 2pt solid #000;
+        padding: .4cm 0;
+        background: #fff !important;
+    }
+    .brand-logo { display: flex; align-items: center; gap: 6pt; text-decoration: none; color: #000 !important; }
+    .logo-img   { width: 32px; height: 32px; }
+
+    /* Footer: griglia → blocco */
+    .footer {
+        display: block !important;
+        background: #fff !important;
+        border-top: 2pt solid #000;
+        padding-top: .5cm;
+        margin-top: 1cm;
+        font-size: 9pt;
+    }
+    .footer .brand-logo, .footer nav { display: none !important; }
+    .footer-info  { display: block; }
+    .footer-copy  { font-size: 8pt; margin-top: .3cm; }
+    .footer-url   { display: block !important; font-size: 8pt; }
+
+    /* URL della pagina corrente */
+    .footer::after {
+        content: "Pagina: " attr(data-url);
+        display: block;
+        font-size: 8pt;
+        margin-top: .3cm;
+        font-style: italic;
+    }
+
+    /* Link: sottolineati con URL tra parentesi */
+    a { text-decoration: underline !important; color: #000 !important; }
+    a[href]:not([href^="#"]):not([href^="javascript"])::after {
+        content: " (" attr(href) ")";
+        font-size: 9pt;
+        font-style: italic;
+    }
+
+    /* Card gatti: lista semplice */
+    .griglia-gatti { display: block; }
+    .card-gatto    { page-break-inside: avoid; border: 1pt solid #999; margin-bottom: 1cm; padding: .5cm; }
+    .card-gatto figure img { display: block; max-width: 8cm; height: auto; }
+
+    /* Tabelle */
+    table               { border-collapse: collapse; width: 100%; page-break-inside: auto; }
+    tr                  { page-break-inside: avoid; }
+    th, td              { border: 1pt solid #000 !important; padding: 4pt 6pt !important; background: #fff !important; color: #000 !important; }
+    th                  { background: #eee !important; font-weight: bold; }
+    tr:nth-child(even) td { background: #f8f8f8 !important; }
+
+    /* Details: apre tutto */
+    details               { display: block; border: 1pt solid #999; margin-bottom: .3cm; }
+    summary               { font-weight: bold; padding: 4pt; }
+    details > *:not(summary) { display: block !important; padding: 4pt 8pt; }
+
+    figure { page-break-inside: avoid; }
+    figcaption { font-style: italic; font-size: 9pt; margin-top: 4pt; }
+}
