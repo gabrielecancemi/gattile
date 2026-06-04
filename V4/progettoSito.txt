@@ -245,12 +245,15 @@ CSS di stampa (stampa.css, media="print"):
 
 
 FAQ
+
 Salvo sul file perchè altrimenti dovevo creare tabella database o nella sessione.
 La sessione però scade alla chiusura del browser oppure con una durata ma 
 Non è garantito al 100%:
 alcuni browser possono cancellare le sessioni in certe modalità;
 il server può eliminare le sessioni prima del previsto;
 se l'utente fa logout e chiami session_destroy(), la sessione sparisce comunque.
+
+Eliminado cookie si eliminano cookie, sessione e token sul file
 
 
 
