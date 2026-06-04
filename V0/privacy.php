@@ -13,7 +13,7 @@ $eliminati = isset($_GET['eliminati']) && $_GET['eliminati'] === '1';
 
 stampaTesta(
     'Privacy e Cookie',
-    'Informativa sulla privacy e gestione dei cookie del sito Gattile Felice.',
+    'Informativa sulla privacy e gestione dei cookie del sito Gattile San Paolo.',
     'privacy.php'
 );
 echo '<body>';
@@ -35,9 +35,9 @@ apriMain();
     <article aria-labelledby="sezione-titolare">
         <h2 id="sezione-titolare">Titolare del trattamento</h2>
         <p>
-            <strong>Gattile Felice</strong><br>
+            <strong>Gattile San Paolo</strong><br>
             Via Felina 1, 10100 Torino (TO)<br>
-            Email: <a href="mailto:privacy@gattile-felice.example.it">privacy@gattile-felice.example.it</a>
+            Email: <a href="mailto:privacy@gattile-San Paolo.example.it">privacy@gattile-San Paolo.example.it</a>
         </p>
     </article>
 
@@ -105,7 +105,7 @@ apriMain();
         <p>
             I dati non vengono ceduti a terzi. Puoi richiedere la cancellazione del tuo 
             account scrivendo a 
-            <a href="mailto:privacy@gattile-felice.example.it">privacy@gattile-felice.example.it</a>.
+            <a href="mailto:privacy@gattile-San Paolo.example.it">privacy@gattile-San Paolo.example.it</a>.
         </p>
     </article>
 

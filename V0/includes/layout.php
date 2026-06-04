@@ -16,9 +16,9 @@ require_once __DIR__ . '/auth.php';
  */
 function stampaTesta(string $titolo, string $descrizione, string $canonical = ''): void
 {
-    $titoloPagina = htmlspecialchars($titolo) . ' — Gattile Felice';
+    $titoloPagina = htmlspecialchars($titolo) . ' — Gattile San Paolo';
     $descSafe     = htmlspecialchars($descrizione);
-    $base         = 'https://gattile-felice.example.it/'; // adattare in produzione
+    $base         = 'https://gattile-San Paolo.example.it/'; // adattare in produzione
     $canonUrl     = $canonical ? $base . ltrim($canonical, '/') : $base;
     echo <<<HTML
 <!DOCTYPE html>
@@ -29,7 +29,7 @@ function stampaTesta(string $titolo, string $descrizione, string $canonical = ''
     <title>{$titoloPagina}</title>
     <meta name="description" content="{$descSafe}">
     <meta name="keywords" content="gattile, adozione gatti, volontariato, felini, Torino">
-    <meta name="author" content="Gattile Felice">
+    <meta name="author" content="Gattile San Paolo">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="{$canonUrl}">
     <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
@@ -63,8 +63,8 @@ function stampaHeader(): void
     echo '<header class="sito-header" role="banner">';
     echo '<a href="#contenuto-principale" class="skip-link">Vai al contenuto principale</a>';
     echo '<figure class="logo-container">';
-    echo '<img src="img/logo.svg" alt="Logo Gattile Felice — una zampa di gatto stilizzata" width="60" height="60">';
-    echo '<figcaption class="logo-testo"><strong>Gattile Felice</strong></figcaption>';
+    echo '<img src="img/logo.svg" alt="Logo Gattile San Paolo — una zampa di gatto stilizzata" width="60" height="60">';
+    echo '<figcaption class="logo-testo"><strong>Gattile San Paolo</strong></figcaption>';
     echo '</figure>';
 
     // Stato utente in alto a destra
@@ -123,7 +123,7 @@ function stampaFooter(): void
                 <li><a href="volontariato.php">Volontariato</a></li>
             </ul>
         </nav>
-        <p>© {$anno} Gattile Felice — Tutti i diritti riservati.</p>
+        <p>© {$anno} Gattile San Paolo — Tutti i diritti riservati.</p>
         <p>
             <a href="privacy.php">Informativa sulla privacy</a> — 
             <button type="button" id="btn-elimina-cookie" class="link-button">Elimina i miei cookie</button>

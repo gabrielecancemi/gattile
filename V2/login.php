@@ -43,7 +43,7 @@ if ($cookieUsername) {
 
 stampaTesta(
     'Accedi',
-    'Accedi al tuo profilo Gattile Felice per prenotare visite o turni di volontariato.',
+    'Accedi al tuo profilo Gattile San Paolo per prenotare visite o turni di volontariato.',
     'login.php'
 );
 stampaHeader();

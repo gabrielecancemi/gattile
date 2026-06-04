@@ -14,9 +14,9 @@ require_once __DIR__ . '/auth.php';
  */
 function stampaTesta(string $titolo, string $descrizione, string $canonical = ''): void
 {
-    $titoloPagina = htmlspecialchars($titolo) . ' — Gattile Felice';
+    $titoloPagina = htmlspecialchars($titolo) . ' — Gattile San Paolo';
     $descSafe     = htmlspecialchars($descrizione);
-    $base         = 'https://gattile-felice.example.it/';
+    $base         = 'https://gattile-San Paolo.example.it/';
     $canonUrl     = $canonical ? $base . ltrim($canonical, '/') : $base;
     echo <<<HTML
 <!DOCTYPE html>
@@ -27,7 +27,7 @@ function stampaTesta(string $titolo, string $descrizione, string $canonical = ''
     <title>{$titoloPagina}</title>
     <meta name="description" content="{$descSafe}">
     <meta name="keywords" content="gattile, adozione gatti, volontariato, felini, Torino">
-    <meta name="author" content="Gattile Felice">
+    <meta name="author" content="Gattile San Paolo">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="{$canonUrl}">
     <link rel="icon" href="img/favicon.svg" type="image/svg+xml">

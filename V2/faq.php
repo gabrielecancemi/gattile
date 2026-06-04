@@ -11,7 +11,7 @@ avviaSessione();
 
 stampaTesta(
     'Domande frequenti',
-    'Risposte alle domande più comuni su adozioni, volontariato e servizi del Gattile Felice di Torino.',
+    'Risposte alle domande più comuni su adozioni, volontariato e servizi del Gattile San Paolo di Torino.',
     'faq.php'
 );
 stampaHeader();
@@ -22,7 +22,7 @@ apriMain();
     <h1 id="titolo-faq">Domande frequenti</h1>
     <p>
         Non trovi la risposta che cerchi?
-        <a href="mailto:info@gattile-felice.example.it">Scrivici</a> e ti risponderemo al più presto.
+        <a href="mailto:info@gattile-San Paolo.example.it">Scrivici</a> e ti risponderemo al più presto.
     </p>
 </section>
 
@@ -146,7 +146,7 @@ apriMain();
         <summary>Come posso contattarvi?</summary>
         <address>
             <a href="tel:+390111234567">011 123 4567</a> (lun-sab, 9:00-18:00)<br>
-            <a href="mailto:info@gattile-felice.example.it">info@gattile-felice.example.it</a>
+            <a href="mailto:info@gattile-San Paolo.example.it">info@gattile-San Paolo.example.it</a>
         </address>
     </details>
 </section>

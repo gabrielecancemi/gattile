@@ -15,7 +15,7 @@ $isAdmin = $loggato && (bool)$utente['is_admin'];
 
 stampaTesta(
     'Adotta un gatto',
-    'Sfoglia i gatti disponibili per l\'adozione al Gattile Felice di Torino. Filtra per età, colore o nome.',
+    'Sfoglia i gatti disponibili per l\'adozione al Gattile San Paolo di Torino. Filtra per età, colore o nome.',
     'gatti.php'
 );
 stampaHeader();

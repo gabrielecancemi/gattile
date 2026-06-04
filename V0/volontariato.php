@@ -15,7 +15,7 @@ $loggato = ($utente !== null);
 
 stampaTesta(
     'Volontariato',
-    'Diventa volontario al Gattile Felice di Torino: scegli le fasce orarie in cui prestare il tuo aiuto ai gatti.',
+    'Diventa volontario al Gattile San Paolo di Torino: scegli le fasce orarie in cui prestare il tuo aiuto ai gatti.',
     'volontariato.php'
 );
 echo '<body>';
@@ -108,7 +108,7 @@ apriMain();
     <p>
         Non è richiesta esperienza specifica: solo amore per i gatti e voglia di fare!
         Per maggiori informazioni scrivici a 
-        <a href="mailto:info@gattile-felice.example.it">info@gattile-felice.example.it</a>.
+        <a href="mailto:info@gattile-San Paolo.example.it">info@gattile-San Paolo.example.it</a>.
     </p>
 </section>
 

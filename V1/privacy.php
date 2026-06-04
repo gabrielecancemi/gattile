@@ -9,7 +9,7 @@ require_once 'includes/layout.php';
 avviaSessione();
 $eliminati = isset($_GET['eliminati']) && $_GET['eliminati'] === '1';
 
-stampaTesta('Privacy e Cookie', 'Informativa sulla privacy e gestione dei cookie del sito Gattile Felice.', 'privacy.php');
+stampaTesta('Privacy e Cookie', 'Informativa sulla privacy e gestione dei cookie del sito Gattile San Paolo.', 'privacy.php');
 stampaHeader();
 apriMain();
 ?>
@@ -23,9 +23,9 @@ apriMain();
     <article aria-labelledby="sez-titolare">
         <h2 id="sez-titolare">Titolare del trattamento</h2>
         <p>
-            <strong>Gattile Felice</strong><br>
+            <strong>Gattile San Paolo</strong><br>
             Via Felina 1, 10100 Torino (TO)<br>
-            Email: <a href="mailto:privacy@gattile-felice.example.it">privacy@gattile-felice.example.it</a>
+            Email: <a href="mailto:privacy@gattile-San Paolo.example.it">privacy@gattile-San Paolo.example.it</a>
         </p>
     </article>
 

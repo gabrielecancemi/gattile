@@ -60,7 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-stampaTesta('Registrazione', 'Registrati a Gattile Felice per prenotare visite o turni di volontariato.', 'registrazione.php');
+stampaTesta('Registrazione', 'Registrati a Gattile San Paolo per prenotare visite o turni di volontariato.', 'registrazione.php');
 stampaHeader();
 apriMain();
 ?>

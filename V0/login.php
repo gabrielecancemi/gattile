@@ -52,7 +52,7 @@ if ($cookieUsername) {
     $usernamePre = htmlspecialchars($cookieUsername, ENT_QUOTES, 'UTF-8');
 }
 
-stampaTesta('Accedi', 'Accedi al tuo profilo di Gattile Felice per prenotare visite o turni di volontariato.', 'login.php');
+stampaTesta('Accedi', 'Accedi al tuo profilo di Gattile San Paolo per prenotare visite o turni di volontariato.', 'login.php');
 echo '<body>';
 stampaHeader();
 stampaBannerCookie();

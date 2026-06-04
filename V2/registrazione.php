@@ -63,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 stampaTesta(
     'Registrazione',
-    'Crea il tuo profilo Gattile Felice per prenotare visite o turni di volontariato.',
+    'Crea il tuo profilo Gattile San Paolo per prenotare visite o turni di volontariato.',
     'registrazione.php'
 );
 stampaHeader();

@@ -41,8 +41,8 @@ if (!empty($_SESSION['utente']['is_admin'])) {
 <footer class="footer" role="contentinfo">
 
     <a href="index.php" class="brand-logo" aria-label="Torna alla Home Page">
-        <img src="img/logo.png" alt="Logo Gattile Felice" class="logo-img" width="48" height="48">
-        <strong>Gattile Felice</strong>
+        <img src="img/logo.png" alt="Logo Gattile San Paolo" class="logo-img" width="48" height="48">
+        <strong>Gattile San Paolo</strong>
     </a>
 
     <nav aria-label="Navigazione footer">
@@ -66,7 +66,7 @@ if (!empty($_SESSION['utente']['is_admin'])) {
             <strong>Contatti</strong><br>
             Via Felina 1, 10100 Torino<br>
             <a href="tel:+390111234567">011 123 4567</a><br>
-            <a href="mailto:info@gattile-felice.example.it">info@gattile-felice.example.it</a>
+            <a href="mailto:info@gattile-San Paolo.example.it">info@gattile-San Paolo.example.it</a>
         </address>
 
         <nav aria-label="Privacy e gestione dati">
@@ -88,7 +88,7 @@ if (!empty($_SESSION['utente']['is_admin'])) {
 
     <p class="footer-copy">
         &copy; <time datetime="<?= esc($anno) ?>"><?= esc($anno) ?></time>
-        Gattile Felice &middot; Tutti i diritti riservati
+        Gattile San Paolo &middot; Tutti i diritti riservati
     </p>
 
 </footer>

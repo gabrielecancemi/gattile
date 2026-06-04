@@ -39,7 +39,7 @@ if ($cookieUsername) {
     $usernamePre = htmlspecialchars($cookieUsername, ENT_QUOTES, 'UTF-8');
 }
 
-stampaTesta('Accedi', 'Accedi al tuo profilo Gattile Felice.', 'login.php');
+stampaTesta('Accedi', 'Accedi al tuo profilo Gattile San Paolo.', 'login.php');
 stampaHeader();
 apriMain();
 ?>

@@ -1,9 +1,7 @@
+<!-- header.php — Header comune.-->
+
+
 <?php
-/**
- * header.php — Header comune, incluso da layout.php::stampaHeader().
- * Nessun JS inline: lo script hamburger è in js/menu.js (defer).
- * Nessun tag non-semantico (div/span sostituiti con elementi logici).
- */
 declare(strict_types=1);
 
 require_once __DIR__ . '/auth.php';
@@ -27,8 +25,8 @@ if ($utente && (bool)$utente['is_admin']) {
 <header class="header" role="banner">
 
     <a href="index.php" class="brand-logo" aria-label="Torna alla Home Page">
-        <img src="img/logo.png" alt="Logo Gattile Felice" class="logo-img" width="48" height="48">
-        <strong>Gattile Felice</strong>
+        <img src="img/logo.png" alt="Logo Gattile San Paolo" class="logo-img" width="48" height="48">
+        <strong>Gattile San Paolo</strong>
     </a>
 
     <button class="menu-toggle"

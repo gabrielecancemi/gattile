@@ -1,11 +1,11 @@
 ================================================================================
-GATTILE FELICE — Documentazione delle scelte progettuali
+GATTILE San Paolo — Documentazione delle scelte progettuali
 File: progettoSito.txt
 ================================================================================
 
 1. DESCRIZIONE GENERALE
 -----------------------
-"Gattile Felice" è un sito web per la gestione di adozioni e volontariato
+"Gattile San Paolo" è un sito web per la gestione di adozioni e volontariato
 in un gattile di Torino. Permette agli utenti di sfogliare i gatti ospiti,
 prenotare visite conoscitive e registrarsi come volontari. Gli amministratori
 possono inserire nuovi animali nella struttura.
@@ -231,13 +231,30 @@ CSS di stampa (stampa.css, media="print"):
 
 10. SEO
 -------
-- <title> descrittivo in ogni pagina (formato: "Nome pagina — Gattile Felice").
+- <title> descrittivo in ogni pagina (formato: "Nome pagina — Gattile San Paolo").
 - Meta description unica per ogni pagina.
 - Link canonico nell'<head>.
 - Struttura heading logica (h1 unico, h2, h3 in sequenza).
 - Testi alt significativi per tutte le immagini.
 - Sito responsive e mobile-first (fattore di ranking Google).
 - Nessun contenuto nascosto con display:none rilevante per indicizzazione.
+
+
+
+
+
+COMPATIBILE NEL CASO IN CUI SI DECIDA DI HASHARE LE PASSWORD NEL DB
+
+
+Il commento si riferisce al fatto che il meccanismo "ricordami" nell'implementazione attuale ha un difetto: il token viene salvato nella sessione PHP anziché nel database.
+Il problema concreto: se il server si riavvia, la sessione viene distrutta e il token salvato lì dentro sparisce. Quindi l'utente ha il cookie nel browser, ma il server non lo riconosce più — il "ricordami" smette di funzionare.
+La soluzione corretta per la produzione sarebbe una tabella nel DB tipo:
+sqlCREATE TABLE remember_tokens (
+    token_hash  VARCHAR(64) PRIMARY KEY,
+    utente_id   INT NOT NULL,
+    scadenza    DATETIME NOT NULL,
+    FOREIGN KEY (utente_id) REFERENCES utenti(id) ON DELETE CASCADE
+);
 
 
 ================================================================================

@@ -41,7 +41,6 @@ function richiedeLogin(string $redirect = 'login.php'): void
 {
     if (!utenteLoggato()) {
         header('Location: ' . $redirect);
-        exit;
     }
 }
 
@@ -50,7 +49,6 @@ function richiedeAdmin(): void
     richiedeLogin();
     if (!isAdmin()) {
         header('Location: index.php');
-        exit;
     }
 }
 
@@ -89,7 +87,7 @@ function tentaLogin(string $username, string $password): ?array
             // Password già hashata con bcrypt
             $ok = password_verify($password, $hash);
         } else {
-            // Password in chiaro (DB demo) — confronto diretto, poi ri-hasha
+            // Password in chiaro — confronto diretto, poi ri-hasha
             $ok = ($password === $hash);
             if ($ok) {
                 // Aggiorna la riga con hash bcrypt per i login futuri
@@ -129,7 +127,6 @@ const COOKIE_DURATA    = 72 * 3600; // 72 ore
 
 /**
  * Crea token opaco e lo memorizza in sessione.
- * In produzione: inserire in tabella remember_tokens(token_hash, utente_id, scadenza).
  */
 function impostaRicordami(string $username): void
 {

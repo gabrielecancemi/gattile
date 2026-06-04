@@ -1,6 +1,6 @@
 <?php
 /**
- * index.php — Pagina principale di Gattile Felice.
+ * index.php — Pagina principale di Gattile San Paolo.
  * Mostra presentazione generale e gli ultimi 2 gatti arrivati.
  */
 declare(strict_types=1);
@@ -30,7 +30,7 @@ try {
 avviaSessione();
 stampaTesta(
     'Benvenuto',
-    'Gattile Felice: adotta un gatto o diventa volontario a Torino. Scopri i nostri ospiti felini e come aiutarci.',
+    'Gattile San Paolo: adotta un gatto o diventa volontario a Torino. Scopri i nostri ospiti felini e come aiutarci.',
     'index.php'
 );
 
@@ -41,14 +41,14 @@ apriMain();
 ?>
 
 <section class="sezione-benvenuto" aria-labelledby="titolo-benvenuto">
-    <h1 id="titolo-benvenuto">Gattile Felice — Una casa per ogni gatto</h1>
+    <h1 id="titolo-benvenuto">Gattile San Paolo — Una casa per ogni gatto</h1>
     <p>
         Ogni anno, centinaia di gatti vengono abbandonati o nascono in strada, 
         necessitando di cure e di una famiglia. Allo stesso tempo, molte persone 
         desiderano accogliere un felino o dedicare il proprio tempo come volontari.
     </p>
     <p>
-        <strong>Gattile Felice</strong> nasce per facilitare le adozioni e organizzare 
+        <strong>Gattile San Paolo</strong> nasce per facilitare le adozioni e organizzare 
         il supporto attivo alla struttura ospitante, con sede a <strong>Torino</strong>.
     </p>
 

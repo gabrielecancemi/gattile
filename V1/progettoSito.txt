@@ -1,11 +1,11 @@
 ================================================================================
-GATTILE FELICE — Documentazione delle scelte progettuali
+GATTILE San Paolo — Documentazione delle scelte progettuali
 File: progettoSito.txt
 ================================================================================
 
 1. DESCRIZIONE GENERALE
 -----------------------
-"Gattile Felice" è un sito web per la gestione di adozioni e volontariato
+"Gattile San Paolo" è un sito web per la gestione di adozioni e volontariato
 in un gattile di Torino. Permette agli utenti di sfogliare i gatti ospiti,
 prenotare visite conoscitive e registrarsi come volontari. Gli amministratori
 possono inserire nuovi animali nella struttura.
@@ -231,7 +231,7 @@ CSS di stampa (stampa.css, media="print"):
 
 10. SEO
 -------
-- <title> descrittivo in ogni pagina (formato: "Nome pagina — Gattile Felice").
+- <title> descrittivo in ogni pagina (formato: "Nome pagina — Gattile San Paolo").
 - Meta description unica per ogni pagina.
 - Link canonico nell'<head>.
 - Struttura heading logica (h1 unico, h2, h3 in sequenza).
