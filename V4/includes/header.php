@@ -42,30 +42,23 @@ if ($utente && (bool) $utente['is_admin']) {
             ☰
         </button>
 
-        <!--
-        Navigazione — colonna 2 (fr: 2).
-        La lista contiene TUTTI i link: nav principale + account.
-        Su desktop i link account (.nav-conto) sono nascosti (display:none)
-        perché compaiono nel box bianco a destra.
-        Su mobile, con hamburger aperto, tutti i link appaiono identici
-        (stesse classi, stesso stile) — nessun elemento duplicato o diverso.
-    -->
+        <!-- Navigazione  -->
         <nav id="menu-principale" aria-label="Navigazione principale">
             <ul role="list">
                 <?php foreach ($navLinks as $href => $etichetta):
                     $attivo = ($href === $paginaCorrente);
                     ?>
                     <li>
-                        <a href="<?= esc($href) ?>" <?= $attivo ? 'class="active" aria-current="page"' : '' ?>>
-                            <?= esc($etichetta) ?>
+                        <a href="<?= $href ?>" <?= $attivo ? 'class="active" aria-current="page"' : '' ?>>
+                            <?= $etichetta ?>
                         </a>
                     </li>
                 <?php endforeach; ?>
             </ul>
         </nav>
 
-        <!-- Area account desktop — colonna 3 (fr: 1) — nascosta su mobile -->
-        <section class="stato-autenticazione" id="userStatusBox" aria-label="Stato autenticazione">
+        <!-- Area account -->
+        <section class="stato-autenticazione" id="autenticazione" aria-label="Stato autenticazione">
             <article class="account-box">
                 <?php if ($utente): ?>
                     <p class="utente-info">

@@ -236,7 +236,7 @@ ol {
     display: none;
     position: absolute;
     /* fuori dalla grid su desktop */
-    padding: .4rem .65rem;
+    padding: .4rem .6rem;
     border: none;
     border-radius: var(--raggio);
     background: transparent;
@@ -338,7 +338,7 @@ ol {
     display: inline-block;
     padding: .1rem .45rem;
     background: var(--secondario);
-    color: #fff;
+    color: var(--bianco);
     border-radius: var(--raggio-pill);
     font-size: .72rem;
     font-weight: 700;
@@ -362,35 +362,34 @@ ol {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: .3rem .65rem;
+    padding: .4rem .6rem;
     border-radius: var(--raggio);
     text-decoration: none;
     font-size: 1rem;
     font-weight: 600;
-    transition: filter var(--trans), background var(--trans);
     white-space: nowrap;
 }
 
 .btn-login {
     background: var(--primario);
-    color: #fff;
+    color: var(--bianco);
 }
 
 .btn-login:hover,
 .btn-login:focus {
     filter: brightness(1.15);
-    color: #fff;
+    color: var(--bianco);
 }
 
 .btn-logout {
     background: #8b1a1a;
-    color: #fff;
+    color: var(--bianco);
 }
 
 .btn-logout:hover,
 .btn-logout:focus {
     background: #6b1010;
-    color: #fff;
+    color: var(--bianco);
 }
 
 
@@ -1190,7 +1189,8 @@ details>*:not(summary) {
         grid-template-columns: 1fr auto;
         grid-template-areas:
             "logo toggle"
-            "nav nav";
+            "nav nav"
+            "account account";
         padding: 1rem;
         align-items: center;
         gap: 0 var(--sp-md);
@@ -1202,40 +1202,34 @@ details>*:not(summary) {
         grid-area: toggle;
     }
 
-    /* Nav: nascosta di default, visibile se .aperto */
-    .header nav {
-        display: none;
-        width: 100%;
-        padding: var(--sp-xs) 0 var(--sp-sm);
+    .header>nav {
+        padding: 1rem 0;
         border-top: 1px solid rgba(255, 255, 255, .2);
+        margin-top: 1rem;
     }
 
-    .header nav.aperto {
+    .header>nav, 
+    .stato-autenticazione {
+        display: none;
+    }
+
+    .header>nav.aperto,
+    .stato-autenticazione.aperto {
         display: flex;
     }
 
     .header nav ul {
         flex-direction: column;
         align-items: stretch;
-        gap: .2rem;
-        width: 100%;
+        gap: 1rem;
+        width: 50%;
     }
 
     /* Tutti i link identici — nav principale e account */
     .header nav a {
         display: block;
         text-align: center;
-        padding: .55rem .8rem;
-    }
-
-    /* Mostra i link account nella nav su mobile */
-    .nav-conto {
-        display: list-item;
-    }
-
-    /* Nasconde il box account desktop su mobile */
-    .stato-autenticazione {
-        display: none !important;
+        padding: .5rem;
     }
 
     /* Footer: singola colonna */

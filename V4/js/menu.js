@@ -14,9 +14,9 @@
         this.setAttribute('aria-expanded', String(nuovoStato));
         this.textContent = nuovoStato ? '✕' : '☰';
 
-        var nav     = document.getElementById('menu-principale');
-        var account = document.getElementById('userStatusBox');
-        if (nav)     nav.classList.toggle('aperto', nuovoStato);
+        var nav = document.getElementById('menu-principale');
+        var account = document.getElementById('autenticazione');
+        if (nav) nav.classList.toggle('aperto', nuovoStato);
         if (account) account.classList.toggle('aperto', nuovoStato);
     });
 
