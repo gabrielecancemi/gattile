@@ -20,7 +20,7 @@ require_once 'db.php';
  */
 function tokenFilePath(): string
 {
-    $dir = 'gattile_tokens';
+    $dir = __DIR__ . '/gattile_tokens';
     if (!is_dir($dir)) {
         mkdir($dir, 0700, true);
     }
@@ -169,7 +169,7 @@ function impostaSessioneUtente(array $utente): void
 
 /* ── Cookie "ricordami" ───────────────────────────────────────── */
 
-const COOKIE_RICORDAMI = 'gattile_remember';
+const COOKIE_RICORDAMI = 'remember_username';
 const COOKIE_DURATA = 72 * 3600; // 72 ore
 
 /**
@@ -223,24 +223,30 @@ function leggiRicordami(): ?string
 function eliminaRicordami(): void
 {
     $token = $_COOKIE[COOKIE_RICORDAMI] ?? null;
-    if ($token) {
+
+    if ($token !== null) {
         $tokens = leggiTokens();
-        unset($tokens[$token]);
-        scriviTokens($tokens);
+
+        if (isset($tokens[$token])) {
+            unset($tokens[$token]);
+            scriviTokens($tokens);
+        }
     }
 
     setcookie(COOKIE_RICORDAMI, '', [
         'expires' => time() - 3600,
         'path' => '/',
+        'secure' => isset($_SERVER['HTTPS']),
         'httponly' => true,
         'samesite' => 'Strict',
     ]);
+
+    unset($_COOKIE[COOKIE_RICORDAMI]);
 }
 
 function logout(): void
 {
     avviaSessione();
-    #eliminaRicordami();
     $_SESSION = [];
     session_destroy();
 }

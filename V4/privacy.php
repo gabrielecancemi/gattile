@@ -23,7 +23,8 @@ apriMain();
     <p><time datetime="<?= date('Y-m-d') ?>">Aggiornata il <?= date('d/m/Y') ?></time></p>
 
     <?php if ($eliminati):
-        echo messaggioUtente('I tuoi cookie sono stati eliminati con successo.', 'successo'); endif; ?>
+        echo messaggioUtente('I tuoi cookie sono stati eliminati con successo.', 'successo');
+    endif; ?>
 
     <article aria-labelledby="sez-titolare">
         <h2 id="sez-titolare">Titolare del trattamento</h2>
@@ -96,7 +97,7 @@ apriMain();
 
     <article aria-labelledby="sez-elimina" id="elimina">
         <h2 id="sez-elimina">Elimina i tuoi cookie</h2>
-        <p>Rimuovi tutti i cookie impostati da questo sito. Verrai disconnesso.</p>
+        <p>Rimuovi tutti i cookie e la sessione impostati da questo sito. Verrai disconnesso.</p>
         <button type="button" id="btn-elimina-cookie-privacy" class="btn btn-pericolo" aria-describedby="nota-elimina">
             Elimina tutti i miei cookie
         </button>
