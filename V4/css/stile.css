@@ -68,7 +68,6 @@ html {
 body {
     font-family: var(--font-corpo);
     font-size: 1rem;
-    line-height: 1.6;
     color: var(--testo);
     background-color: var(--sfondo);
     min-height: 100vh;
@@ -116,7 +115,6 @@ a {
     color: var(--primario);
     text-decoration: underline;
     text-underline-offset: 3px;
-    transition: color var(--trans);
 }
 
 a:hover,
@@ -183,14 +181,14 @@ ol {
     grid-template-columns: 1fr 2fr 1fr;
     grid-template-areas: "logo nav account";
     align-items: center;
-    padding: var(--sp-lg);
+    padding: var(--sp-md);
     gap: var(--sp-md);
     background-color: var(--secondario);
     border-bottom: 4px solid var(--primario);
     position: sticky;
     top: 0;
     z-index: 1000;
-    font-size: 1rem;
+    font-size: 1.1rem;
 }
 
 
@@ -260,7 +258,7 @@ ol {
 
 .header>nav ul {
     display: flex;
-    gap: .5rem;
+    gap: var(--sp-md);
     list-style: none;
     padding: 0;
     margin: 0;
@@ -272,7 +270,6 @@ ol {
     padding: .4rem .8rem;
     color: var(--bianco);
     text-decoration: none;
-    font-size: 1rem;
     font-weight: 600;
     border-radius: var(--raggio);
 }
@@ -282,7 +279,7 @@ ol {
     background: rgba(255, 255, 255, .18);
 }
 
-.header>nav a.active {
+.header nav a.active {
     background: var(--nero);
 }
 
@@ -415,7 +412,7 @@ ol {
     padding: var(--sp-lg) var(--sp-xl);
     background: var(--primario);
     border-top: 4px solid var(--secondario);
-    color: rgba(255, 255, 255, .92);
+    color: var(--bianco);
     margin-top: auto;
     font-size: .95rem;
 }
@@ -590,34 +587,34 @@ ol {
 .faq-button:focus-visible {
     filter: brightness(1.15);
     transform: scale(1.07);
-    color: #fff;
+    color: var(--bianco);
 }
 
-/* ── Banner cookie ────────────────────────────────────────── */
+/* ── Banner cookie */
 .banner-cookie {
     position: fixed;
     bottom: 0;
     left: 0;
     right: 0;
-    background: var(--primario-scuro);
-    color: #fff;
+    background: var(--primario);
+    color: var(--bianco);
     padding: var(--sp-md) var(--sp-xl);
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     gap: var(--sp-md);
     z-index: 800;
-    border-top: 3px solid var(--secondario);
+    border-top: 4px solid var(--secondario);
 }
 
 .banner-cookie p {
     margin: 0;
     flex: 1;
     min-width: 200px;
-    font-size: .9rem;
+    font-size: 0.9rem;
 }
 
-.banner-cookie a {
+.banner-cookie p a {
     color: #f5e8c8;
 }
 
@@ -634,6 +631,7 @@ main {
     flex: 1;
     width: 100%;
     max-width: var(--max-w);
+    line-height: 1.6;
     margin: 0 auto;
     padding: var(--sp-xl) var(--sp-md);
 }
@@ -644,49 +642,44 @@ main {
     align-items: center;
     gap: var(--sp-xs);
     padding: var(--sp-sm) var(--sp-xl);
-    border-radius: var(--raggio-pill);
+    border-radius: var(--raggio);
     font-family: var(--font-corpo);
     font-size: 1rem;
     font-weight: 700;
     cursor: pointer;
     text-decoration: none;
     border: 2px solid transparent;
-    transition: background var(--trans), color var(--trans), filter var(--trans);
     white-space: nowrap;
 }
 
-.btn:active {
-    transform: scale(.97);
-}
+
 
 .btn-primario {
-    background: var(--primario);
-    color: #fff;
-    border-color: var(--primario);
+    background: var(--secondario);
+    color: var(--bianco);
+    border-color: var(--secondario);
 }
 
 .btn-primario:hover,
 .btn-primario:focus {
-    background: var(--primario-scuro);
-    color: #fff;
-    border-color: var(--primario-scuro);
+    background: rgba(255, 255, 255, .18);
 }
 
 .btn-secondario {
     background: transparent;
-    color: var(--secondario);
+    color: var(--bianco);
     border-color: var(--secondario);
 }
 
 .btn-secondario:hover,
 .btn-secondario:focus {
-    background: var(--secondario);
-    color: #fff;
+    filter: brightness(1.15);
+    color: var(--bianco);
 }
 
 .btn-pericolo {
     background: var(--colore-errore);
-    color: #fff;
+    color: var(--bianco);
     border-color: var(--colore-errore);
 }
 

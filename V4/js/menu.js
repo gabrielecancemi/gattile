@@ -1,5 +1,5 @@
-/**
- * menu.js — Toggle hamburger menu su mobile.
+/*
+ * menu.js — Toggle menu su mobile.
  * Alterna le classi "aperto" su nav e area account.
  */
 'use strict';

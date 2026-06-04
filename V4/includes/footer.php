@@ -1,21 +1,18 @@
 <?php
 /**
  * footer.php — Footer comune.
- * Incluso da layout.php::stampaFooter().
- * Nessun JS inline, solo tag semantici.
- *
- * NOTA: declare(strict_types=1) omesso — file incluso, non entry-point.
+ * Incluso da layout.php: stampaFooter().
  */
 
 $paginaCorrente = basename($_SERVER['PHP_SELF']);
-$anno           = date('Y');
+$anno = date('Y');
 
 $navLinks = [
-    'index.php'        => 'Home',
-    'gatti.php'        => 'Adozioni',
+    'index.php' => 'Home',
+    'gatti.php' => 'Adozioni',
     'volontariato.php' => 'Volontariato',
-    'faq.php'          => 'FAQ',
-    'privacy.php'      => 'Privacy',
+    'faq.php' => 'FAQ',
+    'privacy.php' => 'Privacy',
 ];
 if (!empty($_SESSION['utente']['is_admin'])) {
     $navLinks['inserisci_gatto.php'] = 'Inserisci gatto';
@@ -23,20 +20,20 @@ if (!empty($_SESSION['utente']['is_admin'])) {
 ?>
 
 <?php if (!isset($_COOKIE['cookie_consenso'])): ?>
-<aside id="banner-cookie" class="banner-cookie" role="dialog"
-       aria-modal="true" aria-live="polite" aria-label="Informativa cookie">
-    <p>
-        Questo sito usa solo cookie tecnici di sessione, necessari al funzionamento.
-        Nessuna profilazione di terze parti.
-        <a href="privacy.php">Maggiori informazioni</a>.
-    </p>
-    <nav aria-label="Gestione consenso cookie">
-        <ul role="list">
-            <li><button type="button" id="btn-accetta-cookie" class="btn btn-primario">Accetto</button></li>
-            <li><a href="privacy.php#elimina" class="btn btn-secondario">Gestisci</a></li>
-        </ul>
-    </nav>
-</aside>
+    <aside id="banner-cookie" class="banner-cookie" role="dialog" aria-modal="true" aria-live="polite"
+        aria-label="Informativa cookie">
+        <p>
+            Questo sito usa solo cookie tecnici di sessione, necessari al funzionamento.
+            Nessuna profilazione di terze parti.
+            <a href="privacy.php">Maggiori informazioni</a>.
+        </p>
+        <nav aria-label="Gestione consenso cookie">
+            <ul role="list">
+                <li><button type="button" id="btn-accetta-cookie" class="btn btn-primario">Accetto</button></li>
+                <li><a href="privacy.php#elimina" class="btn btn-secondario">Gestisci</a></li>
+            </ul>
+        </nav>
+    </aside>
 <?php endif; ?>
 
 <footer class="footer" role="contentinfo">
@@ -54,13 +51,12 @@ if (!empty($_SESSION['utente']['is_admin'])) {
             <ul role="list">
                 <?php foreach ($navLinks as $href => $etichetta):
                     $attivo = ($href === $paginaCorrente);
-                ?>
-                <li>
-                    <a href="<?= esc($href) ?>"
-                       <?= $attivo ? 'class="active" aria-current="page"' : '' ?>>
-                        <?= esc($etichetta) ?>
-                    </a>
-                </li>
+                    ?>
+                    <li>
+                        <a href="<?= esc($href) ?>" <?= $attivo ? 'class="active" aria-current="page"' : '' ?>>
+                            <?= esc($etichetta) ?>
+                        </a>
+                    </li>
                 <?php endforeach; ?>
             </ul>
         </nav>
@@ -101,4 +97,5 @@ if (!empty($_SESSION['utente']['is_admin'])) {
 <script src="js/footer.js" defer></script>
 
 </body>
+
 </html>
