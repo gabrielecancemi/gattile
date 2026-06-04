@@ -574,11 +574,11 @@ ol {
     justify-content: center;
     border-radius: 50%;
     background: var(--secondario);
-    color: #fff;
+    color: var(--bianco);
     text-decoration: none;
     font-size: 1.5rem;
     font-weight: 700;
-    border: 3px solid var(--primario);
+    border: 2px solid var(--primario);
     z-index: 999;
     transition: transform var(--trans), filter var(--trans);
 }
