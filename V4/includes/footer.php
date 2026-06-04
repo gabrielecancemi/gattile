@@ -86,7 +86,8 @@ if (!empty($_SESSION['utente']['is_admin'])) {
 
 </footer>
 
-<a href="faq.php" id="faq" class="faq-button <?= $paginaCorrente === 'faq.php' ? 'active' : '' ?>" aria-label="Domande frequenti" title="FAQ — Domande frequenti">?</a>
+<a href="faq.php" id="faq" class="faq-button <?= $paginaCorrente === 'faq.php' ? 'active' : '' ?>"
+    aria-label="Domande frequenti" title="FAQ — Domande frequenti">?</a>
 
 <script src="js/footer.js" defer></script>
 

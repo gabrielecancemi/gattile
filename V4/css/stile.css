@@ -1,13 +1,49 @@
 /* ============================================================
-   stile.css — Gattile San Paolo  v2
-   Palette: saddlebrown / darkolivegreen / cornsilk
-   Contrasto WCAG AA su tutti gli abbinamenti.
-   Layout mobile-first con grid-template-areas.
-   Solo tag semantici — nessun presentazionale.
+   stile.css — Gattile San Paolo  v3
+   ============================================================
+   INDICE
+   1.  Variabili CSS (design tokens)
+   2.  Reset & base
+   3.  Tipografia
+   4.  Link & utilità testo
+   5.  Focus & accessibilità
+   6.  Layout: Header
+       6a.  Logo
+       6b.  Hamburger
+       6c.  Nav principale
+       6d.  Area account (stato autenticazione)
+   7.  Layout: Footer
+       7a.  Logo footer
+       7b.  Sezione centrale (nav + privacy)
+       7c.  Contatti
+       7d.  Copyright
+   8.  Pulsante FAQ fisso
+   9.  Banner cookie
+   10. Main / contenuto
+   11. Pulsanti generali
+   12. Messaggi di feedback
+   13. Azioni principali (home)
+   14. Card gatto
+   15. Barra controlli
+   16. Form & campi
+   17. Progress & Meter
+   18. Caricamento
+   19. Turni volontariato
+   20. Tabelle
+   21. Details / Summary (accordion)
+   22. Separatore
+   23. Utility classi
+   24. Pagina FAQ
+   25. Responsive ≤ 900px
+   26. Responsive ≤ 600px
    ============================================================ */
 
-/* ── Variabili ────────────────────────────────────────────── */
+
+/* ============================================================
+   1. VARIABILI CSS (design tokens)
+   ============================================================ */
 :root {
+    /* — Colori principali — */
     --primario: saddlebrown;
     /* #8b4513 */
     --primario-scuro: #6b3410;
@@ -18,20 +54,23 @@
     /* #fff8dc */
     --bianco: white;
     --nero: black;
-    --testo: #1a1000;
-    --testo-muted: #4a3010;
+
+    /* — Testo — */
     --bordo: #c8a87a;
     --ombra: rgba(139, 69, 19, .15);
 
+    /* — Feedback semantico — */
     --colore-successo: #1e5c2e;
     --colore-errore: #8b1a1a;
     --colore-avviso: #6b4c00;
     --colore-focus: #1a5ea8;
 
+    /* — Tipografia — */
     --font-corpo: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     --font-titoli: Georgia, 'Times New Roman', serif;
     --font-mono: 'Courier New', monospace;
 
+    /* — Spaziatura — */
     --sp-xs: .25rem;
     --sp-sm: .5rem;
     --sp-md: 1rem;
@@ -39,15 +78,25 @@
     --sp-xl: 2rem;
     --sp-xxl: 3rem;
 
+    /* — Forma — */
     --raggio: .5rem;
     --raggio-pill: 999px;
+
+    /* — Animazione — */
     --trans: 200ms ease-in-out;
+
+    /* — Layout — */
     --max-w: 1100px;
     --form-w: 600px;
 }
 
-/* ── Reset ────────────────────────────────────────────────── */
-* {
+
+/* ============================================================
+   2. RESET & BASE
+   ============================================================ */
+*,
+*::before,
+*::after {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
@@ -57,6 +106,7 @@ html {
     font-size: 100%;
 }
 
+/* Rimuove tutte le animazioni per chi preferisce il movimento ridotto */
 @media (prefers-reduced-motion: reduce) {
     * {
         animation: none !important;
@@ -68,21 +118,17 @@ html {
 body {
     font-family: var(--font-corpo);
     font-size: 1rem;
-    color: var(--testo);
+    color: var(--nero);
     background-color: var(--sfondo);
     min-height: 100vh;
     display: flex;
     flex-direction: column;
 }
 
-/* ── Focus ────────────────────────────────────────────────── */
-:focus-visible {
-    outline: 3px solid gold;
-    outline-offset: 3px;
-    border-radius: var(--raggio);
-}
 
-/* ── Tipografia ───────────────────────────────────────────── */
+/* ============================================================
+   3. TIPOGRAFIA
+   ============================================================ */
 h1,
 h2,
 h3,
@@ -111,15 +157,9 @@ p {
     margin-bottom: var(--sp-md);
 }
 
-a {
-    color: var(--primario);
-    text-decoration: underline;
-    text-underline-offset: 3px;
-}
-
-a:hover,
-a:focus {
-    color: var(--secondario);
+ul,
+ol {
+    padding-left: var(--sp-xl);
 }
 
 abbr[title] {
@@ -132,7 +172,10 @@ strong {
     font-weight: 700;
 }
 
-/* strong in contesti con sfondo scuro eredita il bianco del padre */
+/*
+ * Nei contesti con sfondo scuro (header, footer, account-box),
+ * strong non deve ereditare il colore brand ma il bianco del genitore.
+ */
 .account-box strong,
 .utente-info strong,
 .brand-logo strong,
@@ -140,7 +183,7 @@ strong {
     color: inherit;
 }
 
-/* mark usato come badge: reset stile giallo browser */
+/* mark usato come badge: reset dello stile giallo predefinito del browser */
 mark {
     background: transparent;
     color: inherit;
@@ -156,49 +199,62 @@ code {
     font-size: .9em;
 }
 
-ul,
-ol {
-    padding-left: var(--sp-xl);
+
+/* ============================================================
+   4. LINK & UTILITÀ TESTO
+   ============================================================ */
+a {
+    color: var(--primario);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+a:hover,
+a:focus {
+    color: var(--secondario);
 }
 
 
+/* ============================================================
+   5. FOCUS & ACCESSIBILITÀ
+   ============================================================ */
+:focus-visible {
+    outline: 3px solid gold;
+    outline-offset: 3px;
+    border-radius: var(--raggio);
+}
 
-/* ── HEADER ───────────────────────────────────────────────── */
-/*
- * Tre colonne con proporzioni 1fr : 2fr : 1fr.
- * align-items: center allinea logo, nav e account sulla stessa linea.
- * Il padding verticale sta solo sulla grid.
- *
- * Il pulsante hamburger NON è un figlio della grid su desktop:
- * usa position: absolute (relativo all'header) e display: none.
- * Su mobile diventa visibile e la grid passa a 1fr auto.
- *
- * Desktop: [ logo 1fr ] [ nav 2fr ] [ account 1fr ]
- * Mobile:  [ logo 1fr ] [ ☰ auto ] — nav compare sotto se .aperto
- */
+
+/* ============================================================
+   6. LAYOUT: HEADER
+   ============================================================
+   Desktop — tre colonne: [ logo 1fr ] [ nav 2fr ] [ account 1fr ]
+   Mobile  — due colonne: [ logo 1fr ] [ ☰ auto ]
+             la nav e l'account scendono sotto se .aperto
+   ============================================================ */
 .header {
     display: grid;
     grid-template-columns: 1fr 2fr 1fr;
     grid-template-areas: "logo nav account";
     align-items: center;
-    padding: var(--sp-md);
     gap: var(--sp-md);
+    padding: var(--sp-md);
     background-color: var(--secondario);
     border-bottom: 4px solid var(--primario);
+    font-size: 1.1rem;
     position: sticky;
     top: 0;
     z-index: 1000;
-    font-size: 1.1rem;
 }
 
 
-/* ── Logo — colonna 1fr ───────────────────────────────────── */
+/* ── 6a. Logo ─────────────────────────────────────────────── */
 .brand-logo {
     grid-area: logo;
     display: flex;
     align-items: center;
     gap: .5rem;
-    color: #fff;
+    color: var(--bianco);
     text-decoration: none;
     font-size: 1.3rem;
     font-weight: 700;
@@ -208,9 +264,8 @@ ol {
 .brand-logo:hover,
 .brand-logo:focus {
     opacity: .88;
-    color: #fff;
+    color: var(--bianco);
 }
-
 
 .logo-img {
     width: 44px;
@@ -219,12 +274,12 @@ ol {
     flex-shrink: 0;
 }
 
-/* ── Hamburger — fuori dalla grid su desktop ──────────────── */
+
+/* ── 6b. Hamburger ────────────────────────────────────────── */
 /*
- * position: absolute lo toglie dal flusso della grid: non occupa
- * nessuna cella e non sposta logo, nav o account.
- * Su mobile (media query) torna nel flusso con position: static
- * e diventa la seconda colonna della grid [ logo | ☰ ].
+ * Su desktop è rimosso dal flusso (position: absolute) così non
+ * occupa nessuna cella della grid.
+ * Su mobile torna in posizione statica (vedi §25).
  */
 .menu-toggle {
     display: none;
@@ -234,7 +289,7 @@ ol {
     border: none;
     border-radius: var(--raggio);
     background: transparent;
-    color: #fff;
+    color: var(--bianco);
     font-size: 1.7rem;
     cursor: pointer;
     line-height: 1;
@@ -244,7 +299,8 @@ ol {
     background: rgba(255, 255, 255, .15);
 }
 
-/* ── Nav — colonna 2fr ────────────────────────────────────── */
+
+/* ── 6c. Nav principale ───────────────────────────────────── */
 .header>nav {
     grid-area: nav;
     display: flex;
@@ -280,13 +336,13 @@ ol {
     color: var(--bianco);
 }
 
-/* Link account nella nav (.nav-conto): nascosti su desktop */
+/* Link account nella nav: nascosti su desktop, visibili su mobile */
 .nav-conto {
     display: none;
 }
 
-/* Area account */
 
+/* ── 6d. Area account ─────────────────────────────────────── */
 .stato-autenticazione {
     grid-area: account;
     display: flex;
@@ -294,7 +350,7 @@ ol {
     justify-content: center;
 }
 
-/* Box bianco compatto: icona nome badge | pulsante */
+/* Contenitore bianco compatto: [ icona + nome + badge | pulsante ] */
 .account-box {
     display: flex;
     flex-direction: row;
@@ -313,7 +369,7 @@ ol {
     margin: 0;
     padding-right: .8rem;
     font-size: 1rem;
-    color: var(--testo);
+    color: var(--nero);
     min-width: 0;
     overflow: hidden;
 }
@@ -321,7 +377,7 @@ ol {
 .nome-utente {
     font-weight: 700;
     font-style: normal;
-    color: var(--testo-muted);
+    color: var(--primario-scuro);
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -340,7 +396,7 @@ ol {
     flex-shrink: 0;
 }
 
-/* Separatore verticale tra info e pulsante */
+/* Separatore verticale tra info utente e pulsante azione */
 .account-box nav {
     border-left: 1px solid var(--nero);
     padding-left: .8rem;
@@ -350,8 +406,7 @@ ol {
     gap: .8rem;
 }
 
-
-/* Pulsanti account */
+/* Pulsanti area account */
 .btn-account {
     display: inline-flex;
     align-items: center;
@@ -387,15 +442,14 @@ ol {
 }
 
 
-/* ── FOOTER ───────────────────────────────────────────────── */
-/*
- * Desktop — tre colonne:
- *   [ logo ]  [ nav + privacy ]  [ contatti ]
- *   [ copyright — larghezza piena ]
- *
- * La sezione centrale (.footer-centro) impila la nav principale
- * e quella privacy, entrambe centrate.
- */
+/* ============================================================
+   7. LAYOUT: FOOTER
+   ============================================================
+   Desktop — tre colonne:
+     [ logo ]  [ nav principale + nav privacy ]  [ contatti ]
+     [ copyright — larghezza piena ]
+   Mobile  — singola colonna (vedi §25)
+   ============================================================ */
 .footer {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
@@ -431,7 +485,8 @@ ol {
     grid-area: f-copy;
 }
 
-/* Logo footer */
+
+/* ── 7a. Logo footer ──────────────────────────────────────── */
 .footer .brand-logo {
     color: var(--bianco);
 }
@@ -442,7 +497,8 @@ ol {
     color: var(--bianco);
 }
 
-/* Sezione centrale: nav principale + nav privacy in colonna, centrate */
+
+/* ── 7b. Sezione centrale (nav principale + nav privacy) ──── */
 .footer-centro {
     display: flex;
     flex-direction: column;
@@ -477,8 +533,6 @@ ol {
     color: var(--bianco);
 }
 
-/* Pagina corrente nel footer: sfondo nero come richiesto */
-.footer-centro>nav:first-child a.active,
 .footer-centro>nav:first-child a.active,
 .faq-button.active {
     background: var(--nero);
@@ -486,7 +540,7 @@ ol {
     border: var(--nero);
 }
 
-/* Nav privacy — centrata sotto il menu principale */
+/* Nav privacy (sotto la nav principale) */
 .footer-privacy ul {
     display: flex;
     gap: var(--sp-md);
@@ -508,11 +562,12 @@ ol {
 .footer-privacy a:focus,
 .footer-privacy .link-button:hover,
 .footer-privacy .link-button:focus {
-    color: #fff;
+    color: var(--bianco);
     text-decoration: underline;
 }
 
-/* Contatti footer */
+
+/* ── 7c. Contatti ─────────────────────────────────────────── */
 .footer-contatti {
     font-style: normal;
     line-height: 1.7;
@@ -524,11 +579,11 @@ ol {
 }
 
 .footer-contatti a:hover {
-    color: #fff;
+    color: var(--bianco);
     text-decoration: underline;
 }
 
-/* link-button stile testo */
+/* Pulsante testuale generico (usato nel footer privacy) */
 .link-button {
     background: none;
     border: none;
@@ -541,15 +596,16 @@ ol {
 }
 
 .link-button:hover {
-    color: #fff;
+    color: var(--bianco);
 }
 
-/* URL pagina (solo stampa) */
+/* URL pagina — visibile solo in stampa */
 .footer-url {
     display: none;
 }
 
-/* Copyright */
+
+/* ── 7d. Copyright ────────────────────────────────────────── */
 .footer-copy {
     border-top: 1px solid rgba(255, 255, 255, .2);
     padding-top: var(--sp-md);
@@ -558,7 +614,10 @@ ol {
     color: rgba(255, 255, 255, .75);
 }
 
-/* ── Pulsante FAQ fisso ───────────────────────────────────── */
+
+/* ============================================================
+   8. PULSANTE FAQ FISSO
+   ============================================================ */
 .faq-button {
     position: fixed;
     right: max(1rem, env(safe-area-inset-right));
@@ -586,7 +645,10 @@ ol {
     color: var(--bianco);
 }
 
-/* ── Banner cookie */
+
+/* ============================================================
+   9. BANNER COOKIE
+   ============================================================ */
 .banner-cookie {
     position: fixed;
     bottom: 0;
@@ -607,7 +669,7 @@ ol {
     margin: 0;
     flex: 1;
     min-width: 200px;
-    font-size: 0.9rem;
+    font-size: .9rem;
 }
 
 .banner-cookie p a {
@@ -622,7 +684,10 @@ ol {
     gap: var(--sp-sm);
 }
 
-/* ── Main ─────────────────────────────────────────────────── */
+
+/* ============================================================
+   10. MAIN / CONTENUTO
+   ============================================================ */
 main {
     flex: 1;
     width: 100%;
@@ -632,7 +697,10 @@ main {
     padding: var(--sp-xl) var(--sp-md);
 }
 
-/* ── Pulsanti generali ────────────────────────────────────── */
+
+/* ============================================================
+   11. PULSANTI GENERALI
+   ============================================================ */
 .btn {
     display: inline-flex;
     align-items: center;
@@ -647,8 +715,6 @@ main {
     border: 2px solid transparent;
     white-space: nowrap;
 }
-
-
 
 .btn-primario {
     background: var(--secondario);
@@ -679,7 +745,10 @@ main {
     border-color: var(--colore-errore);
 }
 
-/* ── Messaggi utente ──────────────────────────────────────── */
+
+/* ============================================================
+   12. MESSAGGI DI FEEDBACK
+   ============================================================ */
 .messaggio {
     display: block;
     padding: var(--sp-md) var(--sp-lg);
@@ -707,7 +776,10 @@ main {
     border-color: var(--colore-avviso);
 }
 
-/* ── Azioni principali home ───────────────────────────────── */
+
+/* ============================================================
+   13. AZIONI PRINCIPALI (home)
+   ============================================================ */
 .azioni-principali ul {
     display: flex;
     flex-wrap: wrap;
@@ -717,7 +789,6 @@ main {
     margin: var(--sp-lg) 0;
 }
 
-/* ── Nuovi arrivi (home) ──────────────────────────────────── */
 .nuovi-arrivi {
     background: linear-gradient(135deg, #f5e8c8 0%, var(--sfondo) 100%);
     border-radius: var(--raggio);
@@ -728,7 +799,7 @@ main {
 .badge-nuovo {
     display: inline-block;
     background: var(--colore-errore);
-    color: #fff;
+    color: var(--bianco);
     font-size: .72rem;
     padding: 2px var(--sp-sm);
     border-radius: var(--raggio-pill);
@@ -739,7 +810,10 @@ main {
     vertical-align: middle;
 }
 
-/* ── Card gatti ───────────────────────────────────────────── */
+
+/* ============================================================
+   14. CARD GATTO
+   ============================================================ */
 .griglia-gatti {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
@@ -768,6 +842,7 @@ main {
     box-shadow: 0 8px 24px var(--ombra);
 }
 
+/* Stato selezionato */
 .card-gatto.selezionata {
     outline: 3px solid var(--primario);
     outline-offset: -3px;
@@ -799,6 +874,7 @@ main {
     margin-bottom: 0;
 }
 
+/* Tag / etichette */
 .card-gatto-meta {
     display: flex;
     flex-wrap: wrap;
@@ -817,6 +893,7 @@ main {
     font-weight: 700;
 }
 
+/* Definizione lista dati gatto */
 .card-gatto dl {
     display: grid;
     grid-template-columns: auto 1fr;
@@ -827,7 +904,7 @@ main {
 
 .card-gatto dt {
     font-weight: 700;
-    color: var(--testo-muted);
+    color: var(--primario-scuro);
 }
 
 .card-gatto dd {
@@ -841,12 +918,13 @@ main {
     accent-color: var(--primario);
 }
 
+/* Badge ✓ mostrato solo quando la card è selezionata */
 .card-badge-selezione {
     position: absolute;
     top: var(--sp-sm);
     right: var(--sp-sm);
     background: var(--primario);
-    color: #fff;
+    color: var(--bianco);
     border-radius: 50%;
     width: 2rem;
     height: 2rem;
@@ -862,7 +940,10 @@ main {
     display: flex;
 }
 
-/* ── Barra controlli React ────────────────────────────────── */
+
+/* ============================================================
+   15. BARRA CONTROLLI
+   ============================================================ */
 .barra-controlli {
     display: flex;
     flex-wrap: wrap;
@@ -885,7 +966,10 @@ main {
     font-weight: 600;
 }
 
-/* ── Form ─────────────────────────────────────────────────── */
+
+/* ============================================================
+   16. FORM & CAMPI
+   ============================================================ */
 form {
     max-width: var(--form-w);
 }
@@ -912,9 +996,10 @@ label {
     margin-bottom: var(--sp-md);
     font-size: .95rem;
     font-weight: 600;
-    color: var(--testo);
+    color: var(--nero);
 }
 
+/* Campi testo comuni */
 input[type="text"],
 input[type="email"],
 input[type="password"],
@@ -930,7 +1015,7 @@ textarea {
     border-radius: var(--raggio);
     font-family: var(--font-corpo);
     font-size: 1rem;
-    color: var(--testo);
+    color: var(--nero);
     background: var(--bianco);
     transition: border-color var(--trans);
 }
@@ -943,6 +1028,7 @@ textarea:focus {
     box-shadow: 0 0 0 3px rgba(26, 94, 168, .2);
 }
 
+/* Stato di errore accessibile via aria-invalid */
 input[aria-invalid="true"],
 select[aria-invalid="true"],
 textarea[aria-invalid="true"] {
@@ -954,6 +1040,7 @@ textarea {
     resize: vertical;
 }
 
+/* Checkbox e radio */
 .campo-checkbox {
     flex-direction: row;
     align-items: center;
@@ -969,6 +1056,7 @@ input[type="radio"] {
     flex-shrink: 0;
 }
 
+/* Testi ausiliari del form */
 .campo-obbligatorio::after {
     content: ' *';
     color: var(--colore-errore);
@@ -976,7 +1064,7 @@ input[type="radio"] {
 
 .aiuto-campo {
     font-size: .82rem;
-    color: var(--testo-muted);
+    color: var(--primario-scuro);
     font-weight: normal;
 }
 
@@ -989,7 +1077,10 @@ input[type="radio"] {
     gap: var(--sp-xs);
 }
 
-/* ── Progress e Meter ─────────────────────────────────────── */
+
+/* ============================================================
+   17. PROGRESS & METER
+   ============================================================ */
 progress,
 meter {
     width: 100%;
@@ -1000,16 +1091,22 @@ meter {
     accent-color: var(--primario);
 }
 
-/* ── Caricamento ──────────────────────────────────────────── */
+
+/* ============================================================
+   18. CARICAMENTO
+   ============================================================ */
 .caricamento {
     display: flex;
     justify-content: center;
     padding: var(--sp-xl);
-    color: var(--testo-muted);
+    color: var(--primario-scuro);
     font-style: italic;
 }
 
-/* ── Turni volontariato ───────────────────────────────────── */
+
+/* ============================================================
+   19. TURNI VOLONTARIATO
+   ============================================================ */
 .griglia-turni {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(175px, 1fr));
@@ -1054,7 +1151,10 @@ meter {
     color: var(--colore-successo);
 }
 
-/* ── Tabelle ──────────────────────────────────────────────── */
+
+/* ============================================================
+   20. TABELLE
+   ============================================================ */
 table {
     width: 100%;
     border-collapse: collapse;
@@ -1077,7 +1177,7 @@ td {
 
 th {
     background: var(--primario);
-    color: #fff;
+    color: var(--bianco);
     font-family: var(--font-titoli);
 }
 
@@ -1085,7 +1185,10 @@ tr:nth-child(even) td {
     background: #f9f0e0;
 }
 
-/* ── Details/Summary ──────────────────────────────────────── */
+
+/* ============================================================
+   21. DETAILS / SUMMARY (accordion)
+   ============================================================ */
 details {
     border: 1px solid var(--bordo);
     border-radius: var(--raggio);
@@ -1103,6 +1206,7 @@ summary {
     align-items: center;
 }
 
+/* Nasconde il marker predefinito del browser */
 summary::-webkit-details-marker {
     display: none;
 }
@@ -1120,14 +1224,22 @@ details>*:not(summary) {
     padding: 0 var(--sp-md) var(--sp-md);
 }
 
-/* ── Separatore ───────────────────────────────────────────── */
+
+/* ============================================================
+   22. SEPARATORE
+   ============================================================ */
 .separatore {
     border: 0;
     border-top: 1px solid var(--bordo);
     margin: var(--sp-xl) 0;
 }
 
-/* ── Utility ──────────────────────────────────────────────── */
+
+/* ============================================================
+   23. UTILITY CLASSI
+   ============================================================ */
+
+/* Solo per screen reader — invisibile visivamente */
 .sr-solo {
     position: absolute;
     width: 1px;
@@ -1152,7 +1264,10 @@ details>*:not(summary) {
     color: var(--colore-successo);
 }
 
-/* ── Pagina FAQ ───────────────────────────────────────────── */
+
+/* ============================================================
+   24. PAGINA FAQ
+   ============================================================ */
 .faq-categoria {
     margin-bottom: var(--sp-xl);
 }
@@ -1163,24 +1278,24 @@ details>*:not(summary) {
     margin-bottom: var(--sp-md);
 }
 
+
 /* ============================================================
-   RESPONSIVE — ≤ 900px  (tablet e mobile)
+   25. RESPONSIVE — ≤ 900px (tablet e mobile)
+   ============================================================
+   La grid dell'header diventa [ logo 1fr ] [ ☰ auto ].
+   L'hamburger (menu-toggle) torna nel flusso (position: static).
+   Nav e account scendono sotto, visibili solo se .aperto.
+   Il footer collassa in colonna singola.
    ============================================================ */
 @media (max-width: 900px) {
 
-    /*
-     * Su mobile la grid diventa [ logo 1fr ] [ ☰ auto ].
-     * Il pulsante hamburger torna nel flusso (position: static)
-     * e occupa la seconda colonna a destra del logo.
-     * La nav scende sotto su tutta la larghezza se .aperto.
-     */
     .header {
         grid-template-columns: 1fr auto;
         grid-template-areas:
             "logo toggle"
-            "nav nav"
+            "nav  nav"
             "account account";
-        padding: 1rem;
+        padding: var(--sp-md);
         align-items: center;
         gap: 0 var(--sp-md);
     }
@@ -1188,16 +1303,18 @@ details>*:not(summary) {
     .menu-toggle {
         display: flex;
         position: static;
+        /* torna nel flusso della grid */
         grid-area: toggle;
     }
 
     .header>nav {
-        padding: 1rem 0;
+        padding: var(--sp-md) 0;
         border-top: 1px solid rgba(255, 255, 255, .2);
-        margin-top: 1rem;
+        margin-top: var(--sp-md);
     }
 
-    .header>nav, 
+    /* Nav e account nascosti finché non si apre il menu */
+    .header>nav,
     .stato-autenticazione {
         display: none;
     }
@@ -1207,21 +1324,21 @@ details>*:not(summary) {
         display: flex;
     }
 
+    /* Voci di menu in colonna al 50% di larghezza */
     .header nav ul {
         flex-direction: column;
         align-items: stretch;
-        gap: 1rem;
+        gap: var(--sp-md);
         width: 50%;
     }
 
-    /* Tutti i link identici — nav principale e account */
     .header nav a {
         display: block;
         text-align: center;
         padding: .5rem;
     }
 
-    /* Footer: singola colonna */
+    /* Footer: colonna singola centrata */
     .footer {
         grid-template-columns: 1fr;
         grid-template-areas:
@@ -1238,7 +1355,7 @@ details>*:not(summary) {
         justify-content: center;
     }
 
-    .footer.footer-centro {
+    .footer .footer-centro {
         align-items: center;
     }
 
@@ -1247,10 +1364,12 @@ details>*:not(summary) {
     }
 }
 
+
 /* ============================================================
-   RESPONSIVE — ≤ 600px
+   26. RESPONSIVE — ≤ 600px
    ============================================================ */
 @media (max-width: 600px) {
+
     .logo-img {
         width: 36px;
         height: 36px;
@@ -1264,6 +1383,7 @@ details>*:not(summary) {
         padding: var(--sp-lg) var(--sp-sm);
     }
 
+    /* Una sola colonna per le card */
     .griglia-gatti {
         grid-template-columns: 1fr;
     }
