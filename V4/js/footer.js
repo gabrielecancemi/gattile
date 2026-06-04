@@ -2,12 +2,26 @@
  * footer.js — Script condiviso del footer.
  * Gestisce: URL corrente (utile a stampa), banner cookie, eliminazione cookie.
  */
+
 'use strict';
 
 (function () {
+    document.addEventListener('DOMContentLoaded', () => {
+        const consensoPresente = document.cookie
+            .split('; ')
+            .some(cookie => cookie.startsWith('cookie_consenso='));
 
-    /* URL corrente nel footer — data-url per il CSS di stampa */
-    var elUrl  = document.getElementById('footer-url-corrente');
+        if (!consensoPresente) {
+            const faqButton = document.getElementById('faq');
+
+            if (faqButton) {
+                faqButton.style.bottom = 'max(5rem, env(safe-area-inset-bottom))';
+            }
+        }
+    });
+
+    /* URL corrente nel footer per il CSS di stampa */
+    var elUrl = document.getElementById('footer-url-corrente');
     if (elUrl) elUrl.textContent = window.location.href;
 
     var footer = document.querySelector('.footer');
@@ -20,19 +34,12 @@
             var scad = new Date(Date.now() + 365 * 24 * 3600 * 1000).toUTCString();
             document.cookie = 'cookie_consenso=1; expires=' + scad + '; path=/; SameSite=Strict';
             var banner = document.getElementById('banner-cookie');
-            if (banner) banner.hidden = true;
-        });
-    }
-
-    /* Eliminazione cookie */
-    var btnElimina = document.getElementById('btn-elimina-cookie');
-    if (btnElimina) {
-        btnElimina.addEventListener('click', function () {
-            if (!confirm('Sei sicuro di voler eliminare tutti i cookie? Verrai disconnesso.')) return;
-            fetch('api/elimina_cookie.php', { method: 'POST', credentials: 'same-origin' })
-                .then(function (r) { return r.json(); })
-                .then(function ()  { window.location.href = 'privacy.php?eliminati=1'; })
-                .catch(function () { window.location.href = 'privacy.php?eliminati=1'; });
+            var faq_button = document.getElementById('faq');
+            console.log(banner, 'banner nascosto');
+            if (banner) {
+                banner.style.display = 'none';
+                faq_button.style.bottom = 'max(1rem, env(safe-area-inset-bottom))';
+            }
         });
     }
 

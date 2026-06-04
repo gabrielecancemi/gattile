@@ -211,10 +211,6 @@ ol {
     color: #fff;
 }
 
-.brand-logo strong {
-    color: #fff;
-    font-size: inherit;
-}
 
 .logo-img {
     width: 44px;
@@ -281,6 +277,7 @@ ol {
 
 .header nav a.active {
     background: var(--nero);
+    color: var(--bianco);
 }
 
 /* Link account nella nav (.nav-conto): nascosti su desktop */
@@ -401,7 +398,7 @@ ol {
  */
 .footer {
     display: grid;
-    grid-template-columns: auto 1fr auto;
+    grid-template-columns: 1fr 1fr 1fr;
     grid-template-rows: auto auto;
     grid-template-areas:
         "f-logo  f-centro  f-contatti"
@@ -414,22 +411,20 @@ ol {
     border-top: 4px solid var(--secondario);
     color: var(--bianco);
     margin-top: auto;
-    font-size: .95rem;
+    font-size: 1rem;
 }
 
 .footer .brand-logo {
     grid-area: f-logo;
-    align-self: center;
 }
 
 .footer .footer-centro {
     grid-area: f-centro;
-    justify-self: center;
 }
 
 .footer .footer-contatti {
     grid-area: f-contatti;
-    align-self: start;
+    justify-self: end;
 }
 
 .footer .footer-copy {
@@ -438,13 +433,13 @@ ol {
 
 /* Logo footer */
 .footer .brand-logo {
-    color: #fff;
+    color: var(--bianco);
 }
 
 .footer .brand-logo:hover,
 .footer .brand-logo:focus {
     opacity: .88;
-    color: #fff;
+    color: var(--bianco);
 }
 
 /* Sezione centrale: nav principale + nav privacy in colonna, centrate */
@@ -474,20 +469,21 @@ ol {
     text-decoration: none;
     font-weight: 600;
     border-radius: var(--raggio);
-    transition: background var(--trans);
 }
 
 .footer-centro>nav:first-child a:hover,
 .footer-centro>nav:first-child a:focus {
     background: rgba(255, 255, 255, .18);
-    color: #fff;
+    color: var(--bianco);
 }
 
 /* Pagina corrente nel footer: sfondo nero come richiesto */
 .footer-centro>nav:first-child a.active,
-.footer-centro>nav:first-child a[aria-current="page"] {
+.footer-centro>nav:first-child a.active,
+.faq-button.active {
     background: var(--nero);
-    color: #fff;
+    color: var(--bianco);
+    border: var(--nero);
 }
 
 /* Nav privacy — centrata sotto il menu principale */
@@ -598,7 +594,7 @@ ol {
     right: 0;
     background: var(--primario);
     color: var(--bianco);
-    padding: var(--sp-md) var(--sp-xl);
+    padding: var(--sp-md) 5rem;
     display: flex;
     flex-wrap: wrap;
     align-items: center;
@@ -641,7 +637,7 @@ main {
     display: inline-flex;
     align-items: center;
     gap: var(--sp-xs);
-    padding: var(--sp-sm) var(--sp-xl);
+    padding: .4rem .6rem;
     border-radius: var(--raggio);
     font-family: var(--font-corpo);
     font-size: 1rem;
@@ -1242,12 +1238,12 @@ details>*:not(summary) {
         justify-content: center;
     }
 
-    .footer-centro {
+    .footer.footer-centro {
         align-items: center;
     }
 
-    .footer-contatti {
-        text-align: center;
+    .footer .footer-contatti {
+        justify-self: center;
     }
 }
 

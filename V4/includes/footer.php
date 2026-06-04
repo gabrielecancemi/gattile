@@ -9,10 +9,9 @@ $anno = date('Y');
 
 $navLinks = [
     'index.php' => 'Home',
-    'gatti.php' => 'Adozioni',
+    'gatti.php' => 'Adotta un gatto',
     'volontariato.php' => 'Volontariato',
     'faq.php' => 'FAQ',
-    'privacy.php' => 'Privacy',
 ];
 if (!empty($_SESSION['utente']['is_admin'])) {
     $navLinks['inserisci_gatto.php'] = 'Inserisci gatto';
@@ -30,7 +29,7 @@ if (!empty($_SESSION['utente']['is_admin'])) {
         <nav aria-label="Gestione consenso cookie">
             <ul role="list">
                 <li><button type="button" id="btn-accetta-cookie" class="btn btn-primario">Accetto</button></li>
-                <li><a href="privacy.php#elimina" class="btn btn-secondario">Gestisci</a></li>
+                <li><a href="privacy.php" class="btn btn-secondario">Gestisci</a></li>
             </ul>
         </nav>
     </aside>
@@ -53,8 +52,8 @@ if (!empty($_SESSION['utente']['is_admin'])) {
                     $attivo = ($href === $paginaCorrente);
                     ?>
                     <li>
-                        <a href="<?= esc($href) ?>" <?= $attivo ? 'class="active" aria-current="page"' : '' ?>>
-                            <?= esc($etichetta) ?>
+                        <a href="<?= $href ?>" <?= $attivo ? 'class="active" aria-current="page"' : '' ?>>
+                            <?= $etichetta ?>
                         </a>
                     </li>
                 <?php endforeach; ?>
@@ -65,11 +64,7 @@ if (!empty($_SESSION['utente']['is_admin'])) {
         <nav aria-label="Privacy e gestione dati" class="footer-privacy">
             <ul role="list">
                 <li><a href="privacy.php">Informativa privacy</a></li>
-                <li>
-                    <button type="button" id="btn-elimina-cookie" class="link-button">
-                        Elimina i miei cookie
-                    </button>
-                </li>
+                <li><a href="privacy.php#elimina">Elimina i miei cookie</a></li>
             </ul>
         </nav>
 
@@ -78,21 +73,20 @@ if (!empty($_SESSION['utente']['is_admin'])) {
     <!-- Contatti -->
     <address class="footer-contatti">
         <strong>Contatti</strong><br>
-        Via Felina 1, 10100 Torino<br>
+        Via San Paolo 1, 10100 Torino (TO)<br>
         <a href="tel:+390111234567">011 123 4567</a><br>
-        <a href="mailto:info@gattile-San Paolo.example.it">info@gattile-San Paolo.example.it</a>
+        <a href="mailto:info@gattile-San Paolo.example.it">info@gattile-sanpaolo.it</a>
     </address>
 
     <!-- Copyright -->
     <p class="footer-copy">
-        &copy; <time datetime="<?= esc($anno) ?>"><?= esc($anno) ?></time>
+        &copy; <time datetime="<?= $anno ?>"><?= $anno ?></time>
         Gattile San Paolo &middot; Tutti i diritti riservati
-        <strong id="footer-url-corrente" class="footer-url" aria-hidden="true"></strong>
     </p>
 
 </footer>
 
-<a href="faq.php" class="faq-button" aria-label="Domande frequenti" title="FAQ — Domande frequenti">?</a>
+<a href="faq.php" id="faq" class="faq-button <?= $paginaCorrente === 'faq.php' ? 'active' : '' ?>" aria-label="Domande frequenti" title="FAQ — Domande frequenti">?</a>
 
 <script src="js/footer.js" defer></script>
 
