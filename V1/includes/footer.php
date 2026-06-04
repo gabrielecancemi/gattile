@@ -7,14 +7,14 @@
 declare(strict_types=1);
 
 $paginaCorrente = basename($_SERVER['PHP_SELF']);
-$anno           = date('Y');
+$anno = date('Y');
 
 // Stessi link del header
 $navLinks = [
-    'index.php'        => 'Home',
-    'gatti.php'        => 'Adozioni',
+    'index.php' => 'Home',
+    'gatti.php' => 'Adozioni',
     'volontariato.php' => 'Volontariato',
-    'privacy.php'      => 'Privacy',
+    'privacy.php' => 'Privacy',
 ];
 if (!empty($_SESSION['is_admin'])) {
     $navLinks['inserisci_gatto.php'] = 'Inserisci gatto';
@@ -23,25 +23,24 @@ if (!empty($_SESSION['is_admin'])) {
 
 <!-- Banner consenso cookie — mostrato solo se non già accettato -->
 <?php if (!isset($_COOKIE['cookie_consenso'])): ?>
-<aside id="banner-cookie" class="banner-cookie" role="dialog"
-       aria-live="polite" aria-label="Informativa cookie">
-    <p>
-        Questo sito usa solo cookie tecnici di sessione, necessari al funzionamento.
-        Nessuna profilazione.
-        <a href="privacy.php">Maggiori informazioni</a>.
-    </p>
-    <nav aria-label="Scelte consenso cookie">
-        <button type="button" id="btn-accetta-cookie" class="btn btn-primario">Accetto</button>
-        <a href="privacy.php#elimina" class="btn btn-secondario">Gestisci</a>
-    </nav>
-</aside>
-<script>
-document.getElementById('btn-accetta-cookie').addEventListener('click', function () {
-    const scad = new Date(Date.now() + 365 * 24 * 3600 * 1000).toUTCString();
-    document.cookie = 'cookie_consenso=1; expires=' + scad + '; path=/; SameSite=Strict';
-    document.getElementById('banner-cookie').hidden = true;
-});
-</script>
+    <aside id="banner-cookie" class="banner-cookie" role="dialog" aria-live="polite" aria-label="Informativa cookie">
+        <p>
+            Questo sito usa solo cookie tecnici di sessione, necessari al funzionamento.
+            Nessuna profilazione.
+            <a href="privacy.php">Maggiori informazioni</a>.
+        </p>
+        <nav aria-label="Scelte consenso cookie">
+            <button type="button" id="btn-accetta-cookie" class="btn btn-primario">Accetto</button>
+            <a href="privacy.php#elimina" class="btn btn-secondario">Gestisci</a>
+        </nav>
+    </aside>
+    <script>
+        document.getElementById('btn-accetta-cookie').addEventListener('click', function () {
+            const scad = new Date(Date.now() + 365 * 24 * 3600 * 1000).toUTCString();
+            document.cookie = 'cookie_consenso=1; expires=' + scad + '; path=/; SameSite=Strict';
+            document.getElementById('banner-cookie').hidden = true;
+        });
+    </script>
 <?php endif; ?>
 
 <footer class="footer" role="contentinfo">
@@ -57,13 +56,12 @@ document.getElementById('btn-accetta-cookie').addEventListener('click', function
         <ul role="list">
             <?php foreach ($navLinks as $href => $etichetta):
                 $attivo = ($href === $paginaCorrente);
-            ?>
-            <li>
-                <a href="<?= esc($href) ?>"
-                   <?= $attivo ? 'class="active" aria-current="page"' : '' ?>>
-                    <?= esc($etichetta) ?>
-                </a>
-            </li>
+                ?>
+                <li>
+                    <a href="<?= esc($href) ?>" <?= $attivo ? 'class="active" aria-current="page"' : '' ?>>
+                        <?= esc($etichetta) ?>
+                    </a>
+                </li>
             <?php endforeach; ?>
         </ul>
     </nav>
@@ -115,26 +113,27 @@ document.getElementById('btn-accetta-cookie').addEventListener('click', function
 </a>
 
 <script>
-// Popola URL nel footer (usato anche dal CSS di stampa via data-attribute)
-(function () {
-    const el = document.getElementById('footer-url-corrente');
-    if (el) el.textContent = window.location.href;
+    // Popola URL nel footer (usato anche dal CSS di stampa via data-attribute)
+    (function () {
+        const el = document.getElementById('footer-url-corrente');
+        if (el) el.textContent = window.location.href;
 
-    // Imposta data-url sul footer per il CSS di stampa
-    const footer = document.querySelector('.footer');
-    if (footer) footer.setAttribute('data-url', window.location.href);
-})();
+        // Imposta data-url sul footer per il CSS di stampa
+        const footer = document.querySelector('.footer');
+        if (footer) footer.setAttribute('data-url', window.location.href);
+    })();
 
-// Elimina cookie
-document.getElementById('btn-elimina-cookie').addEventListener('click', function () {
-    if (confirm('Sei sicuro di voler eliminare tutti i cookie? Verrai disconnesso.')) {
-        fetch('api/elimina_cookie.php', { method: 'POST', credentials: 'same-origin' })
-            .then(r => r.json())
-            .then(() => { window.location.href = 'privacy.php?eliminati=1'; })
-            .catch(() => { window.location.href = 'privacy.php?eliminati=1'; });
-    }
-});
+    // Elimina cookie
+    document.getElementById('btn-elimina-cookie').addEventListener('click', function () {
+        if (confirm('Sei sicuro di voler eliminare tutti i cookie? Verrai disconnesso.')) {
+            fetch('api/elimina_cookie.php', { method: 'POST', credentials: 'same-origin' })
+                .then(r => r.json())
+                .then(() => { window.location.href = 'privacy.php?eliminati=1'; })
+                .catch(() => { window.location.href = 'privacy.php?eliminati=1'; });
+        }
+    });
 </script>
 
 </body>
+
 </html>
