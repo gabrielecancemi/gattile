@@ -47,10 +47,10 @@ apriMain();
             </section>
         </fieldset>
 
-        <output id="msg-volontariato" role="status" aria-live="polite" class="sr-solo"></output>
+        <output id="msg-volontariato" aria-live="polite" class="sr-solo"></output>
 
         <button type="submit" id="btn-volontariato" class="btn btn-primario"
-                disabled aria-disabled="true">
+                disabled>
             Conferma turni selezionati
         </button>
         <p class="aiuto-campo" aria-live="polite" id="note-btn-volontariato">
@@ -73,7 +73,7 @@ apriMain();
     </ul>
     <p>
         Non è richiesta alcuna esperienza specifica.
-        Per info: <a href="mailto:info@gattile-San Paolo.example.it">info@gattile-San Paolo.example.it</a>.
+        Per info: <a href="mailto:info@gattile-sanpaolo.it">info@gattile-sanpaoloaolo.it</a>.
     </p>
 </section>
 

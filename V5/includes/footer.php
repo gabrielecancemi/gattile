@@ -75,7 +75,7 @@ if (!empty($_SESSION['utente']['is_admin'])) {
         <strong>Contatti</strong><br>
         Via San Paolo 1, 10100 Torino (TO)<br>
         <a href="tel:+390111234567">011 123 4567</a><br>
-        <a href="mailto:info@gattile-San Paolo.example.it">info@gattile-sanpaolo.it</a>
+        <a href="mailto:info@gattile-sanpaolo.it">info@gattile-sanpaolo.it</a>
     </address>
 
     <!-- Copyright -->

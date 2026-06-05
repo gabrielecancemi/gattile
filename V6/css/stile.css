@@ -983,12 +983,12 @@ fieldset {
     border: 1px solid var(--sfondo-scuro);
     border-radius: var(--raggio);
     padding: var(--sp-lg);
-    margin-bottom: var(--sp-lg);
+    margin-bottom: .8rem;
 }
 
 legend {
     font-family: var(--font-titoli);
-    font-size: 1rem;
+    font-size: 1.2rem;
     font-weight: 700;
     color: var(--primario);
     padding: 0 var(--sp-sm);
@@ -996,10 +996,10 @@ legend {
 
 label {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     gap: var(--sp-xs);
-    margin-bottom: var(--sp-md);
-    font-size: .95rem;
+    margin-bottom: .5rem;
+    font-size: 1rem;
     font-weight: 600;
     color: var(--nero);
 }
@@ -1062,8 +1062,8 @@ input[type="radio"] {
 }
 
 /* Testi ausiliari del form */
-.campo-obbligatorio::after {
-    content: ' *';
+.campo-obbligatorio::before {
+    content: '* ';
     color: var(--colore-errore);
 }
 

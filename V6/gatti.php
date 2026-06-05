@@ -85,8 +85,7 @@ apriMain();
 <!-- React via CDN -->
 <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin="anonymous"></script>
-<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-<script type="text/babel" src="js/GattiComponent.jsx" data-presets="react"></script>
+<script defer src="js/GattiComponent.js"></script>
 
 <?php if ($loggato && !$isAdmin): ?>
     <script src="js/prenotazione.js" defer></script>

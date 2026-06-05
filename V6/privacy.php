@@ -31,7 +31,7 @@ apriMain();
             <strong>Gattile San Paolo</strong><br>
             Via San Paolo 1, 10100 Torino (TO)<br>
             <a href="tel:+390111234567">011 123 4567</a><br>
-            <a href="mailto:privacy@gattile-San Paolo.example.it">privacy@gattile-sanpaolo.it</a>
+            <a href="mailto:privacy@gattile-sanpaolo.example.it">privacy@gattile-sanpaolo.it</a>
         </address>
     </article>
 
@@ -90,7 +90,7 @@ apriMain();
         </p>
         <p>
             Puoi richiedere la cancellazione del tuo account scrivendo a
-            <a href="mailto:privacy@gattile-San Paolo.example.it">privacy@gattile-San Paolo.example.it</a>.
+            <a href="mailto:privacy@gattile-sanpaolo.example.it">privacy@gattile-San Paolo.example.it</a>.
         </p>
     </article>
 

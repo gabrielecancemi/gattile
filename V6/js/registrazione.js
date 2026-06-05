@@ -72,7 +72,6 @@
         if (progrTesto) progrTesto.textContent = ok + ' di 6 campi completati correttamente.';
         if (btnSubmit) {
             btnSubmit.disabled = ok < 6;
-            btnSubmit.setAttribute('aria-disabled', String(ok < 6));
         }
     }
 

@@ -45,7 +45,6 @@ if (!empty($_SESSION['utente']['is_admin'])) {
 
     <!-- Navigazione + privacy: colonna centrale -->
     <section class="footer-centro">
-        <h2 class="sr-solo">Collegamenti</h2>
         <nav aria-label="Navigazione footer">
             <ul>
                 <?php foreach ($navLinks as $href => $etichetta):
@@ -59,6 +58,8 @@ if (!empty($_SESSION['utente']['is_admin'])) {
                 <?php endforeach; ?>
             </ul>
         </nav>
+
+        <h2 class="sr-solo">Collegamenti</h2>
 
         <!-- Link privacy e cookie centrati sotto il menu -->
         <nav aria-label="Privacy e gestione dati" class="footer-privacy">
@@ -74,7 +75,7 @@ if (!empty($_SESSION['utente']['is_admin'])) {
         <strong>Contatti</strong><br>
         Via San Paolo 1, 10100 Torino (TO)<br>
         <a href="tel:+390111234567">011 123 4567</a><br>
-        <a href="mailto:info@gattile-sanpaolo.example.it">info@gattile-sanpaolo.it</a>
+        <a href="mailto:info@gattile-sanpaolo.it">info@gattile-sanpaolo.it</a>
     </address>
 
     <!-- Copyright -->

@@ -62,23 +62,23 @@ apriMain();
     endif; ?>
 
     <form id="form-login" method="post" action="login.php" novalidate aria-label="Modulo di accesso">
-        <fieldset>
+    <fieldset>
             <legend>Credenziali di accesso</legend>
 
             <label for="username" class="campo-obbligatorio">
-                Username
-                <input type="text" id="username" name="username" autocomplete="username" value="<?= $usernamePre ?>"
-                    required aria-required="true" aria-describedby="aiuto-username" maxlength="50" spellcheck="false">
-                <em id="aiuto-username" class="aiuto-campo">Deve iniziare con una lettera.</em>
-                <output class="errore-campo" id="err-username" role="alert" aria-live="polite" hidden></output>
-            </label>
+                Username</label>
+            <input type="text" id="username" name="username" autocomplete="username" value="<?= $usernamePre ?>"
+                required aria-describedby="aiuto-username" maxlength="50" spellcheck="false">
+            <em id="aiuto-username" class="aiuto-campo">Inizia con una lettera.</em>
+            <output class="errore-campo" id="err-username" role="alert" aria-live="polite" hidden></output>
+
 
             <label for="password" class="campo-obbligatorio">
-                Password
-                <input type="password" id="password" name="password" autocomplete="current-password" required
-                    aria-required="true" maxlength="16">
-                <output class="errore-campo" id="err-password" role="alert" aria-live="polite" hidden></output>
-            </label>
+                Password</label>
+            <input type="password" id="password" name="password" autocomplete="current-password" required
+                maxlength="16">
+            <output class="errore-campo" id="err-password" role="alert" aria-live="polite" hidden></output>
+
 
             <label class="campo-checkbox" for="ricordami">
                 <?php $consensoCookie = isset($_COOKIE['cookie_consenso']); ?>
@@ -96,7 +96,7 @@ apriMain();
                 </em>
             </label>
         </fieldset>
-
+        <label class="campo-obbligatorio">Campi obbligatori</label>    
         <button type="submit" id="btn-login" class="btn btn-primario">Accedi</button>
     </form>
 </section>
