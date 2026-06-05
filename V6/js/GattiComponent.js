@@ -89,16 +89,7 @@
       className: "tag"
     }, gatto.razza)), /*#__PURE__*/React.createElement("p", null, gatto.descrizione), /*#__PURE__*/React.createElement("dl", null, /*#__PURE__*/React.createElement("dt", null, "Peso"), /*#__PURE__*/React.createElement("dd", null, /*#__PURE__*/React.createElement("data", {
       value: gatto.peso
-    }, gatto.peso, " kg"), /*#__PURE__*/React.createElement("meter", {
-      min: "0",
-      max: "10",
-      low: "1",
-      high: "7",
-      optimum: "4",
-      value: gatto.peso,
-      "aria-label": 'Peso di ' + gatto.nome + ': ' + gatto.peso + ' kg',
-      title: 'Peso: ' + gatto.peso + ' kg'
-    })), /*#__PURE__*/React.createElement("dt", null, "Occhi"), /*#__PURE__*/React.createElement("dd", null, gatto.colore_occhi), /*#__PURE__*/React.createElement("dt", null, "Arrivato il"), /*#__PURE__*/React.createElement("dd", null, /*#__PURE__*/React.createElement("time", {
+    }, gatto.peso, " kg")), /*#__PURE__*/React.createElement("dt", null, "Occhi"), /*#__PURE__*/React.createElement("dd", null, gatto.colore_occhi), /*#__PURE__*/React.createElement("dt", null, "Arrivato il"), /*#__PURE__*/React.createElement("dd", null, /*#__PURE__*/React.createElement("time", {
       dateTime: gatto.data_arrivo
     }, new Date(gatto.data_arrivo).toLocaleDateString('it-IT')))))));
   }

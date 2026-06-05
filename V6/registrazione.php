@@ -103,7 +103,8 @@ apriMain();
 <section aria-labelledby="titolo-registrazione">
     <h1 id="titolo-registrazione">Crea il tuo profilo</h1>
     <p>Già registrato? <a href="login.php">Accedi qui</a>.</p>
-
+</section>
+<section>
     <?php if ($errore):
         echo messaggioUtente($errore, 'errore');
     endif; ?>
@@ -143,8 +144,8 @@ apriMain();
                 <label for="reg-username" class="campo-obbligatorio">
                     Username</label>
                 <input type="text" id="reg-username" name="username" value="<?= esc($campi['username']) ?>"
-                    autocomplete="username" required  aria-describedby="aiuto-reg-username"
-                    maxlength="50" spellcheck="false" pattern="[a-zA-Z][a-zA-Z0-9_]{2,49}">
+                    autocomplete="username" required aria-describedby="aiuto-reg-username" maxlength="50" spellcheck="false"
+                    pattern="[a-zA-Z][a-zA-Z0-9_]{2,49}">
                 <em id="aiuto-reg-username" class="aiuto-campo">
                     Inizia con una lettera; solo lettere, numeri e underscore; 3-50 caratteri.
                 </em>
@@ -153,7 +154,7 @@ apriMain();
                 <label for="reg-password" class="campo-obbligatorio">
                     Password</label>
                 <input type="password" id="reg-password" name="password" autocomplete="new-password" required
-                     aria-describedby="aiuto-reg-password" minlength="8" maxlength="16">
+                    aria-describedby="aiuto-reg-password" minlength="8" maxlength="16">
                 <em id="aiuto-reg-password" class="aiuto-campo">
                     8-16 caratteri: almeno una maiuscola, una minuscola, un numero e un carattere speciale.
                 </em>
@@ -166,7 +167,7 @@ apriMain();
                 <label for="reg-conferma" class="campo-obbligatorio">
                     Conferma password</label>
                 <input type="password" id="reg-conferma" name="conferma_password" autocomplete="new-password" required
-                     minlength="8" maxlength="16">
+                    minlength="8" maxlength="16">
                 <output class="errore-campo" id="err-reg-conferma" role="alert" aria-live="polite" hidden></output>
 
             </fieldset>
@@ -177,6 +178,7 @@ apriMain();
                     aria-label="Completamento modulo di registrazione"></progress>
                 <em id="progresso-testo" class="aiuto-campo" aria-live="polite">Compila tutti i campi per procedere.</em>
             </p>
+            <label class="campo-obbligatorio">Campi obbligatori</label>
 
             <button type="submit" id="btn-registra" class="btn btn-primario" disabled>
                 Crea profilo

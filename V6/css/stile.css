@@ -76,7 +76,6 @@
 
     /* — Forma — */
     --raggio: .5rem;
-    --raggio-pill: 999px;
 
     /* — Animazione — */
     --trans: 200ms ease-in-out;
@@ -391,7 +390,7 @@ a:focus {
     padding: .1rem .45rem;
     background: var(--secondario);
     color: var(--bianco);
-    border-radius: var(--raggio-pill);
+    border-radius: var(--raggio);
     font-size: .72rem;
     font-weight: 700;
     white-space: nowrap;
@@ -729,7 +728,7 @@ main>aside:not(:last-child) {
 main>section:first-child {
     background: var(--bianco);
     padding-block: clamp(2rem, 6vw, 4rem);
-    border-radius: 0 0 1rem 1rem;
+    border-radius: 0 0 var(--raggio) var(--raggio);
     border-left: 4px solid var(--primario);
     border-right: 4px solid var(--primario);
     border-bottom: 4px solid var(--primario);
@@ -770,7 +769,6 @@ main>section ol:not([class]) li {
     position: relative;
     font-size: clamp(0.9rem, 1vw + 0.5rem, 1rem);
     line-height: 1.6;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
 }
 
 main>section ol:not([class]) {
@@ -814,13 +812,12 @@ blockquote {
     position: relative;
     background: var(--bianco);
     border-left: 5px solid var(--primario);
-    border-radius: 0 var(--raggio) var(--raggio) 0;
+    border-radius: var(--raggio);
     padding: var(--sp-lg) var(--sp-lg) var(--sp-lg) calc(var(--sp-xl) + var(--sp-md));
     margin: var(--sp-lg) 0 var(--sp-sm);
     font-size: clamp(1rem, 1.5vw + 0.3rem, 1.15rem);
     font-style: italic;
     color: #3a2810;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
     max-width: 55ch;
 }
 
@@ -832,7 +829,7 @@ blockquote::before {
     font-size: 3.5rem;
     color: var(--primario);
     opacity: 0.35;
-    font-family: Georgia, serif;
+    font-family: var(--font-titoli);
     line-height: 1;
 }
 
@@ -890,7 +887,6 @@ main>aside>p:last-child {
     padding: var(--sp-xs) var(--sp-md) var(--sp-md);
     border: 1px solid rgba(139, 69, 19, 0.15);
     border-top: 3px solid var(--primario);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
 
@@ -915,7 +911,6 @@ main>aside>p:last-child {
 
 .btn:active {
     transform: translateY(0);
-    box-shadow: none;
 }
 
 .btn-primario {
@@ -1007,7 +1002,7 @@ main>aside>p:last-child {
     color: var(--bianco);
     font-size: .72rem;
     padding: 2px var(--sp-sm);
-    border-radius: var(--raggio-pill);
+    border-radius: var(--raggio);
     text-transform: uppercase;
     letter-spacing: .05em;
     font-weight: 700;
@@ -1033,11 +1028,10 @@ main>aside>p:last-child {
     grid-template-rows: auto 1fr;
     background: var(--bianco);
     border: 1px solid rgba(139, 69, 19, 0.15);
-    border-radius: calc(var(--raggio) * 1.5);
+    border-radius: var(--raggio);
     overflow: hidden;
-    transition: transform var(--trans), box-shadow var(--trans);
     position: relative;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    padding: 1rem;
 }
 
 .card-gatto[role="checkbox"] {
@@ -1046,7 +1040,6 @@ main>aside>p:last-child {
 
 .card-gatto:hover {
     transform: translateY(-5px);
-    box-shadow: 0 8px 24px rgba(139, 69, 19, 0.15);
 }
 
 /* Stato selezionato */
@@ -1067,7 +1060,6 @@ main>aside>p:last-child {
     height: 100%;
     object-fit: cover;
     display: block;
-    transition: transform 400ms ease;
 }
 
 .card-gatto:hover figure img {
@@ -1099,7 +1091,7 @@ main>aside>p:last-child {
 .tag {
     font-size: .75rem;
     padding: 2px var(--sp-sm);
-    border-radius: var(--raggio-pill);
+    border-radius: var(--raggio);
     background: #f0e8d0;
     color: var(--primario-scuro);
     font-weight: 700;
@@ -1146,7 +1138,6 @@ main>aside>p:last-child {
     font-size: 1.1rem;
     pointer-events: none;
     font-weight: 700;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
 }
 
 .card-gatto.selezionata .card-badge-selezione {
@@ -1167,7 +1158,6 @@ main>aside>p:last-child {
     background: var(--bianco);
     border-radius: var(--raggio);
     border: 1px solid rgba(139, 69, 19, 0.15);
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
 }
 
 .barra-controlli label {
@@ -1200,7 +1190,6 @@ fieldset {
     padding: var(--sp-lg);
     margin-bottom: .8rem;
     background: var(--bianco);
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
 }
 
 legend {
@@ -1239,7 +1228,6 @@ textarea {
     font-size: 1rem;
     color: var(--nero);
     background: var(--bianco);
-    transition: border-color var(--trans), box-shadow var(--trans);
 }
 
 input:focus,
@@ -1247,7 +1235,6 @@ select:focus,
 textarea:focus {
     border-color: var(--colore-focus);
     outline: none;
-    box-shadow: 0 0 0 3px rgba(26, 94, 168, .2);
 }
 
 /* Stato di errore accessibile via aria-invalid */
@@ -1307,7 +1294,7 @@ progress,
 meter {
     width: 100%;
     height: 1rem;
-    border-radius: var(--raggio-pill);
+    border-radius: var(--raggio);
     border: 1px solid var(--sfondo-scuro);
     overflow: hidden;
     accent-color: var(--primario);
@@ -1343,8 +1330,6 @@ meter {
     border-radius: var(--raggio);
     padding: var(--sp-md);
     background: var(--bianco);
-    transition: border-color var(--trans), background var(--trans), box-shadow var(--trans);
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
 }
 
 .turno-item.disponibile {
@@ -1354,7 +1339,6 @@ meter {
 .turno-item.disponibile:hover {
     border-color: var(--secondario);
     background: #f0f5e8;
-    box-shadow: 0 4px 12px rgba(85, 107, 47, 0.15);
 }
 
 .turno-item.pieno {
@@ -1383,10 +1367,8 @@ meter {
    ============================================================ */
 .table-responsive {
     overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
     border-radius: var(--raggio);
     border: 1px solid rgba(139, 69, 19, 0.15);
-    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.05);
 }
 
 table {
@@ -1440,11 +1422,6 @@ details {
     margin-bottom: var(--sp-sm);
     background: var(--bianco);
     overflow: hidden;
-    transition: box-shadow var(--trans);
-}
-
-details[open] {
-    box-shadow: 0 4px 12px rgba(139, 69, 19, 0.1);
 }
 
 summary {
@@ -1458,7 +1435,6 @@ summary {
     justify-content: space-between;
     align-items: center;
     background: #fdf8f0;
-    transition: background var(--trans);
     gap: var(--sp-md);
 }
 
@@ -1770,7 +1746,6 @@ main aside.messaggio,
     border-left: 4px solid var(--colore-avviso);
     padding: var(--sp-md) var(--sp-lg);
     margin-bottom: var(--sp-lg);
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
 }
 
 main aside.messaggio p,

@@ -20,7 +20,8 @@ apriMain();
 <section aria-labelledby="titolo-privacy">
     <h1 id="titolo-privacy">Informativa sulla Privacy e Cookie</h1>
     <p><time datetime="<?= date('Y-m-d') ?>">Aggiornata il <?= date('d/m/Y') ?></time></p>
-
+</section>
+<section>
     <?php if ($eliminati):
         echo messaggioUtente('I tuoi cookie sono stati eliminati con successo.', 'successo');
     endif; ?>

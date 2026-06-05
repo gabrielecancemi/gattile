@@ -147,67 +147,12 @@ apriMain();
     </dl>
 </section>
 
-<section aria-labelledby="titolo-adozione">
-    <h2 id="titolo-adozione">Adottare è semplice</h2>
-
-    <ol>
-        <li>
-            Consulta i profili dei gatti disponibili.
-        </li>
-
-        <li>
-            Registrati gratuitamente sul sito.
-        </li>
-
-        <li>
-            Prenota una visita conoscitiva.
-        </li>
-
-        <li>
-            Conosci il gatto e completa il percorso di adozione.
-        </li>
-    </ol>
-</section>
-
-<aside aria-labelledby="titolo-testimonianza">
-    <h2 id="titolo-testimonianza">Una storia di successo</h2>
-
-    <blockquote>
-        "Pensavamo di adottare un gatto.
-        In realtà abbiamo trovato un nuovo membro della famiglia."
-    </blockquote>
-
-    <p>
-        — Famiglia Rossi, Torino
-    </p>
-</aside>
-
-<section aria-labelledby="titolo-aiuta">
-    <h2 id="titolo-aiuta">Non puoi adottare?</h2>
-
-    <p>
-        Puoi comunque fare la differenza dedicando qualche ora del tuo tempo
-        ai nostri ospiti.
-    </p>
-
-    <p>
-        Ogni volontario contribuisce a migliorare la qualità della vita
-        dei gatti accolti nella struttura.
-    </p>
-
-    <p>
-        <a href="volontariato.php" class="btn btn-primario">
-            Scopri il volontariato
-        </a>
-    </p>
-</section>
-
 <!-- ── Come funziona ──────────────────────────────────────── -->
 <section aria-labelledby="titolo-come-funziona">
     <h2 id="titolo-come-funziona">Come funziona</h2>
     <ol>
         <li>
-            <strong>Sfoglia i gatti</strong> disponibili nell'<a href="gatti.php">area adozioni</a>:
+            <strong>Sfoglia i gatti</strong> disponibili nell'area adozioni:
             puoi filtrare per nome, descrizione, età o colore del manto.
         </li>
         <li>
@@ -225,21 +170,29 @@ apriMain();
     </ol>
 </section>
 
+<aside aria-labelledby="titolo-testimonianza">
+    <h2 id="titolo-testimonianza">Una storia di successo</h2>
+
+    <blockquote>
+        "Pensavamo di adottare un gatto.
+        In realtà abbiamo trovato un nuovo membro della famiglia."
+    </blockquote>
+
+    <p>
+        — Famiglia Rossi, Torino
+    </p>
+</aside>
+
 <!-- ── Nuovi arrivi ───────────────────────────────────────── -->
 <section class="nuovi-arrivi" aria-labelledby="titolo-nuovi-arrivi">
-    <h2 id="titolo-nuovi-arrivi">🆕 Nuovi arrivi</h2>
+    <h2 id="titolo-nuovi-arrivi">Nuovi arrivi</h2>
     <p>Gli ultimi ospiti entrati nella struttura che aspettano una famiglia:</p>
 
     <?php if ($erroreDB): ?>
-
         <?= messaggioUtente($erroreDB, 'errore') ?>
-
     <?php elseif (empty($nuoviArrivi)): ?>
-
         <p>Nessun gatto registrato al momento. Torna presto!</p>
-
     <?php else: ?>
-
         <ul class="griglia-gatti" aria-label="Nuovi arrivi">
             <?php foreach ($nuoviArrivi as $gatto):
                 $sesso = $gatto['sesso'] === 'M' ? 'Maschio' : 'Femmina';
@@ -259,42 +212,34 @@ apriMain();
                         <h3 id="nuovo-<?= (int) $gatto['id'] ?>"><?= esc($gatto['nome']) ?>
                             <dfn class="badge-nuovo">Nuovo</dfn>
                         </h3>
-                            
-                            <ul class="card-gatto-meta" aria-label="Caratteristiche principali">
-                                <li class="tag"><?= esc($sesso) ?></li>
-                                <li class="tag"><?= esc($etaTesto) ?></li>
-                                <li class="tag"><?= esc($gatto['colore_mantello']) ?></li>
-                                <li class="tag"><?= esc($gatto['lunghezza_pelo']) ?></li>
-                                <li class="tag"><?= esc($gatto['razza']) ?></li>
-                            </ul>
+                        <ul class="card-gatto-meta" aria-label="Caratteristiche principali">
+                            <li class="tag"><?= $sesso ?></li>
+                            <li class="tag"><?= $etaTesto ?></li>
+                            <li class="tag"><?= $gatto['colore_mantello'] ?></li>
+                            <li class="tag"><?= $gatto['lunghezza_pelo'] ?></li>
+                            <li class="tag"><?= $gatto['razza'] ?></li>
+                        </ul>
+                        <p><?= esc($gatto['descrizione']) ?></p>
+                        <dl>
+                            <dt>Peso</dt>
+                            <dd>
+                                <data value="<?= (string) $gatto['peso'] ?>">
+                                    <?= (string) $gatto['peso'] ?> kg
+                                </data>
+                            </dd>
+                            <dt>Occhi</dt>
+                            <dd><?= esc($gatto['colore_occhi']) ?></dd>
+                            <dt>Arrivato il</dt>
+                            <dd>
+                                <time datetime="<?= esc($gatto['data_arrivo']) ?>">
+                                    <?= date('d/m/Y', strtotime($gatto['data_arrivo'])) ?>
+                                </time>
+                            </dd>
+                        </dl>
 
-                            <p><?= esc($gatto['descrizione']) ?></p>
-
-                            <dl>
-                                <dt>Peso</dt>
-                                <dd>
-                                    <data value="<?= esc((string) $gatto['peso']) ?>">
-                                        <?= esc((string) $gatto['peso']) ?> kg
-                                    </data>
-                                    <meter min="0" max="10" low="1" high="7" optimum="4"
-                                        value="<?= esc((string) $gatto['peso']) ?>"
-                                        aria-label="Peso di <?= esc($gatto['nome']) ?>: <?= esc((string) $gatto['peso']) ?> kg"
-                                        title="Peso: <?= esc((string) $gatto['peso']) ?> kg"></meter>
-                                </dd>
-                                <dt>Occhi</dt>
-                                <dd><?= esc($gatto['colore_occhi']) ?></dd>
-                                <dt>Arrivato il</dt>
-                                <dd>
-                                    <time datetime="<?= esc($gatto['data_arrivo']) ?>">
-                                        <?= date('d/m/Y', strtotime($gatto['data_arrivo'])) ?>
-                                    </time>
-                                </dd>
-                            </dl>
-
-                            <a href="gatti.php" class="btn btn-primario"
-                                aria-label="Scopri di più su <?= esc($gatto['nome']) ?>">
-                                Scopri di più
-                            </a>
+                        <a href="gatti.php" class="btn btn-primario" aria-label="Adotta <?= esc($gatto['nome']) ?>">
+                            Adotta
+                        </a>
 
                     </article>
                 </li>
@@ -302,6 +247,26 @@ apriMain();
         </ul>
 
     <?php endif; ?>
+</section>
+
+<section aria-labelledby="titolo-aiuta">
+    <h2 id="titolo-aiuta">Non puoi adottare?</h2>
+
+    <p>
+        Puoi comunque fare la differenza dedicando qualche ora del tuo tempo
+        ai nostri ospiti.
+    </p>
+
+    <p>
+        Ogni volontario contribuisce a migliorare la qualità della vita
+        dei gatti accolti nella struttura.
+    </p>
+
+    <p>
+        <a href="volontariato.php" class="btn btn-primario">
+            Scopri il volontariato
+        </a>
+    </p>
 </section>
 
 <!-- ── FAQ ────────────────────────────────────────────────── -->

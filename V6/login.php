@@ -56,7 +56,8 @@ apriMain();
 <section aria-labelledby="titolo-login">
     <h1 id="titolo-login">Accedi al tuo profilo</h1>
     <p>Non hai ancora un account? <a href="registrazione.php">Registrati gratuitamente</a>.</p>
-
+</section>
+<section>
     <?php if ($errore):
         echo messaggioUtente($errore, 'errore');
     endif; ?>

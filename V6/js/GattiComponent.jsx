@@ -77,7 +77,7 @@
                     <section className="card-gatto-corpo">
                         <h3>{gatto.nome}</h3>
 
-                        <ul className="card-gatto-meta" role="list" aria-label="Caratteristiche principali">
+                        <ul className="card-gatto-meta" aria-label="Caratteristiche principali">
                             <li className="tag">{etichettaSesso}</li>
                             <li className="tag">{formattaEta(gatto.eta)}</li>
                             <li className="tag">{gatto.colore_mantello}</li>
@@ -91,12 +91,6 @@
                             <dt>Peso</dt>
                             <dd>
                                 <data value={gatto.peso}>{gatto.peso} kg</data>
-                                <meter
-                                    min="0" max="10" low="1" high="7" optimum="4"
-                                    value={gatto.peso}
-                                    aria-label={'Peso di ' + gatto.nome + ': ' + gatto.peso + ' kg'}
-                                    title={'Peso: ' + gatto.peso + ' kg'}
-                                />
                             </dd>
                             <dt>Occhi</dt>
                             <dd>{gatto.colore_occhi}</dd>
@@ -245,7 +239,7 @@
                         Nessun gatto corrisponde alla ricerca «{ricerca}».
                     </p>
                 ) : (
-                    <ul id="lista-gatti" className="griglia-gatti" role="list"
+                    <ul id="lista-gatti" className="griglia-gatti"
                         aria-label="Elenco gatti disponibili">
                         {gattiVisibili.map(function (gatto) {
                             return (

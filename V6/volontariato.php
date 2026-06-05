@@ -23,7 +23,21 @@ apriMain();
         Il tuo aiuto fa la differenza. Scegli quante fasce orarie vuoi.
         La struttura accoglie <strong>al massimo 2 volontari per fascia oraria</strong>.
     </p>
-
+</section>
+<section aria-labelledby="titolo-info-vol">
+    <h2 id="titolo-info-vol">Cosa fare da volontario</h2>
+    <ul>
+        <li>Socializzare con i gatti e giocare con loro</li>
+        <li>Aiutare con la pulizia degli spazi</li>
+        <li>Supportare durante le visite dei potenziali adottanti</li>
+        <li>Assistere il personale nella gestione della struttura</li>
+    </ul>
+    <p>
+        Non è richiesta alcuna esperienza specifica.
+        Per info: <a href="mailto:info@gattile-sanpaolo.it">info@gattile-sanpaoloaolo.it</a>.
+    </p>
+</section>
+<section>
     <?php if (!$loggato): ?>
         <aside class="messaggio messaggio-avviso" role="note">
             <p>
@@ -59,20 +73,6 @@ apriMain();
     </form>
 
     <?php endif; ?>
-</section>
-
-<section aria-labelledby="titolo-info-vol">
-    <h2 id="titolo-info-vol">Cosa fare da volontario</h2>
-    <ul>
-        <li>Socializzare con i gatti e giocare con loro</li>
-        <li>Aiutare con la pulizia degli spazi</li>
-        <li>Supportare durante le visite dei potenziali adottanti</li>
-        <li>Assistere il personale nella gestione della struttura</li>
-    </ul>
-    <p>
-        Non è richiesta alcuna esperienza specifica.
-        Per info: <a href="mailto:info@gattile-sanpaolo.it">info@gattile-sanpaoloaolo.it</a>.
-    </p>
 </section>
 
 <script src="js/volontariato.js" defer></script>
