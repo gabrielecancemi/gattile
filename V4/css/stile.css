@@ -347,7 +347,7 @@ a:focus {
     grid-area: account;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-end;
 }
 
 /* Contenitore bianco compatto: [ icona + nome + badge | pulsante ] */
@@ -650,7 +650,7 @@ a:focus {
    9. BANNER COOKIE
    ============================================================ */
 .banner-cookie {
-    position: fixed;
+    position: sticky;
     bottom: 0;
     left: 0;
     right: 0;
