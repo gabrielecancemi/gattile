@@ -41,7 +41,7 @@ if ($utente && (bool) $utente['is_admin']) {
                     $attivo = ($href === $paginaCorrente);
                     ?>
                     <li>
-                        <a href="<?= $href ?>" <?= $attivo ? 'class="active" aria-current="page"' : '' ?>>
+                        <a href="<?= $href ?>" class="btn <?= $attivo ? 'active' : '' ?>" <?= $attivo ? 'aria-current="page"' : '' ?>>
                             <?= $etichetta ?>
                         </a>
                     </li>
@@ -50,7 +50,7 @@ if ($utente && (bool) $utente['is_admin']) {
         </nav>
 
         <!-- Area account -->
-        <section class="stato-autenticazione" id="autenticazione" aria-label="Stato autenticazione">
+        <section class=" stato-autenticazione" id="autenticazione" aria-label="Stato autenticazione">
             <article class="account-box">
                 <?php if ($utente): ?>
                     <p class="utente-info">
@@ -63,19 +63,18 @@ if ($utente && (bool) $utente['is_admin']) {
                         <?php endif; ?>
                     </p>
                     <nav aria-label="Azioni account">
-                        <a href="logout.php" class="btn-account btn-logout">Esci</a>
+                        <a href="logout.php" class="btn btn-logout">Esci</a>
                     </nav>
                 <?php else: ?>
                     <p class="utente-info">
-                        Stato: <em>non loggato</em>
+                        <em>non loggato</em>
                     </p>
                     <nav aria-label="Accesso e registrazione">
-                        <a href="login.php"
-                            class="btn-account btn-login<?= $paginaCorrente === 'login.php' ? ' active' : '' ?>">
+                        <a href="login.php" class="btn btn-login<?= $paginaCorrente === 'login.php' ? ' active' : '' ?>">
                             Accedi
                         </a>
                         <a href="registrazione.php"
-                            class="btn-account btn-login<?= $paginaCorrente === 'registrazione.php' ? ' active' : '' ?>">
+                            class="btn btn-signin<?= $paginaCorrente === 'registrazione.php' ? ' active' : '' ?>">
                             Registrati
                         </a>
                     </nav>

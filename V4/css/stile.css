@@ -44,19 +44,17 @@
    ============================================================ */
 :root {
     /* — Colori principali — */
-    --primario: saddlebrown;
-    /* #8b4513 */
+    --primario: saddlebrown; /* #8b4513 */
     --primario-scuro: #6b3410;
-    --secondario: darkolivegreen;
-    /* #556b2f */
+    --secondario: darkolivegreen; /* #556b2f */
     --secondario-scuro: #3e5022;
-    --sfondo: cornsilk;
-    /* #fff8dc */
+    --sfondo: cornsilk; /* #fff8dc */
+    --sfondo-scuro: #c8a87a;
     --bianco: white;
     --nero: black;
 
     /* — Testo — */
-    --bordo: #c8a87a;
+    --bordo: 
     --ombra: rgba(139, 69, 19, .15);
 
     /* — Feedback semantico — */
@@ -296,7 +294,7 @@ a:focus {
 }
 
 .menu-toggle:hover {
-    background: rgba(255, 255, 255, .15);
+    background: var(--secondario-scuro);
 }
 
 
@@ -318,21 +316,20 @@ a:focus {
 }
 
 .header>nav a {
-    display: inline-block;
-    padding: .4rem .8rem;
+    background-color: var(--secondario);
     color: var(--bianco);
-    text-decoration: none;
-    font-weight: 600;
-    border-radius: var(--raggio);
+    border-color: var(--secondario);
+    font-size: inherit;
 }
 
 .header>nav a:hover,
 .header>nav a:focus {
-    background: rgba(255, 255, 255, .18);
+    background: var(--secondario-scuro);
 }
 
 .header nav a.active {
-    background: var(--nero);
+    background-color: var(--nero);
+    border-color: var(--nero);
     color: var(--bianco);
 }
 
@@ -371,7 +368,7 @@ a:focus {
     font-size: 1rem;
     color: var(--nero);
     min-width: 0;
-    overflow: hidden;
+    flex-wrap: wrap;
 }
 
 .nome-utente {
@@ -407,38 +404,45 @@ a:focus {
 }
 
 /* Pulsanti area account */
-.btn-account {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: .4rem .6rem;
-    border-radius: var(--raggio);
-    text-decoration: none;
-    font-size: 1rem;
-    font-weight: 600;
-    white-space: nowrap;
-}
 
 .btn-login {
-    background: var(--primario);
+    background-color: var(--primario);
+    border-color: var(--primario);
     color: var(--bianco);
 }
 
 .btn-login:hover,
 .btn-login:focus {
-    filter: brightness(1.15);
+    background-color: var(--primario-scuro);
+    border-color: var(--primario-scuro);
     color: var(--bianco);
 }
 
+.btn-signin {
+    background-color: var(--white);
+    border-color: var(--primario);
+    color: var(--primario);
+}
+
+.btn-signin:hover,
+.btn-signin:focus {
+    border-color: var(--primario-scuro);
+    color: var(--primario-scuro);
+    background-color: var(--sfondo);
+}
+
+
 .btn-logout {
-    background: #8b1a1a;
+    background: darkred;
     color: var(--bianco);
+    border-color: darkred;
 }
 
 .btn-logout:hover,
 .btn-logout:focus {
-    background: #6b1010;
+    background: maroon;
     color: var(--bianco);
+    border-color: maroon;
 }
 
 
@@ -519,25 +523,24 @@ a:focus {
 }
 
 .footer-centro>nav:first-child a {
-    display: inline-block;
     padding: .3rem .6rem;
-    color: rgba(255, 255, 255, .92);
-    text-decoration: none;
-    font-weight: 600;
-    border-radius: var(--raggio);
+    color: var(--bianco);
+    background-color: var(--primario);
+    border-color: var(--primario);
 }
 
 .footer-centro>nav:first-child a:hover,
 .footer-centro>nav:first-child a:focus {
-    background: rgba(255, 255, 255, .18);
+    background-color: var(--primario-scuro);
+    border-color: var(--primario-scuro);
     color: var(--bianco);
 }
 
 .footer-centro>nav:first-child a.active,
 .faq-button.active {
-    background: var(--nero);
+    background-color: var(--nero);
     color: var(--bianco);
-    border: var(--nero);
+    border-color: var(--nero);
 }
 
 /* Nav privacy (sotto la nav principale) */
@@ -635,14 +638,14 @@ a:focus {
     font-weight: 700;
     border: 2px solid var(--primario);
     z-index: 999;
-    transition: transform var(--trans), filter var(--trans);
 }
 
 .faq-button:hover,
 .faq-button:focus-visible {
-    filter: brightness(1.15);
     transform: scale(1.07);
     color: var(--bianco);
+    background-color: var(--secondario-scuro);
+    border-color: var(--primario-scuro);
 }
 
 
@@ -709,10 +712,11 @@ main {
     border-radius: var(--raggio);
     font-family: var(--font-corpo);
     font-size: 1rem;
-    font-weight: 700;
+    font-weight: 600;
     cursor: pointer;
     text-decoration: none;
-    border: 2px solid transparent;
+    border-width: 2px;
+    border-style: solid;
     white-space: nowrap;
 }
 
@@ -724,7 +728,9 @@ main {
 
 .btn-primario:hover,
 .btn-primario:focus {
-    background: rgba(255, 255, 255, .18);
+    background: var(--secondario-scuro);
+    border-color: var(--secondario-scuro);
+    color: var(--bianco);
 }
 
 .btn-secondario {
@@ -735,14 +741,9 @@ main {
 
 .btn-secondario:hover,
 .btn-secondario:focus {
-    filter: brightness(1.15);
+    background: var(--primario-scuro);
+    border-color: var(--secondario-scuro);
     color: var(--bianco);
-}
-
-.btn-pericolo {
-    background: var(--colore-errore);
-    color: var(--bianco);
-    border-color: var(--colore-errore);
 }
 
 
@@ -793,7 +794,7 @@ main {
     background: linear-gradient(135deg, #f5e8c8 0%, var(--sfondo) 100%);
     border-radius: var(--raggio);
     padding: var(--sp-xl);
-    border: 1px solid var(--bordo);
+    border: 1px solid var(--sfondo-scuro);
 }
 
 .badge-nuovo {
@@ -826,7 +827,7 @@ main {
     display: grid;
     grid-template-rows: auto 1fr;
     background: var(--bianco);
-    border: 1px solid var(--bordo);
+    border: 1px solid var(--sfondo-scuro);
     border-radius: var(--raggio);
     overflow: hidden;
     transition: transform var(--trans), box-shadow var(--trans);
@@ -953,7 +954,7 @@ main {
     padding: var(--sp-md);
     background: var(--bianco);
     border-radius: var(--raggio);
-    border: 1px solid var(--bordo);
+    border: 1px solid var(--sfondo-scuro);
 }
 
 .barra-controlli label {
@@ -975,7 +976,7 @@ form {
 }
 
 fieldset {
-    border: 1px solid var(--bordo);
+    border: 1px solid var(--sfondo-scuro);
     border-radius: var(--raggio);
     padding: var(--sp-lg);
     margin-bottom: var(--sp-lg);
@@ -1011,7 +1012,7 @@ select,
 textarea {
     width: 100%;
     padding: var(--sp-sm) var(--sp-md);
-    border: 2px solid var(--bordo);
+    border: 2px solid var(--sfondo-scuro);
     border-radius: var(--raggio);
     font-family: var(--font-corpo);
     font-size: 1rem;
@@ -1086,7 +1087,7 @@ meter {
     width: 100%;
     height: 1rem;
     border-radius: var(--raggio-pill);
-    border: 1px solid var(--bordo);
+    border: 1px solid var(--sfondo-scuro);
     overflow: hidden;
     accent-color: var(--primario);
 }
@@ -1116,7 +1117,7 @@ meter {
 }
 
 .turno-item {
-    border: 2px solid var(--bordo);
+    border: 2px solid var(--sfondo-scuro);
     border-radius: var(--raggio);
     padding: var(--sp-md);
     background: var(--bianco);
@@ -1171,7 +1172,7 @@ caption {
 th,
 td {
     padding: var(--sp-sm) var(--sp-md);
-    border: 1px solid var(--bordo);
+    border: 1px solid var(--sfondo-scuro);
     text-align: left;
 }
 
@@ -1190,7 +1191,7 @@ tr:nth-child(even) td {
    21. DETAILS / SUMMARY (accordion)
    ============================================================ */
 details {
-    border: 1px solid var(--bordo);
+    border: 1px solid var(--sfondo-scuro);
     border-radius: var(--raggio);
     margin-bottom: var(--sp-sm);
 }
@@ -1230,7 +1231,7 @@ details>*:not(summary) {
    ============================================================ */
 .separatore {
     border: 0;
-    border-top: 1px solid var(--bordo);
+    border-top: 1px solid var(--sfondo-scuro);
     margin: var(--sp-xl) 0;
 }
 
@@ -1273,7 +1274,7 @@ details>*:not(summary) {
 }
 
 .faq-categoria h2 {
-    border-bottom: 2px solid var(--bordo);
+    border-bottom: 2px solid var(--sfondo-scuro);
     padding-bottom: var(--sp-sm);
     margin-bottom: var(--sp-md);
 }
@@ -1313,6 +1314,10 @@ details>*:not(summary) {
         margin-top: var(--sp-md);
     }
 
+    .stato-autenticazione {
+        justify-content: center;
+    }
+
     /* Nav e account nascosti finché non si apre il menu */
     .header>nav,
     .stato-autenticazione {
@@ -1325,14 +1330,13 @@ details>*:not(summary) {
     }
 
     /* Voci di menu in colonna al 50% di larghezza */
-    .header nav ul {
+    .header>nav ul {
         flex-direction: column;
         align-items: stretch;
         gap: var(--sp-md);
-        width: 50%;
     }
 
-    .header nav a {
+    .header>nav a {
         display: block;
         text-align: center;
         padding: .5rem;

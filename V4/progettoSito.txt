@@ -255,6 +255,10 @@ se l'utente fa logout e chiami session_destroy(), la sessione sparisce comunque.
 
 Eliminado cookie si eliminano cookie, sessione e token sul file
 
+Misure di sicurezza adottate
+
+GET o POST in ogni occasione e perchè
+
 
 
 ================================================================================

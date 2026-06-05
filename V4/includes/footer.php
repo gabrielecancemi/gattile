@@ -28,7 +28,7 @@ if (!empty($_SESSION['utente']['is_admin'])) {
         </p>
         <nav aria-label="Gestione consenso cookie">
             <ul role="list">
-                <li><button type="button" id="btn-accetta-cookie" class="btn btn-primario">Accetto</button></li>
+                <li><button type="button" id="btn-accetta-cookie" class="btn btn-primario">Accetta</button></li>
                 <li><a href="privacy.php" class="btn btn-secondario">Gestisci</a></li>
             </ul>
         </nav>
@@ -52,7 +52,7 @@ if (!empty($_SESSION['utente']['is_admin'])) {
                     $attivo = ($href === $paginaCorrente);
                     ?>
                     <li>
-                        <a href="<?= $href ?>" <?= $attivo ? 'class="active" aria-current="page"' : '' ?>>
+                        <a href="<?= $href ?>" class="btn <?= $attivo ? 'active" aria-current="page"' : '"' ?>>
                             <?= $etichetta ?>
                         </a>
                     </li>

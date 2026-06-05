@@ -60,7 +60,7 @@ apriMain();
                     <td>Gestione sessione autenticata</td>
                 </tr>
                 <tr>
-                    <td><code>gattile_remember</code></td>
+                    <td><code>remember_username</code></td>
                     <td>Persistente (tecnico)</td>
                     <td>72 ore</td>
                     <td>Token opaco per precompilare lo username al login. <strong>Nessuna credenziale in
@@ -98,7 +98,7 @@ apriMain();
     <article aria-labelledby="sez-elimina" id="elimina">
         <h2 id="sez-elimina">Elimina i tuoi cookie</h2>
         <p>Rimuovi tutti i cookie e la sessione impostati da questo sito. Verrai disconnesso.</p>
-        <button type="button" id="btn-elimina-cookie-privacy" class="btn btn-pericolo" aria-describedby="nota-elimina">
+        <button type="button" id="btn-elimina-cookie-privacy" class="btn btn-logout" aria-describedby="nota-elimina">
             Elimina tutti i miei cookie
         </button>
         <em id="nota-elimina" class="aiuto-campo">
