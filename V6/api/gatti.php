@@ -21,8 +21,7 @@ if (!$conn) {
 
 $stm = mysqli_prepare(
     $conn,
-    'SELECT id, nome, descrizione, peso, colore_mantello, lunghezza_pelo,
-            razza, colore_occhi, eta, sesso, data_arrivo
+    'SELECT *
      FROM gatti
      ORDER BY data_arrivo DESC'
 );
@@ -44,23 +43,25 @@ if (!mysqli_stmt_execute($stm)) {
     exit;
 }
 
-$result    = mysqli_stmt_get_result($stm);
+$result = mysqli_stmt_get_result($stm);
 $risultato = [];
 
 while ($g = mysqli_fetch_assoc($result)) {
     $risultato[] = [
-        'id'              => (int)$g['id'],
-        'nome'            => $g['nome'],
-        'descrizione'     => $g['descrizione'],
-        'peso'            => (float)$g['peso'],
+        'id' => (int) $g['id'],
+        'nome' => $g['nome'],
+        'descrizione' => $g['descrizione'],
+        'peso' => (float) $g['peso'],
         'colore_mantello' => $g['colore_mantello'],
-        'lunghezza_pelo'  => $g['lunghezza_pelo'],
-        'razza'           => $g['razza'],
-        'colore_occhi'    => $g['colore_occhi'],
-        'eta'             => (int)$g['eta'],
-        'sesso'           => $g['sesso'],
-        'data_arrivo'     => $g['data_arrivo'],
-        'img'             => '../img/placeholder-gatto.svg',
+        'lunghezza_pelo' => $g['lunghezza_pelo'],
+        'razza' => $g['razza'],
+        'colore_occhi' => $g['colore_occhi'],
+        'eta' => (int) $g['eta'],
+        'sesso' => $g['sesso'],
+        'data_arrivo' => $g['data_arrivo'],
+        'img' => isset($g['foto']) && trim((string) $g['foto']) !== ''
+            ? $g['foto']
+            : 'img/placeholder-gatto.svg',
     ];
 }
 
@@ -69,6 +70,6 @@ mysqli_close($conn);
 
 echo json_encode([
     'successo' => true,
-    'gatti'    => $risultato,
-    'totale'   => count($risultato),
+    'gatti' => $risultato,
+    'totale' => count($risultato),
 ], JSON_UNESCAPED_UNICODE);

@@ -244,6 +244,8 @@ a:focus {
 }
 
 
+
+
 /* ── 6a. Logo ─────────────────────────────────────────────── */
 .brand-logo {
     grid-area: logo;
@@ -698,8 +700,7 @@ main {
 
 main>section{
     border-bottom: 2px solid var(--primario);
-    padding-bottom: 1rem;
-    margin-bottom: 1rem;
+    padding: 1rem 4rem;
 }
 
 
@@ -874,7 +875,7 @@ main>section{
 }
 
 .card-gatto-corpo h3 {
-    font-size: 1.05rem;
+    font-size: 1rem;
     margin-bottom: 0;
 }
 

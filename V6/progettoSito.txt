@@ -260,6 +260,11 @@ Misure di sicurezza adottate
 GET o POST in ogni occasione e perchè
 
 
+PER implementare le foto nel db, la select richiede tutte le colonne e viene fatto il controllo 'img' => isset($g['foto']) && trim((string)$g['foto']) !== ''
+    ? $g['foto']
+    : 'img/placeholder-gatto.svg',    per mettere la foto se disponibile, altrimenti il placeholder
+
+
 
 ================================================================================
 Fine documento

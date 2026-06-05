@@ -116,12 +116,12 @@
     /* ── Componente principale ───────────────────────────────────── */
 
     function GattiApp({ utenteLoggato, isAdmin }) {
-        const [gatti,       setGatti]       = useState([]);
+        const [gatti, setGatti] = useState([]);
         const [caricamento, setCaricamento] = useState(true);
-        const [errore,      setErrore]       = useState('');
-        const [ricerca,     setRicerca]      = useState('');
-        const [ordinamento, setOrdinamento]  = useState('data_arrivo_desc');
-        const [selezionati, setSelezionati]  = useState(new Set());
+        const [errore, setErrore] = useState('');
+        const [ricerca, setRicerca] = useState('');
+        const [ordinamento, setOrdinamento] = useState('data_arrivo_desc');
+        const [selezionati, setSelezionati] = useState(new Set());
 
         /* Recupera gatti dal backend */
         useEffect(function () {
@@ -165,11 +165,11 @@
             })
             .sort(function (a, b) {
                 switch (ordinamento) {
-                    case 'eta_asc':         return a.eta - b.eta;
-                    case 'eta_desc':        return b.eta - a.eta;
-                    case 'colore_asc':      return a.colore_mantello.localeCompare(b.colore_mantello);
+                    case 'eta_asc': return a.eta - b.eta;
+                    case 'eta_desc': return b.eta - a.eta;
+                    case 'colore_asc': return a.colore_mantello.localeCompare(b.colore_mantello);
                     case 'data_arrivo_asc': return new Date(a.data_arrivo) - new Date(b.data_arrivo);
-                    default:                return new Date(b.data_arrivo) - new Date(a.data_arrivo);
+                    default: return new Date(b.data_arrivo) - new Date(a.data_arrivo);
                 }
             });
 
@@ -273,7 +273,7 @@
     }
 
     const utenteLoggato = radice.getAttribute('data-utente-loggato') === 'true';
-    const isAdmin       = radice.getAttribute('data-is-admin')       === 'true';
+    const isAdmin = radice.getAttribute('data-is-admin') === 'true';
     radice.removeAttribute('aria-busy');
 
     ReactDOM.createRoot(radice).render(

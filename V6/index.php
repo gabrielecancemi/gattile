@@ -28,11 +28,11 @@ if (!$conn) {
     );
 
     if (!$stm) {
-        error_log('[index] Prepare fallita: ' . mysqli_error($conn));
+        error_log('[index] Prepare arrivi fallita: ' . mysqli_error($conn));
         $erroreDB = 'Impossibile caricare i nuovi arrivi. Riprova tra qualche minuto.';
     } else {
         if (!mysqli_stmt_execute($stm)) {
-            error_log('[index] Execute fallita: ' . mysqli_stmt_error($stm));
+            error_log('[index] Execute arrivi fallita: ' . mysqli_stmt_error($stm));
             $erroreDB = 'Impossibile caricare i nuovi arrivi. Riprova tra qualche minuto.';
         } else {
             $result = mysqli_stmt_get_result($stm);
@@ -42,8 +42,46 @@ if (!$conn) {
         }
         mysqli_stmt_close($stm);
     }
+
+    $statistiche = [
+        'gatti' => 0,
+        'visite' => 0,
+        'volontari' => 0,
+        'arrivi' => 0
+    ];
+
+    $sql = '
+        SELECT
+            (SELECT COUNT(*) FROM gatti) AS totale_gatti,
+            (SELECT COUNT(*) FROM visita_gatti) AS totale_visite,
+            (SELECT COUNT(DISTINCT utente_id) FROM turni_volontariato) AS totale_volontari,
+            (SELECT COUNT(*) FROM gatti WHERE YEAR(data_arrivo) = YEAR(CURDATE())) AS nuovi_arrivi
+    ';
+
+    $stm = mysqli_prepare($conn, $sql);
+
+    if (!$stm) {
+        error_log('[index] Prepare statistiche fallita: ' . mysqli_error($conn));
+    } else {
+        if (!mysqli_stmt_execute($stm)) {
+            error_log('[index] Execute statistiche fallita: ' . mysqli_stmt_error($stm));
+        } else {
+            $result = mysqli_stmt_get_result($stm);
+            if ($result !== false) {
+                $row = mysqli_fetch_assoc($result);
+                if ($row) {
+                    $statistiche['gatti'] = (int) $row['totale_gatti'];
+                    $statistiche['visite'] = (int) $row['totale_visite'];
+                    $statistiche['volontari'] = (int) $row['totale_volontari'];
+                    $statistiche['arrivi'] = (int) $row['nuovi_arrivi'];
+                }
+            }
+        }
+        mysqli_stmt_close($stm);
+    }
     mysqli_close($conn);
 }
+
 
 stampaTesta(
     'Home',
@@ -53,32 +91,117 @@ stampaHeader();
 apriMain();
 ?>
 
-<h1>Una casa per ogni gatto</h1>
+<section aria-labelledby="titolo-home">
+    <h1 id="titolo-home">
+        Una casa, una famiglia, una seconda possibilità
+    </h1>
 
-<!-- ── Missione ────────────────────────────────────────────── -->
-<section aria-labelledby="titolo-missione">
-    <h2 id="titolo-missione">La nostra missione</h2>
+    <p>
+        Ogni gatto che arriva al Gattile San Paolo ha una storia.
+        Alcuni sono stati abbandonati, altri recuperati dalla strada,
+        altri ancora hanno semplicemente bisogno di una nuova famiglia.
+    </p>
 
-    <blockquote cite="https://gattile-sanpaolo.example.it">
-        Ogni anno, centinaia di gatti vengono abbandonati o nascono in strada,
-        necessitando di cure e di una famiglia. Allo stesso tempo, molte persone
-        desiderano accogliere un felino o dedicare il proprio tempo come volontari.
+    <p>
+        Aiutaci a trasformare un incontro in un'adozione e una visita
+        in un nuovo inizio.
+    </p>
+
+
+</section>
+
+<section aria-labelledby="titolo-perche">
+    <h2 id="titolo-perche">Perché adottare dal Gattile San Paolo?</h2>
+
+    <ul>
+        <li>
+            <strong>Controlli veterinari</strong><br>
+            Tutti i gatti vengono seguiti e monitorati prima dell'adozione.
+        </li>
+
+        <li>
+            <strong>Supporto all'adozione</strong><br>
+            Ti aiutiamo a trovare il gatto più adatto alla tua situazione.
+        </li>
+
+        <li>
+            <strong>Volontari qualificati</strong><br>
+            Ogni giorno persone dedicate si prendono cura dei nostri ospiti.
+        </li>
+    </ul>
+</section>
+
+<section aria-labelledby="titolo-impatto">
+    <h2 id="titolo-impatto">Il nostro impatto</h2>
+
+    <dl class="statistiche">
+        <dt>Gatti ospitati</dt>
+        <dd><?= $statistiche['gatti'] ?></dd>
+
+        <dt>Incontri organizzati</dt>
+        <dd><?= $statistiche['visite'] ?></dd>
+
+        <dt>Volontari attivi</dt>
+        <dd><?= $statistiche['volontari'] ?></dd>
+
+        <dt>Nuovi arrivi quest'anno</dt>
+        <dd><?= $statistiche['arrivi'] ?></dd>
+    </dl>
+</section>
+
+<section aria-labelledby="titolo-adozione">
+    <h2 id="titolo-adozione">Adottare è semplice</h2>
+
+    <ol>
+        <li>
+            Consulta i profili dei gatti disponibili.
+        </li>
+
+        <li>
+            Registrati gratuitamente sul sito.
+        </li>
+
+        <li>
+            Prenota una visita conoscitiva.
+        </li>
+
+        <li>
+            Conosci il gatto e completa il percorso di adozione.
+        </li>
+    </ol>
+</section>
+
+<aside aria-labelledby="titolo-testimonianza">
+    <h2 id="titolo-testimonianza">Una storia di successo</h2>
+
+    <blockquote>
+        "Pensavamo di adottare un gatto.
+        In realtà abbiamo trovato un nuovo membro della famiglia."
     </blockquote>
 
     <p>
-        <strong>Gattile San Paolo</strong> nasce per facilitare le adozioni e organizzare
-        il supporto attivo alla struttura ospitante, con sede a <strong>Torino</strong>.
+        — Famiglia Rossi, Torino
+    </p>
+</aside>
+
+<section aria-labelledby="titolo-aiuta">
+    <h2 id="titolo-aiuta">Non puoi adottare?</h2>
+
+    <p>
+        Puoi comunque fare la differenza dedicando qualche ora del tuo tempo
+        ai nostri ospiti.
     </p>
 
-    <nav aria-label="Azioni principali" class="azioni-principali">
-        <ul role="list">
-            <li><a href="gatti.php" class="btn btn-primario">🐾 Adotta un gatto</a></li>
-            <li><a href="volontariato.php" class="btn btn-primario">❤️ Fai volontariato</a></li>
-            <?php if (!utenteLoggato()): ?>
-                <li><a href="registrazione.php" class="btn btn-login">✏️ Registrati</a></li>
-            <?php endif; ?>
-        </ul>
-    </nav>
+    <p>
+        Ogni volontario contribuisce a migliorare la qualità della vita
+        dei gatti accolti nella struttura.
+    </p>
+
+    <p>
+        <a href="volontariato.php" class="btn btn-primario">
+            Scopri il volontariato
+        </a>
+    </p>
 </section>
 
 <!-- ── Come funziona ──────────────────────────────────────── -->
@@ -119,7 +242,7 @@ apriMain();
 
     <?php else: ?>
 
-        <ul class="griglia-gatti" role="list" aria-label="Nuovi arrivi">
+        <ul class="griglia-gatti" aria-label="Nuovi arrivi">
             <?php foreach ($nuoviArrivi as $gatto):
                 $sesso = $gatto['sesso'] === 'M' ? 'Maschio' : 'Femmina';
                 $etaMesi = (int) $gatto['eta'];
@@ -129,21 +252,17 @@ apriMain();
                 ?>
                 <li>
                     <article class="card-gatto" aria-labelledby="nuovo-<?= (int) $gatto['id'] ?>">
-
                         <figure>
                             <img src="img/placeholder-gatto.svg"
                                 alt="Sagoma stilizzata — foto di <?= esc($gatto['nome']) ?> non ancora disponibile" width="320"
                                 height="240" loading="lazy">
                             <figcaption class="sr-solo">Placeholder foto per <?= esc($gatto['nome']) ?></figcaption>
                         </figure>
-
-                        <section class="card-gatto-corpo">
-                            <h3 id="nuovo-<?= (int) $gatto['id'] ?>">
-                                <?= esc($gatto['nome']) ?>
-                                <mark class="badge-nuovo" aria-label="Nuovo arrivo">Nuovo</mark>
-                            </h3>
-
-                            <ul class="card-gatto-meta" role="list" aria-label="Caratteristiche principali">
+                        <h3 id="nuovo-<?= (int) $gatto['id'] ?>"><?= esc($gatto['nome']) ?>
+                            <dfn class="badge-nuovo">Nuovo</dfn>
+                        </h3>
+                            
+                            <ul class="card-gatto-meta" aria-label="Caratteristiche principali">
                                 <li class="tag"><?= esc($sesso) ?></li>
                                 <li class="tag"><?= esc($etaTesto) ?></li>
                                 <li class="tag"><?= esc($gatto['colore_mantello']) ?></li>
@@ -178,7 +297,6 @@ apriMain();
                                 aria-label="Scopri di più su <?= esc($gatto['nome']) ?>">
                                 Scopri di più
                             </a>
-                        </section>
 
                     </article>
                 </li>

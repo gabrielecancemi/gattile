@@ -20,8 +20,7 @@ if ($utente && (bool) $utente['is_admin']) {
 
 <body>
 
-    <header class="header" role="banner">
-
+    <header class="header">
         <!-- Logo -->
         <a href="index.php" class="brand-logo" aria-label="Torna alla Home Page">
             <img src="img/logo.png" alt="Logo Gattile San Paolo" class="logo-img" width="48" height="48">
@@ -36,7 +35,7 @@ if ($utente && (bool) $utente['is_admin']) {
 
         <!-- Navigazione  -->
         <nav id="menu-principale" aria-label="Navigazione principale">
-            <ul role="list">
+            <ul>
                 <?php foreach ($navLinks as $href => $etichetta):
                     $attivo = ($href === $paginaCorrente);
                     ?>
@@ -50,8 +49,9 @@ if ($utente && (bool) $utente['is_admin']) {
         </nav>
 
         <!-- Area account -->
-        <section class=" stato-autenticazione" id="autenticazione" aria-label="Stato autenticazione">
-            <article class="account-box">
+        <section class="stato-autenticazione" id="autenticazione" aria-label="Stato autenticazione">
+            <h2 class="sr-solo">Account</h2>
+            <nav class="account-box">
                 <?php if ($utente): ?>
                     <p class="utente-info">
                         <abbr title="Utente" aria-hidden="true">👤</abbr>
@@ -79,7 +79,7 @@ if ($utente && (bool) $utente['is_admin']) {
                         </a>
                     </nav>
                 <?php endif; ?>
-            </article>
+            </nav>
         </section>
 
     </header>
