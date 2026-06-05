@@ -1,0 +1,74 @@
+<?php
+declare(strict_types=1);
+
+require_once '../includes/db.php';
+
+header('Content-Type: application/json; charset=utf-8');
+header('X-Content-Type-Options: nosniff');
+
+if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
+    http_response_code(405);
+    echo json_encode(['errore' => 'Metodo non consentito']);
+    exit;
+}
+
+$conn = getDB('reader');
+if (!$conn) {
+    http_response_code(500);
+    echo json_encode(['errore' => "Errore del database: impossibile recuperare l'elenco dei gatti.", 'codice' => 'DB_ERROR']);
+    exit;
+}
+
+$stm = mysqli_prepare(
+    $conn,
+    'SELECT id, nome, descrizione, peso, colore_mantello, lunghezza_pelo,
+            razza, colore_occhi, eta, sesso, data_arrivo
+     FROM gatti
+     ORDER BY data_arrivo DESC'
+);
+
+if (!$stm) {
+    error_log('Errore DB api/gatti.php prepare: ' . mysqli_error($conn));
+    mysqli_close($conn);
+    http_response_code(500);
+    echo json_encode(['errore' => "Errore del database: impossibile recuperare l'elenco dei gatti.", 'codice' => 'DB_ERROR']);
+    exit;
+}
+
+if (!mysqli_stmt_execute($stm)) {
+    error_log('Errore DB api/gatti.php execute: ' . mysqli_stmt_error($stm));
+    mysqli_stmt_close($stm);
+    mysqli_close($conn);
+    http_response_code(500);
+    echo json_encode(['errore' => "Errore del database: impossibile recuperare l'elenco dei gatti.", 'codice' => 'DB_ERROR']);
+    exit;
+}
+
+$result    = mysqli_stmt_get_result($stm);
+$risultato = [];
+
+while ($g = mysqli_fetch_assoc($result)) {
+    $risultato[] = [
+        'id'              => (int)$g['id'],
+        'nome'            => $g['nome'],
+        'descrizione'     => $g['descrizione'],
+        'peso'            => (float)$g['peso'],
+        'colore_mantello' => $g['colore_mantello'],
+        'lunghezza_pelo'  => $g['lunghezza_pelo'],
+        'razza'           => $g['razza'],
+        'colore_occhi'    => $g['colore_occhi'],
+        'eta'             => (int)$g['eta'],
+        'sesso'           => $g['sesso'],
+        'data_arrivo'     => $g['data_arrivo'],
+        'img'             => '../img/placeholder-gatto.svg',
+    ];
+}
+
+mysqli_stmt_close($stm);
+mysqli_close($conn);
+
+echo json_encode([
+    'successo' => true,
+    'gatti'    => $risultato,
+    'totale'   => count($risultato),
+], JSON_UNESCAPED_UNICODE);
