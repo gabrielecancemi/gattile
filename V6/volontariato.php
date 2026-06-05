@@ -61,8 +61,6 @@ apriMain();
     <?php endif; ?>
 </section>
 
-<hr class="separatore">
-
 <section aria-labelledby="titolo-info-vol">
     <h2 id="titolo-info-vol">Cosa fare da volontario</h2>
     <ul>

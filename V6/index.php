@@ -106,8 +106,6 @@ apriMain();
         Aiutaci a trasformare un incontro in un'adozione e una visita
         in un nuovo inizio.
     </p>
-
-
 </section>
 
 <section aria-labelledby="titolo-perche">

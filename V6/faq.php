@@ -76,7 +76,6 @@ apriMain();
     </details>
 </section>
 
-<hr class="separatore">
 
 <section class="faq-categoria" aria-labelledby="faq-volontariato">
     <h2 id="faq-volontariato">Volontariato</h2>
@@ -118,8 +117,6 @@ apriMain();
         </p>
     </details>
 </section>
-
-<hr class="separatore">
 
 <section class="faq-categoria" aria-labelledby="faq-struttura">
     <h2 id="faq-struttura">La struttura</h2>

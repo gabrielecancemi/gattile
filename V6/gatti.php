@@ -33,7 +33,8 @@ apriMain();
             </p>
         </aside>
     <?php endif; ?>
-
+</section>
+<section>
     <article id="react-gatti-root" data-utente-loggato="<?= $loggato ? 'true' : 'false' ?>"
         data-is-admin="<?= $isAdmin ? 'true' : 'false' ?>" aria-label="Elenco gatti con filtri e ordinamento"
         aria-busy="true">
@@ -42,7 +43,6 @@ apriMain();
 </section>
 
 <?php if ($loggato && !$isAdmin): ?>
-    <hr class="separatore">
 
     <section aria-labelledby="titolo-prenotazione">
         <h2 id="titolo-prenotazione">Prenota una visita conoscitiva</h2>
