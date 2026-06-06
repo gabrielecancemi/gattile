@@ -1,0 +1,2916 @@
+/* ============================================================
+   stile.css — Gattile San Paolo  v3
+   ============================================================
+   INDICE
+   1.  Tema scuro (override espliciti)
+   2.  Reset & base
+   3.  Tipografia
+   4.  Link & utilità testo
+   5.  Focus & accessibilità
+   6.  Layout: Header
+       6a.  Logo
+       6b.  Hamburger
+       6c.  Nav principale
+       6d.  Area account (stato autenticazione)
+   7.  Layout: Footer
+       7a.  Logo footer
+       7b.  Sezione centrale (nav + privacy)
+       7c.  Contatti
+       7d.  Copyright
+   8.  Pulsante FAQ fisso
+   9.  Banner cookie
+   10. Main / contenuto
+   11. Pulsanti generali
+   12. Messaggi di feedback
+   13. Azioni principali (home)
+   14. Card gatto
+   15. Barra controlli
+   16. Form & campi
+   17. Progress & Meter
+   18. Caricamento
+   19. Turni volontariato
+   20. Tabelle
+   21. Details / Summary (accordion)
+   22. Separatore
+   23. Utility classi
+   24. Pagina FAQ
+   25. Responsive ≤ 900px
+   26. Responsive ≤ 600px
+   ============================================================ */
+
+
+/* ============================================================
+   1. TEMA SCURO — sistema + override manuale (3 stati)
+   ============================================================
+   - Senza scelta manuale (html senza attributo data-tema) il tema
+     segue il sistema operativo via @media (prefers-color-scheme).
+   - Con il tasto l'utente puo' forzare:
+       html[data-tema="chiaro"]  -> sempre chiaro (stile base)
+       html[data-tema="scuro"]   -> sempre scuro
+   I colori scuri rispettano un contrasto almeno AA (>= 4.5:1).
+   ============================================================ */
+
+/* (A) Tema scuro AUTOMATICO: solo se l'utente non ha forzato un tema. */
+@media (prefers-color-scheme: dark) {
+
+    /* Schema colori nativo (selettori dei controlli, scrollbar...) */
+
+    html:not([data-tema]) {
+        color-scheme: dark;
+    
+    }
+
+    /* Base */
+
+    html:not([data-tema]) body {
+        background-color: #1c1813;
+        color: #f1e9dd;
+    
+    }
+
+    /* Tipografia e link */
+
+    html:not([data-tema]) h1,
+    html:not([data-tema]) h2,
+    html:not([data-tema]) h3,
+    html:not([data-tema]) h4,
+    html:not([data-tema]) h5,
+    html:not([data-tema]) h6,
+    html:not([data-tema]) strong,
+    html:not([data-tema]) a {
+        color: #d98b4a;
+    
+    }
+
+    html:not([data-tema]) a:hover,
+    html:not([data-tema]) a:focus {
+        color: #8fa765;
+    
+    }
+
+    html:not([data-tema]) code {
+        background: #332d24;
+        color: #f1e9dd;
+    
+    }
+
+    /* Header e footer */
+
+    html:not([data-tema]) .header {
+        background-color: #2f3a1f;
+        border-bottom-color: #d98b4a;
+    
+    }
+
+    html:not([data-tema]) .footer {
+        background: #3a2a18;
+        border-top-color: #8fa765;
+    
+    }
+
+    /* In header e footer testo/brand/link restano bianchi: massimo
+       contrasto sul fondo colorato (#7, AA garantito). Esclusi i pulsanti
+       (.btn) e il riquadro account, che hanno colori propri. */
+
+    html:not([data-tema]) .header,
+    html:not([data-tema]) .footer,
+    html:not([data-tema]) .brand-logo strong,
+    html:not([data-tema]) .footer a:not(.btn),
+    html:not([data-tema]) .footer strong {
+        color: white;
+    
+    }
+
+    /* Riquadri, card, form, fieldset, dettagli */
+
+    html:not([data-tema]) .card-gatto,
+    html:not([data-tema]) fieldset,
+    html:not([data-tema]) .barra-controlli,
+    html:not([data-tema]) details,
+    html:not([data-tema]) .turno-item,
+    html:not([data-tema]) .privacy-indice,
+    html:not([data-tema]) .privacy-blocco,
+    html:not([data-tema]) main>section:first-child,
+    html:not([data-tema]) .statistiche dt,
+    html:not([data-tema]) .statistiche dd {
+        background: #26221c;
+        border-color: rgba(217, 139, 74, 0.22);
+    
+    }
+
+    html:not([data-tema]) main>section ul:not([class]) li,
+    html:not([data-tema]) main>section ol:not([class]) li,
+    html:not([data-tema]) blockquote {
+        background: #26221c;
+        border-color: rgba(217, 139, 74, 0.22);
+    
+    }
+
+    /* Campi dei form */
+
+    html:not([data-tema]) input[type="text"],
+    html:not([data-tema]) input[type="email"],
+    html:not([data-tema]) input[type="password"],
+    html:not([data-tema]) input[type="number"],
+    html:not([data-tema]) input[type="date"],
+    html:not([data-tema]) input[type="datetime-local"],
+    html:not([data-tema]) input[type="search"],
+    html:not([data-tema]) select,
+    html:not([data-tema]) textarea {
+        background: #1c1813;
+        color: #f1e9dd;
+        border-color: rgba(217, 139, 74, 0.45);
+    
+    }
+
+    /* Sfondi tenui / superfici secondarie */
+
+    html:not([data-tema]) .tag,
+    html:not([data-tema]) .privacy-cookie-card,
+    html:not([data-tema]) .card-gatto figure,
+    html:not([data-tema]) .turno-item.pieno,
+    html:not([data-tema]) .turno-item.iscritto,
+    html:not([data-tema]) .turno-item.disponibile:hover,
+    html:not([data-tema]) tr:nth-child(even) td,
+    html:not([data-tema]) summary {
+        background: #332d24;
+    
+    }
+
+    html:not([data-tema]) tr:hover td,
+    html:not([data-tema]) summary:hover,
+    html:not([data-tema]) details[open] summary {
+        background: #3a3329;
+    
+    }
+
+    /* Testi secondari */
+
+    html:not([data-tema]) .testo-tenue,
+    html:not([data-tema]) .privacy-sottotitolo,
+    html:not([data-tema]) .privacy-nota,
+    html:not([data-tema]) .aiuto-campo,
+    html:not([data-tema]) .statistiche dt,
+    html:not([data-tema]) .card-gatto dt,
+    html:not([data-tema]) .tag {
+        color: #c9bca8;
+    
+    }
+
+    /* Feedback */
+
+    html:not([data-tema]) .messaggio-errore {
+        background: #3a2020;
+        color: #f08a8a;
+        border-color: #f08a8a;
+    
+    }
+
+    html:not([data-tema]) .messaggio-successo {
+        background: #1e3324;
+        color: #6fcf85;
+        border-color: #6fcf85;
+    
+    }
+
+    html:not([data-tema]) .messaggio-avviso,
+    html:not([data-tema]) main aside.messaggio,
+    html:not([data-tema]) .messaggio[role="note"] {
+        background: #34301f;
+        color: #e0c069;
+        border-color: #e0c069;
+    
+    }
+
+    /* Sezione "nuovi arrivi" */
+
+    html:not([data-tema]) .nuovi-arrivi {
+        background: linear-gradient(135deg, #2a2118 0%, #322820 100%) !important;
+        border-color: rgba(217, 139, 74, 0.4) !important;
+    
+    }
+
+    /* Blocchi aggiunti (#11, #12) */
+
+    html:not([data-tema]) .blocco-ricordami {
+        background: #26221c;
+        border-color: rgba(217, 139, 74, 0.22);
+    
+    }
+
+    html:not([data-tema]) .blocco-ricordami legend {
+        color: #8fa765;
+    
+    }
+
+    html:not([data-tema]) .storia-successo {
+        background: #26221c;
+        border-color: rgba(217, 139, 74, 0.22);
+    
+    }
+
+    html:not([data-tema]) .storia-successo figcaption {
+        color: #c9bca8;
+    
+    }
+
+    html:not([data-tema]) .nota-obbligatori {
+        color: #c9bca8;
+    
+    }
+
+    /* Marcatore elenco visibile anche su fondo scuro */
+
+    html:not([data-tema]) main>section ul:not([class]) li::before {
+        background: #d98b4a;
+    
+    }
+}
+
+
+/* (B) Tema scuro FORZATO dal tasto, indipendente dal sistema. */
+/* Schema colori nativo (selettori dei controlli, scrollbar...) */
+
+html[data-tema="scuro"] {
+        color-scheme: dark;
+    
+}
+
+/* Base */
+
+html[data-tema="scuro"] body {
+        background-color: #1c1813;
+        color: #f1e9dd;
+    
+}
+
+/* Tipografia e link */
+
+html[data-tema="scuro"] h1,
+html[data-tema="scuro"] h2,
+html[data-tema="scuro"] h3,
+html[data-tema="scuro"] h4,
+html[data-tema="scuro"] h5,
+html[data-tema="scuro"] h6,
+html[data-tema="scuro"] strong,
+html[data-tema="scuro"] a {
+        color: #d98b4a;
+    
+}
+
+html[data-tema="scuro"] a:hover,
+html[data-tema="scuro"] a:focus {
+        color: #8fa765;
+    
+}
+
+html[data-tema="scuro"] code {
+        background: #332d24;
+        color: #f1e9dd;
+    
+}
+
+/* Header e footer */
+
+html[data-tema="scuro"] .header {
+        background-color: #2f3a1f;
+        border-bottom-color: #d98b4a;
+    
+}
+
+html[data-tema="scuro"] .footer {
+        background: #3a2a18;
+        border-top-color: #8fa765;
+    
+}
+
+/* In header e footer testo/brand/link restano bianchi: massimo
+       contrasto sul fondo colorato (#7, AA garantito). Esclusi i pulsanti
+       (.btn) e il riquadro account, che hanno colori propri. */
+
+html[data-tema="scuro"] .header,
+html[data-tema="scuro"] .footer,
+html[data-tema="scuro"] .brand-logo strong,
+html[data-tema="scuro"] .footer a:not(.btn),
+html[data-tema="scuro"] .footer strong {
+        color: white;
+    
+}
+
+/* Riquadri, card, form, fieldset, dettagli */
+
+html[data-tema="scuro"] .card-gatto,
+html[data-tema="scuro"] fieldset,
+html[data-tema="scuro"] .barra-controlli,
+html[data-tema="scuro"] details,
+html[data-tema="scuro"] .turno-item,
+html[data-tema="scuro"] .privacy-indice,
+html[data-tema="scuro"] .privacy-blocco,
+html[data-tema="scuro"] main>section:first-child,
+html[data-tema="scuro"] .statistiche dt,
+html[data-tema="scuro"] .statistiche dd {
+        background: #26221c;
+        border-color: rgba(217, 139, 74, 0.22);
+    
+}
+
+html[data-tema="scuro"] main>section ul:not([class]) li,
+html[data-tema="scuro"] main>section ol:not([class]) li,
+html[data-tema="scuro"] blockquote {
+        background: #26221c;
+        border-color: rgba(217, 139, 74, 0.22);
+    
+}
+
+/* Campi dei form */
+
+html[data-tema="scuro"] input[type="text"],
+html[data-tema="scuro"] input[type="email"],
+html[data-tema="scuro"] input[type="password"],
+html[data-tema="scuro"] input[type="number"],
+html[data-tema="scuro"] input[type="date"],
+html[data-tema="scuro"] input[type="datetime-local"],
+html[data-tema="scuro"] input[type="search"],
+html[data-tema="scuro"] select,
+html[data-tema="scuro"] textarea {
+        background: #1c1813;
+        color: #f1e9dd;
+        border-color: rgba(217, 139, 74, 0.45);
+    
+}
+
+/* Sfondi tenui / superfici secondarie */
+
+html[data-tema="scuro"] .tag,
+html[data-tema="scuro"] .privacy-cookie-card,
+html[data-tema="scuro"] .card-gatto figure,
+html[data-tema="scuro"] .turno-item.pieno,
+html[data-tema="scuro"] .turno-item.iscritto,
+html[data-tema="scuro"] .turno-item.disponibile:hover,
+html[data-tema="scuro"] tr:nth-child(even) td,
+html[data-tema="scuro"] summary {
+        background: #332d24;
+    
+}
+
+html[data-tema="scuro"] tr:hover td,
+html[data-tema="scuro"] summary:hover,
+html[data-tema="scuro"] details[open] summary {
+        background: #3a3329;
+    
+}
+
+/* Testi secondari */
+
+html[data-tema="scuro"] .testo-tenue,
+html[data-tema="scuro"] .privacy-sottotitolo,
+html[data-tema="scuro"] .privacy-nota,
+html[data-tema="scuro"] .aiuto-campo,
+html[data-tema="scuro"] .statistiche dt,
+html[data-tema="scuro"] .card-gatto dt,
+html[data-tema="scuro"] .tag {
+        color: #c9bca8;
+    
+}
+
+/* Feedback */
+
+html[data-tema="scuro"] .messaggio-errore {
+        background: #3a2020;
+        color: #f08a8a;
+        border-color: #f08a8a;
+    
+}
+
+html[data-tema="scuro"] .messaggio-successo {
+        background: #1e3324;
+        color: #6fcf85;
+        border-color: #6fcf85;
+    
+}
+
+html[data-tema="scuro"] .messaggio-avviso,
+html[data-tema="scuro"] main aside.messaggio,
+html[data-tema="scuro"] .messaggio[role="note"] {
+        background: #34301f;
+        color: #e0c069;
+        border-color: #e0c069;
+    
+}
+
+/* Sezione "nuovi arrivi" */
+
+html[data-tema="scuro"] .nuovi-arrivi {
+        background: linear-gradient(135deg, #2a2118 0%, #322820 100%) !important;
+        border-color: rgba(217, 139, 74, 0.4) !important;
+    
+}
+
+/* Blocchi aggiunti (#11, #12) */
+
+html[data-tema="scuro"] .blocco-ricordami {
+        background: #26221c;
+        border-color: rgba(217, 139, 74, 0.22);
+    
+}
+
+html[data-tema="scuro"] .blocco-ricordami legend {
+        color: #8fa765;
+    
+}
+
+html[data-tema="scuro"] .storia-successo {
+        background: #26221c;
+        border-color: rgba(217, 139, 74, 0.22);
+    
+}
+
+html[data-tema="scuro"] .storia-successo figcaption {
+        color: #c9bca8;
+    
+}
+
+html[data-tema="scuro"] .nota-obbligatori {
+        color: #c9bca8;
+    
+}
+
+/* Marcatore elenco visibile anche su fondo scuro */
+
+html[data-tema="scuro"] main>section ul:not([class]) li::before {
+        background: #d98b4a;
+    
+}
+
+
+
+
+/* ============================================================
+   2. RESET & BASE
+   ============================================================ */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    font-size: 100%;
+}
+
+/* Rimuove tutte le animazioni per chi preferisce il movimento ridotto */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation: none !important;
+        transition: none !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+body {
+    font-family: 'Segoe UI', 'Tahoma', 'Geneva', 'Verdana', sans-serif;
+    font-size: 1rem;
+    color: black;
+    background-color: cornsilk;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+
+/* ============================================================
+   3. TIPOGRAFIA
+   ============================================================ */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: 'Georgia', 'Times New Roman', serif;
+    color: saddlebrown;
+    line-height: 1.3;
+    margin-bottom: 1rem;
+}
+
+h1 {
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+h2 {
+    font-size: clamp(1.3rem, 3vw, 1.9rem);
+}
+
+h3 {
+    font-size: clamp(1.05rem, 2.5vw, 1.4rem);
+}
+
+p,
+blockquote {
+    margin-bottom: 1rem;
+    font-size: clamp(0.9rem, 1vw + 0.6rem, 1.1rem);
+    text-align: left;
+    line-height: 1.7;
+}
+
+ul,
+ol {
+    padding-left: 2rem;
+}
+
+abbr[title] {
+    text-decoration: none;
+    cursor: help;
+}
+
+strong {
+    color: saddlebrown;
+    font-weight: 700;
+}
+
+/*
+ * Nei contesti con sfondo scuro (header, footer, account-box),
+ * strong non deve ereditare il colore brand ma il bianco del genitore.
+ */
+.account-box strong,
+.utente-info strong,
+.brand-logo strong,
+.footer strong {
+    color: inherit;
+}
+
+/* mark usato come badge: reset dello stile giallo predefinito del browser */
+mark {
+    background: transparent;
+    color: inherit;
+    font-style: normal;
+    font-weight: 700;
+}
+
+code {
+    background: #f5e8c8;
+    padding: .1em .3em;
+    border-radius: .5rem;
+    font-size: .9em;
+}
+
+
+/* ============================================================
+   4. LINK & UTILITÀ TESTO
+   ============================================================ */
+a {
+    color: saddlebrown;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+a:hover,
+a:focus {
+    color: darkolivegreen;
+}
+
+
+/* ============================================================
+   5. FOCUS & ACCESSIBILITÀ
+   ============================================================ */
+:focus-visible {
+    outline: 3px solid gold;
+    outline-offset: 3px;
+    border-radius: .5rem;
+}
+
+
+/* ============================================================
+   6. LAYOUT: HEADER
+   ============================================================
+   Desktop — tre colonne: [ logo 1fr ] [ nav 2fr ] [ account 1fr ]
+   Mobile  — due colonne: [ logo 1fr ] [ menu auto ]
+             la nav e l'account scendono sotto se .aperto
+   ============================================================ */
+.header {
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    grid-template-areas: "logo nav account";
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background-color: darkolivegreen;
+    border-bottom: 4px solid saddlebrown;
+    font-size: 1.1rem;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+@media (max-width: 1100px) {
+    .header {
+        grid-template-columns: 1fr 1fr;
+        grid-template-areas: "logo account"
+                                "nav nav";
+
+    }
+}
+
+
+
+
+/* ── 6a. Logo ─────────────────────────────────────────────── */
+.brand-logo {
+    grid-area: logo;
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    color: white;
+    text-decoration: none;
+    font-size: 1.3rem;
+    font-weight: 700;
+    flex-wrap: nowrap;
+}
+
+.brand-logo:hover,
+.brand-logo:focus {
+    opacity: .88;
+    color: white;
+}
+
+.logo-img {
+    width: 44px;
+    height: 44px;
+    object-fit: contain;
+    flex-shrink: 0;
+}
+
+
+/* ── 6b. Hamburger ────────────────────────────────────────── */
+/*
+ * Su desktop è rimosso dal flusso (position: absolute) così non
+ * occupa nessuna cella della grid.
+ * Su mobile torna in posizione statica (vedi §25).
+ */
+.menu-toggle {
+    display: none;
+    position: absolute;
+    /* fuori dalla grid su desktop */
+    align-items: center;
+    gap: .45rem;
+    padding: .45rem .7rem;
+    border: 2px solid white;
+    border-radius: .5rem;
+    background: transparent;
+    color: white;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    line-height: 1;
+}
+
+.menu-toggle:hover,
+.menu-toggle:focus {
+    background: #3e5022;
+}
+
+/* Icona "hamburger" disegnata via CSS (niente emoji): tre barre. */
+.menu-toggle-icona {
+    display: inline-block;
+    width: 1.1rem;
+    height: 2px;
+    background: currentColor;
+    position: relative;
+}
+
+.menu-toggle-icona::before,
+.menu-toggle-icona::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: currentColor;
+}
+
+.menu-toggle-icona::before {
+    top: -5px;
+}
+
+.menu-toggle-icona::after {
+    top: 5px;
+}
+
+/* Stato aperto: le barre diventano una "X". */
+.menu-toggle.aperto .menu-toggle-icona {
+    background: transparent;
+}
+
+.menu-toggle.aperto .menu-toggle-icona::before {
+    top: 0;
+    transform: rotate(45deg);
+}
+
+.menu-toggle.aperto .menu-toggle-icona::after {
+    top: 0;
+    transform: rotate(-45deg);
+}
+
+.menu-toggle:hover {
+    background: #3e5022;
+}
+
+
+/* ── 6c. Nav principale ───────────────────────────────────── */
+.header>nav {
+    grid-area: nav;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.header>nav ul {
+    display: flex;
+    gap: 1rem;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    align-items: center;
+}
+
+.header>nav a {
+    background-color: darkolivegreen;
+    color: white;
+    border-color: darkolivegreen;
+    font-size: inherit;
+}
+
+.header>nav a:hover,
+.header>nav a:focus {
+    background: #3e5022;
+}
+
+.header nav a.active {
+    background-color: black;
+    border-color: black;
+    color: white;
+}
+
+/* Link account nella nav: nascosti su desktop, visibili su mobile */
+.nav-conto {
+    display: none;
+}
+
+
+/* ── 6d. Area account ─────────────────────────────────────── */
+.stato-autenticazione {
+    grid-area: account;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: .5rem;
+}
+
+/* Selettore tema (3 stati). Icona disegnata via CSS: cerchio metà pieno. */
+.toggle-tema {
+    display: inline-flex;
+    align-items: center;
+    gap: .4rem;
+    background: transparent;
+    border: 2px solid white;
+    color: white;
+    padding: .35rem .6rem;
+    font-size: .85rem;
+    font-weight: 700;
+    line-height: 1;
+    flex-shrink: 0;
+    cursor: pointer;
+}
+
+.toggle-tema:hover,
+.toggle-tema:focus {
+    background: #3e5022;
+    color: white;
+}
+
+.toggle-tema .icona-tema {
+    width: 1rem;
+    height: 1rem;
+    border-radius: 50%;
+    border: 2px solid currentColor;
+    /* metà pieno: lato destro colorato */
+    background: linear-gradient(90deg, transparent 0 50%, currentColor 50% 100%);
+    flex-shrink: 0;
+}
+
+/* Variazione icona in base allo stato (sole / luna / metà) */
+.toggle-tema[data-stato="chiaro"] .icona-tema {
+    background: transparent;
+}
+
+.toggle-tema[data-stato="scuro"] .icona-tema {
+    background: currentColor;
+}
+
+/* Contenitore bianco compatto: [ icona + nome + badge | pulsante ] */
+.account-box {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    row-gap: .6rem;
+    padding: .6rem;
+    background: white;
+    color: black;
+    border-radius: .5rem;
+}
+
+.utente-info {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    margin: 0;
+    padding-right: .8rem;
+    font-size: 1rem;
+    color: black;
+    min-width: 0;
+    flex-wrap: wrap;
+}
+
+.nome-utente {
+    font-weight: 700;
+    font-style: normal;
+    color: #6b3410;
+    white-space: nowrap;
+    max-width: 100px;
+}
+
+/* Icona utente disegnata via CSS (testa + spalle), nessuna emoji. */
+.icona-utente {
+    position: relative;
+    display: inline-block;
+    width: 1.1rem;
+    height: 1.1rem;
+    flex-shrink: 0;
+}
+
+.icona-utente::before {
+    /* testa */
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: .45rem;
+    height: .45rem;
+    border-radius: 50%;
+    background: #6b3410;
+}
+
+.icona-utente::after {
+    /* spalle */
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: .9rem;
+    height: .5rem;
+    border-radius: .45rem .45rem 0 0;
+    background: #6b3410;
+}
+
+.badge-gatto {
+    display: inline-block;
+    padding: .1rem .45rem;
+    background: darkolivegreen;
+    color: white;
+    border-radius: .5rem;
+    font-size: .72rem;
+    font-weight: 700;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+/* Separatore verticale tra info utente e pulsante azione */
+.account-azioni {
+    border-left: 1px solid black;
+    padding-left: .8rem;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: .8rem;
+}
+
+/* Pulsanti area account */
+
+.btn-login {
+    background-color: saddlebrown;
+    border-color: saddlebrown;
+    color: white;
+}
+
+.btn-login:hover,
+.btn-login:focus {
+    background-color: #6b3410;
+    border-color: #6b3410;
+    color: white;
+}
+
+.btn-signin {
+    background-color: white;
+    border-color: saddlebrown;
+    color: saddlebrown;
+}
+
+.btn-signin:hover,
+.btn-signin:focus {
+    border-color: #6b3410;
+    color: #6b3410;
+    background-color: cornsilk;
+}
+
+
+.btn-logout {
+    background: darkred;
+    color: white;
+    border-color: darkred;
+}
+
+.btn-logout:hover,
+.btn-logout:focus {
+    background: maroon;
+    color: white;
+    border-color: maroon;
+}
+
+
+/* ============================================================
+   7. LAYOUT: FOOTER
+   ============================================================
+   Desktop — tre colonne:
+     [ logo ]  [ nav principale + nav privacy ]  [ contatti ]
+     [ copyright — larghezza piena ]
+   Mobile  — singola colonna (vedi §25)
+   ============================================================ */
+.footer {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: auto auto;
+    grid-template-areas:
+        "f-logo  f-centro  f-contatti"
+        "f-copy  f-copy    f-copy";
+    align-items: center;
+    column-gap: 2rem;
+    row-gap: 1rem;
+    padding: 1.5rem 2rem;
+    background: saddlebrown;
+    border-top: 4px solid darkolivegreen;
+    color: white;
+    margin-top: auto;
+    font-size: 1rem;
+}
+
+.footer .brand-logo {
+    grid-area: f-logo;
+}
+
+.footer .footer-centro {
+    grid-area: f-centro;
+}
+
+.footer .footer-contatti {
+    grid-area: f-contatti;
+    justify-self: end;
+}
+
+.footer .footer-copy {
+    grid-area: f-copy;
+}
+
+
+/* ── 7a. Logo footer ──────────────────────────────────────── */
+.footer .brand-logo {
+    color: white;
+}
+
+.footer .brand-logo:hover,
+.footer .brand-logo:focus {
+    opacity: .88;
+    color: white;
+}
+
+
+/* ── 7b. Sezione centrale (nav principale + nav privacy) ──── */
+.footer-centro {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: .5rem;
+}
+
+/* Nav principale footer */
+.footer-centro>nav:first-child ul {
+    display: flex;
+    gap: .25rem;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.footer-centro>nav:first-child a {
+    padding: .3rem .6rem;
+    color: white;
+    background-color: saddlebrown;
+    border-color: saddlebrown;
+}
+
+.footer-centro>nav:first-child a:hover,
+.footer-centro>nav:first-child a:focus {
+    background-color: #6b3410;
+    border-color: #6b3410;
+    color: white;
+}
+
+.footer-centro>nav:first-child a.active,
+.faq-button.active {
+    background-color: black;
+    color: white;
+    border-color: black;
+}
+
+/* Nav privacy (sotto la nav principale) */
+.footer-privacy ul {
+    display: flex;
+    gap: 1rem;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.footer-privacy a,
+.footer-privacy .link-button {
+    font-size: .82rem;
+    color: rgba(255, 255, 255, .75);
+}
+
+.footer-privacy a:hover,
+.footer-privacy a:focus,
+.footer-privacy .link-button:hover,
+.footer-privacy .link-button:focus {
+    color: white;
+    text-decoration: underline;
+}
+
+
+/* ── 7c. Contatti ─────────────────────────────────────────── */
+.footer-contatti {
+    font-style: normal;
+    line-height: 1.7;
+    font-size: .88rem;
+}
+
+/* I paragrafi degli indirizzi (al posto dei <br>) restano compatti */
+.footer-contatti p,
+address p {
+    margin: 0;
+}
+
+.footer-contatti a {
+    color: rgba(255, 255, 255, .85);
+}
+
+.footer-contatti a:hover {
+    color: white;
+    text-decoration: underline;
+}
+
+/* Pulsante testuale generico (usato nel footer privacy) */
+.link-button {
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, .85);
+    text-decoration: underline;
+    cursor: pointer;
+    font: inherit;
+    font-size: .88rem;
+    padding: 0;
+}
+
+.link-button:hover {
+    color: white;
+}
+
+/* URL pagina — visibile solo in stampa */
+.footer-url {
+    display: none;
+}
+
+
+/* ── 7d. Copyright ────────────────────────────────────────── */
+.footer-copy {
+    border-top: 1px solid rgba(255, 255, 255, .2);
+    padding-top: 1rem;
+    text-align: center;
+    font-size: .82rem;
+    color: rgba(255, 255, 255, .75);
+}
+
+
+/* ============================================================
+   8. PULSANTE FAQ FISSO
+   ============================================================ */
+.faq-button {
+    position: fixed;
+    right: max(1rem, env(safe-area-inset-right));
+    bottom: max(1rem, env(safe-area-inset-bottom));
+    width: 3.5rem;
+    height: 3.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: darkolivegreen;
+    color: white;
+    text-decoration: none;
+    font-size: 1.5rem;
+    font-weight: 700;
+    border: 2px solid saddlebrown;
+    z-index: 999;
+}
+
+/* Quando il banner cookie è visibile, il pulsante FAQ si solleva
+   (commutato via classList da footer.js, non con stile in-line). */
+.faq-button--alzato {
+    bottom: max(5rem, env(safe-area-inset-bottom));
+}
+
+.faq-button:hover,
+.faq-button:focus-visible {
+    transform: scale(1.07);
+    color: white;
+    background-color: #3e5022;
+    border-color: #6b3410;
+}
+
+
+/* ============================================================
+   9. BANNER COOKIE
+   ============================================================ */
+.banner-cookie {
+    position: sticky;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: saddlebrown;
+    color: white;
+    padding: 1rem 5rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem;
+    z-index: 800;
+    border-top: 4px solid darkolivegreen;
+}
+
+.banner-cookie p {
+    margin: 0;
+    flex: 1;
+    min-width: 200px;
+    font-size: .9rem;
+}
+
+.banner-cookie p a {
+    color: #f5e8c8;
+}
+
+.banner-cookie nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    gap: .5rem;
+}
+
+
+/* ============================================================
+   10. MAIN / CONTENUTO
+   ============================================================ */
+main {
+    flex: 1;
+    width: 100%;
+    line-height: 1.7;
+}
+
+/*
+ * Container interno a ogni section/aside del main:
+ * centra e limita la larghezza senza toccare il markup PHP.
+ * Usiamo un selettore diretto sui figli di <main>.
+ * (Escluso il main della home, che usa una griglia a aree dedicata.)
+ */
+main:not(.main-home)>section,
+main:not(.main-home)>aside,
+main:not(.main-home)>article {
+    width: 100%;
+    max-width: 1100px;
+    margin-inline: auto;
+    padding: clamp(1.5rem, 4vw, 3rem) clamp(1rem, 5vw, 3rem);
+}
+
+/* ============================================================
+   10b. HOME — LAYOUT A GRIGLIA CON AREE NOMINATE (grid-template-areas)
+   ============================================================
+   DESKTOP (≥ 901px): impaginazione "a rivista" su due colonne.
+     hero      → larghezza piena
+     perche / impatto    → affiancate
+     come  / storia      → affiancate
+     arrivi              → larghezza piena (vetrina)
+     aiuta / faq         → affiancate
+   MOBILE / TABLET (≤ 900px): le aree collassano in colonna unica
+   con un ordine di lettura naturale (vedi §25). La differenza fra
+   desktop e mobile è quindi marcata: due colonne ricche vs flusso
+   verticale lineare.
+   ============================================================ */
+.main-home {
+    display: grid;
+    width: 100%;
+    max-width: 1100px;
+    margin-inline: auto;
+    gap: 0;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+        "hero hero"
+        "perche impatto"
+        "come storia"
+        "arrivi arrivi"
+        "aiuta faq";
+    align-items: stretch;
+}
+
+.main-home>section,
+.main-home>aside {
+    padding: clamp(1.5rem, 4vw, 3rem) clamp(1rem, 5vw, 3rem);
+    min-width: 0;
+    /* evita overflow dei contenuti nella cella */
+}
+
+.main-home .zona-hero {
+    grid-area: hero;
+}
+
+.main-home .zona-perche {
+    grid-area: perche;
+}
+
+.main-home .zona-impatto {
+    grid-area: impatto;
+}
+
+.main-home .zona-come {
+    grid-area: come;
+}
+
+.main-home .zona-storia {
+    grid-area: storia;
+}
+
+.main-home .zona-arrivi {
+    grid-area: arrivi;
+}
+
+.main-home .zona-aiuta {
+    grid-area: aiuta;
+}
+
+.main-home .zona-faq {
+    grid-area: faq;
+}
+
+/*
+ * (#2) Nessun bordo di separazione tra le sezioni del main.
+ * L'unico bordo previsto è quello inferiore della PRIMA section
+ * di ogni main (quella che contiene l'h1), definito più sotto.
+ */
+
+/* (#2) Prima sezione (hero, con h1): unico bordo è quello inferiore. */
+main>section:first-child {
+    background: white;
+    padding-block: clamp(2rem, 6vw, 4rem);
+    border-bottom: 4px solid saddlebrown;
+}
+
+/* ── Hero: titolo H1 centrato, paragrafi centrati ── */
+main>section:first-child h1 {
+    margin-inline: auto;
+}
+
+main>section:first-child>p {
+    max-width: 70ch;
+    margin-inline: auto;
+    text-align: center;
+    font-size: clamp(1rem, 1.5vw + 0.5rem, 1.15rem);
+    color: #4a3520;
+}
+
+/* ── Liste punti (ul/ol nelle sezioni informative) ── */
+main>section ul:not([class]),
+main>section ol:not([class]) {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding-left: 0;
+    list-style: none;
+    max-width: 70ch;
+    margin-top: 1rem;
+}
+
+main>section ul:not([class]) li,
+main>section ol:not([class]) li {
+    padding: 1rem 1rem 1rem 3.2rem;
+    background: white;
+    border: 1px solid rgba(139, 69, 19, 0.15);
+    border-left: 4px solid saddlebrown;
+    border-radius: .5rem;
+    position: relative;
+    font-size: clamp(0.9rem, 1vw + 0.5rem, 1rem);
+    line-height: 1.6;
+}
+
+main>section ol:not([class]) {
+    counter-reset: passi;
+}
+
+main>section ol:not([class]) li {
+    counter-increment: passi;
+    border-left-color: darkolivegreen;
+}
+
+main>section ol:not([class]) li::before {
+    content: counter(passi);
+    position: absolute;
+    left: 0.9rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 1.6rem;
+    height: 1.6rem;
+    background: darkolivegreen;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.8rem;
+    line-height: 1;
+}
+
+main>section ul:not([class]) li::before {
+    content: '';
+    position: absolute;
+    left: 0.9rem;
+    top: 1.15rem;
+    width: .5rem;
+    height: .5rem;
+    border-radius: 50%;
+    background: saddlebrown;
+}
+
+/* ── Blockquote stile testimonianza ── */
+blockquote {
+    position: relative;
+    background: white;
+    border-left: 5px solid saddlebrown;
+    border-radius: .5rem;
+    padding: 1.5rem 1.5rem 1.5rem calc(2rem + 1rem);
+    margin: 1.5rem 0 .5rem;
+    font-size: clamp(1rem, 1.5vw + 0.3rem, 1.15rem);
+    font-style: italic;
+    color: #4a3520;
+    max-width: 55ch;
+}
+
+blockquote::before {
+    content: '"';
+    position: absolute;
+    left: 0.6rem;
+    top: 0.2rem;
+    font-size: 3.5rem;
+    color: saddlebrown;
+    opacity: 0.35;
+    font-family: 'Georgia', 'Times New Roman', serif;
+    line-height: 1;
+}
+
+/* Autore testimonianza */
+main>aside>p:last-child {
+    color: #6b3410;
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-top: -0.5rem;
+}
+
+/* ── Statistiche (dl.statistiche) ── */
+.statistiche {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+    list-style: none;
+    padding: 0;
+    margin-top: 1.5rem;
+    max-width: 100%;
+}
+
+.statistiche dt {
+    font-size: clamp(0.75rem, 1vw + 0.4rem, 0.85rem);
+    font-weight: 600;
+    color: #6b3410;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: .25rem;
+    line-height: 1.3;
+}
+
+.statistiche dd {
+    font-family: 'Georgia', 'Times New Roman', serif;
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 700;
+    color: saddlebrown;
+    margin: 0;
+    line-height: 1;
+}
+
+/* Wrap dt+dd in box visivo sfruttando il fatto che sono fratelli */
+.statistiche dt {
+    background: white;
+    border-radius: .5rem .5rem 0 0;
+    padding: 1rem 1rem .25rem;
+    border: 1px solid rgba(139, 69, 19, 0.15);
+    border-bottom: none;
+    margin: 0;
+}
+
+.statistiche dd {
+    background: white;
+    border-radius: 0 0 .5rem .5rem;
+    padding: .25rem 1rem 1rem;
+    border: 1px solid rgba(139, 69, 19, 0.15);
+    border-top: 3px solid saddlebrown;
+}
+
+
+/* ============================================================
+   11. PULSANTI GENERALI
+   ============================================================ */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: .25rem;
+    padding: .45rem .8rem;
+    border-radius: .5rem;
+    font-family: 'Segoe UI', 'Tahoma', 'Geneva', 'Verdana', sans-serif;
+    font-size: clamp(0.85rem, 1vw + 0.4rem, 1rem);
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    border-width: 2px;
+    border-style: solid;
+    white-space: nowrap;
+}
+
+.btn:active {
+    transform: translateY(0);
+}
+
+.btn-primario {
+    background: darkolivegreen;
+    color: white;
+    border-color: darkolivegreen;
+}
+
+.btn-primario:hover,
+.btn-primario:focus {
+    background: #3e5022;
+    border-color: #3e5022;
+    color: white;
+}
+
+.btn-secondario {
+    background: transparent;
+    color: white;
+    border-color: darkolivegreen;
+}
+
+.btn-secondario:hover,
+.btn-secondario:focus {
+    background: #6b3410;
+    border-color: #3e5022;
+    color: white;
+}
+
+
+/* ============================================================
+   12. MESSAGGI DI FEEDBACK
+   ============================================================ */
+.messaggio {
+    display: block;
+    padding: 1rem 1.5rem;
+    border-radius: .5rem;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+    border-left: 4px solid;
+}
+
+.messaggio-errore {
+    background: #fdf2f2;
+    color: darkred;
+    border-color: darkred;
+}
+
+.messaggio-successo {
+    background: #f2fdf4;
+    color: #1e5c2e;
+    border-color: #1e5c2e;
+}
+
+.messaggio-avviso {
+    background: #fdf8ec;
+    color: #6b4c00;
+    border-color: #6b4c00;
+}
+
+/* Etichetta testuale (al posto delle emoji): pillola colorata. */
+.messaggio-tag {
+    display: inline-block;
+    margin-right: .5rem;
+    padding: .05rem .5rem;
+    border-radius: 1rem;
+    font-size: .72rem;
+    font-weight: 700;
+    letter-spacing: .03em;
+    text-transform: uppercase;
+    color: white;
+    vertical-align: middle;
+}
+
+.messaggio-errore .messaggio-tag {
+    background: darkred;
+}
+
+.messaggio-successo .messaggio-tag {
+    background: #1e5c2e;
+}
+
+.messaggio-avviso .messaggio-tag {
+    background: #6b4c00;
+}
+
+
+/* ============================================================
+   13. AZIONI PRINCIPALI (home)
+   ============================================================ */
+.azioni-principali ul {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    list-style: none;
+    padding: 0;
+    margin-top: 1.5rem;
+}
+
+/* Sezione "nuovi arrivi": sfondo caldo distinto */
+.nuovi-arrivi {
+    background: linear-gradient(135deg, #fdf3e3 0%, #f7ead6 100%) !important;
+    border-radius: .5rem;
+    border: 1px solid rgba(139, 69, 19, 0.25) !important;
+}
+
+.nuovi-arrivi h2 {
+    font-size: clamp(1.2rem, 2.5vw, 1.7rem);
+}
+
+.badge-nuovo {
+    display: inline-block;
+    background: darkred;
+    color: white;
+    font-size: .72rem;
+    padding: 2px .5rem;
+    border-radius: .5rem;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    font-weight: 700;
+    margin-left: .25rem;
+    vertical-align: middle;
+}
+
+
+/* ============================================================
+   14. CARD GATTO
+   ============================================================ */
+.griglia-gatti {
+    display: grid;
+    /* Card orizzontali: una colonna larga (su schermi ampi due colonne) */
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    list-style: none;
+    padding: 0;
+    margin-top: 1.5rem;
+}
+
+/* Su schermi molto larghi due card orizzontali affiancate */
+@media (min-width: 1200px) {
+    .griglia-gatti {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* CARD ORIZZONTALE: immagine a sinistra, contenuti a destra.
+   Le dimensioni della colonna immagine sono fisse così lo spazio è
+   riservato prima del caricamento dell'immagine → niente layout shift (CLS). */
+.card-gatto {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    align-items: stretch;
+    background: white;
+    border: 1px solid rgba(139, 69, 19, 0.15);
+    border-radius: .5rem;
+    overflow: hidden;
+    position: relative;
+}
+
+.card-gatto[role="checkbox"] {
+    cursor: pointer;
+}
+
+/* (#3) All'hover si sposta SOLO l'intera card, senza ombre e
+   senza ingrandire l'immagine. */
+.card-gatto:hover {
+    transform: translateY(-3px);
+}
+
+/* Stato selezionato */
+.card-gatto.selezionata {
+    outline: 3px solid saddlebrown;
+    outline-offset: -3px;
+}
+
+.card-gatto figure {
+    margin: 0;
+    /* Larghezza/altezza riservate: rapporto fisso, nessun salto di layout */
+    width: 200px;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    background: #f5e8c8;
+}
+
+.card-gatto figure img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.card-gatto-corpo {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    gap: .25rem;
+    min-width: 0;
+}
+
+.card-gatto-descr {
+    /* Limita l'altezza della descrizione per card uniformi e compatte */
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    margin-bottom: .25rem;
+}
+
+.card-gatto .btn {
+    align-self: flex-start;
+    margin-top: auto;
+}
+
+.card-gatto-corpo h3 {
+    font-size: clamp(1rem, 1.5vw + 0.3rem, 1.15rem);
+    margin-bottom: 0;
+}
+
+/* Tag / etichette */
+.card-gatto-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .25rem;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.tag {
+    font-size: .75rem;
+    padding: 2px .5rem;
+    border-radius: .5rem;
+    background: #f0e8d0;
+    color: #6b3410;
+    font-weight: 700;
+}
+
+/* Definizione lista dati gatto */
+.card-gatto dl {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: .25rem .5rem;
+    font-size: .88rem;
+    margin-top: .25rem;
+}
+
+.card-gatto dt {
+    font-weight: 700;
+    color: #6b3410;
+}
+
+.card-gatto dd {
+    margin: 0;
+}
+
+.card-gatto meter {
+    width: 100%;
+    height: .6rem;
+    margin-top: .25rem;
+    accent-color: saddlebrown;
+}
+
+/* Badge di selezione mostrato solo quando la card è selezionata.
+   Il segno di spunta è disegnato via CSS (niente emoji). */
+.card-badge-selezione {
+    position: absolute;
+    top: .5rem;
+    right: .5rem;
+    background: saddlebrown;
+    border-radius: 50%;
+    width: 2rem;
+    height: 2rem;
+    display: none;
+    pointer-events: none;
+    z-index: 3;
+}
+
+/* Spunta disegnata con due segmenti ruotati */
+.card-badge-selezione::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 46%;
+    width: .45rem;
+    height: .85rem;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    transform: translate(-50%, -55%) rotate(45deg);
+}
+
+.card-gatto.selezionata .card-badge-selezione {
+    display: block;
+}
+
+
+/* ============================================================
+   15. BARRA CONTROLLI
+   ============================================================ */
+/* Riserva spazio per il componente React mentre carica:
+   riduce il Cumulative Layout Shift (CLS) sulla pagina "adotta". */
+#react-gatti-root {
+    display: block;
+    min-height: 60vh;
+}
+
+#react-gatti-root .caricamento {
+    min-height: 40vh;
+    align-items: center;
+}
+
+.barra-controlli {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: flex-end;
+    margin-bottom: 1.5rem;
+    padding: 1rem 1.5rem;
+    background: white;
+    border-radius: .5rem;
+    border: 1px solid rgba(139, 69, 19, 0.15);
+    max-width: none;
+    width: 100%;
+}
+
+.barra-controlli label {
+    display: flex;
+    flex-direction: column;
+    gap: .25rem;
+    flex: 1;
+    min-width: 160px;
+    font-size: .9rem;
+    font-weight: 600;
+}
+
+
+/* ============================================================
+   16. FORM & CAMPI
+   ============================================================ */
+form {
+    max-width: 600px;
+}
+
+/* Form centrato nella pagina (login, registrazione) */
+main>section>form,
+main>section>div>form {
+    margin-inline: auto;
+}
+
+fieldset {
+    border: 1px solid rgba(139, 69, 19, 0.25);
+    border-radius: .5rem;
+    padding: 1.5rem;
+    margin-bottom: .8rem;
+    background: white;
+}
+
+legend {
+    font-family: 'Georgia', 'Times New Roman', serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: saddlebrown;
+    padding: 0 .5rem;
+}
+
+label {
+    display: flex;
+    flex-direction: row;
+    gap: .25rem;
+    margin-bottom: .5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: black;
+}
+
+/* Campi testo comuni */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+input[type="date"],
+input[type="datetime-local"],
+input[type="search"],
+select,
+textarea {
+    width: 100%;
+    padding: .5rem 1rem;
+    border: 2px solid #b08442;
+    border-radius: .5rem;
+    font-family: 'Segoe UI', 'Tahoma', 'Geneva', 'Verdana', sans-serif;
+    font-size: 1rem;
+    color: black;
+    background: white;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    border-color: #1a5ea8;
+    outline: none;
+}
+
+/* (#3) Rende SEMPRE visibile e cliccabile l'icona che apre il calendario
+   nei campi data/ora. Di default in alcuni browser/temi è poco visibile. */
+input[type="date"]::-webkit-calendar-picker-indicator,
+input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+    opacity: 1;
+    padding: .15rem;
+    border-radius: .25rem;
+    /* riquadro marrone con un piccolo glifo di calendario */
+    filter: invert(28%) sepia(40%) saturate(900%) hue-rotate(355deg);
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator:hover,
+input[type="datetime-local"]::-webkit-calendar-picker-indicator:hover {
+    background: rgba(139, 69, 19, 0.15);
+}
+
+/* Stato di errore accessibile via aria-invalid */
+input[aria-invalid="true"],
+select[aria-invalid="true"],
+textarea[aria-invalid="true"] {
+    border-color: darkred;
+}
+
+textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+/* Checkbox e radio */
+.campo-checkbox {
+    flex-direction: row;
+    align-items: center;
+    gap: .5rem;
+}
+
+/* (#6) Checkbox e radio: l'accent-color colora SOLO la spunta quando
+   sono selezionati. Da non selezionati restano una casella chiara con
+   bordo, mai con sfondo scuro (anche in tema scuro forziamo lo schema
+   chiaro del controllo). */
+input[type="checkbox"],
+input[type="radio"] {
+    width: 1.2rem;
+    height: 1.2rem;
+    accent-color: saddlebrown;
+    color-scheme: light;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+/* Testi ausiliari del form */
+.campo-obbligatorio::before {
+    content: '* ';
+    color: darkred;
+}
+
+.aiuto-campo {
+    font-size: .82rem;
+    color: #6b3410;
+    font-weight: normal;
+}
+
+/* Contatore caratteri "in esaurimento" (commutato via classList) */
+.contatore-basso {
+    color: darkred;
+    font-weight: 700;
+}
+
+.errore-campo {
+    font-size: .85rem;
+    color: darkred;
+    font-weight: normal;
+    display: flex;
+    align-items: center;
+    gap: .25rem;
+}
+
+
+/* ============================================================
+   17. PROGRESS & METER
+   ============================================================ */
+progress,
+meter {
+    width: 100%;
+    height: 1rem;
+    border-radius: .5rem;
+    border: 1px solid #c8a87a;
+    overflow: hidden;
+    accent-color: saddlebrown;
+}
+
+
+/* ============================================================
+   18. CARICAMENTO
+   ============================================================ */
+.caricamento {
+    display: flex;
+    justify-content: center;
+    padding: 2rem;
+    color: #6b3410;
+    font-style: italic;
+}
+
+
+/* ============================================================
+   19. TURNI VOLONTARIATO
+   ============================================================ */
+.griglia-turni {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(185px, 1fr));
+    gap: 1rem;
+    list-style: none;
+    padding: 0;
+    margin-top: 1rem;
+}
+
+.turno-item {
+    border: 2px solid rgba(139, 69, 19, 0.25);
+    border-radius: .5rem;
+    padding: 1rem;
+    background: white;
+}
+
+.turno-item.disponibile {
+    cursor: pointer;
+}
+
+.turno-item.disponibile:hover {
+    border-color: darkolivegreen;
+    background: #f0f5e8;
+}
+
+.turno-item.pieno {
+    opacity: .55;
+    cursor: not-allowed;
+    background: #f5e8c8;
+}
+
+/* Fascia a cui l'utente è già iscritto: evidenziata, non riselezionabile */
+.turno-item.iscritto {
+    border-color: darkolivegreen;
+    background: #f5e8c8;
+    border-left: 4px solid darkolivegreen;
+}
+
+.turno-ora {
+    font-weight: 700;
+}
+
+.stato-turno {
+    font-size: .8rem;
+    font-weight: 700;
+    margin-top: .25rem;
+}
+
+.stato-turno.pieno {
+    color: darkred;
+}
+
+.stato-turno.libero {
+    color: #1e5c2e;
+}
+
+.stato-turno.iscritto {
+    color: darkolivegreen;
+}
+
+
+/* ============================================================
+   20. TABELLE
+   ============================================================ */
+.table-responsive {
+    overflow-x: auto;
+    border-radius: .5rem;
+    border: 1px solid rgba(139, 69, 19, 0.15);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1.5rem;
+    font-size: clamp(0.82rem, 1vw + 0.4rem, 1rem);
+}
+
+caption {
+    text-align: left;
+    font-weight: 700;
+    font-family: 'Georgia', 'Times New Roman', serif;
+    color: saddlebrown;
+    margin-bottom: .5rem;
+    font-size: 1.05rem;
+}
+
+th,
+td {
+    padding: .5rem 1rem;
+    border: 1px solid rgba(139, 69, 19, 0.15);
+    text-align: left;
+    vertical-align: top;
+}
+
+th {
+    background: saddlebrown;
+    color: white;
+    font-family: 'Georgia', 'Times New Roman', serif;
+    font-size: 0.9rem;
+    letter-spacing: 0.03em;
+    font-weight: 700;
+}
+
+tr:nth-child(even) td {
+    background: #fdf5e8;
+}
+
+tr:hover td {
+    background: #f5eacc;
+}
+
+
+/* ============================================================
+   21. DETAILS / SUMMARY (accordion)
+   ============================================================ */
+details {
+    border: 1px solid rgba(139, 69, 19, 0.15);
+    border-radius: .5rem;
+    margin-bottom: .5rem;
+    background: white;
+    overflow: hidden;
+}
+
+summary {
+    padding: 1rem 1.5rem;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: clamp(0.9rem, 1vw + 0.4rem, 1rem);
+    color: saddlebrown;
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #fdf8f0;
+    gap: 1rem;
+}
+
+summary:hover {
+    background: #f5edd8;
+}
+
+details[open] summary {
+    background: #f5edd8;
+    border-bottom: 1px solid rgba(139, 69, 19, 0.15);
+}
+
+/* Nasconde il marker predefinito del browser */
+summary::-webkit-details-marker {
+    display: none;
+}
+
+summary::after {
+    content: '▾';
+    transition: transform 200ms ease-in-out;
+    flex-shrink: 0;
+    font-size: 1.1rem;
+    color: saddlebrown;
+    opacity: 0.7;
+}
+
+details[open] summary::after {
+    transform: rotate(180deg);
+}
+
+details>*:not(summary) {
+    padding: 1rem 1.5rem 1.5rem;
+}
+
+details>p:not(summary) {
+    max-width: none;
+}
+
+
+/* ============================================================
+   22. SEPARATORE
+   ============================================================ */
+.separatore {
+    border: 0;
+    border-top: 1px solid #c8a87a;
+    margin: 2rem 0;
+}
+
+
+/* ============================================================
+   23. UTILITY CLASSI
+   ============================================================ */
+
+/* Solo per screen reader — invisibile visivamente */
+.sr-solo {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+.testo-centro {
+    text-align: center;
+}
+
+.testo-errore {
+    color: darkred;
+}
+
+.testo-successo {
+    color: #1e5c2e;
+}
+
+
+/* ============================================================
+   24. PAGINA FAQ
+   ============================================================ */
+.faq-categoria {
+    margin-bottom: 2rem;
+}
+
+.faq-categoria h2 {
+    border-bottom: 2px solid rgba(139, 69, 19, 0.25);
+    padding-bottom: .5rem;
+    margin-bottom: 1rem;
+    font-size: clamp(1.15rem, 2vw + 0.3rem, 1.6rem);
+}
+
+
+/* ============================================================
+   25. RESPONSIVE — ≤ 900px (tablet e mobile)
+   ============================================================
+   La grid dell'header diventa [ logo 1fr ] [ menu auto ].
+   L'hamburger (menu-toggle) torna nel flusso (position: static).
+   Nav e account scendono sotto, visibili solo se .aperto.
+   Il footer collassa in colonna singola.
+   ============================================================ */
+@media (max-width: 900px) {
+
+    .header {
+        grid-template-columns: 1fr auto;
+        grid-template-areas:
+            "logo toggle"
+            "nav  nav"
+            "account account";
+        padding: 1rem;
+        align-items: center;
+        gap: 0 1rem;
+    }
+
+    .menu-toggle {
+        display: flex;
+        position: static;
+        /* torna nel flusso della grid */
+        grid-area: toggle;
+    }
+
+    .header>nav {
+        padding: 1rem 0;
+        border-top: 1px solid rgba(255, 255, 255, .2);
+        margin-top: 1rem;
+    }
+
+    .stato-autenticazione {
+        justify-content: center;
+    }
+
+    /* Nav e account nascosti finché non si apre il menu */
+    .header>nav,
+    .stato-autenticazione {
+        display: none;
+    }
+
+    .header>nav.aperto,
+    .stato-autenticazione.aperto {
+        display: flex;
+    }
+
+    /* Voci di menu in colonna al 50% di larghezza */
+    .header>nav ul {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 1rem;
+    }
+
+    .header>nav a {
+        display: block;
+        text-align: center;
+        padding: .5rem;
+    }
+
+    /* Footer: colonna singola centrata */
+    .footer {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+            "f-logo"
+            "f-centro"
+            "f-contatti"
+            "f-copy";
+        padding: 1.5rem 1rem;
+        row-gap: 1.5rem;
+        text-align: center;
+    }
+
+    .footer .brand-logo {
+        justify-content: center;
+    }
+
+    .footer .footer-centro {
+        align-items: center;
+    }
+
+    .footer .footer-contatti {
+        justify-self: center;
+    }
+
+    /* Main sections: padding ridotto su tablet */
+    main>section,
+    main>aside,
+    main>article {
+        padding: clamp(1.2rem, 3vw, 2rem) clamp(0.75rem, 4vw, 2rem);
+    }
+
+    /* HOME: la griglia a aree collassa in colonna unica.
+       Ordine di lettura naturale tramite le aree impilate. */
+    .main-home {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+            "hero"
+            "perche"
+            "impatto"
+            "come"
+            "storia"
+            "arrivi"
+            "aiuta"
+            "faq";
+    }
+
+    /* (#2) Nessun bordo di separazione tra le celle. */
+
+    /* Statistiche: 2 colonne su tablet */
+    .statistiche {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+
+/* ============================================================
+   26. RESPONSIVE — ≤ 600px
+   ============================================================ */
+@media (max-width: 600px) {
+
+    .logo-img {
+        width: 36px;
+        height: 36px;
+    }
+
+    .brand-logo {
+        font-size: 1.1rem;
+    }
+
+    main>section,
+    main>aside,
+    main>article {
+        padding: 1.5rem 1rem;
+    }
+
+    main>section:first-child {
+        padding-block: 2rem;
+    }
+
+    /* Una sola colonna per le card */
+    .griglia-gatti {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    /* Su viewport piccola le card restano orizzontali ma COMPATTE:
+       immagine più piccola, padding/font ridotti, così occupano meno
+       spazio verticale invece di diventare molto alte. */
+    .card-gatto {
+        grid-template-columns: 110px 1fr;
+        grid-template-rows: none;
+    }
+
+    .card-gatto figure {
+        width: 110px;
+    }
+
+    .card-gatto-corpo {
+        padding: .6rem .7rem;
+        gap: .15rem;
+    }
+
+    .card-gatto-corpo h3 {
+        font-size: 1rem;
+    }
+
+    .card-gatto-descr {
+        font-size: .82rem;
+        margin-bottom: .15rem;
+    }
+
+    .card-gatto-meta {
+        gap: .2rem;
+    }
+
+    .tag {
+        font-size: .68rem;
+        padding: 1px .4rem;
+    }
+
+    .card-gatto dl {
+        font-size: .78rem;
+        gap: .1rem .4rem;
+        margin-top: .15rem;
+    }
+
+    .card-gatto .btn {
+        padding: .3rem .7rem;
+        font-size: .8rem;
+    }
+
+    /* Statistiche: 2 colonne anche su mobile piccolo */
+    .statistiche {
+        grid-template-columns: repeat(2, 1fr);
+        gap: .5rem;
+    }
+
+    .statistiche dd {
+        font-size: clamp(1.6rem, 6vw, 2.4rem);
+    }
+
+    .faq-button {
+        width: 3.5rem;
+        height: 3.5rem;
+        font-size: 1.4rem;
+    }
+
+    /* Tabella: overflow scroll su mobile */
+    table {
+        display: block;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    /* Turni: 1 colonna su mobile piccolo */
+    .griglia-turni {
+        grid-template-columns: 1fr;
+    }
+
+    /* Banner cookie padding adattivo */
+    .banner-cookie {
+        padding: 1rem 1rem;
+    }
+
+    blockquote {
+        padding-left: calc(1.5rem + 1rem);
+    }
+}
+
+/* ============================================================
+   27. SKIP LINK (accessibilità — salta al contenuto)
+   ============================================================ */
+.salta-contenuto {
+    position: absolute;
+    top: -100%;
+    left: 0;
+    padding: .5rem 1rem;
+    background: saddlebrown;
+    color: white;
+    font-weight: 700;
+    text-decoration: none;
+    border-radius: 0 0 .5rem 0;
+    z-index: 9999;
+    transition: top 0.2s;
+}
+
+.salta-contenuto:focus {
+    top: 0;
+}
+
+
+/* ============================================================
+   28. SEZIONE HERO — CTA button group
+   ============================================================ */
+.hero-cta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 2rem;
+}
+
+.hero-cta .btn {
+    padding: .6rem 1.4rem;
+    font-size: clamp(0.9rem, 1.2vw + 0.4rem, 1.05rem);
+}
+
+
+/* ============================================================
+   29. MESSAGGIO AVVISO IN SEZIONE (restyle)
+   ============================================================ */
+main aside.messaggio,
+.messaggio[role="note"] {
+    border-radius: .5rem;
+    background: #fdf8ec;
+    border-left: 4px solid #6b4c00;
+    padding: 1rem 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+main aside.messaggio p,
+.messaggio[role="note"] p {
+    margin: 0;
+    max-width: none;
+    font-size: clamp(0.88rem, 1vw + 0.4rem, 1rem);
+}
+
+
+/* ============================================================
+   30. MEDIA QUERY ≤ 400px (telefoni molto piccoli)
+   ============================================================ */
+@media (max-width: 400px) {
+    h1 {
+        font-size: clamp(1.3rem, 6vw, 1.6rem);
+    }
+
+    h2 {
+        font-size: clamp(1.1rem, 5vw, 1.3rem);
+    }
+
+    .statistiche {
+        grid-template-columns: 1fr 1fr;
+        gap: .25rem;
+    }
+
+    .statistiche dt,
+    .statistiche dd {
+        padding-left: .5rem;
+        padding-right: .5rem;
+    }
+
+    .statistiche dd {
+        font-size: clamp(1.4rem, 7vw, 2rem);
+    }
+
+    .hero-cta {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .griglia-gatti {
+        grid-template-columns: 1fr;
+    }
+
+    /* Card ancora più compatte sui telefoni piccoli */
+    .card-gatto {
+        grid-template-columns: 92px 1fr;
+    }
+
+    .card-gatto figure {
+        width: 92px;
+    }
+
+    .card-gatto-corpo {
+        padding: .5rem .6rem;
+    }
+
+    /* Descrizione limitata a 2 righe per non allungare la card */
+    .card-gatto-descr {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        font-size: .78rem;
+    }
+}
+
+/* ============================================================
+   31. PAGINA PRIVACY (layout dedicato a due colonne)
+   ============================================================ */
+.privacy-hero {
+    text-align: center;
+}
+
+.privacy-sottotitolo {
+    text-align: center;
+    max-width: 60ch;
+    margin-inline: auto;
+    color: #4a3520;
+    font-size: clamp(1rem, 1.5vw + 0.4rem, 1.2rem);
+}
+
+/* Griglia: indice laterale + contenuti */
+.privacy-griglia {
+    display: grid;
+    grid-template-columns: 230px 1fr;
+    gap: 2rem;
+    align-items: start;
+}
+
+/* Indice "appiccicato" mentre si scorre */
+.privacy-indice {
+    position: sticky;
+    top: 6rem;
+    background: white;
+    border: 1px solid rgba(139, 69, 19, 0.15);
+    border-left: 4px solid saddlebrown;
+    border-radius: .5rem;
+    padding: 1rem 1.5rem;
+}
+
+.privacy-indice h2 {
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    margin-bottom: .5rem;
+}
+
+.privacy-indice ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: .25rem;
+}
+
+.privacy-indice a {
+    display: block;
+    padding: .3rem .4rem;
+    border-radius: .5rem;
+    text-decoration: none;
+    font-size: .92rem;
+}
+
+.privacy-indice a:hover,
+.privacy-indice a:focus {
+    background: #f5e8c8;
+}
+
+.privacy-contenuto {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+/* Ogni blocco è una "scheda" distinta */
+.privacy-blocco {
+    background: white;
+    border: 1px solid rgba(139, 69, 19, 0.15);
+    border-radius: .5rem;
+    padding: 1.5rem;
+    scroll-margin-top: 6rem;
+}
+
+.privacy-blocco h2 {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    margin-bottom: 1rem;
+}
+
+.privacy-icona {
+    font-size: 1.3rem;
+}
+
+.privacy-blocco-azione {
+    border-left: 4px solid darkred;
+}
+
+/* Cookie come schede invece che righe di tabella */
+.privacy-cookie-lista {
+    list-style: none;
+    padding: 0;
+    margin: 1rem 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+}
+
+.privacy-cookie-card {
+    background: #f5e8c8;
+    border: 1px solid rgba(139, 69, 19, 0.15);
+    border-radius: .5rem;
+    padding: 1rem;
+}
+
+.privacy-cookie-card h3 {
+    margin-bottom: .5rem;
+    font-size: 1rem;
+}
+
+.privacy-cookie-card dl {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: .25rem .5rem;
+    margin: 0;
+    font-size: .88rem;
+}
+
+.privacy-cookie-card dt {
+    font-weight: 700;
+    color: #6b3410;
+}
+
+.privacy-cookie-card dd {
+    margin: 0;
+}
+
+.privacy-nota {
+    font-size: .9rem;
+    color: #4a3520;
+    font-style: italic;
+}
+
+/* Responsive: l'indice passa sopra il contenuto e non è più sticky */
+@media (max-width: 900px) {
+    .privacy-griglia {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .privacy-indice {
+        position: static;
+        top: auto;
+    }
+
+    .privacy-indice ul {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+}
+
+
+/* ============================================================
+   32. HOME — bottoni d'azione dentro "Come funziona"
+   ============================================================ */
+.come-funziona ol:not([class]) li .btn {
+    display: inline-flex;
+    margin-top: .5rem;
+}
+
+/* ============================================================
+   33. BLOCCO "RICORDAMI" (login) — #11
+   ============================================================ */
+.blocco-ricordami {
+    margin-top: 1.5rem;
+    background: #fdf8ec;
+    border: 1px solid rgba(139, 69, 19, 0.2);
+    border-left: 4px solid darkolivegreen;
+    border-radius: .5rem;
+    padding: 1rem 1.25rem;
+}
+
+.blocco-ricordami legend {
+    font-weight: 700;
+    color: #3e5022;
+    padding: 0 .4rem;
+}
+
+.blocco-ricordami .campo-checkbox {
+    margin-top: .25rem;
+    font-weight: 600;
+}
+
+.blocco-ricordami .messaggio {
+    margin-bottom: 1rem;
+}
+
+.nota-obbligatori {
+    margin: 1rem 0 .5rem;
+    font-size: .85rem;
+}
+
+
+/* ============================================================
+   34. STORIE DI SUCCESSO (home) — #12
+   ============================================================ */
+.storia-successo {
+    margin: 0 0 1.25rem;
+    background: white;
+    border: 1px solid rgba(139, 69, 19, 0.15);
+    border-left: 4px solid saddlebrown;
+    border-radius: .5rem;
+    padding: 1rem 1.25rem;
+}
+
+.storia-successo:last-child {
+    margin-bottom: 0;
+}
+
+.storia-successo blockquote {
+    margin: 0;
+    font-style: italic;
+}
+
+.storia-successo blockquote p {
+    margin: 0;
+}
+
+.storia-successo figcaption {
+    margin-top: .6rem;
+    font-weight: 700;
+    color: #6b3410;
+}
+
+
+/* ============================================================
+   35. VANTAGGI (home) — box come le altre sezioni
+   ============================================================ */
+.griglia-vantaggi {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.box-vantaggio {
+    background: #f5e8c8;
+    border: 1px solid rgba(139, 69, 19, 0.15);
+    border-radius: .5rem;
+    padding: 1rem 1.25rem;
+}
+
+.box-vantaggio dt {
+    font-weight: 700;
+    color: #6b3410;
+    margin-bottom: .35rem;
+}
+
+.box-vantaggio dd {
+    margin: 0;
+}
+
+
+/* ============================================================
+   36. TEMA SCURO — regole aggiuntive per i nuovi elementi
+   ============================================================ */
+@media (prefers-color-scheme: dark) {
+    html:not([data-tema]) .box-vantaggio {
+        background: #332d24;
+        border-color: rgba(217, 139, 74, 0.22);
+    }
+    html:not([data-tema]) .box-vantaggio dt {
+        color: #d98b4a;
+    }
+    html:not([data-tema]) .contatore-basso {
+        color: #f08a8a;
+    }
+}
+
+html[data-tema="scuro"] .box-vantaggio {
+    background: #332d24;
+    border-color: rgba(217, 139, 74, 0.22);
+}
+
+html[data-tema="scuro"] .box-vantaggio dt {
+    color: #d98b4a;
+}
+
+html[data-tema="scuro"] .contatore-basso {
+    color: #f08a8a;
+}
+
+
+/* ============================================================
+   37. CALENDARIO (date/ora) — visibilità icona anche in tema scuro
+   ============================================================ */
+@media (prefers-color-scheme: dark) {
+    html:not([data-tema]) input[type="date"]::-webkit-calendar-picker-indicator,
+    html:not([data-tema]) input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+        /* su fondo scuro l'icona diventa chiara per restare visibile */
+        filter: invert(78%) sepia(20%) saturate(600%) hue-rotate(355deg);
+    }
+}
+
+html[data-tema="scuro"] input[type="date"]::-webkit-calendar-picker-indicator,
+html[data-tema="scuro"] input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+    filter: invert(78%) sepia(20%) saturate(600%) hue-rotate(355deg);
+}
