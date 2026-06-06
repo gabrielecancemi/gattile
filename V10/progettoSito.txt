@@ -206,7 +206,7 @@ H. Informazioni di errore: i messaggi mostrati all'utente sono generici;
   <footer>, <figure>, <figcaption>, <time>, <data>, <meter>, <progress>,
   <details>, <summary>, <abbr>, <strong>, <em>, <cite>, <code>.
 
-- Nessun uso di <div> o <span> dove esiste un elemento semantico appropriato.
+- Nessun uso di <div> o <span> dove esiste un elemento semantico appropriato. Ma ne sono presenti alcuni
 
 - Un solo <h1> per pagina, gerarchia rispettata.
 
@@ -451,3 +451,6 @@ SICUREZZA:
   SameSite. Le password sono salvate con hash e salt per-utente
   con SHA-256 e un salt unico per utente (formato sha256$salt$digest nella
   colonna password) — mai in chiaro.
+
+
+

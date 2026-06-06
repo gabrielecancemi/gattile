@@ -52,13 +52,6 @@ if (!$conn) {
         mysqli_stmt_close($stm);
     }
 
-    $statistiche = [
-        'gatti' => 0,
-        'visite' => 0,
-        'volontari' => 0,
-        'arrivi' => 0
-    ];
-
     $sql = '
         SELECT
             (SELECT COUNT(*) FROM gatti) AS totale_gatti,

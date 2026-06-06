@@ -573,10 +573,10 @@ strong {
 }
 
 /*
- * Nei contesti con sfondo scuro (header, footer, account-box),
+ * Nei contesti con sfondo scuro (header, footer),
  * strong non deve ereditare il colore brand ma il bianco del genitore.
  */
-.account-box strong,
+.stato-autenticazione strong,
 .utente-info strong,
 .brand-logo strong,
 .footer strong {
@@ -633,8 +633,8 @@ a:focus {
    ============================================================ */
 .header {
     display: grid;
-    grid-template-columns: 1fr 2fr 1fr;
-    grid-template-areas: "logo nav account";
+    grid-template-columns: auto 1fr auto auto;
+    grid-template-areas: "logo nav tema account";
     align-items: center;
     gap: 1rem;
     padding: 1rem;
@@ -648,9 +648,9 @@ a:focus {
 
 @media (max-width: 1100px) {
     .header {
-        grid-template-columns: 1fr 1fr;
-        grid-template-areas: "logo account"
-                                "nav nav";
+        grid-template-columns: 1fr auto auto;
+        grid-template-areas: "logo tema account"
+                              "nav nav nav";
 
     }
 }
@@ -698,7 +698,7 @@ a:focus {
     align-items: center;
     gap: .45rem;
     padding: .45rem .7rem;
-    border: 2px solid white;
+    border: 2px solid transparent;
     border-radius: .5rem;
     background: transparent;
     color: white;
@@ -802,15 +802,6 @@ a:focus {
 }
 
 
-/* ── 6d. Area account ─────────────────────────────────────── */
-.stato-autenticazione {
-    grid-area: account;
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    gap: .5rem;
-}
-
 /* Selettore tema (3 stati). Icona disegnata via CSS: cerchio metà pieno. */
 .toggle-tema {
     display: inline-flex;
@@ -825,6 +816,7 @@ a:focus {
     line-height: 1;
     flex-shrink: 0;
     cursor: pointer;
+    grid-area: tema;
 }
 
 .toggle-tema:hover,
@@ -853,11 +845,24 @@ a:focus {
 }
 
 /* Contenitore bianco compatto: [ icona + nome + badge | pulsante ] */
-.account-box {
+/*.stato-autenticazione {
     display: flex;
     flex-direction: row;
     align-items: center;
     row-gap: .6rem;
+    padding: .6rem;
+    background: white;
+    color: black;
+    border-radius: .5rem;
+}*/
+
+.stato-autenticazione {
+    grid-area: account;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    gap: .5rem;
     padding: .6rem;
     background: white;
     color: black;
@@ -939,6 +944,7 @@ a:focus {
     display: flex;
     align-items: center;
     gap: .8rem;
+    margin-bottom: 0;
 }
 
 /* Pulsanti area account */
@@ -1115,7 +1121,7 @@ a:focus {
     font-size: .88rem;
 }
 
-/* I paragrafi degli indirizzi (al posto dei <br>) restano compatti */
+/* I paragrafi degli indirizzi restano compatti */
 .footer-contatti p,
 address p {
     margin: 0;
@@ -1342,6 +1348,7 @@ main>section:first-child {
     background: white;
     padding-block: clamp(2rem, 6vw, 4rem);
     border-bottom: 4px solid saddlebrown;
+    border-radius: .5rem;
 }
 
 /* ── Hero: titolo H1 centrato, paragrafi centrati ── */
@@ -1725,10 +1732,6 @@ main>aside>p:last-child {
 }
 
 .card-gatto-descr {
-    /* Limita l'altezza della descrizione per card uniformi e compatte */
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
     overflow: hidden;
     margin-bottom: .25rem;
 }
@@ -2276,10 +2279,15 @@ details>p:not(summary) {
         grid-template-areas:
             "logo toggle"
             "nav  nav"
-            "account account";
+            "account account"
+            "tema tema";
+        gap: 0;
         padding: 1rem;
         align-items: center;
-        gap: 0 1rem;
+    }
+
+    .toggle-tema {
+        margin-top: 1rem;
     }
 
     .menu-toggle {
@@ -2301,12 +2309,14 @@ details>p:not(summary) {
 
     /* Nav e account nascosti finché non si apre il menu */
     .header>nav,
-    .stato-autenticazione {
+    .stato-autenticazione,
+    .toggle-tema {
         display: none;
     }
 
     .header>nav.aperto,
-    .stato-autenticazione.aperto {
+    .stato-autenticazione.aperto,
+    .toggle-tema.aperto {
         display: flex;
     }
 
@@ -2603,9 +2613,6 @@ main aside.messaggio p,
 
     /* Descrizione limitata a 2 righe per non allungare la card */
     .card-gatto-descr {
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
         overflow: hidden;
         font-size: .78rem;
     }

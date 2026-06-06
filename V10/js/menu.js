@@ -18,14 +18,16 @@
         this.setAttribute('aria-label', nuovoStato ? 'Chiudi menu di navigazione' : 'Apri menu di navigazione');
         this.classList.toggle('aperto', nuovoStato);
 
-        // Aggiorna il testo visibile mantenendo l'icona (primo figlio <b>)
+        // Aggiorna il testo visibile mantenendo l'icona
         if (etichetta && etichetta.nodeType === Node.TEXT_NODE) {
             etichetta.textContent = nuovoStato ? ' Chiudi' : ' Menu';
         }
 
         const nav = document.getElementById('menu-principale');
         const account = document.getElementById('autenticazione');
+        const tema = document.getElementById('toggle-tema');
         if (nav) nav.classList.toggle('aperto', nuovoStato);
         if (account) account.classList.toggle('aperto', nuovoStato);
+        if (tema) tema.classList.toggle('aperto', nuovoStato);
     });
 })();
