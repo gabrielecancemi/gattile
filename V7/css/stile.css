@@ -1,0 +1,2204 @@
+/* ============================================================
+   stile.css — Gattile San Paolo  v3
+   ============================================================
+   INDICE
+   1.  Variabili CSS (design tokens)
+   2.  Reset & base
+   3.  Tipografia
+   4.  Link & utilità testo
+   5.  Focus & accessibilità
+   6.  Layout: Header
+       6a.  Logo
+       6b.  Hamburger
+       6c.  Nav principale
+       6d.  Area account (stato autenticazione)
+   7.  Layout: Footer
+       7a.  Logo footer
+       7b.  Sezione centrale (nav + privacy)
+       7c.  Contatti
+       7d.  Copyright
+   8.  Pulsante FAQ fisso
+   9.  Banner cookie
+   10. Main / contenuto
+   11. Pulsanti generali
+   12. Messaggi di feedback
+   13. Azioni principali (home)
+   14. Card gatto
+   15. Barra controlli
+   16. Form & campi
+   17. Progress & Meter
+   18. Caricamento
+   19. Turni volontariato
+   20. Tabelle
+   21. Details / Summary (accordion)
+   22. Separatore
+   23. Utility classi
+   24. Pagina FAQ
+   25. Responsive ≤ 900px
+   26. Responsive ≤ 600px
+   ============================================================ */
+
+
+/* ============================================================
+   1. VARIABILI CSS (design tokens)
+   ============================================================ */
+:root {
+    /* — Colori principali — */
+    --primario: saddlebrown;
+    /* #8b4513 */
+    --primario-scuro: #6b3410;
+    --secondario: darkolivegreen;
+    /* #556b2f */
+    --secondario-scuro: #3e5022;
+    --sfondo: cornsilk;
+    /* #fff8dc */
+    --sfondo-scuro: #c8a87a;
+    --bianco: white;
+    --nero: black;
+
+    /* — Feedback semantico — */
+    --colore-successo: #1e5c2e;
+    --colore-errore: #8b1a1a;
+    --colore-avviso: #6b4c00;
+    --colore-focus: #1a5ea8;
+
+    /* — Tipografia — */
+    --font-corpo: 'Segoe UI', 'Tahoma', 'Geneva', 'Verdana', 'sans-serif';
+    --font-titoli: 'Georgia', 'Times New Roman', 'serif';
+
+    /* — Spaziatura — */
+    --sp-xs: .25rem;
+    --sp-sm: .5rem;
+    --sp-md: 1rem;
+    --sp-lg: 1.5rem;
+    --sp-xl: 2rem;
+    --sp-xxl: 3rem;
+
+    /* — Forma — */
+    --raggio: .5rem;
+
+    /* — Animazione — */
+    --trans: 200ms ease-in-out;
+
+    /* — Layout — */
+    --max-w: 1100px;
+    --form-w: 600px;
+
+    /* — Token "superficie" semantici (per supportare il tema scuro) —
+       Le pagine usano queste variabili al posto dei colori grezzi, così
+       il tema scuro deve ridefinire solo questo blocco. */
+    --colore-testo: var(--nero);
+    --superficie: var(--bianco);        /* card, riquadri, form */
+    --superficie-2: var(--superficie-2);            /* code, tag, sfondi tenui */
+    --superficie-3: var(--superficie-3);            /* tag chip */
+    --bordo: var(--bordo);   /* bordi tenui */
+    --bordo-forte: var(--bordo-forte);
+    --testo-tenue: #4a3520;             /* testo secondario */
+    --ombra: 0 2px 6px rgba(0, 0, 0, .08);
+}
+
+
+/* ============================================================
+   1b. TEMA SCURO (data-tema="scuro" sull'elemento <html>)
+   ============================================================
+   Si ridefiniscono SOLO i token: header, footer, card, form e
+   tutto il resto seguono automaticamente. I colori del brand
+   (saddlebrown / darkolivegreen) restano riconoscibili ma
+   schiariti quanto basta a garantire il contrasto su fondo scuro.
+   ============================================================ */
+html[data-tema="scuro"] {
+    --primario: #d98b4a;
+    --primario-scuro: #b5703a;
+    --secondario: #8fa765;
+    --secondario-scuro: #74894f;
+    --sfondo: #1c1813;
+    --sfondo-scuro: #2a2620;
+    --bianco: #2a2620;
+    --nero: #f1e9dd;
+
+    --colore-successo: #6fcf85;
+    --colore-errore: #f08a8a;
+    --colore-avviso: #e0c069;
+    --colore-focus: #6fb3ff;
+
+    --colore-testo: #f1e9dd;
+    --superficie: #26221c;
+    --superficie-2: #332d24;
+    --superficie-3: #3a3329;
+    --bordo: rgba(217, 139, 74, 0.22);
+    --bordo-forte: rgba(217, 139, 74, 0.4);
+    --testo-tenue: #c9bca8;
+    --ombra: 0 2px 8px rgba(0, 0, 0, .45);
+
+    color-scheme: dark;
+}
+
+/* Transizione morbida quando si cambia tema (rispetta reduced-motion) */
+html {
+    transition: background-color var(--trans), color var(--trans);
+}
+
+/* Sfondi tenui ridefiniti per il tema scuro (i valori chiari diventano
+   varianti scure leggibili). */
+html[data-tema="scuro"] .messaggio-errore   { background: #3a2020; }
+html[data-tema="scuro"] .messaggio-successo  { background: #1e3324; }
+html[data-tema="scuro"] .messaggio-avviso,
+html[data-tema="scuro"] main aside.messaggio,
+html[data-tema="scuro"] .messaggio[role="note"] { background: #34301f; }
+html[data-tema="scuro"] .nuovi-arrivi {
+    background: linear-gradient(135deg, #2a2118 0%, #322820 100%) !important;
+}
+html[data-tema="scuro"] .turno-item.disponibile:hover { background: var(--superficie-2); }
+html[data-tema="scuro"] tr:nth-child(even) td { background: var(--superficie-2); }
+html[data-tema="scuro"] tr:hover td { background: var(--superficie-3); }
+html[data-tema="scuro"] summary { background: var(--superficie-2); }
+html[data-tema="scuro"] summary:hover,
+html[data-tema="scuro"] details[open] summary { background: var(--superficie-3); }
+html[data-tema="scuro"] code { background: var(--superficie-2); }
+
+
+/* ============================================================
+   2. RESET & BASE
+   ============================================================ */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    font-size: 100%;
+}
+
+/* Rimuove tutte le animazioni per chi preferisce il movimento ridotto */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation: none !important;
+        transition: none !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+body {
+    font-family: var(--font-corpo);
+    font-size: 1rem;
+    color: var(--colore-testo);
+    background-color: var(--sfondo);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+
+/* ============================================================
+   3. TIPOGRAFIA
+   ============================================================ */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: var(--font-titoli);
+    color: var(--primario);
+    line-height: 1.3;
+    margin-bottom: var(--sp-md);
+}
+
+h1 {
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+h2 {
+    font-size: clamp(1.3rem, 3vw, 1.9rem);
+}
+
+h3 {
+    font-size: clamp(1.05rem, 2.5vw, 1.4rem);
+}
+
+p,
+blockquote {
+    margin-bottom: var(--sp-md);
+    font-size: clamp(0.9rem, 1vw + 0.6rem, 1.1rem);
+    text-align: left;
+    line-height: 1.7;
+}
+
+ul,
+ol {
+    padding-left: var(--sp-xl);
+}
+
+abbr[title] {
+    text-decoration: underline dotted;
+    cursor: help;
+}
+
+strong {
+    color: var(--primario);
+    font-weight: 700;
+}
+
+/*
+ * Nei contesti con sfondo scuro (header, footer, account-box),
+ * strong non deve ereditare il colore brand ma il bianco del genitore.
+ */
+.account-box strong,
+.utente-info strong,
+.brand-logo strong,
+.footer strong {
+    color: inherit;
+}
+
+/* mark usato come badge: reset dello stile giallo predefinito del browser */
+mark {
+    background: transparent;
+    color: inherit;
+    font-style: normal;
+    font-weight: 700;
+}
+
+code {
+    background: var(--superficie-2);
+    padding: .1em .3em;
+    border-radius: var(--raggio);
+    font-size: .9em;
+}
+
+
+/* ============================================================
+   4. LINK & UTILITÀ TESTO
+   ============================================================ */
+a {
+    color: var(--primario);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+a:hover,
+a:focus {
+    color: var(--secondario);
+}
+
+
+/* ============================================================
+   5. FOCUS & ACCESSIBILITÀ
+   ============================================================ */
+:focus-visible {
+    outline: 3px solid gold;
+    outline-offset: 3px;
+    border-radius: var(--raggio);
+}
+
+
+/* ============================================================
+   6. LAYOUT: HEADER
+   ============================================================
+   Desktop — tre colonne: [ logo 1fr ] [ nav 2fr ] [ account 1fr ]
+   Mobile  — due colonne: [ logo 1fr ] [ ☰ auto ]
+             la nav e l'account scendono sotto se .aperto
+   ============================================================ */
+.header {
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    grid-template-areas: "logo nav account";
+    align-items: center;
+    gap: var(--sp-md);
+    padding: var(--sp-md);
+    background-color: var(--secondario);
+    border-bottom: 4px solid var(--primario);
+    font-size: 1.1rem;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+
+
+
+/* ── 6a. Logo ─────────────────────────────────────────────── */
+.brand-logo {
+    grid-area: logo;
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    color: var(--bianco);
+    text-decoration: none;
+    font-size: 1.3rem;
+    font-weight: 700;
+    flex-wrap: nowrap;
+}
+
+.brand-logo:hover,
+.brand-logo:focus {
+    opacity: .88;
+    color: var(--bianco);
+}
+
+.logo-img {
+    width: 44px;
+    height: 44px;
+    object-fit: contain;
+    flex-shrink: 0;
+}
+
+
+/* ── 6b. Hamburger ────────────────────────────────────────── */
+/*
+ * Su desktop è rimosso dal flusso (position: absolute) così non
+ * occupa nessuna cella della grid.
+ * Su mobile torna in posizione statica (vedi §25).
+ */
+.menu-toggle {
+    display: none;
+    position: absolute;
+    /* fuori dalla grid su desktop */
+    padding: .4rem .6rem;
+    border: none;
+    border-radius: var(--raggio);
+    background: transparent;
+    color: var(--bianco);
+    font-size: 1.7rem;
+    cursor: pointer;
+    line-height: 1;
+}
+
+.menu-toggle:hover {
+    background: var(--secondario-scuro);
+}
+
+
+/* ── 6c. Nav principale ───────────────────────────────────── */
+.header>nav {
+    grid-area: nav;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.header>nav ul {
+    display: flex;
+    gap: var(--sp-md);
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    align-items: center;
+}
+
+.header>nav a {
+    background-color: var(--secondario);
+    color: var(--bianco);
+    border-color: var(--secondario);
+    font-size: inherit;
+}
+
+.header>nav a:hover,
+.header>nav a:focus {
+    background: var(--secondario-scuro);
+}
+
+.header nav a.active {
+    background-color: var(--nero);
+    border-color: var(--nero);
+    color: var(--bianco);
+}
+
+/* Link account nella nav: nascosti su desktop, visibili su mobile */
+.nav-conto {
+    display: none;
+}
+
+
+/* ── 6d. Area account ─────────────────────────────────────── */
+.stato-autenticazione {
+    grid-area: account;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--sp-sm);
+}
+
+/* Interruttore tema chiaro/scuro */
+.toggle-tema {
+    background: transparent;
+    border: 2px solid var(--bianco);
+    color: var(--bianco);
+    padding: .35rem .5rem;
+    font-size: 1.1rem;
+    line-height: 1;
+    flex-shrink: 0;
+}
+
+.toggle-tema:hover,
+.toggle-tema:focus {
+    background: var(--secondario-scuro);
+    color: var(--bianco);
+}
+
+.toggle-tema .icona-tema {
+    display: inline-block;
+}
+
+/* Contenitore bianco compatto: [ icona + nome + badge | pulsante ] */
+.account-box {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    row-gap: .6rem;
+    padding: .6rem;
+    background: var(--bianco);
+    border-radius: var(--raggio);
+    overflow: hidden;
+}
+
+.utente-info {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    margin: 0;
+    padding-right: .8rem;
+    font-size: 1rem;
+    color: var(--nero);
+    min-width: 0;
+    flex-wrap: wrap;
+}
+
+.nome-utente {
+    font-weight: 700;
+    font-style: normal;
+    color: var(--primario-scuro);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 100px;
+}
+
+.badge-gatto {
+    display: inline-block;
+    padding: .1rem .45rem;
+    background: var(--secondario);
+    color: var(--bianco);
+    border-radius: var(--raggio);
+    font-size: .72rem;
+    font-weight: 700;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+/* Separatore verticale tra info utente e pulsante azione */
+.account-azioni {
+    border-left: 1px solid var(--nero);
+    padding-left: .8rem;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: .8rem;
+}
+
+/* Pulsanti area account */
+
+.btn-login {
+    background-color: var(--primario);
+    border-color: var(--primario);
+    color: var(--bianco);
+}
+
+.btn-login:hover,
+.btn-login:focus {
+    background-color: var(--primario-scuro);
+    border-color: var(--primario-scuro);
+    color: var(--bianco);
+}
+
+.btn-signin {
+    background-color: var(--bianco);
+    border-color: var(--primario);
+    color: var(--primario);
+}
+
+.btn-signin:hover,
+.btn-signin:focus {
+    border-color: var(--primario-scuro);
+    color: var(--primario-scuro);
+    background-color: var(--sfondo);
+}
+
+
+.btn-logout {
+    background: darkred;
+    color: var(--bianco);
+    border-color: darkred;
+}
+
+.btn-logout:hover,
+.btn-logout:focus {
+    background: maroon;
+    color: var(--bianco);
+    border-color: maroon;
+}
+
+
+/* ============================================================
+   7. LAYOUT: FOOTER
+   ============================================================
+   Desktop — tre colonne:
+     [ logo ]  [ nav principale + nav privacy ]  [ contatti ]
+     [ copyright — larghezza piena ]
+   Mobile  — singola colonna (vedi §25)
+   ============================================================ */
+.footer {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: auto auto;
+    grid-template-areas:
+        "f-logo  f-centro  f-contatti"
+        "f-copy  f-copy    f-copy";
+    align-items: center;
+    column-gap: var(--sp-xl);
+    row-gap: var(--sp-md);
+    padding: var(--sp-lg) var(--sp-xl);
+    background: var(--primario);
+    border-top: 4px solid var(--secondario);
+    color: var(--bianco);
+    margin-top: auto;
+    font-size: 1rem;
+}
+
+.footer .brand-logo {
+    grid-area: f-logo;
+}
+
+.footer .footer-centro {
+    grid-area: f-centro;
+}
+
+.footer .footer-contatti {
+    grid-area: f-contatti;
+    justify-self: end;
+}
+
+.footer .footer-copy {
+    grid-area: f-copy;
+}
+
+
+/* ── 7a. Logo footer ──────────────────────────────────────── */
+.footer .brand-logo {
+    color: var(--bianco);
+}
+
+.footer .brand-logo:hover,
+.footer .brand-logo:focus {
+    opacity: .88;
+    color: var(--bianco);
+}
+
+
+/* ── 7b. Sezione centrale (nav principale + nav privacy) ──── */
+.footer-centro {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--sp-sm);
+}
+
+/* Nav principale footer */
+.footer-centro>nav:first-child ul {
+    display: flex;
+    gap: var(--sp-xs);
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.footer-centro>nav:first-child a {
+    padding: .3rem .6rem;
+    color: var(--bianco);
+    background-color: var(--primario);
+    border-color: var(--primario);
+}
+
+.footer-centro>nav:first-child a:hover,
+.footer-centro>nav:first-child a:focus {
+    background-color: var(--primario-scuro);
+    border-color: var(--primario-scuro);
+    color: var(--bianco);
+}
+
+.footer-centro>nav:first-child a.active,
+.faq-button.active {
+    background-color: var(--nero);
+    color: var(--bianco);
+    border-color: var(--nero);
+}
+
+/* Nav privacy (sotto la nav principale) */
+.footer-privacy ul {
+    display: flex;
+    gap: var(--sp-md);
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.footer-privacy a,
+.footer-privacy .link-button {
+    font-size: .82rem;
+    color: rgba(255, 255, 255, .75);
+}
+
+.footer-privacy a:hover,
+.footer-privacy a:focus,
+.footer-privacy .link-button:hover,
+.footer-privacy .link-button:focus {
+    color: var(--bianco);
+    text-decoration: underline;
+}
+
+
+/* ── 7c. Contatti ─────────────────────────────────────────── */
+.footer-contatti {
+    font-style: normal;
+    line-height: 1.7;
+    font-size: .88rem;
+}
+
+.footer-contatti a {
+    color: rgba(255, 255, 255, .85);
+}
+
+.footer-contatti a:hover {
+    color: var(--bianco);
+    text-decoration: underline;
+}
+
+/* Pulsante testuale generico (usato nel footer privacy) */
+.link-button {
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, .85);
+    text-decoration: underline;
+    cursor: pointer;
+    font: inherit;
+    font-size: .88rem;
+    padding: 0;
+}
+
+.link-button:hover {
+    color: var(--bianco);
+}
+
+/* URL pagina — visibile solo in stampa */
+.footer-url {
+    display: none;
+}
+
+
+/* ── 7d. Copyright ────────────────────────────────────────── */
+.footer-copy {
+    border-top: 1px solid rgba(255, 255, 255, .2);
+    padding-top: var(--sp-md);
+    text-align: center;
+    font-size: .82rem;
+    color: rgba(255, 255, 255, .75);
+}
+
+
+/* ============================================================
+   8. PULSANTE FAQ FISSO
+   ============================================================ */
+.faq-button {
+    position: fixed;
+    right: max(1rem, env(safe-area-inset-right));
+    bottom: max(1rem, env(safe-area-inset-bottom));
+    width: 3.5rem;
+    height: 3.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: var(--secondario);
+    color: var(--bianco);
+    text-decoration: none;
+    font-size: 1.5rem;
+    font-weight: 700;
+    border: 2px solid var(--primario);
+    z-index: 999;
+}
+
+.faq-button:hover,
+.faq-button:focus-visible {
+    transform: scale(1.07);
+    color: var(--bianco);
+    background-color: var(--secondario-scuro);
+    border-color: var(--primario-scuro);
+}
+
+
+/* ============================================================
+   9. BANNER COOKIE
+   ============================================================ */
+.banner-cookie {
+    position: sticky;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--primario);
+    color: var(--bianco);
+    padding: var(--sp-md) 5rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--sp-md);
+    z-index: 800;
+    border-top: 4px solid var(--secondario);
+}
+
+.banner-cookie p {
+    margin: 0;
+    flex: 1;
+    min-width: 200px;
+    font-size: .9rem;
+}
+
+.banner-cookie p a {
+    color: var(--superficie-2);
+}
+
+.banner-cookie nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    gap: var(--sp-sm);
+}
+
+
+/* ============================================================
+   10. MAIN / CONTENUTO
+   ============================================================ */
+main {
+    flex: 1;
+    width: 100%;
+    line-height: 1.7;
+}
+
+/*
+ * Container interno a ogni section/aside del main:
+ * centra e limita la larghezza senza toccare il markup PHP.
+ * Usiamo un selettore diretto sui figli di <main>.
+ * (Escluso il main della home, che usa una griglia a aree dedicata.)
+ */
+main:not(.main-home)>section,
+main:not(.main-home)>aside,
+main:not(.main-home)>article {
+    width: 100%;
+    max-width: var(--max-w);
+    margin-inline: auto;
+    padding: clamp(1.5rem, 4vw, 3rem) clamp(1rem, 5vw, 3rem);
+}
+
+/* ============================================================
+   10b. HOME — LAYOUT A GRIGLIA CON AREE NOMINATE (grid-template-areas)
+   ============================================================
+   DESKTOP (≥ 901px): impaginazione "a rivista" su due colonne.
+     hero      → larghezza piena
+     perche / impatto    → affiancate
+     come  / storia      → affiancate
+     arrivi              → larghezza piena (vetrina)
+     aiuta / faq         → affiancate
+   MOBILE / TABLET (≤ 900px): le aree collassano in colonna unica
+   con un ordine di lettura naturale (vedi §25). La differenza fra
+   desktop e mobile è quindi marcata: due colonne ricche vs flusso
+   verticale lineare.
+   ============================================================ */
+.main-home {
+    display: grid;
+    width: 100%;
+    max-width: var(--max-w);
+    margin-inline: auto;
+    gap: 0;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+        "hero    hero"
+        "perche  impatto"
+        "come    storia"
+        "arrivi  arrivi"
+        "aiuta   faq";
+    align-items: stretch;
+}
+
+.main-home>section,
+.main-home>aside {
+    padding: clamp(1.5rem, 4vw, 3rem) clamp(1rem, 5vw, 3rem);
+    min-width: 0; /* evita overflow dei contenuti nella cella */
+}
+
+.main-home .zona-hero    { grid-area: hero; }
+.main-home .zona-perche  { grid-area: perche; }
+.main-home .zona-impatto { grid-area: impatto; }
+.main-home .zona-come    { grid-area: come; }
+.main-home .zona-storia  { grid-area: storia; }
+.main-home .zona-arrivi  { grid-area: arrivi; }
+.main-home .zona-aiuta   { grid-area: aiuta; }
+.main-home .zona-faq     { grid-area: faq; }
+
+/* Bordi di separazione coerenti fra le celle affiancate */
+.main-home .zona-perche,
+.main-home .zona-come,
+.main-home .zona-aiuta {
+    border-right: 1px solid var(--bordo);
+}
+.main-home>section:not(.zona-hero):not(.zona-arrivi),
+.main-home>aside {
+    border-bottom: 1px solid var(--bordo);
+}
+
+/*
+ * Separatore visivo tra sezioni: bordo sottile in basso
+ * tranne per l'ultimo elemento.
+ */
+main:not(.main-home)>section:not(:last-child),
+main:not(.main-home)>aside:not(:last-child) {
+    border-bottom: 1px solid var(--bordo);
+}
+
+/* Prima sezione (hero) con sfondo leggermente differenziato */
+main>section:first-child {
+    background: var(--bianco);
+    padding-block: clamp(2rem, 6vw, 4rem);
+    border-radius: 0 0 var(--raggio) var(--raggio);
+    border-left: 4px solid var(--primario);
+    border-right: 4px solid var(--primario);
+    border-bottom: 4px solid var(--primario);
+}
+
+/* ── Hero: titolo H1 centrato, paragrafi centrati ── */
+main>section:first-child h1 {
+    margin-inline: auto;
+}
+
+main>section:first-child>p {
+    max-width: 70ch;
+    margin-inline: auto;
+    text-align: center;
+    font-size: clamp(1rem, 1.5vw + 0.5rem, 1.15rem);
+    color: var(--testo-tenue);
+}
+
+/* ── Liste punti (ul/ol nelle sezioni informative) ── */
+main>section ul:not([class]),
+main>section ol:not([class]) {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-md);
+    padding-left: 0;
+    list-style: none;
+    max-width: 70ch;
+    margin-top: var(--sp-md);
+}
+
+main>section ul:not([class]) li,
+main>section ol:not([class]) li {
+    padding: var(--sp-md) var(--sp-md) var(--sp-md) 3.2rem;
+    background: var(--bianco);
+    border: 1px solid var(--bordo);
+    border-left: 4px solid var(--primario);
+    border-radius: var(--raggio);
+    position: relative;
+    font-size: clamp(0.9rem, 1vw + 0.5rem, 1rem);
+    line-height: 1.6;
+}
+
+main>section ol:not([class]) {
+    counter-reset: passi;
+}
+
+main>section ol:not([class]) li {
+    counter-increment: passi;
+    border-left-color: var(--secondario);
+}
+
+main>section ol:not([class]) li::before {
+    content: counter(passi);
+    position: absolute;
+    left: 0.9rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 1.6rem;
+    height: 1.6rem;
+    background: var(--secondario);
+    color: var(--bianco);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.8rem;
+    line-height: 1;
+}
+
+main>section ul:not([class]) li::before {
+    content: '🐾';
+    position: absolute;
+    left: 0.8rem;
+    top: 0.9rem;
+    font-size: 1rem;
+}
+
+/* ── Blockquote stile testimonianza ── */
+blockquote {
+    position: relative;
+    background: var(--bianco);
+    border-left: 5px solid var(--primario);
+    border-radius: var(--raggio);
+    padding: var(--sp-lg) var(--sp-lg) var(--sp-lg) calc(var(--sp-xl) + var(--sp-md));
+    margin: var(--sp-lg) 0 var(--sp-sm);
+    font-size: clamp(1rem, 1.5vw + 0.3rem, 1.15rem);
+    font-style: italic;
+    color: var(--testo-tenue);
+    max-width: 55ch;
+}
+
+blockquote::before {
+    content: '"';
+    position: absolute;
+    left: 0.6rem;
+    top: 0.2rem;
+    font-size: 3.5rem;
+    color: var(--primario);
+    opacity: 0.35;
+    font-family: var(--font-titoli);
+    line-height: 1;
+}
+
+/* Autore testimonianza */
+main>aside>p:last-child {
+    color: var(--primario-scuro);
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-top: -0.5rem;
+}
+
+/* ── Statistiche (dl.statistiche) ── */
+.statistiche {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: var(--sp-md);
+    list-style: none;
+    padding: 0;
+    margin-top: var(--sp-lg);
+    max-width: 100%;
+}
+
+.statistiche dt {
+    font-size: clamp(0.75rem, 1vw + 0.4rem, 0.85rem);
+    font-weight: 600;
+    color: var(--primario-scuro);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: var(--sp-xs);
+    line-height: 1.3;
+}
+
+.statistiche dd {
+    font-family: var(--font-titoli);
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 700;
+    color: var(--primario);
+    margin: 0;
+    line-height: 1;
+}
+
+/* Wrap dt+dd in box visivo sfruttando il fatto che sono fratelli */
+.statistiche dt {
+    background: var(--bianco);
+    border-radius: var(--raggio) var(--raggio) 0 0;
+    padding: var(--sp-md) var(--sp-md) var(--sp-xs);
+    border: 1px solid var(--bordo);
+    border-bottom: none;
+    margin: 0;
+}
+
+.statistiche dd {
+    background: var(--bianco);
+    border-radius: 0 0 var(--raggio) var(--raggio);
+    padding: var(--sp-xs) var(--sp-md) var(--sp-md);
+    border: 1px solid var(--bordo);
+    border-top: 3px solid var(--primario);
+}
+
+
+/* ============================================================
+   11. PULSANTI GENERALI
+   ============================================================ */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sp-xs);
+    padding: .45rem .8rem;
+    border-radius: var(--raggio);
+    font-family: var(--font-corpo);
+    font-size: clamp(0.85rem, 1vw + 0.4rem, 1rem);
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    border-width: 2px;
+    border-style: solid;
+    white-space: nowrap;
+}
+
+.btn:active {
+    transform: translateY(0);
+}
+
+.btn-primario {
+    background: var(--secondario);
+    color: var(--bianco);
+    border-color: var(--secondario);
+}
+
+.btn-primario:hover,
+.btn-primario:focus {
+    background: var(--secondario-scuro);
+    border-color: var(--secondario-scuro);
+    color: var(--bianco);
+}
+
+.btn-secondario {
+    background: transparent;
+    color: var(--bianco);
+    border-color: var(--secondario);
+}
+
+.btn-secondario:hover,
+.btn-secondario:focus {
+    background: var(--primario-scuro);
+    border-color: var(--secondario-scuro);
+    color: var(--bianco);
+}
+
+
+/* ============================================================
+   12. MESSAGGI DI FEEDBACK
+   ============================================================ */
+.messaggio {
+    display: block;
+    padding: var(--sp-md) var(--sp-lg);
+    border-radius: var(--raggio);
+    margin-bottom: var(--sp-lg);
+    font-weight: 600;
+    border-left: 4px solid;
+}
+
+.messaggio-errore {
+    background: #fdf2f2;
+    color: var(--colore-errore);
+    border-color: var(--colore-errore);
+}
+
+.messaggio-successo {
+    background: #f2fdf4;
+    color: var(--colore-successo);
+    border-color: var(--colore-successo);
+}
+
+.messaggio-avviso {
+    background: #fdf8ec;
+    color: var(--colore-avviso);
+    border-color: var(--colore-avviso);
+}
+
+
+/* ============================================================
+   13. AZIONI PRINCIPALI (home)
+   ============================================================ */
+.azioni-principali ul {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: var(--sp-md);
+    list-style: none;
+    padding: 0;
+    margin-top: var(--sp-lg);
+}
+
+/* Sezione "nuovi arrivi": sfondo caldo distinto */
+.nuovi-arrivi {
+    background: linear-gradient(135deg, #fdf3e3 0%, #f7ead6 100%) !important;
+    border-radius: var(--raggio);
+    border: 1px solid var(--bordo-forte) !important;
+}
+
+.nuovi-arrivi h2 {
+    font-size: clamp(1.2rem, 2.5vw, 1.7rem);
+}
+
+.badge-nuovo {
+    display: inline-block;
+    background: var(--colore-errore);
+    color: var(--bianco);
+    font-size: .72rem;
+    padding: 2px var(--sp-sm);
+    border-radius: var(--raggio);
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    font-weight: 700;
+    margin-left: var(--sp-xs);
+    vertical-align: middle;
+}
+
+
+/* ============================================================
+   14. CARD GATTO
+   ============================================================ */
+.griglia-gatti {
+    display: grid;
+    /* Card orizzontali: una colonna larga (su schermi ampi due colonne) */
+    grid-template-columns: 1fr;
+    gap: var(--sp-lg);
+    list-style: none;
+    padding: 0;
+    margin-top: var(--sp-lg);
+}
+
+/* Su schermi molto larghi due card orizzontali affiancate */
+@media (min-width: 1200px) {
+    .griglia-gatti {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* CARD ORIZZONTALE: immagine a sinistra, contenuti a destra.
+   Le dimensioni della colonna immagine sono fisse così lo spazio è
+   riservato prima del caricamento dell'immagine → niente layout shift (CLS). */
+.card-gatto {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    align-items: stretch;
+    background: var(--superficie);
+    border: 1px solid var(--bordo);
+    border-radius: var(--raggio);
+    overflow: hidden;
+    position: relative;
+    box-shadow: var(--ombra);
+}
+
+.card-gatto[role="checkbox"] {
+    cursor: pointer;
+}
+
+.card-gatto:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, .12);
+}
+
+/* Stato selezionato */
+.card-gatto.selezionata {
+    outline: 3px solid var(--primario);
+    outline-offset: -3px;
+}
+
+.card-gatto figure {
+    margin: 0;
+    /* Larghezza/altezza riservate: rapporto fisso, nessun salto di layout */
+    width: 200px;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    background: var(--superficie-2);
+}
+
+.card-gatto figure img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.card-gatto:hover figure img {
+    transform: scale(1.04);
+}
+
+.card-gatto-corpo {
+    display: flex;
+    flex-direction: column;
+    padding: var(--sp-md);
+    gap: var(--sp-xs);
+    min-width: 0;
+}
+
+.card-gatto-descr {
+    /* Limita l'altezza della descrizione per card uniformi */
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    margin-bottom: var(--sp-xs);
+}
+
+.card-gatto .btn {
+    align-self: flex-start;
+    margin-top: auto;
+}
+
+.card-gatto-corpo h3 {
+    font-size: clamp(1rem, 1.5vw + 0.3rem, 1.15rem);
+    margin-bottom: 0;
+}
+
+/* Tag / etichette */
+.card-gatto-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sp-xs);
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.tag {
+    font-size: .75rem;
+    padding: 2px var(--sp-sm);
+    border-radius: var(--raggio);
+    background: var(--superficie-3);
+    color: var(--primario-scuro);
+    font-weight: 700;
+}
+
+/* Definizione lista dati gatto */
+.card-gatto dl {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: var(--sp-xs) var(--sp-sm);
+    font-size: .88rem;
+    margin-top: var(--sp-xs);
+}
+
+.card-gatto dt {
+    font-weight: 700;
+    color: var(--primario-scuro);
+}
+
+.card-gatto dd {
+    margin: 0;
+}
+
+.card-gatto meter {
+    width: 100%;
+    height: .6rem;
+    margin-top: var(--sp-xs);
+    accent-color: var(--primario);
+}
+
+/* Badge ✓ mostrato solo quando la card è selezionata */
+.card-badge-selezione {
+    position: absolute;
+    top: var(--sp-sm);
+    right: var(--sp-sm);
+    background: var(--primario);
+    color: var(--bianco);
+    border-radius: 50%;
+    width: 2rem;
+    height: 2rem;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    pointer-events: none;
+    font-weight: 700;
+}
+
+.card-gatto.selezionata .card-badge-selezione {
+    display: flex;
+}
+
+
+/* ============================================================
+   15. BARRA CONTROLLI
+   ============================================================ */
+/* Riserva spazio per il componente React mentre carica:
+   riduce il Cumulative Layout Shift (CLS) sulla pagina "adotta". */
+#react-gatti-root {
+    display: block;
+    min-height: 60vh;
+}
+
+#react-gatti-root .caricamento {
+    min-height: 40vh;
+    align-items: center;
+}
+
+.barra-controlli {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sp-md);
+    align-items: flex-end;
+    margin-bottom: var(--sp-lg);
+    padding: var(--sp-md) var(--sp-lg);
+    background: var(--bianco);
+    border-radius: var(--raggio);
+    border: 1px solid var(--bordo);
+}
+
+.barra-controlli label {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-xs);
+    flex: 1;
+    min-width: 160px;
+    font-size: .9rem;
+    font-weight: 600;
+}
+
+
+/* ============================================================
+   16. FORM & CAMPI
+   ============================================================ */
+form {
+    max-width: var(--form-w);
+}
+
+/* Form centrato nella pagina (login, registrazione) */
+main>section>form,
+main>section>div>form {
+    margin-inline: auto;
+}
+
+fieldset {
+    border: 1px solid var(--bordo-forte);
+    border-radius: var(--raggio);
+    padding: var(--sp-lg);
+    margin-bottom: .8rem;
+    background: var(--bianco);
+}
+
+legend {
+    font-family: var(--font-titoli);
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--primario);
+    padding: 0 var(--sp-sm);
+}
+
+label {
+    display: flex;
+    flex-direction: row;
+    gap: var(--sp-xs);
+    margin-bottom: .5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--nero);
+}
+
+/* Campi testo comuni */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+input[type="date"],
+input[type="datetime-local"],
+input[type="search"],
+select,
+textarea {
+    width: 100%;
+    padding: var(--sp-sm) var(--sp-md);
+    border: 2px solid var(--bordo-forte);
+    border-radius: var(--raggio);
+    font-family: var(--font-corpo);
+    font-size: 1rem;
+    color: var(--nero);
+    background: var(--bianco);
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    border-color: var(--colore-focus);
+    outline: none;
+}
+
+/* Stato di errore accessibile via aria-invalid */
+input[aria-invalid="true"],
+select[aria-invalid="true"],
+textarea[aria-invalid="true"] {
+    border-color: var(--colore-errore);
+}
+
+textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+/* Checkbox e radio */
+.campo-checkbox {
+    flex-direction: row;
+    align-items: center;
+    gap: var(--sp-sm);
+}
+
+input[type="checkbox"],
+input[type="radio"] {
+    width: 1.2rem;
+    height: 1.2rem;
+    accent-color: var(--primario);
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+/* Testi ausiliari del form */
+.campo-obbligatorio::before {
+    content: '* ';
+    color: var(--colore-errore);
+}
+
+.aiuto-campo {
+    font-size: .82rem;
+    color: var(--primario-scuro);
+    font-weight: normal;
+}
+
+.errore-campo {
+    font-size: .85rem;
+    color: var(--colore-errore);
+    font-weight: normal;
+    display: flex;
+    align-items: center;
+    gap: var(--sp-xs);
+}
+
+
+/* ============================================================
+   17. PROGRESS & METER
+   ============================================================ */
+progress,
+meter {
+    width: 100%;
+    height: 1rem;
+    border-radius: var(--raggio);
+    border: 1px solid var(--sfondo-scuro);
+    overflow: hidden;
+    accent-color: var(--primario);
+}
+
+
+/* ============================================================
+   18. CARICAMENTO
+   ============================================================ */
+.caricamento {
+    display: flex;
+    justify-content: center;
+    padding: var(--sp-xl);
+    color: var(--primario-scuro);
+    font-style: italic;
+}
+
+
+/* ============================================================
+   19. TURNI VOLONTARIATO
+   ============================================================ */
+.griglia-turni {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(185px, 1fr));
+    gap: var(--sp-md);
+    list-style: none;
+    padding: 0;
+    margin-top: var(--sp-md);
+}
+
+.turno-item {
+    border: 2px solid var(--bordo-forte);
+    border-radius: var(--raggio);
+    padding: var(--sp-md);
+    background: var(--bianco);
+}
+
+.turno-item.disponibile {
+    cursor: pointer;
+}
+
+.turno-item.disponibile:hover {
+    border-color: var(--secondario);
+    background: #f0f5e8;
+}
+
+.turno-item.pieno {
+    opacity: .55;
+    cursor: not-allowed;
+    background: var(--superficie-2);
+}
+
+/* Fascia a cui l'utente è già iscritto: evidenziata, non riselezionabile */
+.turno-item.iscritto {
+    border-color: var(--secondario);
+    background: var(--superficie-2);
+    border-left: 4px solid var(--secondario);
+}
+
+.turno-ora {
+    font-weight: 700;
+}
+
+.stato-turno {
+    font-size: .8rem;
+    font-weight: 700;
+    margin-top: var(--sp-xs);
+}
+
+.stato-turno.pieno {
+    color: var(--colore-errore);
+}
+
+.stato-turno.libero {
+    color: var(--colore-successo);
+}
+
+.stato-turno.iscritto {
+    color: var(--secondario);
+}
+
+
+/* ============================================================
+   20. TABELLE
+   ============================================================ */
+.table-responsive {
+    overflow-x: auto;
+    border-radius: var(--raggio);
+    border: 1px solid var(--bordo);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: var(--sp-lg);
+    font-size: clamp(0.82rem, 1vw + 0.4rem, 1rem);
+}
+
+caption {
+    text-align: left;
+    font-weight: 700;
+    font-family: var(--font-titoli);
+    color: var(--primario);
+    margin-bottom: var(--sp-sm);
+    font-size: 1.05rem;
+}
+
+th,
+td {
+    padding: var(--sp-sm) var(--sp-md);
+    border: 1px solid var(--bordo);
+    text-align: left;
+    vertical-align: top;
+}
+
+th {
+    background: var(--primario);
+    color: var(--bianco);
+    font-family: var(--font-titoli);
+    font-size: 0.9rem;
+    letter-spacing: 0.03em;
+    font-weight: 700;
+}
+
+tr:nth-child(even) td {
+    background: #fdf5e8;
+}
+
+tr:hover td {
+    background: #f5eacc;
+}
+
+
+/* ============================================================
+   21. DETAILS / SUMMARY (accordion)
+   ============================================================ */
+details {
+    border: 1px solid var(--bordo);
+    border-radius: var(--raggio);
+    margin-bottom: var(--sp-sm);
+    background: var(--bianco);
+    overflow: hidden;
+}
+
+summary {
+    padding: var(--sp-md) var(--sp-lg);
+    cursor: pointer;
+    font-weight: 600;
+    font-size: clamp(0.9rem, 1vw + 0.4rem, 1rem);
+    color: var(--primario);
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #fdf8f0;
+    gap: var(--sp-md);
+}
+
+summary:hover {
+    background: #f5edd8;
+}
+
+details[open] summary {
+    background: #f5edd8;
+    border-bottom: 1px solid var(--bordo);
+}
+
+/* Nasconde il marker predefinito del browser */
+summary::-webkit-details-marker {
+    display: none;
+}
+
+summary::after {
+    content: '▾';
+    transition: transform var(--trans);
+    flex-shrink: 0;
+    font-size: 1.1rem;
+    color: var(--primario);
+    opacity: 0.7;
+}
+
+details[open] summary::after {
+    transform: rotate(180deg);
+}
+
+details>*:not(summary) {
+    padding: var(--sp-md) var(--sp-lg) var(--sp-lg);
+}
+
+details>p:not(summary) {
+    max-width: none;
+}
+
+
+/* ============================================================
+   22. SEPARATORE
+   ============================================================ */
+.separatore {
+    border: 0;
+    border-top: 1px solid var(--sfondo-scuro);
+    margin: var(--sp-xl) 0;
+}
+
+
+/* ============================================================
+   23. UTILITY CLASSI
+   ============================================================ */
+
+/* Solo per screen reader — invisibile visivamente */
+.sr-solo {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+.testo-centro {
+    text-align: center;
+}
+
+.testo-errore {
+    color: var(--colore-errore);
+}
+
+.testo-successo {
+    color: var(--colore-successo);
+}
+
+
+/* ============================================================
+   24. PAGINA FAQ
+   ============================================================ */
+.faq-categoria {
+    margin-bottom: var(--sp-xl);
+}
+
+.faq-categoria h2 {
+    border-bottom: 2px solid var(--bordo-forte);
+    padding-bottom: var(--sp-sm);
+    margin-bottom: var(--sp-md);
+    font-size: clamp(1.15rem, 2vw + 0.3rem, 1.6rem);
+}
+
+
+/* ============================================================
+   25. RESPONSIVE — ≤ 900px (tablet e mobile)
+   ============================================================
+   La grid dell'header diventa [ logo 1fr ] [ ☰ auto ].
+   L'hamburger (menu-toggle) torna nel flusso (position: static).
+   Nav e account scendono sotto, visibili solo se .aperto.
+   Il footer collassa in colonna singola.
+   ============================================================ */
+@media (max-width: 900px) {
+
+    .header {
+        grid-template-columns: 1fr auto;
+        grid-template-areas:
+            "logo toggle"
+            "nav  nav"
+            "account account";
+        padding: var(--sp-md);
+        align-items: center;
+        gap: 0 var(--sp-md);
+    }
+
+    .menu-toggle {
+        display: flex;
+        position: static;
+        /* torna nel flusso della grid */
+        grid-area: toggle;
+    }
+
+    .header>nav {
+        padding: var(--sp-md) 0;
+        border-top: 1px solid rgba(255, 255, 255, .2);
+        margin-top: var(--sp-md);
+    }
+
+    .stato-autenticazione {
+        justify-content: center;
+    }
+
+    /* Nav e account nascosti finché non si apre il menu */
+    .header>nav,
+    .stato-autenticazione {
+        display: none;
+    }
+
+    .header>nav.aperto,
+    .stato-autenticazione.aperto {
+        display: flex;
+    }
+
+    /* Voci di menu in colonna al 50% di larghezza */
+    .header>nav ul {
+        flex-direction: column;
+        align-items: stretch;
+        gap: var(--sp-md);
+    }
+
+    .header>nav a {
+        display: block;
+        text-align: center;
+        padding: .5rem;
+    }
+
+    /* Footer: colonna singola centrata */
+    .footer {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+            "f-logo"
+            "f-centro"
+            "f-contatti"
+            "f-copy";
+        padding: var(--sp-lg) var(--sp-md);
+        row-gap: var(--sp-lg);
+        text-align: center;
+    }
+
+    .footer .brand-logo {
+        justify-content: center;
+    }
+
+    .footer .footer-centro {
+        align-items: center;
+    }
+
+    .footer .footer-contatti {
+        justify-self: center;
+    }
+
+    /* Main sections: padding ridotto su tablet */
+    main>section,
+    main>aside,
+    main>article {
+        padding: clamp(1.2rem, 3vw, 2rem) clamp(0.75rem, 4vw, 2rem);
+    }
+
+    /* HOME: la griglia a aree collassa in colonna unica.
+       Ordine di lettura naturale tramite le aree impilate. */
+    .main-home {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+            "hero"
+            "perche"
+            "impatto"
+            "come"
+            "storia"
+            "arrivi"
+            "aiuta"
+            "faq";
+    }
+
+    /* In colonna unica i bordi laterali tra celle non servono:
+       si usa solo il bordo inferiore come separatore. */
+    .main-home .zona-perche,
+    .main-home .zona-come,
+    .main-home .zona-aiuta {
+        border-right: none;
+    }
+    .main-home>section:not(.zona-arrivi):not(:last-child),
+    .main-home>aside {
+        border-bottom: 1px solid var(--bordo);
+    }
+
+    /* Statistiche: 2 colonne su tablet */
+    .statistiche {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+
+/* ============================================================
+   26. RESPONSIVE — ≤ 600px
+   ============================================================ */
+@media (max-width: 600px) {
+
+    .logo-img {
+        width: 36px;
+        height: 36px;
+    }
+
+    .brand-logo {
+        font-size: 1.1rem;
+    }
+
+    main>section,
+    main>aside,
+    main>article {
+        padding: var(--sp-lg) var(--sp-md);
+    }
+
+    main>section:first-child {
+        padding-block: var(--sp-xl);
+    }
+
+    /* Una sola colonna per le card */
+    .griglia-gatti {
+        grid-template-columns: 1fr;
+    }
+
+    /* Su mobile la card torna verticale: immagine sopra, testo sotto.
+       Differenza netta rispetto al desktop (orizzontale). */
+    .card-gatto {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto 1fr;
+    }
+
+    .card-gatto figure {
+        width: 100%;
+    }
+
+    /* Statistiche: 2 colonne anche su mobile piccolo */
+    .statistiche {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--sp-sm);
+    }
+
+    .statistiche dd {
+        font-size: clamp(1.6rem, 6vw, 2.4rem);
+    }
+
+    .faq-button {
+        width: 3.5rem;
+        height: 3.5rem;
+        font-size: 1.4rem;
+    }
+
+    /* Tabella: overflow scroll su mobile */
+    table {
+        display: block;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    /* Turni: 1 colonna su mobile piccolo */
+    .griglia-turni {
+        grid-template-columns: 1fr;
+    }
+
+    /* Banner cookie padding adattivo */
+    .banner-cookie {
+        padding: var(--sp-md) var(--sp-md);
+    }
+
+    blockquote {
+        padding-left: calc(var(--sp-lg) + var(--sp-md));
+    }
+}
+
+/* ============================================================
+   27. SKIP LINK (accessibilità — salta al contenuto)
+   ============================================================ */
+.salta-contenuto {
+    position: absolute;
+    top: -100%;
+    left: 0;
+    padding: var(--sp-sm) var(--sp-md);
+    background: var(--primario);
+    color: var(--bianco);
+    font-weight: 700;
+    text-decoration: none;
+    border-radius: 0 0 var(--raggio) 0;
+    z-index: 9999;
+    transition: top 0.2s;
+}
+
+.salta-contenuto:focus {
+    top: 0;
+}
+
+
+/* ============================================================
+   28. SEZIONE HERO — CTA button group
+   ============================================================ */
+.hero-cta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sp-md);
+    justify-content: center;
+    margin-top: var(--sp-xl);
+}
+
+.hero-cta .btn {
+    padding: .6rem 1.4rem;
+    font-size: clamp(0.9rem, 1.2vw + 0.4rem, 1.05rem);
+}
+
+
+/* ============================================================
+   29. MESSAGGIO AVVISO IN SEZIONE (restyle)
+   ============================================================ */
+main aside.messaggio,
+.messaggio[role="note"] {
+    border-radius: var(--raggio);
+    background: #fdf8ec;
+    border-left: 4px solid var(--colore-avviso);
+    padding: var(--sp-md) var(--sp-lg);
+    margin-bottom: var(--sp-lg);
+}
+
+main aside.messaggio p,
+.messaggio[role="note"] p {
+    margin: 0;
+    max-width: none;
+    font-size: clamp(0.88rem, 1vw + 0.4rem, 1rem);
+}
+
+
+/* ============================================================
+   30. MEDIA QUERY ≤ 400px (telefoni molto piccoli)
+   ============================================================ */
+@media (max-width: 400px) {
+    h1 {
+        font-size: clamp(1.3rem, 6vw, 1.6rem);
+    }
+
+    h2 {
+        font-size: clamp(1.1rem, 5vw, 1.3rem);
+    }
+
+    .statistiche {
+        grid-template-columns: 1fr 1fr;
+        gap: var(--sp-xs);
+    }
+
+    .statistiche dt,
+    .statistiche dd {
+        padding-left: var(--sp-sm);
+        padding-right: var(--sp-sm);
+    }
+
+    .statistiche dd {
+        font-size: clamp(1.4rem, 7vw, 2rem);
+    }
+
+    .hero-cta {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .griglia-gatti {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ============================================================
+   31. PAGINA PRIVACY (layout dedicato a due colonne)
+   ============================================================ */
+.privacy-hero {
+    text-align: center;
+}
+
+.privacy-sottotitolo {
+    text-align: center;
+    max-width: 60ch;
+    margin-inline: auto;
+    color: var(--testo-tenue);
+    font-size: clamp(1rem, 1.5vw + 0.4rem, 1.2rem);
+}
+
+/* Griglia: indice laterale + contenuti */
+.privacy-griglia {
+    display: grid;
+    grid-template-columns: 230px 1fr;
+    gap: var(--sp-xl);
+    align-items: start;
+}
+
+/* Indice "appiccicato" mentre si scorre */
+.privacy-indice {
+    position: sticky;
+    top: 6rem;
+    background: var(--superficie);
+    border: 1px solid var(--bordo);
+    border-left: 4px solid var(--primario);
+    border-radius: var(--raggio);
+    padding: var(--sp-md) var(--sp-lg);
+}
+
+.privacy-indice h2 {
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    margin-bottom: var(--sp-sm);
+}
+
+.privacy-indice ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-xs);
+}
+
+.privacy-indice a {
+    display: block;
+    padding: .3rem .4rem;
+    border-radius: var(--raggio);
+    text-decoration: none;
+    font-size: .92rem;
+}
+
+.privacy-indice a:hover,
+.privacy-indice a:focus {
+    background: var(--superficie-2);
+}
+
+.privacy-contenuto {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-lg);
+}
+
+/* Ogni blocco è una "scheda" distinta */
+.privacy-blocco {
+    background: var(--superficie);
+    border: 1px solid var(--bordo);
+    border-radius: var(--raggio);
+    padding: var(--sp-lg);
+    scroll-margin-top: 6rem;
+}
+
+.privacy-blocco h2 {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-sm);
+    margin-bottom: var(--sp-md);
+}
+
+.privacy-icona {
+    font-size: 1.3rem;
+}
+
+.privacy-blocco-azione {
+    border-left: 4px solid var(--colore-errore);
+}
+
+/* Cookie come schede invece che righe di tabella */
+.privacy-cookie-lista {
+    list-style: none;
+    padding: 0;
+    margin: var(--sp-md) 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: var(--sp-md);
+}
+
+.privacy-cookie-card {
+    background: var(--superficie-2);
+    border: 1px solid var(--bordo);
+    border-radius: var(--raggio);
+    padding: var(--sp-md);
+}
+
+.privacy-cookie-card h3 {
+    margin-bottom: var(--sp-sm);
+    font-size: 1rem;
+}
+
+.privacy-cookie-card dl {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: var(--sp-xs) var(--sp-sm);
+    margin: 0;
+    font-size: .88rem;
+}
+
+.privacy-cookie-card dt {
+    font-weight: 700;
+    color: var(--primario-scuro);
+}
+
+.privacy-cookie-card dd {
+    margin: 0;
+}
+
+.privacy-nota {
+    font-size: .9rem;
+    color: var(--testo-tenue);
+    font-style: italic;
+}
+
+/* Responsive: l'indice passa sopra il contenuto e non è più sticky */
+@media (max-width: 900px) {
+    .privacy-griglia {
+        grid-template-columns: 1fr;
+        gap: var(--sp-lg);
+    }
+
+    .privacy-indice {
+        position: static;
+        top: auto;
+    }
+
+    .privacy-indice ul {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+}
+
+
+/* ============================================================
+   32. HOME — bottoni d'azione dentro "Come funziona"
+   ============================================================ */
+.come-funziona ol:not([class]) li .btn {
+    display: inline-flex;
+    margin-top: var(--sp-sm);
+}
