@@ -40,448 +40,229 @@
 
 
 /* ============================================================
-   1. TEMA SCURO — sistema + override manuale (3 stati)
+   1. TEMA SCURO — gestione unificata tramite variabili CSS
    ============================================================
-   - Senza scelta manuale (html senza attributo data-tema) il tema
-     segue il sistema operativo via @media (prefers-color-scheme).
-   - Con il tasto l'utente puo' forzare:
-       html[data-tema="chiaro"]  -> sempre chiaro (stile base)
-       html[data-tema="scuro"]   -> sempre scuro
-   I colori scuri rispettano un contrasto almeno AA (>= 4.5:1).
+   Strategia: le variabili CSS custom vengono ridefinite nei
+   contesti "scuro" (media query O attributo data-tema).
+   Il resto del CSS usa solo le variabili → nessuna duplicazione.
+
+   Tre stati:
+     html (nessun attributo)      → segue il sistema operativo
+     html[data-tema="chiaro"]     → chiaro forzato
+     html[data-tema="scuro"]      → scuro forzato
+
+   Contrasto WCAG AA garantito su tutti i colori (≥ 4.5:1).
    ============================================================ */
 
-/* (A) Tema scuro AUTOMATICO: solo se l'utente non ha forzato un tema. */
-@media (prefers-color-scheme: dark) {
-
-    /* Schema colori nativo (selettori dei controlli, scrollbar...) */
-
-    html:not([data-tema]) {
-        color-scheme: dark;
-    }
-
-    /* Base */
-
-    html:not([data-tema]) body {
-        background-color: #1c1813;
-        color: #f1e9dd;
-
-    }
-
-    /* Tipografia e link */
-
-    html:not([data-tema]) h1,
-    html:not([data-tema]) h2,
-    html:not([data-tema]) h3,
-    html:not([data-tema]) h4,
-    html:not([data-tema]) h5,
-    html:not([data-tema]) h6,
-    html:not([data-tema]) strong,
-    html:not([data-tema]) a {
-        color: #d98b4a;
-
-    }
-
-    html:not([data-tema]) a:hover,
-    html:not([data-tema]) a:focus {
-        color: #8fa765;
-
-    }
-
-    html:not([data-tema]) code {
-        background: #332d24;
-        color: #f1e9dd;
-
-    }
-
-    /* Header e footer */
-
-    html:not([data-tema]) .header {
-        background-color: #2f3a1f;
-        border-bottom-color: #d98b4a;
-
-    }
-
-    html:not([data-tema]) .footer {
-        background: #3a2a18;
-        border-top-color: #8fa765;
-
-    }
-
-    /* In header e footer testo/brand/link restano bianchi: massimo
-       contrasto sul fondo colorato (#7, AA garantito). Esclusi i pulsanti
-       (.btn) e il riquadro account, che hanno colori propri. */
-
-    html:not([data-tema]) .header,
-    html:not([data-tema]) .footer,
-    html:not([data-tema]) .brand-logo strong,
-    html:not([data-tema]) .footer a:not(.btn),
-    html:not([data-tema]) .footer strong {
-        color: white;
-
-    }
-
-    /* Riquadri, card, form, fieldset, dettagli */
-
-    html:not([data-tema]) .card-gatto,
-    html:not([data-tema]) fieldset,
-    html:not([data-tema]) .barra-controlli,
-    html:not([data-tema]) details,
-    html:not([data-tema]) .turno-item,
-    html:not([data-tema]) .privacy-indice,
-    html:not([data-tema]) .privacy-blocco,
-    html:not([data-tema]) main>section:first-child,
-    html:not([data-tema]) .statistiche dt,
-    html:not([data-tema]) .statistiche dd {
-        background: #26221c;
-        border-color: rgba(217, 139, 74, 0.22);
-
-    }
-
-    html:not([data-tema]) main>section ul:not([class]) li,
-    html:not([data-tema]) main>section ol:not([class]) li,
-    html:not([data-tema]) blockquote {
-        background: #26221c;
-        border-color: rgba(217, 139, 74, 0.22);
-
-    }
-
-    /* Campi dei form */
-
-    html:not([data-tema]) input[type="text"],
-    html:not([data-tema]) input[type="email"],
-    html:not([data-tema]) input[type="password"],
-    html:not([data-tema]) input[type="number"],
-    html:not([data-tema]) input[type="date"],
-    html:not([data-tema]) input[type="datetime-local"],
-    html:not([data-tema]) input[type="search"],
-    html:not([data-tema]) select,
-    html:not([data-tema]) textarea {
-        background: #1c1813;
-        color: #f1e9dd;
-        border-color: rgba(217, 139, 74, 0.45);
-
-    }
-
-    /* Sfondi tenui / superfici secondarie */
-
-    html:not([data-tema]) .tag,
-    html:not([data-tema]) .privacy-cookie-card,
-    html:not([data-tema]) .card-gatto figure,
-    html:not([data-tema]) .turno-item.pieno,
-    html:not([data-tema]) .turno-item.iscritto,
-    html:not([data-tema]) .turno-item.disponibile:hover,
-    html:not([data-tema]) tr:nth-child(even) td,
-    html:not([data-tema]) summary {
-        background: #332d24;
-
-    }
-
-    html:not([data-tema]) tr:hover td,
-    html:not([data-tema]) summary:hover,
-    html:not([data-tema]) details[open] summary {
-        background: #3a3329;
-
-    }
-
-    /* Testi secondari */
-
-    html:not([data-tema]) .testo-tenue,
-    html:not([data-tema]) .privacy-sottotitolo,
-    html:not([data-tema]) .privacy-nota,
-    html:not([data-tema]) .aiuto-campo,
-    html:not([data-tema]) .statistiche dt,
-    html:not([data-tema]) .card-gatto dt,
-    html:not([data-tema]) .tag {
-        color: #c9bca8;
-
-    }
-
-    /* Feedback */
-
-    html:not([data-tema]) .messaggio-errore {
-        background: #3a2020;
-        color: #f08a8a;
-        border-color: #f08a8a;
-
-    }
-
-    html:not([data-tema]) .messaggio-successo {
-        background: #1e3324;
-        color: #6fcf85;
-        border-color: #6fcf85;
-
-    }
-
-    html:not([data-tema]) .messaggio-avviso,
-    html:not([data-tema]) main aside.messaggio,
-    html:not([data-tema]) .messaggio[role="note"] {
-        background: #34301f;
-        color: #e0c069;
-        border-color: #e0c069;
-
-    }
-
-    /* Sezione "nuovi arrivi" */
-
-    html:not([data-tema]) .nuovi-arrivi {
-        background: linear-gradient(135deg, #2a2118 0%, #322820 100%) !important;
-        border-color: rgba(217, 139, 74, 0.4) !important;
-
-    }
-
-    /* Blocchi aggiunti (#11, #12) */
-
-    html:not([data-tema]) .blocco-ricordami {
-        background: #26221c;
-        border-color: rgba(217, 139, 74, 0.22);
-
-    }
-
-    html:not([data-tema]) .blocco-ricordami legend {
-        color: #8fa765;
-
-    }
-
-    html:not([data-tema]) .storia-successo {
-        background: #26221c;
-        border-color: rgba(217, 139, 74, 0.22);
-
-    }
-
-    html:not([data-tema]) .storia-successo figcaption {
-        color: #c9bca8;
-
-    }
-
-    html:not([data-tema]) .nota-obbligatori {
-        color: #c9bca8;
-
-    }
-
-    /* Marcatore elenco visibile anche su fondo scuro */
-
-    html:not([data-tema]) main>section ul:not([class]) li::before {
-        background: #d98b4a;
-
-    }
+/* ── Variabili tema chiaro (default) ──────────────────────── */
+:root {
+    --tema-sfondo:          cornsilk;
+    --tema-corpo:           #1a1000;
+    --tema-titoli:          saddlebrown;
+    --tema-link:            saddlebrown;
+    --tema-link-hover:      darkolivegreen;
+    --tema-code-bg:         #f5e8c8;
+    --tema-code-fg:         #1a1000;
+    --tema-header-bg:       darkolivegreen;
+    --tema-header-bordo:    saddlebrown;
+    --tema-footer-bg:       saddlebrown;
+    --tema-footer-bordo:    darkolivegreen;
+    --tema-card-bg:         white;
+    --tema-card-bordo:      rgba(139,69,19,.15);
+    --tema-input-bg:        white;
+    --tema-input-fg:        black;
+    --tema-input-bordo:     #b08442;
+    --tema-campo-tenue:     #f5e8c8;
+    --tema-tag-bg:          #f0e8d0;
+    --tema-tag-fg:          #6b3410;
+    --tema-testo-tenue:     #4a3520;
+    --tema-err-bg:          #fdf2f2;
+    --tema-err-fg:          darkred;
+    --tema-ok-bg:           #f2fdf4;
+    --tema-ok-fg:           #1e5c2e;
+    --tema-avv-bg:          #fdf8ec;
+    --tema-avv-fg:          #6b4c00;
+    --tema-err-border:      darkred;
+    --tema-ok-border:       #1e5c2e;
+    --tema-avv-border:      #6b4c00;
+    --tema-summary-bg:      #fdf8f0;
+    --tema-summary-hover:   #f5edd8;
+    --tema-nuovi-arrivi-bg: linear-gradient(135deg,#fdf3e3 0%,#f7ead6 100%);
+    --tema-fieldset-bg:     white;
+    --tema-barra-bg:        white;
+    --tema-vantaggio-bg:    #f5e8c8;
+    --tema-vantaggio-dt:    #6b3410;
+    --tema-indice-bg:       white;
+    --tema-blocco-bg:       white;
+    --tema-cookie-bg:       #f5e8c8;
+    --tema-ricordami-bg:    #fdf8ec;
+    --tema-ricordami-leg:   #3e5022;
+    --tema-storia-bg:       white;
+    --tema-storia-cap:      #6b3410;
+    --tema-nota-obblig:     #4a3520;
+    --tema-tr-pari:         #fdf5e8;
+    --tema-tr-hover:        #f5eacc;
+    --tema-cal-filter:      invert(28%) sepia(40%) saturate(900%) hue-rotate(355deg);
+    --tema-contatore-basso: darkred;
+    --tema-schema:          light;
+    --tema-stat-bg:         white;
+    --tema-hero-p:          #4a3520;
+    --tema-caricamento:     #6b3410;
+    --tema-privacy-st:      #4a3520;
+    --tema-privacy-nota:    #4a3520;
+    --tema-li-marker:       saddlebrown;
+    --tema-ol-marker:       darkolivegreen;
+    --tema-ol-marker-txt:   white;
+    --tema-bordo:           rgba(139,69,19,.15);
+    --tema-separatore:      #c8a87a;
+    --tema-dt-fg:           #6b3410;
+    --tema-blocco-rcm-bordo: rgba(139,69,19,.2);
+    --tema-priv-ind-a-hover: #f5e8c8;
 }
 
-
-/* (B) Tema scuro FORZATO dal tasto, indipendente dal sistema. */
-/* Schema colori nativo (selettori dei controlli, scrollbar...) */
+/* ── Variabili tema scuro ─────────────────────────────────── */
+/*
+ * Applicato da:
+ *   @media (prefers-color-scheme: dark) html:not([data-tema])   → sistema
+ *   html[data-tema="scuro"]                                     → forzato
+ * Un solo blocco di definizioni, due selettori.
+ */
+@media (prefers-color-scheme: dark) {
+    html:not([data-tema]) {
+        color-scheme: dark;
+        --tema-sfondo:          #1c1813;
+        --tema-corpo:           #f1e9dd;
+        --tema-titoli:          #d98b4a;
+        --tema-link:            #d98b4a;
+        --tema-link-hover:      #8fa765;
+        --tema-code-bg:         #332d24;
+        --tema-code-fg:         #f1e9dd;
+        --tema-header-bg:       #2f3a1f;
+        --tema-header-bordo:    #d98b4a;
+        --tema-footer-bg:       #3a2a18;
+        --tema-footer-bordo:    #8fa765;
+        --tema-card-bg:         #26221c;
+        --tema-card-bordo:      rgba(217,139,74,.22);
+        --tema-input-bg:        #1c1813;
+        --tema-input-fg:        #f1e9dd;
+        --tema-input-bordo:     rgba(217,139,74,.45);
+        --tema-campo-tenue:     #332d24;
+        --tema-tag-bg:          #332d24;
+        --tema-tag-fg:          #c9bca8;
+        --tema-testo-tenue:     #c9bca8;
+        --tema-err-bg:          #3a2020;
+        --tema-err-fg:          #f08a8a;
+        --tema-ok-bg:           #1e3324;
+        --tema-ok-fg:           #6fcf85;
+        --tema-avv-bg:          #34301f;
+        --tema-avv-fg:          #e0c069;
+        --tema-err-border:      #f08a8a;
+        --tema-ok-border:       #6fcf85;
+        --tema-avv-border:      #e0c069;
+        --tema-summary-bg:      #332d24;
+        --tema-summary-hover:   #3a3329;
+        --tema-nuovi-arrivi-bg: linear-gradient(135deg,#2a2118 0%,#322820 100%);
+        --tema-fieldset-bg:     #26221c;
+        --tema-barra-bg:        #26221c;
+        --tema-vantaggio-bg:    #332d24;
+        --tema-vantaggio-dt:    #d98b4a;
+        --tema-indice-bg:       #26221c;
+        --tema-blocco-bg:       #26221c;
+        --tema-cookie-bg:       #332d24;
+        --tema-ricordami-bg:    #26221c;
+        --tema-ricordami-leg:   #8fa765;
+        --tema-storia-bg:       #26221c;
+        --tema-storia-cap:      #c9bca8;
+        --tema-nota-obblig:     #c9bca8;
+        --tema-tr-pari:         #332d24;
+        --tema-tr-hover:        #3a3329;
+        --tema-cal-filter:      invert(78%) sepia(20%) saturate(600%) hue-rotate(355deg);
+        --tema-contatore-basso: #f08a8a;
+        --tema-schema:          dark;
+        --tema-stat-bg:         #26221c;
+        --tema-hero-p:          #c9bca8;
+        --tema-caricamento:     #c9bca8;
+        --tema-privacy-st:      #c9bca8;
+        --tema-privacy-nota:    #c9bca8;
+        --tema-li-marker:       #d98b4a;
+        --tema-ol-marker:       #8fa765;
+        --tema-ol-marker-txt:   #1c1813;
+        --tema-bordo:           rgba(217,139,74,.22);
+        --tema-separatore:      rgba(217,139,74,.35);
+        --tema-dt-fg:           #c9bca8;
+        --tema-blocco-rcm-bordo: rgba(217,139,74,.22);
+        --tema-priv-ind-a-hover: #332d24;
+    }
+}
 
 html[data-tema="scuro"] {
     color-scheme: dark;
+    --tema-sfondo:          #1c1813;
+    --tema-corpo:           #f1e9dd;
+    --tema-titoli:          #d98b4a;
+    --tema-link:            #d98b4a;
+    --tema-link-hover:      #8fa765;
+    --tema-code-bg:         #332d24;
+    --tema-code-fg:         #f1e9dd;
+    --tema-header-bg:       #2f3a1f;
+    --tema-header-bordo:    #d98b4a;
+    --tema-footer-bg:       #3a2a18;
+    --tema-footer-bordo:    #8fa765;
+    --tema-card-bg:         #26221c;
+    --tema-card-bordo:      rgba(217,139,74,.22);
+    --tema-input-bg:        #1c1813;
+    --tema-input-fg:        #f1e9dd;
+    --tema-input-bordo:     rgba(217,139,74,.45);
+    --tema-campo-tenue:     #332d24;
+    --tema-tag-bg:          #332d24;
+    --tema-tag-fg:          #c9bca8;
+    --tema-testo-tenue:     #c9bca8;
+    --tema-err-bg:          #3a2020;
+    --tema-err-fg:          #f08a8a;
+    --tema-ok-bg:           #1e3324;
+    --tema-ok-fg:           #6fcf85;
+    --tema-avv-bg:          #34301f;
+    --tema-avv-fg:          #e0c069;
+    --tema-err-border:      #f08a8a;
+    --tema-ok-border:       #6fcf85;
+    --tema-avv-border:      #e0c069;
+    --tema-summary-bg:      #332d24;
+    --tema-summary-hover:   #3a3329;
+    --tema-nuovi-arrivi-bg: linear-gradient(135deg,#2a2118 0%,#322820 100%);
+    --tema-fieldset-bg:     #26221c;
+    --tema-barra-bg:        #26221c;
+    --tema-vantaggio-bg:    #332d24;
+    --tema-vantaggio-dt:    #d98b4a;
+    --tema-indice-bg:       #26221c;
+    --tema-blocco-bg:       #26221c;
+    --tema-cookie-bg:       #332d24;
+    --tema-ricordami-bg:    #26221c;
+    --tema-ricordami-leg:   #8fa765;
+    --tema-storia-bg:       #26221c;
+    --tema-storia-cap:      #c9bca8;
+    --tema-nota-obblig:     #c9bca8;
+    --tema-tr-pari:         #332d24;
+    --tema-tr-hover:        #3a3329;
+    --tema-cal-filter:      invert(78%) sepia(20%) saturate(600%) hue-rotate(355deg);
+    --tema-contatore-basso: #f08a8a;
+    --tema-schema:          dark;
+    --tema-stat-bg:         #26221c;
+    --tema-hero-p:          #c9bca8;
+    --tema-caricamento:     #c9bca8;
+    --tema-privacy-st:      #c9bca8;
+    --tema-privacy-nota:    #c9bca8;
+    --tema-li-marker:       #d98b4a;
+    --tema-ol-marker:       #8fa765;
+    --tema-ol-marker-txt:   #1c1813;
+    --tema-bordo:           rgba(217,139,74,.22);
+    --tema-separatore:      rgba(217,139,74,.35);
+    --tema-dt-fg:           #c9bca8;
+    --tema-blocco-rcm-bordo: rgba(217,139,74,.22);
+    --tema-priv-ind-a-hover: #332d24;
 }
 
-/* Base */
-
-html[data-tema="scuro"] body {
-    background-color: #1c1813;
-    color: #f1e9dd;
-
-}
-
-/* Tipografia e link */
-
-html[data-tema="scuro"] h1,
-html[data-tema="scuro"] h2,
-html[data-tema="scuro"] h3,
-html[data-tema="scuro"] h4,
-html[data-tema="scuro"] h5,
-html[data-tema="scuro"] h6,
-html[data-tema="scuro"] strong,
-html[data-tema="scuro"] a {
-    color: #d98b4a;
-
-}
-
-html[data-tema="scuro"] a:hover,
-html[data-tema="scuro"] a:focus {
-    color: #8fa765;
-
-}
-
-html[data-tema="scuro"] code {
-    background: #332d24;
-    color: #f1e9dd;
-
-}
-
-/* Header e footer */
-
-html[data-tema="scuro"] .header {
-    background-color: #2f3a1f;
-    border-bottom-color: #d98b4a;
-
-}
-
-html[data-tema="scuro"] .footer {
-    background: #3a2a18;
-    border-top-color: #8fa765;
-
-}
-
-/* In header e footer testo/brand/link restano bianchi: massimo
-       contrasto sul fondo colorato (#7, AA garantito). Esclusi i pulsanti
-       (.btn) e il riquadro account, che hanno colori propri. */
-
-html[data-tema="scuro"] .header,
-html[data-tema="scuro"] .footer,
-html[data-tema="scuro"] .brand-logo strong,
-html[data-tema="scuro"] .footer a:not(.btn),
-html[data-tema="scuro"] .footer strong {
-    color: white;
-
-}
-
-/* Riquadri, card, form, fieldset, dettagli */
-
-html[data-tema="scuro"] .card-gatto,
-html[data-tema="scuro"] fieldset,
-html[data-tema="scuro"] .barra-controlli,
-html[data-tema="scuro"] details,
-html[data-tema="scuro"] .turno-item,
-html[data-tema="scuro"] .privacy-indice,
-html[data-tema="scuro"] .privacy-blocco,
-html[data-tema="scuro"] main>section:first-child,
-html[data-tema="scuro"] .statistiche dt,
-html[data-tema="scuro"] .statistiche dd {
-    background: #26221c;
-    border-color: rgba(217, 139, 74, 0.22);
-
-}
-
-html[data-tema="scuro"] main>section ul:not([class]) li,
-html[data-tema="scuro"] main>section ol:not([class]) li,
-html[data-tema="scuro"] blockquote {
-    background: #26221c;
-    border-color: rgba(217, 139, 74, 0.22);
-
-}
-
-/* Campi dei form */
-
-html[data-tema="scuro"] input[type="text"],
-html[data-tema="scuro"] input[type="email"],
-html[data-tema="scuro"] input[type="password"],
-html[data-tema="scuro"] input[type="number"],
-html[data-tema="scuro"] input[type="date"],
-html[data-tema="scuro"] input[type="datetime-local"],
-html[data-tema="scuro"] input[type="search"],
-html[data-tema="scuro"] select,
-html[data-tema="scuro"] textarea {
-    background: #1c1813;
-    color: #f1e9dd;
-    border-color: rgba(217, 139, 74, 0.45);
-
-}
-
-/* Sfondi tenui / superfici secondarie */
-
-html[data-tema="scuro"] .tag,
-html[data-tema="scuro"] .privacy-cookie-card,
-html[data-tema="scuro"] .card-gatto figure,
-html[data-tema="scuro"] .turno-item.pieno,
-html[data-tema="scuro"] .turno-item.iscritto,
-html[data-tema="scuro"] .turno-item.disponibile:hover,
-html[data-tema="scuro"] tr:nth-child(even) td,
-html[data-tema="scuro"] summary {
-    background: #332d24;
-
-}
-
-html[data-tema="scuro"] tr:hover td,
-html[data-tema="scuro"] summary:hover,
-html[data-tema="scuro"] details[open] summary {
-    background: #3a3329;
-
-}
-
-/* Testi secondari */
-
-html[data-tema="scuro"] .testo-tenue,
-html[data-tema="scuro"] .privacy-sottotitolo,
-html[data-tema="scuro"] .privacy-nota,
-html[data-tema="scuro"] .aiuto-campo,
-html[data-tema="scuro"] .statistiche dt,
-html[data-tema="scuro"] .card-gatto dt,
-html[data-tema="scuro"] .tag {
-    color: #c9bca8;
-
-}
-
-/* Feedback */
-
-html[data-tema="scuro"] .messaggio-errore {
-    background: #3a2020;
-    color: #f08a8a;
-    border-color: #f08a8a;
-
-}
-
-html[data-tema="scuro"] .messaggio-successo {
-    background: #1e3324;
-    color: #6fcf85;
-    border-color: #6fcf85;
-
-}
-
-html[data-tema="scuro"] .messaggio-avviso,
-html[data-tema="scuro"] main aside.messaggio,
-html[data-tema="scuro"] .messaggio[role="note"] {
-    background: #34301f;
-    color: #e0c069;
-    border-color: #e0c069;
-
-}
-
-/* Sezione "nuovi arrivi" */
-
-html[data-tema="scuro"] .nuovi-arrivi {
-    background: linear-gradient(135deg, #2a2118 0%, #322820 100%) !important;
-    border-color: rgba(217, 139, 74, 0.4) !important;
-
-}
-
-/* Blocchi aggiunti (#11, #12) */
-
-html[data-tema="scuro"] .blocco-ricordami {
-    background: #26221c;
-    border-color: rgba(217, 139, 74, 0.22);
-
-}
-
-html[data-tema="scuro"] .blocco-ricordami legend {
-    color: #8fa765;
-
-}
-
-html[data-tema="scuro"] .storia-successo {
-    background: #26221c;
-    border-color: rgba(217, 139, 74, 0.22);
-
-}
-
-html[data-tema="scuro"] .storia-successo figcaption {
-    color: #c9bca8;
-
-}
-
-html[data-tema="scuro"] .nota-obbligatori {
-    color: #c9bca8;
-
-}
-
-/* Marcatore elenco visibile anche su fondo scuro */
-
-html[data-tema="scuro"] main>section ul:not([class]) li::before {
-    background: #d98b4a;
-
-}
-
-
-
+/* html[data-tema="chiaro"]: il tema chiaro è il default di :root,
+   non servono override. */
 
 /* ============================================================
    2. RESET & BASE
@@ -510,8 +291,8 @@ html {
 body {
     font-family: 'Segoe UI', 'Tahoma', 'Geneva', 'Verdana', sans-serif;
     font-size: 1rem;
-    color: black;
-    background-color: cornsilk;
+    color: var(--tema-corpo);
+    background-color: var(--tema-sfondo);
     min-height: 100vh;
     display: flex;
     flex-direction: column;
@@ -528,7 +309,7 @@ h4,
 h5,
 h6 {
     font-family: 'Georgia', 'Times New Roman', serif;
-    color: saddlebrown;
+    color: var(--tema-titoli);
     line-height: 1.3;
     margin-bottom: 1rem;
 }
@@ -566,7 +347,7 @@ abbr[title] {
 }
 
 strong {
-    color: saddlebrown;
+    color: var(--tema-titoli);
     font-weight: 700;
 }
 
@@ -590,7 +371,8 @@ mark {
 }
 
 code {
-    background: #f5e8c8;
+    background: var(--tema-code-bg);
+    color: var(--tema-code-fg);
     padding: .1em .3em;
     border-radius: .5rem;
     font-size: .9em;
@@ -601,14 +383,14 @@ code {
    4. LINK & UTILITÀ TESTO
    ============================================================ */
 a {
-    color: saddlebrown;
+    color: var(--tema-link);
     text-decoration: underline;
     text-underline-offset: 3px;
 }
 
 a:hover,
 a:focus {
-    color: darkolivegreen;
+    color: var(--tema-link-hover);
 }
 
 
@@ -636,8 +418,8 @@ a:focus {
     align-items: center;
     gap: 1rem;
     padding: 1rem;
-    background-color: darkolivegreen;
-    border-bottom: 4px solid saddlebrown;
+    background-color: var(--tema-header-bg);
+    border-bottom: 4px solid var(--tema-header-bordo);
     font-size: 1.1rem;
     position: sticky;
     top: 0;
@@ -882,7 +664,7 @@ a:focus {
 .nome-utente {
     font-weight: 700;
     font-style: normal;
-    color: #6b3410;
+    color: var(--tema-dt-fg);
     white-space: nowrap;
     max-width: 100px;
 }
@@ -1007,8 +789,8 @@ a:focus {
     column-gap: 2rem;
     row-gap: 1rem;
     padding: 1.5rem 2rem;
-    background: saddlebrown;
-    border-top: 4px solid darkolivegreen;
+    background: var(--tema-footer-bg);
+    border-top: 4px solid var(--tema-footer-bordo);
     color: white;
     margin-top: auto;
     font-size: 1rem;
@@ -1343,7 +1125,7 @@ main:not(.main-home)>article {
 
 /* (#2) Prima sezione (hero, con h1): unico bordo è quello inferiore. */
 main>section:first-child {
-    background: white;
+    background: var(--tema-card-bg);
     padding-block: clamp(2rem, 6vw, 4rem);
     border-bottom: 4px solid saddlebrown;
     border-radius: .5rem;
@@ -1359,7 +1141,7 @@ main>section:first-child>p {
     margin-inline: auto;
     text-align: center;
     font-size: clamp(1rem, 1.5vw + 0.5rem, 1.15rem);
-    color: #4a3520;
+    color: var(--tema-hero-p);
 }
 
 /* ── Liste punti (ul/ol nelle sezioni informative) ── */
@@ -1376,9 +1158,9 @@ main>section ol:not([class]) {
 main>section ul:not([class]) li,
 main>section ol:not([class]) li {
     padding: 1rem 1rem 1rem 3.2rem;
-    background: white;
-    border: 1px solid rgba(139, 69, 19, 0.15);
-    border-left: 4px solid saddlebrown;
+    background: var(--tema-card-bg);
+    border: 1px solid var(--tema-bordo);
+    border-left: 4px solid var(--tema-titoli);
     border-radius: .5rem;
     position: relative;
     font-size: clamp(0.9rem, 1vw + 0.5rem, 1rem);
@@ -1401,8 +1183,8 @@ main>section ol:not([class]) li::before {
     width: 1.6rem;
     height: 1.6rem;
     top: calc(50% - 0.8rem);
-    background: darkolivegreen;
-    color: white;
+    background: var(--tema-ol-marker);
+    color: var(--tema-ol-marker-txt);
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -1416,24 +1198,24 @@ main>section ul:not([class]) li::before {
     content: '';
     position: absolute;
     left: 0.9rem;
-    top: 1.15rem;
+    top: 1.5rem;
     width: .5rem;
     height: .5rem;
     border-radius: 50%;
-    background: saddlebrown;
+    background: var(--tema-li-marker);
 }
 
 /* ── Blockquote stile testimonianza ── */
 blockquote {
     position: relative;
-    background: white;
-    border-left: 5px solid saddlebrown;
+    background: var(--tema-card-bg);
+    border-left: 5px solid var(--tema-titoli);
     border-radius: .5rem;
     padding: 1.5rem 1.5rem 1.5rem calc(2rem + 1rem);
     margin: 1.5rem 0 .5rem;
     font-size: clamp(1rem, 1.5vw + 0.3rem, 1.15rem);
     font-style: italic;
-    color: #4a3520;
+    color: var(--tema-testo-tenue);
 }
 
 blockquote::before {
@@ -1442,7 +1224,7 @@ blockquote::before {
     left: 0.6rem;
     top: 0.2rem;
     font-size: 3.5rem;
-    color: saddlebrown;
+    color: var(--tema-titoli);
     opacity: 0.35;
     font-family: 'Georgia', 'Times New Roman', serif;
     line-height: 1;
@@ -1450,7 +1232,7 @@ blockquote::before {
 
 /* Autore testimonianza */
 main>aside>p:last-child {
-    color: #6b3410;
+    color: var(--tema-dt-fg);
     font-size: 0.9rem;
     font-weight: 600;
     margin-top: -0.5rem;
@@ -1470,7 +1252,7 @@ main>aside>p:last-child {
 .statistiche dt {
     font-size: clamp(0.75rem, 1vw + 0.4rem, 0.85rem);
     font-weight: 600;
-    color: #6b3410;
+    color: var(--tema-dt-fg);
     text-transform: uppercase;
     letter-spacing: 0.06em;
     margin-bottom: .25rem;
@@ -1481,27 +1263,27 @@ main>aside>p:last-child {
     font-family: 'Georgia', 'Times New Roman', serif;
     font-size: clamp(2rem, 4vw, 3rem);
     font-weight: 700;
-    color: saddlebrown;
+    color: var(--tema-titoli);
     margin: 0;
     line-height: 1;
 }
 
 /* Wrap dt+dd in box visivo sfruttando il fatto che sono fratelli */
 .statistiche dt {
-    background: white;
+    background: var(--tema-stat-bg);
     border-radius: .5rem .5rem 0 0;
     padding: 1rem 1rem .25rem;
-    border: 1px solid rgba(139, 69, 19, 0.15);
+    border: 1px solid var(--tema-bordo);
     border-bottom: none;
     margin: 0;
 }
 
 .statistiche dd {
-    background: white;
+    background: var(--tema-stat-bg);
     border-radius: 0 0 .5rem .5rem;
     padding: .25rem 1rem 1rem;
-    border: 1px solid rgba(139, 69, 19, 0.15);
-    border-top: 3px solid saddlebrown;
+    border: 1px solid var(--tema-bordo);
+    border-top: 3px solid var(--tema-titoli);
 }
 
 
@@ -1568,21 +1350,21 @@ main>aside>p:last-child {
 }
 
 .messaggio-errore {
-    background: #fdf2f2;
-    color: darkred;
-    border-color: darkred;
+    background: var(--tema-err-bg);
+    color: var(--tema-err-fg);
+    border-color: var(--tema-err-border);
 }
 
 .messaggio-successo {
-    background: #f2fdf4;
-    color: #1e5c2e;
-    border-color: #1e5c2e;
+    background: var(--tema-ok-bg);
+    color: var(--tema-ok-fg);
+    border-color: var(--tema-ok-border);
 }
 
 .messaggio-avviso {
-    background: #fdf8ec;
-    color: #6b4c00;
-    border-color: #6b4c00;
+    background: var(--tema-avv-bg);
+    color: var(--tema-avv-fg);
+    border-color: var(--tema-avv-border);
 }
 
 /* Etichetta testuale (al posto delle emoji): pillola colorata. */
@@ -1628,9 +1410,9 @@ main>aside>p:last-child {
 
 /* Sezione "nuovi arrivi": sfondo caldo distinto */
 .nuovi-arrivi {
-    background: linear-gradient(135deg, #fdf3e3 0%, #f7ead6 100%) !important;
+    background: var(--tema-nuovi-arrivi-bg) !important;
     border-radius: .5rem;
-    border: 1px solid rgba(139, 69, 19, 0.25) !important;
+    border: 1px solid var(--tema-card-bordo) !important;
 }
 
 .nuovi-arrivi h2 {
@@ -1679,8 +1461,8 @@ main>aside>p:last-child {
     display: grid;
     grid-template-columns: 200px 1fr;
     align-items: stretch;
-    background: white;
-    border: 1px solid rgba(139, 69, 19, 0.15);
+    background: var(--tema-card-bg);
+    border: 1px solid var(--tema-card-bordo);
     border-radius: .5rem;
     overflow: hidden;
     position: relative;
@@ -1708,7 +1490,7 @@ main>aside>p:last-child {
     width: 200px;
     aspect-ratio: 4 / 3;
     overflow: hidden;
-    background: #f5e8c8;
+    background: var(--tema-campo-tenue);
 }
 
 .card-gatto figure img {
@@ -1755,8 +1537,8 @@ main>aside>p:last-child {
     font-size: .75rem;
     padding: 2px .5rem;
     border-radius: .5rem;
-    background: #f0e8d0;
-    color: #6b3410;
+    background: var(--tema-tag-bg);
+    color: var(--tema-tag-fg);
     font-weight: 700;
 }
 
@@ -1771,7 +1553,7 @@ main>aside>p:last-child {
 
 .card-gatto dt {
     font-weight: 700;
-    color: #6b3410;
+    color: var(--tema-dt-fg);
 }
 
 .card-gatto dd {
@@ -1840,9 +1622,9 @@ main>aside>p:last-child {
     align-items: flex-end;
     margin-bottom: 1.5rem;
     padding: 1rem 1.5rem;
-    background: white;
+    background: var(--tema-barra-bg);
     border-radius: .5rem;
-    border: 1px solid rgba(139, 69, 19, 0.15);
+    border: 1px solid var(--tema-bordo);
     max-width: none;
     width: 100%;
 }
@@ -1872,11 +1654,11 @@ main>section>div>form {
 }
 
 fieldset {
-    border: 1px solid rgba(139, 69, 19, 0.25);
+    border: 1px solid var(--tema-bordo);
     border-radius: .5rem;
     padding: 1.5rem;
     margin-bottom: .8rem;
-    background: white;
+    background: var(--tema-fieldset-bg);
 }
 
 legend {
@@ -1885,16 +1667,18 @@ legend {
     font-weight: 700;
     color: saddlebrown;
     padding: 0 .5rem;
+    background-color: white;
+    border-radius: .5rem;
 }
 
 label {
     display: flex;
     flex-direction: row;
     gap: .25rem;
-    margin-bottom: .5rem;
+    margin-top: .5rem;
     font-size: 1rem;
     font-weight: 600;
-    color: black;
+    color: var(--tema-corpo);
 }
 
 /* Campi testo comuni */
@@ -1909,12 +1693,12 @@ select,
 textarea {
     width: 100%;
     padding: .5rem 1rem;
-    border: 2px solid #b08442;
+    border: 2px solid var(--tema-input-bordo);
     border-radius: .5rem;
     font-family: 'Segoe UI', 'Tahoma', 'Geneva', 'Verdana', sans-serif;
     font-size: 1rem;
-    color: black;
-    background: white;
+    color: var(--tema-input-fg);
+    background: var(--tema-input-bg);
 }
 
 input:focus,
@@ -1982,7 +1766,7 @@ input[type="radio"] {
 
 .aiuto-campo {
     font-size: .82rem;
-    color: #6b3410;
+    color: var(--tema-dt-fg);
     font-weight: normal;
 }
 
@@ -1994,7 +1778,7 @@ input[type="radio"] {
 
 .errore-campo {
     font-size: .85rem;
-    color: darkred;
+    color: var(--tema-err-fg);
     font-weight: normal;
     display: flex;
     align-items: center;
@@ -2011,6 +1795,7 @@ meter {
     height: 1rem;
     border-radius: .5rem;
     border: 1px solid #c8a87a;
+    color: white;
     overflow: hidden;
     accent-color: saddlebrown;
 }
@@ -2023,7 +1808,7 @@ meter {
     display: flex;
     justify-content: center;
     padding: 2rem;
-    color: #6b3410;
+    color: var(--tema-caricamento);
     font-style: italic;
 }
 
@@ -2041,10 +1826,10 @@ meter {
 }
 
 .turno-item {
-    border: 2px solid rgba(139, 69, 19, 0.25);
+    border: 2px solid var(--tema-bordo);
     border-radius: .5rem;
     padding: 1rem;
-    background: white;
+    background: var(--tema-card-bg);
 }
 
 .turno-item.disponibile {
@@ -2053,19 +1838,19 @@ meter {
 
 .turno-item.disponibile:hover {
     border-color: darkolivegreen;
-    background: #f0f5e8;
+    background: var(--tema-campo-tenue);
 }
 
 .turno-item.pieno {
     opacity: .55;
     cursor: not-allowed;
-    background: #f5e8c8;
+    background: var(--tema-campo-tenue);
 }
 
 /* Fascia a cui l'utente è già iscritto: evidenziata, non riselezionabile */
 .turno-item.iscritto {
     border-color: darkolivegreen;
-    background: #f5e8c8;
+    background: var(--tema-campo-tenue);
     border-left: 4px solid darkolivegreen;
 }
 
@@ -2135,11 +1920,11 @@ th {
 }
 
 tr:nth-child(even) td {
-    background: #fdf5e8;
+    background: var(--tema-tr-pari);
 }
 
 tr:hover td {
-    background: #f5eacc;
+    background: var(--tema-tr-hover);
 }
 
 
@@ -2147,10 +1932,10 @@ tr:hover td {
    21. DETAILS / SUMMARY (accordion)
    ============================================================ */
 details {
-    border: 1px solid rgba(139, 69, 19, 0.15);
+    border: 1px solid var(--tema-bordo);
     border-radius: .5rem;
     margin-bottom: .5rem;
-    background: white;
+    background: var(--tema-card-bg);
     overflow: hidden;
 }
 
@@ -2164,16 +1949,16 @@ summary {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: #fdf8f0;
+    background: var(--tema-summary-bg);
     gap: 1rem;
 }
 
 summary:hover {
-    background: #f5edd8;
+    background: var(--tema-summary-hover);
 }
 
 details[open] summary {
-    background: #f5edd8;
+    background: var(--tema-summary-hover);
     border-bottom: 1px solid rgba(139, 69, 19, 0.15);
 }
 
@@ -2209,7 +1994,7 @@ details>p:not(summary) {
    ============================================================ */
 .separatore {
     border: 0;
-    border-top: 1px solid #c8a87a;
+    border-top: 1px solid var(--tema-separatore);
     margin: 2rem 0;
 }
 
@@ -2236,11 +2021,11 @@ details>p:not(summary) {
 }
 
 .testo-errore {
-    color: darkred;
+    color: var(--tema-err-fg);
 }
 
 .testo-successo {
-    color: #1e5c2e;
+    color: var(--tema-ok-fg);
 }
 
 
@@ -2631,7 +2416,7 @@ main aside.messaggio p,
     text-align: center;
     max-width: 60ch;
     margin-inline: auto;
-    color: #4a3520;
+    color: var(--tema-privacy-st);
     font-size: clamp(1rem, 1.5vw + 0.4rem, 1.2rem);
 }
 
@@ -2647,8 +2432,8 @@ main aside.messaggio p,
 .privacy-indice {
     position: sticky;
     top: 6rem;
-    background: white;
-    border: 1px solid rgba(139, 69, 19, 0.15);
+    background: var(--tema-indice-bg);
+    border: 1px solid var(--tema-bordo);
     border-left: 4px solid saddlebrown;
     border-radius: .5rem;
     padding: 1rem 1.5rem;
@@ -2680,7 +2465,7 @@ main aside.messaggio p,
 
 .privacy-indice a:hover,
 .privacy-indice a:focus {
-    background: #f5e8c8;
+    background: var(--tema-priv-ind-a-hover);
 }
 
 .privacy-contenuto {
@@ -2691,8 +2476,8 @@ main aside.messaggio p,
 
 /* Ogni blocco è una "scheda" distinta */
 .privacy-blocco {
-    background: white;
-    border: 1px solid rgba(139, 69, 19, 0.15);
+    background: var(--tema-blocco-bg);
+    border: 1px solid var(--tema-bordo);
     border-radius: .5rem;
     padding: 1.5rem;
     scroll-margin-top: 6rem;
@@ -2724,8 +2509,8 @@ main aside.messaggio p,
 }
 
 .privacy-cookie-card {
-    background: #f5e8c8;
-    border: 1px solid rgba(139, 69, 19, 0.15);
+    background: var(--tema-cookie-bg);
+    border: 1px solid var(--tema-bordo);
     border-radius: .5rem;
     padding: 1rem;
 }
@@ -2745,7 +2530,7 @@ main aside.messaggio p,
 
 .privacy-cookie-card dt {
     font-weight: 700;
-    color: #6b3410;
+    color: var(--tema-dt-fg);
 }
 
 .privacy-cookie-card dd {
@@ -2754,7 +2539,7 @@ main aside.messaggio p,
 
 .privacy-nota {
     font-size: .9rem;
-    color: #4a3520;
+    color: var(--tema-privacy-nota);
     font-style: italic;
 }
 
@@ -2791,17 +2576,15 @@ main aside.messaggio p,
    ============================================================ */
 .blocco-ricordami {
     margin-top: 1.5rem;
-    background: #fdf8ec;
-    border: 1px solid rgba(139, 69, 19, 0.2);
+    background: var(--tema-ricordami-bg);
+    border: 1px solid var(--tema-blocco-rcm-bordo);
     border-left: 4px solid darkolivegreen;
     border-radius: .5rem;
     padding: 1rem 1.25rem;
 }
 
 .blocco-ricordami legend {
-    font-weight: 700;
-    color: #3e5022;
-    padding: 0 .4rem;
+    color: var(--tema-ricordami-leg);
 }
 
 .blocco-ricordami .campo-checkbox {
@@ -2816,6 +2599,7 @@ main aside.messaggio p,
 .nota-obbligatori {
     margin: 1rem 0 .5rem;
     font-size: .85rem;
+    color: var(--tema-nota-obblig);
 }
 
 
@@ -2843,7 +2627,7 @@ main aside.messaggio p,
 .storia-successo figcaption {
     margin-top: .6rem;
     font-weight: 700;
-    color: #6b3410;
+    color: var(--tema-storia-cap);
 }
 
 
@@ -2876,50 +2660,46 @@ main aside.messaggio p,
 
 
 /* ============================================================
-   36. TEMA SCURO — regole aggiuntive per i nuovi elementi
+   36. ELEMENTI AGGIUNTIVI — applicano le variabili tema
    ============================================================ */
-@media (prefers-color-scheme: dark) {
-    html:not([data-tema]) .box-vantaggio {
-        background: #332d24;
-        border-color: rgba(217, 139, 74, 0.22);
-    }
 
-    html:not([data-tema]) .box-vantaggio dt {
-        color: #d98b4a;
-    }
-
-    html:not([data-tema]) .contatore-basso {
-        color: #f08a8a;
-    }
+/* box-vantaggio usa le variabili definite in §1 */
+.box-vantaggio {
+    background:   var(--tema-vantaggio-bg);
+    border:       1px solid var(--tema-bordo);
+    border-radius: .5rem;
+    padding:      1rem 1.25rem;
 }
 
-html[data-tema="scuro"] .box-vantaggio {
-    background: #332d24;
-    border-color: rgba(217, 139, 74, 0.22);
+.box-vantaggio dt {
+    font-weight:  700;
+    color:        var(--tema-vantaggio-dt);
+    margin-bottom: .35rem;
 }
 
-html[data-tema="scuro"] .box-vantaggio dt {
-    color: #d98b4a;
-}
+.box-vantaggio dd { margin: 0; }
 
-html[data-tema="scuro"] .contatore-basso {
-    color: #f08a8a;
-}
+/* Contatore basso — colore errore tematico */
+.contatore-basso { color: var(--tema-contatore-basso); font-weight: 700; }
 
 
 /* ============================================================
-   37. CALENDARIO (date/ora) — visibilità icona anche in tema scuro
+   37. CALENDARIO (date/ora) — icona colori tema (Fix #3)
+   ============================================================
+   L'icona del calendario usa la variabile --tema-cal-filter che
+   si aggiorna automaticamente con il tema corrente.
+   In chiaro: marrone brand; in scuro: dorato chiaro su fondo scuro.
    ============================================================ */
-@media (prefers-color-scheme: dark) {
-
-    html:not([data-tema]) input[type="date"]::-webkit-calendar-picker-indicator,
-    html:not([data-tema]) input[type="datetime-local"]::-webkit-calendar-picker-indicator {
-        /* su fondo scuro l'icona diventa chiara per restare visibile */
-        filter: invert(78%) sepia(20%) saturate(600%) hue-rotate(355deg);
-    }
+input[type="date"]::-webkit-calendar-picker-indicator,
+input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+    cursor:        pointer;
+    opacity:       1;
+    padding:       .15rem;
+    border-radius: .25rem;
+    filter:        var(--tema-cal-filter);
 }
 
-html[data-tema="scuro"] input[type="date"]::-webkit-calendar-picker-indicator,
-html[data-tema="scuro"] input[type="datetime-local"]::-webkit-calendar-picker-indicator {
-    filter: invert(78%) sepia(20%) saturate(600%) hue-rotate(355deg);
+input[type="date"]::-webkit-calendar-picker-indicator:hover,
+input[type="datetime-local"]::-webkit-calendar-picker-indicator:hover {
+    background: rgba(139,69,19,.15);
 }
