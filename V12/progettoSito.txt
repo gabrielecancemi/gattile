@@ -1,0 +1,474 @@
+================================================================================
+GATTILE San Paolo — Documentazione delle scelte progettuali
+File: progettoSito.txt
+================================================================================
+
+1. DESCRIZIONE GENERALE
+-----------------------
+"Gattile San Paolo" è un sito web per la gestione di adozioni e volontariato
+in un gattile di Torino. Permette agli utenti di sfogliare i gatti ospiti,
+prenotare visite conoscitive e registrarsi come volontari. Gli amministratori
+possono inserire nuovi animali nella struttura.
+
+Il sito è sviluppato in PHP 8+, con componenti React per la visualizzazione
+dei gatti e Vanilla JavaScript per la gestione dei form.
+
+
+2. ARCHITETTURA DEI FILE
+------------------------
+/
+├── index.php               — Home: presentazione e "nuovi arrivi" dal DB
+├── login.php               — Autenticazione con opzione "ricordami"
+├── registrazione.php       — Registrazione nuovo utente
+├── gatti.php               — Lista gatti (React) + form prenotazione (VanillaJS)
+├── inserisci_gatto.php     — Inserimento gatto (solo admin)
+├── volontariato.php        — Prenotazione turni volontariato
+├── logout.php              — Distrugge sessione e cookie
+├── privacy.php             — Informativa cookie e privacy
+│
+├── progettoSito.txt        — (richiesto) scelte progettuali
+├── sSTUDENTE_struttura.txt — (richiesto) elenco pagine e form
+│
+├── includes/
+│   ├── db.php              — Connessioni DB con minimo privilegio
+│   ├── auth.php            — Sessione, login, cookie ricordami (token JSON)
+│   ├── card_gatto.php      — Renderer condiviso della card gatto
+│   ├── header.php          — Header comune
+│   ├── footer.php          — Footer comune + banner cookie
+│   └── layout.php          — Funzioni di layout e helper (esc, messaggi)
+│
+├── api/
+│   ├── gatti.php           — JSON endpoint: lista gatti (GET)
+│   ├── prenota_visita.php  — JSON endpoint: prenota visita (POST)
+│   ├── prenota_turno.php   — Alias POST verso turni.php
+│   ├── turni.php           — JSON endpoint: fasce volontariato (GET/POST)
+│   ├── elimina_cookie.php  — Elimina cookie (POST)
+│   └── gattile_tokens/     — Archivio JSON dei token "ricordami"
+│
+├── css/
+│   ├── stile.css           — Foglio di stile principale (+ tema scuro)
+│   └── stampa.css          — Foglio di stile per la stampa
+│
+├── js/
+│   ├── GattiComponent.jsx  — Sorgente React: lista/filtro/selezione gatti
+│   ├── GattiComponent.js   — Versione compilata (Babel) usata dalle pagine
+│   ├── prenotazione.js     — VanillaJS: form prenotazione visita
+│   ├── volontariato.js     — VanillaJS: form turni volontariato
+│   ├── login.js            — VanillaJS: validazione form login
+│   ├── registrazione.js    — VanillaJS: validazione + meter forza password
+│   ├── inserisci_gatto.js  — VanillaJS: validazione form inserimento gatto
+│   ├── menu.js             — VanillaJS: menu hamburger mobile
+│   ├── footer.js           — VanillaJS: banner cookie / footer
+│   ├── privacy.js          — VanillaJS: eliminazione cookie
+│   └── tema.js             — VanillaJS: selettore tema 3 stati
+│
+├── build/                  — Solo per ricompilare il JSX (non serve al runtime)
+│   ├── package.json        — Script "build-react" (Babel)
+│   ├── package-lock.json
+│   └── babel.config.json   — Preset @babel/preset-react
+│
+└── img/
+    ├── logo.png            — Logo del sito
+    └── placeholder-gatto.svg — Immagine placeholder per i gatti
+
+
+3. COMUNICAZIONE REACT ↔ VANILLA JS (CustomEvent)
+-------------------------------------------------
+La sezione di visualizzazione gatti (gatti.php) usa due tecnologie distinte:
+- Il componente React gestisce la lista, il filtraggio e la selezione.
+- Il form di prenotazione visita è in Vanilla JavaScript puro.
+
+Per comunicare la lista di gatti selezionati dal componente React al form
+Vanilla JS, si è scelto un CustomEvent DOM:
+
+    document.dispatchEvent(new CustomEvent('gattiSelezionatiAggiornati', {
+        detail: { gatti: [...] },
+        bubbles: true,
+    }));
+
+MOTIVAZIONE: il CustomEvent è uno standard Web nativo (W3C), supportato da
+tutti i browser moderni. Permette comunicazione unidirezionale (React → VanillaJS)
+senza:
+- condivisione di variabili globali (evita inquinamento del namespace globale)
+- dipendenza da framework comuni o librerie esterne
+- accoppiamento diretto tra i due moduli (ciascuno è autonomamente testabile)
+
+Alternative considerate e scartate:
+- Variabile globale window.gattiSelezionati: rischio di collisioni, difficile
+  da tracciare, non standard.
+- Callback diretta: richiederebbe che React conosca il form VanillaJS,
+  violando il principio di separazione delle responsabilità.
+- Redux/Context: sovra-ingegnerizzazione per una comunicazione così semplice
+  e unidirezionale.
+
+Il CustomEvent consente anche a eventuali futuri moduli di iscriversi allo
+stesso evento senza modificare il componente React (open/closed principle).
+
+
+4. SEPARAZIONE DEI PRIVILEGI DB
+-------------------------------
+Si usano tre utenti MySQL distinti, con il principio del minimo privilegio
+(OWASP A01:2021 — Broken Access Control):
+
+a) 'lecture'@'localhost' — Solo SELECT su tutto gattile_db
+   Usato da: index.php (nuovi arrivi), api/gatti.php, parti di auth.php,
+             turni.php (conteggio), login (verifica username prima di insert).
+   Rationale: le pagine di sola lettura non devono mai poter modificare dati.
+
+b) 'modifier'@'localhost' — SELECT, INSERT, UPDATE su tutto gattile_db
+   Usato da: inserisci_gatto.php, api/prenota_visita.php, api/turni.php (POST).
+   Rationale: le operazioni di business logic richiedono lettura e scrittura,
+              ma mai eliminazione di record (DROP/DELETE non concesso).
+
+c) 'registrator'@'localhost' — Solo INSERT su gattile_db
+   Usato da: registrazione.php (solo per inserire il nuovo utente).
+   Rationale: la pagina di registrazione non deve poter leggere altri dati
+              utente né modificare record esistenti. È il livello di privilegio
+              minimo indispensabile per la sua funzione.
+
+In nessun caso viene usato l'utente root/admin di sistema, né un utente
+con DROP, DELETE o GRANT.
+
+La distinzione tra lettore/modificatore/registratore è implementata nella
+funzione getDB($role) in includes/db.php, che accetta un parametro stringa
+e seleziona le credenziali appropriate. Ogni endpoint API e ogni pagina PHP
+chiama getDB() con il ruolo minimo necessario.
+
+
+5. AUTENTICAZIONE E "RICORDAMI"
+--------------------------------
+L'autenticazione avviene sempre via sessione PHP con verifica della password.
+ATTENZIONE: in questa release la password è memorizzata sul database IN CHIARO
+(scelta richiesta esplicitamente). Vedere la sezione 6.E per la discussione
+critica: NON è l'opzione più sicura. Il cookie "ricordami" (gattile_remember)
+contiene un token opaco a 64 caratteri esadecimali (32 byte casuali via
+random_bytes).
+
+Il token è associato lato server (in sessione) allo username corrispondente.
+In una versione produzione il mapping andrebbe in una tabella DB dedicata
+(remember_tokens) con colonne: token_hash, utente_id, scadenza.
+
+Il cookie NON contiene mai le credenziali in chiaro. La sua unica funzione
+è precompilare il campo username nel form di login; l'accesso rimane
+subordinato alla verifica della password.
+
+Attributi del cookie:
+- HttpOnly: non accessibile a JavaScript (prevenzione XSS)
+- SameSite=Strict: prevenzione CSRF
+- Secure: attivo in HTTPS (condizionale su $_SERVER['HTTPS'])
+- Durata: 72 ore
+
+
+6. VALIDAZIONE E SICUREZZA (OWASP)
+------------------------------------
+A. Input: tutti i dati POST sono filtrati con filter_input() e poi validati
+   con logica specifica (lunghezze, pattern, range numerici).
+
+B. Output: ogni dato utente viene passato per esc() (htmlspecialchars con
+   ENT_QUOTES | ENT_SUBSTITUTE) prima dell'output HTML.
+
+C. SQL Injection: mai interpolazione diretta. Tutte le query usano prepared
+   statements PDO con parametri bindati.
+
+D. CSRF: il sito usa SameSite=Strict sui cookie di sessione e referrer-check
+   (implementazione base; in produzione aggiungere token CSRF esplicito nel form).
+
+E. Password: in questa release sono memorizzate IN CHIARO sul database, per
+   scelta esplicita di configurazione. Si tratta consapevolmente della
+   soluzione MENO sicura possibile per le credenziali: chiunque ottenga
+   accesso in lettura alla tabella "utenti" (amministratore del DB, attaccante
+   che riesca a leggere il database, un backup non cifrato) può leggere
+   direttamente tutte le password. In un contesto reale andrebbe SEMPRE usato
+   un hashing robusto e specifico per password (es. password_hash() con
+   bcrypt o Argon2), eventualmente con pepper applicativo, e mai la
+   memorizzazione in chiaro. Si noti che restano comunque applicati i vincoli
+   di robustezza in fase di registrazione (8-16 caratteri con maiuscola,
+   minuscola, numero e carattere speciale) e la password non viene mai
+   conservata in sessione.
+
+F. Session fixation: session_regenerate_id(true) dopo ogni login riuscito.
+
+G. Content-Type sniffing: header X-Content-Type-Options: nosniff sugli endpoint JSON.
+
+H. Informazioni di errore: i messaggi mostrati all'utente sono generici;
+   i dettagli tecnici sono scritti solo in error_log (lato server).
+
+
+7. ACCESSIBILITÀ (WCAG 2.1 AA)
+--------------------------------
+- Tutti i colori rispettano rapporto di contrasto ≥ 4.5:1 (testo normale)
+  o ≥ 3:1 (testo grande). Verificato con la palette:
+  - testo #2d1f12 su sfondo #faf6f0: rapporto ~11:1 [OK]
+  - primario #7b4b2a su sfondo #faf6f0: rapporto ~5.8:1 [OK]
+  - accento #d4813a su sfondo #faf6f0: rapporto ~3.2:1 (usato solo per testo grande) [OK]
+
+- Skip link "Vai al contenuto principale" visibile al focus.
+
+- Tutti i form hanno <label for=""> associato all'input.
+
+- Errori inline con role="alert" e aria-live="polite/assertive".
+
+- Immagini con attributo alt descrittivo (placeholder con descrizione
+  contestualizzata al nome del gatto).
+
+- Elementi interattivi React con role, aria-checked, tabIndex, gestione keydown.
+
+- <main tabindex="-1"> per ricevere il focus dal skip link.
+
+- Tag semantici: <header>, <nav>, <main>, <section>, <article>, <aside>,
+  <footer>, <figure>, <figcaption>, <time>, <data>, <meter>, <progress>,
+  <details>, <summary>, <abbr>, <strong>, <em>, <cite>, <code>.
+
+- Nessun uso di <div> o <span> dove esiste un elemento semantico appropriato. Ma ne sono presenti alcuni
+
+- Un solo <h1> per pagina, gerarchia rispettata.
+
+- prefers-reduced-motion rispettato: le animazioni CSS vengono annullate.
+
+
+8. CSS E SEPARAZIONE DEI LINGUAGGI
+------------------------------------
+- Tutto il presentazionale è nel CSS (stile.css e stampa.css).
+- Nessuno <script> con codice scritto direttamente dentro l'HTML: tutto il
+  JavaScript è in file esterni nella cartella js/ e incluso via <script src>.
+  Anche lo script anti-FOUC che applica subito il tema salvato (un tempo
+  inline nell'<head>) è stato spostato in js/tema-iniziale.js, incluso nel
+  <head> senza defer così da eseguire prima del rendering del body.
+- Nessun attributo HTML di stile inline (style="..." non viene mai usato
+  direttamente nelle pagine PHP; solo raramente nello JS per aggiornamenti
+  dinamici strettamente necessari).
+- Nessun tag obsoleto (<font>, <center>, <big>, <tt>).
+- Layout mobile-first: le media query espandono verso schermi più grandi
+  (min-width: 640px, 900px).
+- Valori di colore espliciti nel CSS (niente :root/variabili): dove esiste un
+  nome di colore CSS equivalente o molto simile si usa quello (saddlebrown,
+  darkolivegreen, cornsilk, white, black, darkred, gold, maroon...), altrimenti
+  il codice esadecimale. Il tema scuro è realizzato con override espliciti
+  dentro la media query @media (prefers-color-scheme: dark).
+
+CSS di stampa (stampa.css, media="print"):
+- Nasconde navigazione, banner cookie, pulsanti, form.
+- Mostra URL dei link tra parentesi via ::after content: attr(href).
+- Sottolinea tutti i link.
+- Tipografia con font serif (Georgia) per leggibilità su carta.
+- Stile tabelle con bordi visibili.
+- Apertura forzata dei <details>.
+
+
+9. PERFORMANCE E ROBUSTEZZA
+-----------------------------
+- Le immagini dei gatti sono lazy-loaded (loading="lazy").
+- Le immagini sono SVG scalabili, leggere e senza dipendenze esterne.
+- Il componente React è caricato via CDN con crossorigin per integrità
+  (in produzione usare hash integrity + bundler).
+- PHP usa declare(strict_types=1) in ogni file per type safety.
+- Tutti i blocchi DB sono in try/catch con fallback all'utente.
+- Il form di prenotazione è inaccessibile via JS se non si è loggati
+  (controllo PHP + controllo API).
+- Le API JSON restituiscono codici HTTP appropriati (200, 400, 401, 403, 405, 409, 500).
+
+
+10. SEO
+-------
+- <title> descrittivo in ogni pagina (formato: "Nome pagina — Gattile San Paolo").
+- Meta description unica per ogni pagina.
+- Link canonico nell'<head>.
+- Struttura heading logica (h1 unico, h2, h3 in sequenza).
+- Testi alt significativi per tutte le immagini.
+- Sito responsive e mobile-first (fattore di ranking Google).
+- Nessun contenuto nascosto con display:none rilevante per indicizzazione.
+
+
+
+
+
+
+FAQ
+
+Salvo sul file perchè altrimenti dovevo creare tabella database o nella sessione.
+La sessione però scade alla chiusura del browser oppure con una durata ma 
+Non è garantito al 100%:
+alcuni browser possono cancellare le sessioni in certe modalità;
+il server può eliminare le sessioni prima del previsto;
+se l'utente fa logout e chiami session_destroy(), la sessione sparisce comunque.
+
+Eliminado cookie si eliminano cookie, sessione e token sul file
+
+Misure di sicurezza adottate
+
+GET o POST in ogni occasione e perchè
+
+
+PER implementare le foto nel db, la select richiede tutte le colonne e viene fatto il controllo 'img' => isset($g['foto']) && trim((string)$g['foto']) !== ''
+    ? $g['foto']
+    : 'img/placeholder-gatto.svg',    per mettere la foto se disponibile, altrimenti il placeholder
+
+
+
+
+================================================================================
+11. MODIFICHE INTRODOTTE NELLA VERSIONE V7
+================================================================================
+
+11.1 RICORDAMI / TOKEN OPACO (formato invariato)
+------------------------------------------------
+La gestione del cookie "ricordami" resta come nelle versioni precedenti: il
+cookie contiene SOLO un token opaco di 64 caratteri esadecimali (32 byte
+casuali via random_bytes); l'associazione token -> username e' mantenuta lato
+server in un file JSON dedicato (includes/gattile_tokens/remember.json), con
+scadenza a 72 ore e pulizia automatica dei token scaduti. Il cookie non
+contiene mai le credenziali; l'accesso resta subordinato alla verifica della
+password tramite sessione PHP.
+
+11.2 MESSAGGIO DI ERRORE LOGIN PIU' SPECIFICO
+---------------------------------------------
+La funzione tentaLogin() ora restituisce un esito tipizzato (LOGIN_OK,
+LOGIN_PASSWORD_ERRATA, LOGIN_UTENTE_ASSENTE, LOGIN_ERRORE_DB). La pagina
+login.php distingue quindi i casi e, in particolare, quando lo username
+esiste ma la password non corrisponde mostra un messaggio esplicito
+"Password errata". (Nota: in un contesto ad alta sicurezza si preferisce
+talvolta un messaggio generico per non rivelare l'esistenza dell'utente; qui
+si e' privilegiata la chiarezza richiesta dalla specifica del compito.)
+
+11.3 GESTIONE TURNI VOLONTARIATO MIGLIORATA
+-------------------------------------------
+L'endpoint api/turni.php (GET) restituisce per ogni fascia anche il flag
+gia_iscritto, calcolato per l'utente in sessione. Il codice Vanilla JS
+(volontariato.js) disabilita visivamente sia le fasce piene (2/2) sia quelle a
+cui l'utente e' gia' iscritto, mostra uno stato dedicato e ricarica la lista
+dopo ogni prenotazione (riuscita o rifiutata), cosi' la disponibilita' e' sempre
+allineata. Il backend continua a riverificare il limite in modo indipendente.
+
+11.4 LAYOUT DEL MAIN CON grid-template-areas
+--------------------------------------------
+La home (main.main-home) usa una griglia CSS con aree nominate
+(grid-template-areas): impaginazione "a rivista" su due colonne nel desktop
+(>= 901px) e collasso in colonna unica con ordine di lettura naturale su
+tablet/mobile (<= 900px). La differenza fra desktop e mobile e' quindi marcata.
+Le altre pagine mantengono il container centrato classico.
+
+11.5 CARD GATTI ORIZZONTALI E RENDERER CONDIVISO
+------------------------------------------------
+Le card sono ora orizzontali (immagine a sinistra, contenuti a destra) e
+tornano verticali solo su mobile piccolo. La struttura HTML della card e'
+prodotta da un UNICO renderer condiviso (includes/card_gatto.php) usato dalla
+sezione "Nuovi arrivi" della home; il componente React replica la stessa
+identica struttura e le stesse classi CSS, cosi' le due aree condividono lo
+stesso stile senza duplicare il foglio di stile. La home e la pagina adozioni
+mantengono query distinte (la home estrae solo gli ultimi 2 arrivi con LIMIT 2,
+la pagina adozioni usa l'endpoint JSON) ma riusano lo stesso markup/stile (DRY).
+
+11.6 RIDUZIONE DEL CLS (Cumulative Layout Shift)
+------------------------------------------------
+- Le <img> hanno width/height espliciti e la figura della card ha dimensioni
+  e aspect-ratio fissi, cosi' lo spazio e' riservato prima del caricamento.
+- Il contenitore del componente React (#react-gatti-root) ha una min-height
+  che riserva l'area mentre i dati vengono caricati, evitando il salto di
+  layout al momento del render delle card.
+- decoding="async" sulle immagini.
+
+11.7 PAGINA PRIVACY/COOKIE RIDISEGNATA
+--------------------------------------
+La pagina privacy.php ha ora un layout dedicato a due colonne (indice laterale
+sticky + contenuti in schede), con i cookie presentati come schede invece che
+come singola tabella, per differenziarla dalle impostazioni piu' comuni.
+
+11.8 TEMA SCURO (sistema + selettore a 3 stati)
+-----------------------------------------------
+Il tema supporta tre stati selezionabili da un tasto nell'header:
+  - "sistema" (default): nessun attributo data-tema sull'<html>, il tema
+    segue prefers-color-scheme tramite la media query CSS;
+  - "chiaro": forza lo stile chiaro (html[data-tema="chiaro"]);
+  - "scuro": forza lo stile scuro (html[data-tema="scuro"]).
+La scelta manuale è salvata in un cookie tecnico "tema" (72 ore) e
+ripristinata lato server in layout.php (niente FOUC). Lo stesso set di
+regole scure è applicato sia in @media (prefers-color-scheme: dark)
+limitatamente a html:not([data-tema]) — così il sistema non "vince" su una
+scelta manuale — sia, sempre, sotto html[data-tema="scuro"]. I colori scuri
+rispettano un contrasto almeno AA (>= 4.5:1 per il testo normale); in header
+e footer testo, brand e link restano bianchi per il massimo contrasto.
+
+11.9 SEMANTICA / W3C
+--------------------
+- Rimossa l'annidamento di <nav> dentro <nav> nell'area account dell'header
+  (ora si usano contenitori non-nav per le azioni).
+- Sostituito l'<output> che conteneva contenuto di blocco (paragrafi/liste)
+  con un <div role="status"> nel riepilogo della prenotazione visita.
+- Il badge "Nuovo" non usa piu' <dfn> in modo improprio ma <strong>.
+- Mantenuti header e footer pressoche' identici nello stile, intervenendo
+  principalmente sul comportamento responsive.
+
+================================================================================
+Fine documento
+================================================================================
+
+================================================================================
+12. MODIFICHE INTRODOTTE NELLA VERSIONE V8
+================================================================================
+
+1.  Tema scuro guidato esclusivamente da @media (prefers-color-scheme: dark):
+    rimossi interruttore, tema.js, cookie "tema" e attributo data-tema.
+2.  Rimossi i bordi di separazione tra le section del main; resta solo il
+    bordo inferiore della prima section di ogni pagina (quella con l'h1).
+3.  Rimosse tutte le ombre (box-shadow). All'hover si sposta l'intera card,
+    senza piu' ingrandire l'immagine al suo interno.
+4.  Prenotazione visita: selettori facilitati e ben visibili: un input date
+    per il giorno e una select per l'orario (9:00-17:00), con validazione
+    lato client e lato server (fascia 9-18).
+5.  Volontariato: si sceglie prima il giorno da una select; vengono mostrate
+    solo le fasce orarie di quel giorno, fra cui selezionare quelle volute.
+6.  Le checkbox non selezionate non hanno piu' sfondo scuro (color-scheme:
+    light forzato sul controllo), neppure in tema scuro.
+7.  Tutti i colori del tema scuro rispettano un contrasto almeno AA
+    (verificato: testo principale ~14:1, link/elementi >= 4.5:1).
+8.  Eliminati tutti gli <span>; ridotti i <div> ai soli contenitori di layout
+    realmente necessari (riquadro account, griglie privacy, corpo card, live
+    region del riepilogo), tutti validi secondo il validatore W3C.
+9.  Eliminate tutte le emoji: icone disegnate via CSS (hamburger, spunta di
+    selezione) o etichette testuali ("Errore"/"OK"/"Info"); rimosse le icone
+    decorative della pagina privacy.
+10. "Elimina i miei cookie" ora rimuove davvero tutti i cookie: si itera su
+    tutti i cookie presenti e si fa scadere anche il cookie di sessione PHP.
+11. Riprogettato il blocco "Ricordami" del login in un fieldset dedicato, con
+    avviso ben visibile sull'obbligo di accettare prima i cookie.
+12. Aggiunta una seconda storia di successo nella home, con markup semantico
+    <figure>/<blockquote>/<figcaption>.
+
+================================================================================
+13. CONFORMITA' ALLE LINEE GUIDA (separazione, semantica, robustezza)
+================================================================================
+
+SEMANTICA HTML5 (no tag a scopo grafico):
+- Rimossi tutti i <br> e i <b> usati per formattazione. Gli indirizzi usano
+  <address> con <p>; l'elenco "perche' adottare" e' una lista di definizione
+  <dl>/<dt>/<dd>; le icone decorative sono <span> vuoti disegnati via CSS;
+  le etichette dei messaggi sono <strong>.
+- Una sola <h1> per pagina; struttura con <header>, <main>, <nav>, <section>,
+  <article>, <aside>, <footer>.
+- Usati solo elementi presenti nei temi trattati: l'elemento <search> (non in
+  programma) e' stato sostituito da <form role="search"> (form + ruoli ARIA).
+
+SEPARAZIONE NETTA HTML/CSS/JS:
+- Nessuno stile in-line e nessuna manipolazione di .style da JavaScript: lo
+  stato visivo si commuta con classi CSS (es. .faq-button--alzato,
+  .contatore-basso) o con l'attributo hidden.
+- Nessun event handler in-line (niente onclick/onchange): solo addEventListener.
+
+ROBUSTEZZA JAVASCRIPT:
+- "use strict" in tutti gli script; sostituito ogni var con const/let.
+- Validazione lato client per UX e ricontrollo indipendente lato server PHP.
+
+ACCESSIBILITA':
+- Ogni <img> ha alt; label con for, aria-* e landmark per tastiera/screen
+  reader; contrasto verificato AA in tema chiaro e scuro.
+
+SICUREZZA:
+- Query solo con prepared statement (MySQLi), mai concatenazione di stringhe.
+- Output con htmlspecialchars() (helper esc()).
+- Sessioni server-side per i dati sensibili; cookie con HttpOnly, Secure e
+  SameSite. Le password, per scelta esplicita di questa release, sono salvate
+  IN CHIARO nella colonna "password": è la soluzione meno sicura (vedi 6.E),
+  in produzione andrebbe usato password_hash() con bcrypt/Argon2.
+
+
+
