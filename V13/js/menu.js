@@ -16,7 +16,7 @@
         this.classList.toggle('aperto', nuovo_stato);
 
         if (etichetta && etichetta.nodeType === Node.TEXT_NODE) {
-            etichetta.textContent = nuovo_stato ? ' Chiudi' : ' Menu';
+            etichetta.textContent = nuovo_stato ? '✕ Chiudi' : '☰ Menu';
         }
 
         const nav = document.getElementById('menu-principale');

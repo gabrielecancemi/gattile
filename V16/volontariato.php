@@ -1,0 +1,89 @@
+<?php
+// Prenotazione turni di volontariato.
+declare(strict_types=1);
+
+require_once 'includes/layout.php';
+
+aprireSessione();
+$loggato = (profiloAttivo() !== null);
+
+generaIntestazioneHtml(
+    'Volontariato',
+    'Diventa volontario al Gattile San Paolo di Torino: scegli le fasce orarie in cui prestare aiuto.'
+);
+generaTestata();
+aprireContenuto('volontario-main');
+?>
+
+<section aria-labelledby="titolo-volontariato">
+    <h1 id="titolo-volontariato">Fai volontariato</h1>
+    <p>
+        Il tuo aiuto fa la differenza. Scegli quante fasce orarie vuoi.
+        La struttura accoglie <strong>al massimo 2 volontari per fascia oraria</strong>.
+    </p>
+    <?php if (!$loggato): ?>
+        <aside class="messaggio messaggio-avviso" role="note">
+            <p>
+                <strong>Per prenotare un turno</strong> devi prima
+                <a href="login.php">accedere</a> o
+                <a href="registrazione.php">registrarti</a>.
+            </p>
+        </aside>
+    <?php endif; ?>
+</section>
+<section aria-labelledby="titolo-info-vol">
+    <h2 id="titolo-info-vol">Cosa fare da volontario</h2>
+    <ul>
+        <li>Socializzare con i gatti e giocare con loro</li>
+        <li>Aiutare con la pulizia degli spazi</li>
+        <li>Supportare durante le visite dei potenziali adottanti</li>
+        <li>Assistere il personale nella gestione della struttura</li>
+    </ul>
+    <p>
+        Non è richiesta alcuna esperienza specifica.
+        Per info: <a href="mailto:info@gattile-sanpaolo.it">info@gattile-sanpaolo.it</a>.
+    </p>
+</section>
+<section>
+    <?php if ($loggato): ?>
+
+    <form id="form-volontariato" method="post" action="api/prenota_turno.php"
+          novalidate aria-label="Modulo prenotazione turni volontariato">
+        <fieldset>
+            <legend>Seleziona giorno e fasce orarie</legend>
+            <p class="aiuto-campo">
+                Le fasce con 2/2 volontari sono disabilitate automaticamente.
+            </p>
+
+            <label for="data-turno" class="campo-obbligatorio">Giorno</label>
+            <input type="date" id="data-turno" name="data_turno"
+                   aria-describedby="aiuto-data-turno"
+                   min="<?= date('Y-m-d') ?>">
+            <em id="aiuto-data-turno" class="aiuto-campo">
+                Scegli prima un giorno: verranno mostrate solo le sue fasce orarie.
+            </em>
+
+            <section id="contenitore-turni" aria-live="polite" aria-busy="true"
+                 aria-label="Fasce orarie disponibili">
+                <p class="caricamento">Caricamento fasce orarie…</p>
+            </section>
+        </fieldset>
+
+        <output id="msg-volontariato" aria-live="polite" class="sr-solo"></output>
+
+        <p class="campo-obbligatorio nota-obbligatori">Campi obbligatori</p>
+        <button type="submit" id="btn-volontariato" class="btn btn-primario"
+                disabled>
+            Conferma turni selezionati
+        </button>
+        <p class="aiuto-campo" aria-live="polite" id="note-btn-volontariato">
+            Seleziona almeno una fascia oraria disponibile.
+        </p>
+    </form>
+
+    <?php endif; ?>
+</section>
+
+<script src="js/volontariato.js" defer></script>
+
+<?php chiudereContenuto(); generaPiePagina(); ?>

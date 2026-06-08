@@ -1,0 +1,105 @@
+/*
+ * stampa.css — Stile per la stampa
+ * Nasconde navigazione, form, immagini decorative.
+ * Mostra URL dei link tra parentesi, sottolinea i link.
+ * Tipografia serif per leggibilità su carta.
+ */
+
+@media print {
+
+    * { background: white !important; color: black !important; box-shadow: none !important; }
+
+    @page { size: A4; margin: 2cm 2.5cm; }
+
+    body { font-family: Georgia, 'Times New Roman', serif; font-size: 11pt; line-height: 1.5; }
+
+    h1 { font-size: 18pt; border-bottom: 2pt solid black; padding-bottom: 6pt; }
+    h2 { font-size: 14pt; }
+    h3 { font-size: 12pt; }
+    h1, h2, h3 { page-break-after: avoid; color: black !important; }
+
+    p, li { orphans: 3; widows: 3; }
+
+    /* Nascondi elementi inutili su carta */
+    .header nav,
+    .menu-toggle,
+    .stato-autenticazione,
+    .skip-link,
+    .banner-cookie,
+    .faq-button,
+    .btn,
+    .barra-controlli,
+    #btn-elimina-cookie,
+    #btn-elimina-cookie-privacy,
+    .azioni-account-nav,
+    .azioni-principali,
+    form { display: none !important; }
+
+    /* Header: solo logo */
+    .header {
+        display: block !important;
+        border-bottom: 2pt solid black;
+        padding: .4cm 0;
+        background: white !important;
+    }
+    .brand-logo { display: flex; align-items: center; gap: 6pt; text-decoration: none; color: black !important; }
+    .logo-img   { width: 32px; height: 32px; }
+
+    /* Footer */
+    .footer {
+        display: block !important;
+        background: white !important;
+        border-top: 2pt solid black;
+        padding-top: .5cm;
+        margin-top: 1cm;
+        font-size: 9pt;
+    }
+    .footer .brand-logo, .footer nav { display: none !important; }
+    .footer-info  { display: block; }
+    .footer-copy  { font-size: 8pt; margin-top: .3cm; }
+    .footer-url   { display: block !important; font-size: 8pt; }
+
+    /* URL della pagina corrente in fondo */
+    .footer::after {
+        content: "Pagina: " attr(data-url);
+        display: block;
+        font-size: 8pt;
+        margin-top: .3cm;
+        font-style: italic;
+    }
+
+    /* Link con URL tra parentesi */
+    a { text-decoration: underline !important; color: black !important; }
+    a[href]:not([href^="#"]):not([href^="javascript"])::after {
+        content: " (" attr(href) ")";
+        font-size: 9pt;
+        font-style: italic;
+    }
+
+    /* Icone SVG: ne garantisce la stampa su tutti i browser. I fill SVG
+       non sono sfondi, ma print-color-adjust: exact assicura la resa
+       anche dove il browser tende a rimuovere i colori. */
+    .icona-tema, .icona-utente, .card-badge-selezione {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
+    /* Card gatti */
+    .griglia-gatti { display: block; }
+    .card-gatto    { page-break-inside: avoid; border: 1pt solid #999; margin-bottom: 1cm; padding: .5cm; }
+    .card-gatto figure img { display: block; max-width: 8cm; height: auto; }
+
+    /* Tabelle */
+    table  { border-collapse: collapse; width: 100%; page-break-inside: auto; }
+    tr     { page-break-inside: avoid; }
+    th, td { border: 1pt solid black !important; padding: 4pt 6pt !important; background: white !important; color: black !important; }
+    th     { background: #eee !important; font-weight: bold; }
+
+    /* Details: apre tutto */
+    details                  { display: block; border: 1pt solid #999; margin-bottom: .3cm; }
+    summary                  { font-weight: bold; padding: 4pt; }
+    details > *:not(summary) { display: block !important; padding: 4pt 8pt; }
+
+    figure { page-break-inside: avoid; }
+    figcaption { font-style: italic; font-size: 9pt; margin-top: 4pt; }
+}

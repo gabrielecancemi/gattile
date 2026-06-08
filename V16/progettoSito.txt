@@ -1,0 +1,304 @@
+================================================================================
+GATTILE SAN PAOLO — Scelte di progetto
+================================================================================
+
+1. COS'E'
+---------
+Sito per la gestione di adozioni e volontariato di un gattile a Torino. Gli
+utenti sfogliano i gatti ospiti, prenotano una visita conoscitiva e si
+registrano come volontari; gli amministratori inseriscono nuovi gatti.
+
+Stack: PHP 8+ lato server, un componente React per la lista gatti e Vanilla
+JavaScript per i form.
+
+
+2. ALBERO DEI FILE
+------------------
+/
+  home.php              Home: presentazione + "nuovi arrivi" dal DB
+  login.php             Accesso con opzione "ricordami"
+  registrazione.php     Registrazione nuovo utente
+  gatti.php             Lista gatti (React) + form prenotazione visita (Vanilla)
+  inserisci_gatto.php   Inserimento gatto (solo admin)
+  volontariato.php      Prenotazione turni di volontariato
+  logout.php            Distrugge sessione e cookie
+  faq.php               Domande frequenti
+  privacy.php           Informativa privacy e cookie
+
+  progettoSito.txt        Questo documento
+  sSTUDENTE_struttura.txt Elenco pagine e id dei form
+
+  includes/
+    db.php           Connessioni DB a privilegio minimo
+    sessione.php     Sessione, accesso, cookie ricordami (archivio JSON)
+    card_gatto.php   Renderer condiviso della scheda gatto
+    header.php       Testata comune
+    footer.php       Piè di pagina + banner cookie
+    layout.php       Funzioni di impaginazione e helper (ripulisci, avvisi)
+    gattile_tokens/  Archivio JSON dei gettoni "ricordami"
+
+  api/
+    gatti.php           Endpoint JSON: lista gatti (GET)
+    prenota_visita.php  Endpoint JSON: prenota visita (POST)
+    prenota_turno.php   Alias POST verso turni.php
+    turni.php           Endpoint JSON: fasce volontariato (GET/POST)
+    elimina_cookie.php  Elimina cookie e sessione (POST)
+
+  css/
+    stile.css    Foglio di stile principale (incluso tema scuro)
+    stampa.css   Foglio di stile per la stampa
+
+  js/
+    GattiComponent.jsx  Sorgente React: lista/filtro/selezione gatti
+    GattiComponent.js   Versione compilata (Babel), quella inclusa dalle pagine
+    prenotazione.js     Form prenotazione visita
+    volontariato.js     Form turni di volontariato
+    login.js            Validazione form di accesso
+    registrazione.js    Validazione + indicatore forza password
+    inserisci_gatto.js  Validazione form inserimento gatto
+    menu.js             Menu hamburger su mobile
+    footer.js           Banner cookie / footer
+    privacy.js          Eliminazione cookie
+    tema.js             Selettore tema a 3 stati
+    tema-iniziale.js    Applica subito il tema salvato (anti-FOUC)
+
+  build/   Solo per ricompilare il JSX, non serve a runtime
+    package.json        Script "build-react" (Babel)
+    package-lock.json
+    babel.config.json   Preset @babel/preset-react
+
+  img/
+    logo.png
+    placeholder-gatto.svg
+
+
+3. REACT ↔ VANILLA JS (CustomEvent)
+-----------------------------------
+In gatti.php convivono due tecnologie: il componente React gestisce lista,
+filtro e selezione dei gatti; il form di prenotazione visita è in Vanilla JS.
+
+Per passare la lista dei gatti selezionati da React al form ho usato un
+CustomEvent del DOM:
+
+    document.dispatchEvent(new CustomEvent('gattiSelezionatiAggiornati', {
+        detail: { gatti: [...] },
+        bubbles: true,
+    }));
+
+Perché questa scelta: il CustomEvent è uno standard nativo, supportato ovunque,
+e dà una comunicazione unidirezionale (React → Vanilla) senza variabili globali,
+senza dipendenze esterne e senza accoppiare i due moduli. Ognuno resta testabile
+da solo, e domani un terzo modulo può ascoltare lo stesso evento senza toccare
+React.
+
+Alternative scartate: una variabile globale (collisioni, poco tracciabile), una
+callback diretta (costringerebbe React a conoscere il form), Redux/Context
+(troppo per una comunicazione così semplice).
+
+
+4. SEPARAZIONE DEI PRIVILEGI SUL DB
+-----------------------------------
+Tre utenti MySQL distinti, secondo il principio del minimo privilegio:
+
+  reader / 'lecture'      Solo SELECT. Usato dalle pagine di sola lettura:
+                          home.php (nuovi arrivi), api/gatti.php, parti di
+                          sessione.php, turni.php (conteggi), e dal controllo
+                          unicità username prima dell'insert.
+
+  modifier / 'modifier'   SELECT, INSERT, UPDATE (mai DELETE/DROP). Usato dove
+                          serve scrivere: inserisci_gatto.php,
+                          api/prenota_visita.php, api/turni.php (POST).
+
+  registrator/'registrator' Solo INSERT. Usato dalla sola registrazione: non
+                          deve poter leggere altri utenti né modificare nulla.
+
+Non si usa mai root né un utente con GRANT/DROP/DELETE. La scelta del ruolo
+avviene in connessioneDb($ruolo) dentro includes/db.php: ogni pagina ed
+endpoint chiede il ruolo minimo che gli serve.
+
+
+5. ACCESSO E "RICORDAMI"
+------------------------
+L'accesso passa sempre dalla sessione PHP, con verifica della password.
+ATTENZIONE: in questa release la password è salvata sul DB IN CHIARO (scelta
+richiesta). Vedi il punto 6.E per la discussione: non è la soluzione sicura.
+
+Il cookie "ricordami" contiene SOLO un gettone opaco di 64 caratteri esadecimali
+(32 byte casuali da random_bytes). L'abbinamento gettone → username sta lato
+server in includes/gattile_tokens/remember.json, con scadenza a 72 ore e pulizia
+automatica dei gettoni scaduti. Il cookie non contiene mai credenziali: serve
+solo a precompilare lo username; l'accesso resta legato alla password.
+
+In produzione l'archivio andrebbe in una tabella dedicata (gettone_hash,
+utente_id, scadenza) invece che in un file JSON.
+
+Attributi del cookie: HttpOnly (non leggibile da JS), SameSite=Strict (anti
+CSRF), Secure quando si è in HTTPS, durata 72 ore.
+
+
+6. VALIDAZIONE E SICUREZZA
+--------------------------
+A. Input — tutti i POST passano da filter_input() e poi da validazioni
+   specifiche (lunghezze, pattern, range).
+
+B. Output — ogni dato utente passa da ripulisci() (htmlspecialchars con
+   ENT_QUOTES | ENT_SUBSTITUTE) prima di finire nell'HTML.
+
+C. SQL injection — mai concatenazione: tutte le query usano prepared statement
+   MySQLi con parametri bindati.
+
+D. CSRF — SameSite=Strict sui cookie. In produzione aggiungerei un token CSRF
+   esplicito nei form.
+
+E. Password — IN QUESTA RELEASE SONO SALVATE IN CHIARO, per scelta esplicita.
+   Va detto chiaramente: questa NON rispetta le linee guida di sicurezza ed è
+   la soluzione meno sicura per le credenziali. Chiunque legga la tabella
+   "utenti" (un amministratore del DB, un attaccante che riesca a leggere il
+   database, un backup non cifrato) vede direttamente tutte le password. In un
+   contesto reale si deve SEMPRE usare un hashing robusto e specifico per
+   password (password_hash() con bcrypt o Argon2), eventualmente con un pepper
+   applicativo, e non salvare mai in chiaro. Restano comunque attivi i vincoli
+   di robustezza in fase di registrazione (8–16 caratteri con maiuscola,
+   minuscola, numero e carattere speciale) e la password non viene mai messa
+   in sessione: questi riguardano la validazione, non come la password è
+   conservata. Il confronto della password usa hash_equals() (tempo costante).
+
+G. Header di sicurezza HTTP — impostati in un punto unico
+   (generaIntestazioneHtml in includes/layout.php), quindi su tutte le pagine:
+     - X-Content-Type-Options: nosniff (anti MIME-sniffing; anche sugli
+       endpoint JSON);
+     - X-Frame-Options: DENY e CSP frame-ancestors 'none' (anti-clickjacking);
+     - Referrer-Policy: strict-origin-when-cross-origin;
+     - Permissions-Policy: disattiva geolocation/microfono/camera (non usati);
+     - Content-Security-Policy stretta: default-src 'self'; gli unici script
+       esterni ammessi sono React/ReactDOM da unpkg. Poiché NON esiste alcuno
+       script o stile inline nel progetto, la CSP non usa 'unsafe-inline':
+       è una difesa forte contro l'iniezione di script (XSS).
+
+H. Errori — all'utente messaggi generici; i dettagli tecnici solo in
+   error_log lato server. mysqli_report(OFF) + controllo manuale di ogni
+   valore di ritorno: nessuno stack trace o errore SQL raggiunge l'utente.
+
+I. Controllo accessi — pagine e endpoint protetti verificano sempre il login
+   (esigeAccesso / 401) e, dove serve, il ruolo admin (esigeAdmin / 403)
+   PRIMA di qualunque operazione.
+
+J. Supply chain (dipendenze esterne) — React/ReactDOM sono caricati da unpkg
+   con versione PINNATA esatta (18.3.1, ultima con build UMD): niente
+   aggiornamenti automatici imprevisti. Per integrità verificata si può
+   aggiungere integrity="sha384-..." (SRI) con l'hash ufficiale del file
+   servito, oppure — soluzione preferita dalla teoria — ospitare i due file
+   sullo stesso server del sito. Il progetto resta comunque pronto all'uso
+   così com'è (plug and play): scompattare, configurare il DB, avviare PHP.
+
+
+7. OWASP TOP 10 (2025) — COME VIENE AFFRONTATO
+-----------------------------------------------
+A1 Broken access control — esigeAccesso()/esigeAdmin() sulle pagine; endpoint
+   con 401 (login) e 403 (ruolo) prima di ogni azione (sez. 6.I).
+A2 Security misconfiguration — header di sicurezza su tutte le pagine, CSP
+   stretta, charset esplicito utf8mb4, errori non esposti (sez. 6.G/6.H).
+A3 Software supply chain — React pinnato a versione esatta da CDN; possibilità
+   di SRI o hosting locale (sez. 6.J).
+A4 Cryptographic failure — UNICA ECCEZIONE CONCORDATA: la password è scritta
+   sul DB in chiaro perché il database NON è modificabile (i record esistenti
+   sono in chiaro). Tutto il resto della crittografia è a posto: gettone
+   "ricordami" da random_bytes, cookie Secure in HTTPS, confronto a tempo
+   costante con hash_equals. In un contesto senza quel vincolo si userebbe
+   password_hash() (bcrypt/Argon2) — vedi sez. 8.
+A5 Injection — prepared statement MySQLi ovunque, input filtrato/validato,
+   output sempre da ripulisci() (sez. 6.A/6.B/6.C).
+A6 Insecure design — privilegi minimi sul DB (tre ruoli, mai admin/root),
+   gettone opaco lato server, separazione netta dei moduli.
+A7 Authentication failures — session_regenerate_id(true) contro session
+   fixation, vincoli di robustezza password in registrazione, messaggi di
+   errore generici, password mai messa in sessione (sez. 6.E/6.F).
+A8 Software/data integrity — versione delle dipendenze pinnata; SRI
+   predisponibile (sez. 6.J).
+A9 Logging — ogni errore tecnico finisce in error_log lato server (sez. 6.H).
+A10 Mishandling exceptional conditions — ogni blocco DB ha gestione errore e
+   fallback all'utente; le API restituiscono codici HTTP appropriati
+   (200/400/401/403/405/409/500).
+
+
+
+-------------------------------
+- Contrasto colori ≥ 4.5:1 per il testo normale, ≥ 3:1 per il testo grande.
+- Tutti i form hanno <label for> associato.
+- Errori inline con role="alert" e aria-live.
+- Immagini con alt descrittivo, contestualizzato al nome del gatto.
+- Elementi interattivi React con role, aria-checked, tabIndex, gestione tasti.
+- <main tabindex="-1"> per ricevere il focus.
+- Tag semantici: header, nav, main, section, article, aside, footer, figure,
+  figcaption, time, data, meter, progress, details, summary, abbr, strong, em.
+- Una sola <h1> per pagina, gerarchia heading rispettata.
+- prefers-reduced-motion rispettato: le animazioni vengono annullate.
+
+
+8. SEPARAZIONE HTML / CSS / JS
+------------------------------
+- Tutto il presentazionale è nel CSS (stile.css, stampa.css).
+- Nessuno script scritto dentro l'HTML: tutto il JS è in file esterni in js/,
+  incluso via <script src>. Anche lo script anti-FOUC che applica subito il
+  tema sta in js/tema-iniziale.js, incluso nell'<head> senza defer per girare
+  prima del rendering del body.
+- Nessun attributo style="..." nelle pagine; lo stato visivo si commuta con
+  classi CSS (.faq-button--alzato, .contatore-basso) o con l'attributo hidden.
+- Nessun event handler inline (niente onclick/onchange): solo addEventListener.
+- Nessun tag obsoleto. Layout mobile-first, media query verso schermi più
+  grandi (min-width 640px, 900px).
+- Colori espliciti nel CSS (niente :root/variabili). Tema scuro con override
+  dentro @media (prefers-color-scheme: dark) limitati a html:not([data-tema])
+  — così il sistema non vince su una scelta manuale — e sempre sotto
+  html[data-tema="scuro"].
+
+CSS di stampa (stampa.css, media="print"): nasconde nav, banner, pulsanti e
+form; mostra l'URL dei link tra parentesi via ::after; sottolinea i link;
+tipografia serif; tabelle con bordi; <details> forzati aperti.
+
+
+9. PERFORMANCE E ROBUSTEZZA
+---------------------------
+- Immagini lazy-loaded (loading="lazy"), decoding="async".
+- Placeholder gatto in SVG: leggero, scalabile, senza dipendenze.
+- React caricato da CDN con crossorigin (in produzione: hash integrity +
+  bundler).
+- declare(strict_types=1) in ogni file PHP.
+- Ogni blocco DB ha gestione errore e fallback all'utente.
+- Il form di prenotazione è inaccessibile se non si è loggati (controllo PHP +
+  controllo API).
+- Le API JSON restituiscono codici HTTP appropriati (200, 400, 401, 403, 405,
+  409, 500).
+
+
+10. SEO
+-------
+- <title> descrittivo per ogni pagina, meta description unica.
+- Struttura heading logica (una h1, poi h2/h3).
+- alt significativo per tutte le immagini.
+- Sito responsive e mobile-first.
+
+
+11. NOTE VARIE
+--------------
+- L'abbinamento gettone "ricordami" → username sta su file JSON e non in una
+  tabella DB o in sessione: la sessione scade alla chiusura del browser (o per
+  durata), e non è garantita al 100% perché alcuni browser la cancellano in
+  certe modalità, il server può eliminarla prima del previsto, e al logout
+  session_destroy() la rimuove comunque. Il file dà persistenza controllata.
+- "Elimina i miei cookie" rimuove davvero tutto: itera su tutti i cookie
+  presenti, li fa scadere e cancella anche il cookie di sessione PHP, oltre a
+  distruggere la sessione e a rimuovere il gettone lato server.
+- Foto dei gatti: la SELECT prende tutte le colonne e si applica
+  'img' => isset($g['foto']) && trim((string)$g['foto']) !== '' ? $g['foto']
+  : 'img/placeholder-gatto.svg', così si usa la foto se presente, altrimenti il
+  placeholder.
+
+
+
+Lo spazio presente ai lati del main per versione desktop, può essere utilizzato 
+in futuro per inserire banne pubblicitari disattivati nel layout di stampa
+
+================================================================================
+Fine documento
+================================================================================
