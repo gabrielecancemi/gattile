@@ -26,7 +26,7 @@ JavaScript per i form.
   privacy.php           Informativa privacy e cookie
 
   progettoSito.txt        Questo documento
-  sSTUDENTE_struttura.txt Elenco pagine e id dei form
+  s326548_struttura.txt   Elenco pagine e id dei form
 
   includes/
     db.php           Connessioni DB a privilegio minimo
@@ -247,8 +247,11 @@ A10 Mishandling exceptional conditions — ogni blocco DB ha gestione errore e
 - Nessun event handler inline (niente onclick/onchange): solo addEventListener.
 - Nessun tag obsoleto. Layout mobile-first, media query verso schermi più
   grandi (min-width 640px, 900px).
-- Colori espliciti nel CSS (niente :root/variabili). Tema scuro con override
-  dentro @media (prefers-color-scheme: dark) limitati a html:not([data-tema])
+- Colori espliciti nel CSS. NON si usano le custom properties CSS
+  (var(--x)/:root) perché non rientrano negli argomenti del corso: la
+  de-duplicazione del tema scuro è ottenuta con una struttura più ordinata
+  (vedi sez. 12), non con variabili. Tema scuro con override dentro
+  @media (prefers-color-scheme: dark) limitati a html:not([data-tema])
   — così il sistema non vince su una scelta manuale — e sempre sotto
   html[data-tema="scuro"].
 
@@ -297,12 +300,125 @@ tipografia serif; tabelle con bordi; <details> forzati aperti.
 
 
 Lo spazio presente ai lati del main per versione desktop, può essere utilizzato 
-in futuro per inserire banne pubblicitari disattivati nel layout di stampa
+in futuro per inserire banner pubblicitari disattivati nel layout di stampa.
 
 
-Il tema scuro viene gestito in 2 modi: con classe e con media query. 
-Sebbene non sia la scelta più ottimizzata (ovvero ricavare tramite js la preferenza), 
-ho usato questa per utilizzare la media query come da argomento di lezioni.
+================================================================================
+12. SCELTE TECNICHE — REVISIONE (gestione errori, tema, cookie)
+================================================================================
+Per ogni punto: soluzione adottata, alternative possibili, motivazione finale.
+
+A. GESTIONE DEGLI ERRORI SENZA try/catch/finally
+------------------------------------------------
+Soluzione adottata:
+  - PHP: nessun uso di eccezioni. Ogni operazione critica (connessione DB,
+    prepare/execute degli statement, lettura risultati) è verificata sul
+    valore di ritorno con if/else; in caso di problema si scrive il dettaglio
+    tecnico in error_log() e si mostra all'utente un messaggio generico. Gli
+    endpoint JSON rispondono con i codici HTTP appropriati. mysqli_report(OFF)
+    impedisce a MySQLi di lanciare eccezioni.
+  - JavaScript: le richieste fetch usano i DUE handler di then()
+    (onFulfilled, onRejected) invece di .catch()/.finally(). Si controlla
+    sempre res.ok (fetch non considera errore i codici HTTP 4xx/5xx) e, in
+    caso di risposta non valida, si instrada l'errore con
+    Promise.reject(new Error(...)) — senza la parola chiave throw. Il codice
+    di ripristino della UI (prima eseguito in .finally) è raccolto in una
+    piccola funzione locale richiamata in entrambi i rami (successo / errore).
+    Da tema.js e tema-iniziale.js sono stati rimossi i try/catch che
+    proteggevano gli accessi a localStorage (ora non più usato, vedi punto B).
+Alternative possibili:
+  - PHP con try/catch su eccezioni MySQLi (mysqli_report(ERROR)). Scartata:
+    le eccezioni non sono tra gli argomenti del corso e il requisito impone
+    di non usare blocchi try/catch/finally.
+  - JS con async/await + try/catch attorno all'await. Scartata per lo stesso
+    motivo: await è mostrato a lezione ma si appoggia a try/catch per gli
+    errori, qui non ammessi.
+  - JS con .catch()/.finally() in catena. Scartata per aderire alla lettera
+    del requisito (assenza dei termini catch/finally), pur essendo metodi e
+    non blocchi.
+Motivazione finale:
+  Il controllo esplicito del valore di ritorno (PHP) e la coppia di handler
+  di then() (JS) ottengono lo stesso comportamento osservabile di prima
+  (stessi messaggi, stessi codici, stessa UI) restando dentro le tecniche
+  effettivamente trattate nel corso (filter_var/controllo ritorni, log lato
+  server, fetch con res.ok, Promise).
+
+B. TEMA CHIARO/SCURO — CENTRALIZZAZIONE, COERENZA E CONTRASTO
+------------------------------------------------------------
+Soluzione adottata:
+  - Tutta la logica cromatica del tema scuro è in un unico punto in testa a
+    stile.css (sez. "1. TEMA SCURO"): prima un solo @media
+    (prefers-color-scheme: dark) con tutte le regole su html:not([data-tema]),
+    poi le stesse regole su html[data-tema="scuro"]. Non più decine di piccoli
+    @media sparsi. I gruppi :is(...) sono stati espansi in liste di selettori
+    separate da virgola (sintassi del corso).
+  - PALETTE DERIVATA DAL CHIARO: i colori scuri non sono inventati, ma ricavati
+    dal ruolo che hanno in chiaro, così la logica cromatica è la stessa:
+      accento brand  saddlebrown  -> #e8975a (stesso hue bruno/arancio)
+      secondario     darkolivegreen -> #8fae5a (stesso hue olivastro)
+      header bg      darkolivegreen -> #3a4a22 (olivastro scuro)
+      footer bg      saddlebrown    -> #4a2c14 (bruno scuro)
+      fondo pagina   cornsilk       -> #1b1712
+      pannelli       white          -> #262019
+      riempimenti    wheat          -> #33291d
+      bordi          tan            -> #5a4a33
+      errore         darkred        -> #f08a8a   successo darkgreen -> #7ed694
+    Gli elementi che in chiaro condividono un colore lo condividono anche in
+    scuro: es. .messaggio-avviso e legend usano l'accento, esattamente come
+    usano saddlebrown in chiaro.
+  - CONTRASTO: tutte le coppie testo/sfondo della modalità scura superano WCAG
+    AA (>= 4.5:1 per il testo normale): testo base 15:1, accento su fondo
+    7.6:1, testo tenue 8.9:1, messaggi 5.6-7.7:1.
+  - RIMOSSE le regole non standard ::-webkit-calendar-picker-indicator,
+    ::-webkit-details-marker, -webkit-overflow-scrolling e -webkit-print-color-
+    adjust, oltre alla proprietà filter/invert() (nessuna è W3C standard né è
+    trattata nel corso). L'adattamento dei controlli nativi al tema scuro
+    (compreso il selettore data/ora) è ora demandato a color-scheme: dark, che
+    è il meccanismo standard previsto a questo scopo.
+  - tema.js imposta data-tema SOLO per la scelta esplicita chiaro/scuro; in
+    stato "sistema" l'attributo è rimosso e la preferenza è rilevata dal CSS
+    con @media (prefers-color-scheme: dark). tema-iniziale.js applica subito la
+    scelta per evitare il flash (FOUC).
+Alternative possibili:
+  - Custom properties CSS (:root { --accento } + var(--accento)): è il modo per
+    scrivere ogni valore UNA sola volta condividendolo tra i due attivatori.
+    Scartata: var()/custom properties NON sono tra gli argomenti del corso.
+  - Rilevare la preferenza di sistema in JS con window.matchMedia e applicare
+    sempre data-tema: eliminerebbe del tutto il blocco @media. Scartata:
+    matchMedia non è trattato a lezione.
+Limite tecnico (dichiarato):
+  Senza custom properties e senza matchMedia, i due attivatori (automatico via
+  @media e manuale via attributo) restano DUE regole CSS distinte, quindi ogni
+  valore compare una volta per attivatore. Non è eliminabile con i soli
+  strumenti del corso. Per evitare divergenze il blocco è stato generato da
+  un'unica fonte: le due varianti contengono percio' valori identici al 100%.
+Motivazione finale:
+  Palette derivata dal chiaro (coerenza), contrasto verificato in AA
+  (accessibilità), niente proprietà vendor/non-standard (W3C), blocco unico e
+  ordinato (manutenibilità), comportamento e stile complessivo invariati.
+
+C. COOKIE — RINOMINA E PERSISTENZA DEL TEMA
+-------------------------------------------
+Soluzione adottata:
+  - Il cookie del "ricordami" è stato rinominato da remember_username a
+    ricorda_username; il cookie del consenso da cookie_consenso a
+    consenso_cookie. Tutti i riferimenti (PHP, JS, pagina privacy) sono stati
+    aggiornati in modo coerente.
+  - Persistenza del tema rispettosa del consenso: la preferenza chiaro/scuro
+    viene salvata SOLO se l'utente ha accettato i cookie, scrivendo il cookie
+    tecnico "tema". Senza consenso non viene salvato NULLA (né cookie né altro
+    storage): la scelta vale per la navigazione corrente tramite l'attributo
+    data-tema, ma non viene persistita. È stato perciò rimosso l'uso di
+    localStorage, che in precedenza salvava il tema anche senza consenso.
+Alternative possibili:
+  - Continuare a salvare il tema in localStorage anche senza consenso.
+    localStorage non è tecnicamente un cookie, ma il requisito chiede che,
+    rifiutati i cookie, non venga salvato nulla: scartata per coerenza con la
+    pagina privacy (che dichiara il solo cookie tecnico "tema").
+Motivazione finale:
+  Allineare la persistenza del tema al consenso rende il comportamento
+  coerente con l'informativa privacy e con il principio "nessun salvataggio
+  senza consenso", senza alterare l'uso del tema durante la navigazione.
 
 ================================================================================
 Fine documento
