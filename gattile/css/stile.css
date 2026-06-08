@@ -2841,6 +2841,7 @@ main aside.messaggio p,
 .storia-successo blockquote {
     margin: 0;
     font-style: italic;
+    font-size: clamp(0.9rem, 1vw + 0.5rem, 1rem);
 }
 
 .storia-successo blockquote p {

@@ -244,6 +244,11 @@ tipografia serif; tabelle con bordi; <details> forzati aperti.
   : 'img/placeholder-gatto.svg', così si usa la foto se presente, altrimenti il
   placeholder.
 
+
+
+Lo spazio presente ai lati del main per versione desktop, può essere utilizzato 
+in futuro per inserire banne pubblicitari disattivati nel layout di stampa
+
 ================================================================================
 Fine documento
 ================================================================================

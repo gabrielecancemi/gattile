@@ -12,10 +12,10 @@ $errore_db = null;
 $errore_statistiche = null;
 $nuovi_arrivi = [];
 $statistiche = [
-    'gatti'     => 0,
-    'visite'    => 0,
+    'gatti' => 0,
+    'visite' => 0,
     'volontari' => 0,
-    'arrivi'    => 0,
+    'arrivi' => 0,
 ];
 
 $conn = connessioneDb('reader');
@@ -70,10 +70,10 @@ if (!$conn) {
             if ($risultato !== false) {
                 $riga = mysqli_fetch_assoc($risultato);
                 if ($riga) {
-                    $statistiche['gatti']     = (int) $riga['totale_gatti'];
-                    $statistiche['visite']    = (int) $riga['totale_visite'];
+                    $statistiche['gatti'] = (int) $riga['totale_gatti'];
+                    $statistiche['visite'] = (int) $riga['totale_visite'];
                     $statistiche['volontari'] = (int) $riga['totale_volontari'];
-                    $statistiche['arrivi']    = (int) $riga['nuovi_arrivi'];
+                    $statistiche['arrivi'] = (int) $riga['nuovi_arrivi'];
                 } else {
                     $errore_statistiche = 'Statistiche non disponibili al momento.';
                 }
@@ -184,23 +184,26 @@ aprireContenuto('main-home');
 
     <figure class="storia-successo">
         <blockquote>
-            <p>
-                "Pensavamo di adottare un gatto.
-                In realtà abbiamo trovato un nuovo membro della famiglia."
-            </p>
+            "Pensavamo di adottare un gatto.
+            In realtà abbiamo trovato un nuovo membro della famiglia."
         </blockquote>
         <figcaption>— Famiglia Rossi, Torino</figcaption>
     </figure>
 
     <figure class="storia-successo">
         <blockquote>
-            <p>
-                "Luna era timidissima quando è arrivata. Dopo qualche settimana
-                di pazienza ha iniziato a fidarsi: oggi dorme sul divano come se
-                fosse sempre stata a casa nostra."
-            </p>
+            "Luna era timidissima quando è arrivata. Dopo qualche settimana
+            di pazienza ha iniziato a fidarsi: oggi dorme sul divano come se
+            fosse sempre stata a casa nostra."
         </blockquote>
         <figcaption>— Marco e Giulia, Moncalieri</figcaption>
+    </figure>
+
+    <figure class="storia-successo">
+        <blockquote>
+            "Per me è diventato come un figlio, non riuscirei più a vivere senza Pippo insieme a me."
+        </blockquote>
+        <figcaption>— Gabriele, Torino</figcaption>
     </figure>
 </aside>
 
