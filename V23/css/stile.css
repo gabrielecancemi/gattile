@@ -233,20 +233,20 @@
         color: #f3ece1;
     }
 
-    html:not([data-tema]) .footer-centro>nav:first-child a {
+    html:not([data-tema]) .footer-navigazione>nav:first-child a {
         color: #f3ece1;
         background-color: #4a2c14;
         border-color: #e8975a;
     }
 
-    html:not([data-tema]) .footer-centro>nav:first-child a:hover,
-    html:not([data-tema]) .footer-centro>nav:first-child a:focus {
+    html:not([data-tema]) .footer-navigazione>nav:first-child a:hover,
+    html:not([data-tema]) .footer-navigazione>nav:first-child a:focus {
         background-color: #3a2010;
         border-color: #f0a878;
         color: #f3ece1;
     }
 
-    html:not([data-tema]) .footer-centro>nav:first-child a.active,
+    html:not([data-tema]) .footer-navigazione>nav:first-child a.active,
     html:not([data-tema]) .faq-button.active {
         background-color: #000000;
         color: #f3ece1;
@@ -858,20 +858,20 @@ html[data-tema="scuro"] .footer .brand-logo:focus {
     color: #f3ece1;
 }
 
-html[data-tema="scuro"] .footer-centro>nav:first-child a {
+html[data-tema="scuro"] .footer-navigazione>nav:first-child a {
     color: #f3ece1;
     background-color: #4a2c14;
     border-color: #e8975a;
 }
 
-html[data-tema="scuro"] .footer-centro>nav:first-child a:hover,
-html[data-tema="scuro"] .footer-centro>nav:first-child a:focus {
+html[data-tema="scuro"] .footer-navigazione>nav:first-child a:hover,
+html[data-tema="scuro"] .footer-navigazione>nav:first-child a:focus {
     background-color: #3a2010;
     border-color: #f0a878;
     color: #f3ece1;
 }
 
-html[data-tema="scuro"] .footer-centro>nav:first-child a.active,
+html[data-tema="scuro"] .footer-navigazione>nav:first-child a.active,
 html[data-tema="scuro"] .faq-button.active {
     background-color: #000000;
     color: #f3ece1;
@@ -1830,7 +1830,7 @@ a:focus {
     grid-area: f-logo;
 }
 
-.footer .footer-centro {
+.footer .footer-navigazione {
     grid-area: f-centro;
 }
 
@@ -1857,7 +1857,7 @@ a:focus {
 
 
 /* ── 7b. Sezione centrale (nav principale + nav privacy) ──── */
-.footer-centro {
+.footer-navigazione {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -1865,7 +1865,7 @@ a:focus {
 }
 
 /* Nav principale footer */
-.footer-centro>nav:first-child ul {
+.footer-navigazione>nav:first-child ul {
     display: flex;
     gap: .25rem;
     list-style: none;
@@ -1876,21 +1876,21 @@ a:focus {
     align-items: center;
 }
 
-.footer-centro>nav:first-child a {
+.footer-navigazione>nav:first-child a {
     padding: .3rem .6rem;
     color: white;
     background-color: saddlebrown;
     border-color: saddlebrown;
 }
 
-.footer-centro>nav:first-child a:hover,
-.footer-centro>nav:first-child a:focus {
+.footer-navigazione>nav:first-child a:hover,
+.footer-navigazione>nav:first-child a:focus {
     background-color: #6b3410;
     border-color: #6b3410;
     color: white;
 }
 
-.footer-centro>nav:first-child a.active,
+.footer-navigazione>nav:first-child a.active,
 .faq-button.active {
     background-color: black;
     color: white;
@@ -3183,7 +3183,7 @@ main .main-faq section {
         justify-content: center;
     }
 
-    .footer .footer-centro {
+    .footer .footer-navigazione {
         align-items: center;
     }
 

@@ -43,12 +43,9 @@ if (!function_exists('costruisciSchedaGatto')) {
         $data_it = !empty($gatto['data_arrivo'])
             ? date('d/m/Y', (int) strtotime((string) $gatto['data_arrivo']))
             : '';
-
         $badge = $nuovo
             ? ' <strong class="badge-nuovo">Nuovo</strong>'
             : '';
-
-        // width/height espliciti per riservare lo spazio ed evitare layout shift (CLS).
         return <<<HTML
 <li>
     <article class="card-gatto" aria-labelledby="{$id_titolo}">

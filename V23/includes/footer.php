@@ -38,7 +38,8 @@ if (!empty($_SESSION['utente']['is_admin'])) {
         <strong>Gattile San Paolo</strong>
     </a>
 
-    <section class="footer-centro">
+    <section class="footer-navigazione">
+
         <nav aria-label="Navigazione footer">
             <ul>
                 <?php foreach ($voci_nav as $href => $etichetta):
