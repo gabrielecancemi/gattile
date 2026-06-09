@@ -77,7 +77,7 @@
       strokeLinecap: "round",
       strokeLinejoin: "round"
     })), /*#__PURE__*/React.createElement("figure", null, /*#__PURE__*/React.createElement("img", {
-      src: gatto.img,
+      src: gatto.foto,
       alt: 'Sagoma stilizzata — foto di ' + gatto.nome + ' non ancora disponibile',
       width: "320",
       height: "240",

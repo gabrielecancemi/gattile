@@ -69,7 +69,7 @@
 
                     <figure>
                         <img
-                            src={gatto.img}
+                            src={gatto.foto}
                             alt={'Sagoma stilizzata — foto di ' + gatto.nome + ' non ancora disponibile'}
                             width="320"
                             height="240"
