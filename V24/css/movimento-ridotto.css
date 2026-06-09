@@ -1,0 +1,46 @@
+/* ============================================================
+   MOVIMENTO RIDOTTO  (file separato, importato da stile.css)
+   ============================================================
+   Per gli utenti che hanno richiesto la riduzione del movimento
+   (impostazione di sistema), rilevata con la media feature
+   prefers-reduced-motion: reduce.
+
+   Vengono annullati:
+     - tutte le animazioni e transizioni;
+     - lo scorrimento "morbido" (scroll-behavior);
+     - gli SPOSTAMENTI/ingrandimenti su hover/active che farebbero
+       muovere gli elementi (translate, scale), così le card e i
+       pulsanti non si alzano né si ingrandiscono.
+
+   Le rotazioni che indicano uno STATO (X del menu, freccia
+   dell'accordion aperto) restano: non sono movimento continuo, ma
+   il semplice cambio di forma dell'icona; la loro transizione è
+   comunque annullata qui sopra, quindi avviene senza animazione.
+   ============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+
+    /* Annulla gli spostamenti su hover/active (niente "salto" della card,
+       niente ingrandimento del pulsante FAQ, niente scatto del pulsante). */
+    .card-gatto[role="checkbox"]:hover {
+        transform: none;
+    }
+
+    .faq-button:hover,
+    .faq-button:focus-visible {
+        transform: none;
+    }
+
+    .btn:active {
+        transform: none;
+    }
+}
