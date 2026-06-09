@@ -8,6 +8,6 @@
         fetch('api/elimina_cookie.php', { method: 'POST', credentials: 'same-origin' })
             .then(function (r) { return r.json(); })
             .then(function () { window.location.href = 'privacy.php?eliminati=1'; },
-                  function () { window.location.href = 'privacy.php?eliminati=1'; });
+                function () { window.location.href = 'privacy.php?eliminati=1'; });
     });
 })();

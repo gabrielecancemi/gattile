@@ -5,10 +5,10 @@ $pagina_corrente = basename($_SERVER['PHP_SELF']);
 $anno = date('Y');
 
 $voci_nav = [
-    'index.php'        => 'Home',
-    'gatti.php'        => 'Adotta un gatto',
+    'index.php' => 'Home',
+    'gatti.php' => 'Adotta un gatto',
     'volontariato.php' => 'Volontariato',
-    'faq.php'          => 'FAQ',
+    'faq.php' => 'FAQ',
 ];
 if (!empty($_SESSION['utente']['is_admin'])) {
     $voci_nav['inserisci_gatto.php'] = 'Inserisci gatto';
@@ -16,8 +16,7 @@ if (!empty($_SESSION['utente']['is_admin'])) {
 ?>
 
 <?php if (!isset($_COOKIE['consenso_cookie'])): ?>
-    <aside id="banner-cookie" class="banner-cookie" role="dialog" aria-live="polite"
-        aria-label="Informativa cookie">
+    <aside id="banner-cookie" class="banner-cookie" role="dialog" aria-live="polite" aria-label="Informativa cookie">
         <p>
             Questo sito usa solo cookie tecnici di sessione, necessari al funzionamento.
             Nessuna profilazione di terze parti.
@@ -46,7 +45,7 @@ if (!empty($_SESSION['utente']['is_admin'])) {
                     $attivo = ($href === $pagina_corrente);
                     ?>
                     <li>
-                        <a href="<?= $href ?>" class="btn<?= $attivo ? ' active':''?>" <?= $attivo ? ' aria-current="page"' : '' ?>>
+                        <a href="<?= $href ?>" class="btn<?= $attivo ? ' active' : '' ?>" <?= $attivo ? ' aria-current="page"' : '' ?>>
                             <?= $etichetta ?>
                         </a>
                     </li>

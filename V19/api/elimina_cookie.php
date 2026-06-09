@@ -16,7 +16,7 @@ cancellaPromemoria();
 chiudiProfilo();
 
 $opzioni_base = [
-    'expires'  => time() - 3600,
+    'expires' => time() - 3600,
     'httponly' => true,
     'samesite' => 'Strict',
 ];
@@ -36,10 +36,10 @@ foreach (array_keys($_COOKIE) as $nome) {
 if (ini_get('session.use_cookies')) {
     $parametri = session_get_cookie_params();
     setcookie(session_name(), '', [
-        'expires'  => time() - 3600,
-        'path'     => $parametri['path'] ?: '/',
-        'domain'   => $parametri['domain'] ?? '',
-        'secure'   => $parametri['secure'] ?? false,
+        'expires' => time() - 3600,
+        'path' => $parametri['path'] ?: '/',
+        'domain' => $parametri['domain'] ?? '',
+        'secure' => $parametri['secure'] ?? false,
         'httponly' => $parametri['httponly'] ?? true,
         'samesite' => $parametri['samesite'] ?? 'Strict',
     ]);

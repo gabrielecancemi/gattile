@@ -50,8 +50,8 @@ function aprireSessione(): void
     if (session_status() === PHP_SESSION_NONE) {
         session_set_cookie_params([
             'lifetime' => 0,
-            'path'     => '/',
-            'secure'   => isset($_SERVER['HTTPS']),
+            'path' => '/',
+            'secure' => isset($_SERVER['HTTPS']),
             'httponly' => true,
             'samesite' => 'Strict',
         ]);
@@ -90,10 +90,10 @@ function esigeAdmin(): void
 
 /* Accesso ---------------------------------------------------------- */
 
-const ESITO_OK              = 'ok';
-const ESITO_UTENTE_ASSENTE  = 'utente_assente';
+const ESITO_OK = 'ok';
+const ESITO_UTENTE_ASSENTE = 'utente_assente';
 const ESITO_PASSWORD_ERRATA = 'password_errata';
-const ESITO_ERRORE_DB       = 'errore_db';
+const ESITO_ERRORE_DB = 'errore_db';
 
 /* Memorizzazione password IN CHIARO.
  *
@@ -195,9 +195,9 @@ function attivaPromemoria(string $username): void
     ];
     salvaGettoni($gettoni);
     setcookie(NOME_COOKIE_PROMEMORIA, $gettone, [
-        'expires'  => time() + DURATA_PROMEMORIA,
-        'path'     => '/',
-        'secure'   => isset($_SERVER['HTTPS']),
+        'expires' => time() + DURATA_PROMEMORIA,
+        'path' => '/',
+        'secure' => isset($_SERVER['HTTPS']),
         'httponly' => true,
         'samesite' => 'Strict',
     ]);
@@ -229,9 +229,9 @@ function cancellaPromemoria(): void
         }
     }
     setcookie(NOME_COOKIE_PROMEMORIA, '', [
-        'expires'  => time() - 3600,
-        'path'     => '/',
-        'secure'   => isset($_SERVER['HTTPS']),
+        'expires' => time() - 3600,
+        'path' => '/',
+        'secure' => isset($_SERVER['HTTPS']),
         'httponly' => true,
         'samesite' => 'Strict',
     ]);

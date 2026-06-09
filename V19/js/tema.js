@@ -26,8 +26,8 @@
     const STATI = ['sistema', 'chiaro', 'scuro'];
     const ETICHETTE = {
         sistema: 'Tema: sistema',
-        chiaro:  'Tema: chiaro',
-        scuro:   'Tema: scuro'
+        chiaro: 'Tema: chiaro',
+        scuro: 'Tema: scuro'
     };
     const DURATA_MS = 72 * 3600 * 1000; // 72 ore
 

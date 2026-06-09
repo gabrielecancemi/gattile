@@ -28,7 +28,7 @@ if ((bool) $profilo['is_admin']) {
     exit;
 }
 
-$data_ora  = filter_input(INPUT_POST, 'data_ora',  FILTER_SANITIZE_SPECIAL_CHARS) ?? '';
+$data_ora = filter_input(INPUT_POST, 'data_ora', FILTER_SANITIZE_SPECIAL_CHARS) ?? '';
 $gatti_ids = filter_input(INPUT_POST, 'gatti_ids', FILTER_SANITIZE_SPECIAL_CHARS) ?? '';
 
 if (empty($data_ora)) {
@@ -38,8 +38,8 @@ if (empty($data_ora)) {
 }
 
 $dt = DateTime::createFromFormat('Y-m-d\TH:i', $data_ora)
-   ?: DateTime::createFromFormat('Y-m-d H:i:s', $data_ora)
-   ?: DateTime::createFromFormat('Y-m-d H:i',   $data_ora);
+    ?: DateTime::createFromFormat('Y-m-d H:i:s', $data_ora)
+    ?: DateTime::createFromFormat('Y-m-d H:i', $data_ora);
 
 if (!$dt || $dt < new DateTime()) {
     http_response_code(400);
@@ -59,7 +59,8 @@ $lista_id = [];
 if (!empty($gatti_ids)) {
     foreach (explode(',', $gatti_ids) as $grezzo) {
         $id = filter_var(trim($grezzo), FILTER_VALIDATE_INT);
-        if ($id && $id > 0) $lista_id[] = $id;
+        if ($id && $id > 0)
+            $lista_id[] = $id;
     }
 }
 
@@ -89,7 +90,7 @@ if (!$inserimento) {
     exit;
 }
 
-$utente_id    = (int) $profilo['id'];
+$utente_id = (int) $profilo['id'];
 $data_ora_str = $dt->format('Y-m-d H:i:s');
 mysqli_stmt_bind_param($inserimento, 'is', $utente_id, $data_ora_str);
 
@@ -119,7 +120,7 @@ foreach ($lista_id as $gatto_id) {
     mysqli_stmt_bind_param($controllo, 'i', $gatto_id);
     mysqli_stmt_execute($controllo);
     $risultato = mysqli_stmt_get_result($controllo);
-    $esiste    = mysqli_fetch_assoc($risultato);
+    $esiste = mysqli_fetch_assoc($risultato);
     mysqli_stmt_close($controllo);
 
     if (!$esiste) {
@@ -154,7 +155,7 @@ mysqli_commit($conn);
 mysqli_close($conn);
 
 echo json_encode([
-    'successo'        => true,
-    'messaggio'       => 'Visita prenotata con successo per il ' . $dt->format('d/m/Y') . ' alle ' . $dt->format('H:i') . '!',
+    'successo' => true,
+    'messaggio' => 'Visita prenotata con successo per il ' . $dt->format('d/m/Y') . ' alle ' . $dt->format('H:i') . '!',
     'prenotazione_id' => $prenotazione_id,
 ], JSON_UNESCAPED_UNICODE);

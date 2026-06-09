@@ -100,8 +100,8 @@ $attributo_tema = in_array($tema_cookie, ['chiaro', 'scuro'], true)
                     </p>
 
                     <label for="data-turno" class="campo-obbligatorio">Giorno</label>
-                    <input type="date" id="data-turno" name="data_turno" required
-                    aria-describedby="aiuto-data-turno" min="<?= date('Y-m-d') ?>">
+                    <input type="date" id="data-turno" name="data_turno" required aria-describedby="aiuto-data-turno"
+                        min="<?= date('Y-m-d') ?>">
                     <em id="aiuto-data-turno" class="aiuto-campo">
                         Scegli prima un giorno: verranno mostrate solo le sue fasce orarie.
                     </em>

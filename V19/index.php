@@ -121,7 +121,8 @@ $attributo_tema = in_array($tema_cookie, ['chiaro', 'scuro'], true)
     : '';
 ?>
 <!DOCTYPE html>
-<html lang="it"<?= $attributo_tema ?>>
+<html lang="it" <?= $attributo_tema ?>>
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
@@ -139,187 +140,187 @@ $attributo_tema = in_array($tema_cookie, ['chiaro', 'scuro'], true)
 <?php require 'includes/header.php'; ?>
 <main id="contenuto-principale" tabindex="-1" class="main-home">
 
-<section class="zona-hero" aria-labelledby="titolo-home">
-    <h1 id="titolo-home">
-        Una casa, una famiglia, una seconda possibilità
-    </h1>
+    <section class="zona-hero" aria-labelledby="titolo-home">
+        <h1 id="titolo-home">
+            Una casa, una famiglia, una seconda possibilità
+        </h1>
 
-    <p>
-        Ogni gatto che arriva al Gattile San Paolo ha una storia.
-        Alcuni sono stati abbandonati, altri recuperati dalla strada,
-        altri ancora hanno semplicemente bisogno di una nuova famiglia.
-    </p>
+        <p>
+            Ogni gatto che arriva al Gattile San Paolo ha una storia.
+            Alcuni sono stati abbandonati, altri recuperati dalla strada,
+            altri ancora hanno semplicemente bisogno di una nuova famiglia.
+        </p>
 
-    <p>
-        Aiutaci a trasformare un incontro in un'adozione e una visita
-        in un nuovo inizio.
-    </p>
-</section>
+        <p>
+            Aiutaci a trasformare un incontro in un'adozione e una visita
+            in un nuovo inizio.
+        </p>
+    </section>
 
-<section class="zona-perche" aria-labelledby="titolo-perche">
-    <h2 id="titolo-perche">Perché adottare dal Gattile San Paolo?</h2>
+    <section class="zona-perche" aria-labelledby="titolo-perche">
+        <h2 id="titolo-perche">Perché adottare dal Gattile San Paolo?</h2>
 
-    <dl class="griglia-vantaggi">
-        <div class="box-vantaggio">
-            <dt>Controlli veterinari</dt>
-            <dd>Tutti i gatti vengono seguiti e monitorati prima dell'adozione.</dd>
-        </div>
-        <div class="box-vantaggio">
-            <dt>Supporto all'adozione</dt>
-            <dd>Ti aiutiamo a trovare il gatto più adatto alla tua situazione.</dd>
-        </div>
-        <div class="box-vantaggio">
-            <dt>Volontari qualificati</dt>
-            <dd>Ogni giorno persone dedicate si prendono cura dei nostri ospiti.</dd>
-        </div>
-    </dl>
-</section>
-
-<section class="zona-impatto" aria-labelledby="titolo-impatto">
-    <h2 id="titolo-impatto">Il nostro impatto</h2>
-
-    <?php if ($errore_statistiche): ?>
-        <?= avvisoUtente($errore_statistiche, 'errore') ?>
-    <?php else: ?>
-        <dl class="statistiche">
-            <dt>Gatti ospitati</dt>
-            <dd><?= $statistiche['gatti'] ?></dd>
-
-            <dt>Incontri organizzati</dt>
-            <dd><?= $statistiche['visite'] ?></dd>
-
-            <dt>Volontari attivi</dt>
-            <dd><?= $statistiche['volontari'] ?></dd>
-
-            <dt>Nuovi arrivi quest'anno</dt>
-            <dd><?= $statistiche['arrivi'] ?></dd>
+        <dl class="griglia-vantaggi">
+            <div class="box-vantaggio">
+                <dt>Controlli veterinari</dt>
+                <dd>Tutti i gatti vengono seguiti e monitorati prima dell'adozione.</dd>
+            </div>
+            <div class="box-vantaggio">
+                <dt>Supporto all'adozione</dt>
+                <dd>Ti aiutiamo a trovare il gatto più adatto alla tua situazione.</dd>
+            </div>
+            <div class="box-vantaggio">
+                <dt>Volontari qualificati</dt>
+                <dd>Ogni giorno persone dedicate si prendono cura dei nostri ospiti.</dd>
+            </div>
         </dl>
-    <?php endif; ?>
-</section>
+    </section>
 
-<section class="come-funziona zona-come" aria-labelledby="titolo-come-funziona">
-    <h2 id="titolo-come-funziona">Come funziona</h2>
-    <ol>
-        <li>
-            <strong>Sfoglia i gatti</strong> disponibili nell'area adozioni:
-            puoi filtrare per nome, descrizione, età o colore del manto.
-            <a href="gatti.php" class="btn btn-primario">Sfoglia i gatti</a>
-        </li>
-        <li>
-            <strong>Registrati o accedi</strong> al tuo profilo per selezionare
-            i gatti di cui vorresti sapere di più.
-            <a href="registrazione.php" class="btn btn-primario">Registrati</a>
-        </li>
-        <li>
-            <strong>Prenota una visita</strong> conoscitiva direttamente dal sito,
-            indicando la data e l'ora che preferisci.
-            <a href="gatti.php" class="btn btn-primario">Prenota una visita</a>
-        </li>
-        <li>
-            In alternativa, puoi <strong>diventare volontario</strong> e scegliere
-            le fasce orarie in cui prestare il tuo aiuto.
-            <a href="volontariato.php" class="btn btn-primario">Diventa volontario</a>
-        </li>
-    </ol>
-</section>
+    <section class="zona-impatto" aria-labelledby="titolo-impatto">
+        <h2 id="titolo-impatto">Il nostro impatto</h2>
 
-<aside class="zona-storia" aria-labelledby="titolo-testimonianza">
-    <h2 id="titolo-testimonianza">Storie di successo</h2>
+        <?php if ($errore_statistiche): ?>
+            <?= avvisoUtente($errore_statistiche, 'errore') ?>
+        <?php else: ?>
+            <dl class="statistiche">
+                <dt>Gatti ospitati</dt>
+                <dd><?= $statistiche['gatti'] ?></dd>
 
-    <figure class="storia-successo">
-        <blockquote>
-            "Pensavamo di adottare un gatto.
-            In realtà abbiamo trovato un nuovo membro della famiglia."
-        </blockquote>
-        <figcaption>— Famiglia Rossi, Torino</figcaption>
-    </figure>
+                <dt>Incontri organizzati</dt>
+                <dd><?= $statistiche['visite'] ?></dd>
 
-    <figure class="storia-successo">
-        <blockquote>
-            "Luna era timidissima quando è arrivata. Dopo qualche settimana
-            di pazienza ha iniziato a fidarsi: oggi dorme sul divano come se
-            fosse sempre stata a casa nostra."
-        </blockquote>
-        <figcaption>— Marco e Giulia, Moncalieri</figcaption>
-    </figure>
+                <dt>Volontari attivi</dt>
+                <dd><?= $statistiche['volontari'] ?></dd>
 
-    <figure class="storia-successo">
-        <blockquote>
-            "Per me è diventato come un figlio, non riuscirei più a vivere senza Pippo insieme a me."
-        </blockquote>
-        <figcaption>— Gabriele, Torino</figcaption>
-    </figure>
-</aside>
+                <dt>Nuovi arrivi quest'anno</dt>
+                <dd><?= $statistiche['arrivi'] ?></dd>
+            </dl>
+        <?php endif; ?>
+    </section>
 
-<section class="nuovi-arrivi zona-arrivi" aria-labelledby="titolo-nuovi-arrivi">
-    <h2 id="titolo-nuovi-arrivi">Nuovi arrivi</h2>
-    <p>Gli ultimi ospiti entrati nella struttura che aspettano una famiglia:</p>
+    <section class="come-funziona zona-come" aria-labelledby="titolo-come-funziona">
+        <h2 id="titolo-come-funziona">Come funziona</h2>
+        <ol>
+            <li>
+                <strong>Sfoglia i gatti</strong> disponibili nell'area adozioni:
+                puoi filtrare per nome, descrizione, età o colore del manto.
+                <a href="gatti.php" class="btn btn-primario">Sfoglia i gatti</a>
+            </li>
+            <li>
+                <strong>Registrati o accedi</strong> al tuo profilo per selezionare
+                i gatti di cui vorresti sapere di più.
+                <a href="registrazione.php" class="btn btn-primario">Registrati</a>
+            </li>
+            <li>
+                <strong>Prenota una visita</strong> conoscitiva direttamente dal sito,
+                indicando la data e l'ora che preferisci.
+                <a href="gatti.php" class="btn btn-primario">Prenota una visita</a>
+            </li>
+            <li>
+                In alternativa, puoi <strong>diventare volontario</strong> e scegliere
+                le fasce orarie in cui prestare il tuo aiuto.
+                <a href="volontariato.php" class="btn btn-primario">Diventa volontario</a>
+            </li>
+        </ol>
+    </section>
 
-    <?php if ($errore_db): ?>
-        <?= avvisoUtente($errore_db, 'errore') ?>
-    <?php elseif (empty($nuovi_arrivi)): ?>
-        <p>Nessun gatto registrato al momento. Torna presto!</p>
-    <?php else: ?>
-        <ul class="griglia-gatti" aria-label="Nuovi arrivi">
-            <?php foreach ($nuovi_arrivi as $gatto): ?>
-                <?= costruisciSchedaGatto($gatto, ['nuovo' => true]) ?>
-            <?php endforeach; ?>
-        </ul>
+    <aside class="zona-storia" aria-labelledby="titolo-testimonianza">
+        <h2 id="titolo-testimonianza">Storie di successo</h2>
 
-    <?php endif; ?>
-</section>
+        <figure class="storia-successo">
+            <blockquote>
+                "Pensavamo di adottare un gatto.
+                In realtà abbiamo trovato un nuovo membro della famiglia."
+            </blockquote>
+            <figcaption>— Famiglia Rossi, Torino</figcaption>
+        </figure>
 
-<section class="zona-aiuta" aria-labelledby="titolo-aiuta">
-    <h2 id="titolo-aiuta">Non puoi adottare?</h2>
+        <figure class="storia-successo">
+            <blockquote>
+                "Luna era timidissima quando è arrivata. Dopo qualche settimana
+                di pazienza ha iniziato a fidarsi: oggi dorme sul divano come se
+                fosse sempre stata a casa nostra."
+            </blockquote>
+            <figcaption>— Marco e Giulia, Moncalieri</figcaption>
+        </figure>
 
-    <p>
-        Puoi comunque fare la differenza dedicando qualche ora del tuo tempo
-        ai nostri ospiti.
-    </p>
+        <figure class="storia-successo">
+            <blockquote>
+                "Per me è diventato come un figlio, non riuscirei più a vivere senza Pippo insieme a me."
+            </blockquote>
+            <figcaption>— Gabriele, Torino</figcaption>
+        </figure>
+    </aside>
 
-    <p>
-        Ogni volontario contribuisce a migliorare la qualità della vita
-        dei gatti accolti nella struttura.
-    </p>
+    <section class="nuovi-arrivi zona-arrivi" aria-labelledby="titolo-nuovi-arrivi">
+        <h2 id="titolo-nuovi-arrivi">Nuovi arrivi</h2>
+        <p>Gli ultimi ospiti entrati nella struttura che aspettano una famiglia:</p>
 
-    <p>
-        <a href="volontariato.php" class="btn btn-primario">
-            Scopri il volontariato
-        </a>
-    </p>
-</section>
+        <?php if ($errore_db): ?>
+            <?= avvisoUtente($errore_db, 'errore') ?>
+        <?php elseif (empty($nuovi_arrivi)): ?>
+            <p>Nessun gatto registrato al momento. Torna presto!</p>
+        <?php else: ?>
+            <ul class="griglia-gatti" aria-label="Nuovi arrivi">
+                <?php foreach ($nuovi_arrivi as $gatto): ?>
+                    <?= costruisciSchedaGatto($gatto, ['nuovo' => true]) ?>
+                <?php endforeach; ?>
+            </ul>
 
-<section class="zona-faq" aria-labelledby="titolo-faq">
-    <h2 id="titolo-faq">Domande frequenti</h2>
+        <?php endif; ?>
+    </section>
 
-    <details>
-        <summary>Posso adottare anche se vivo in appartamento?</summary>
+    <section class="zona-aiuta" aria-labelledby="titolo-aiuta">
+        <h2 id="titolo-aiuta">Non puoi adottare?</h2>
+
         <p>
-            Assolutamente sì. Molti dei nostri gatti sono nati in ambienti chiusi e si
-            adattano perfettamente alla vita in appartamento, purché abbiano spazi per
-            giocare e qualcuno che li ami.
+            Puoi comunque fare la differenza dedicando qualche ora del tuo tempo
+            ai nostri ospiti.
         </p>
-    </details>
 
-    <details>
-        <summary>Quanto costa adottare un gatto?</summary>
         <p>
-            L'adozione è gratuita. Chiediamo solo la disponibilità a prendersi cura
-            dell'animale e a sostenere le spese veterinarie ordinarie.
+            Ogni volontario contribuisce a migliorare la qualità della vita
+            dei gatti accolti nella struttura.
         </p>
-    </details>
 
-    <details>
-        <summary>Come posso diventare volontario?</summary>
         <p>
-            <a href="registrazione.php">Registrati al sito</a>, poi accedi alla pagina
-            <a href="volontariato.php">Volontariato</a> e scegli le fasce orarie in cui
-            desideri prestare servizio. La struttura accoglie fino a due volontari per fascia.
+            <a href="volontariato.php" class="btn btn-primario">
+                Scopri il volontariato
+            </a>
         </p>
-    </details>
+    </section>
 
-    <p><a href="faq.php" class="btn btn-primario">Tutte le domande frequenti</a></p>
-</section>
+    <section class="zona-faq" aria-labelledby="titolo-faq">
+        <h2 id="titolo-faq">Domande frequenti</h2>
+
+        <details>
+            <summary>Posso adottare anche se vivo in appartamento?</summary>
+            <p>
+                Assolutamente sì. Molti dei nostri gatti sono nati in ambienti chiusi e si
+                adattano perfettamente alla vita in appartamento, purché abbiano spazi per
+                giocare e qualcuno che li ami.
+            </p>
+        </details>
+
+        <details>
+            <summary>Quanto costa adottare un gatto?</summary>
+            <p>
+                L'adozione è gratuita. Chiediamo solo la disponibilità a prendersi cura
+                dell'animale e a sostenere le spese veterinarie ordinarie.
+            </p>
+        </details>
+
+        <details>
+            <summary>Come posso diventare volontario?</summary>
+            <p>
+                <a href="registrazione.php">Registrati al sito</a>, poi accedi alla pagina
+                <a href="volontariato.php">Volontariato</a> e scegli le fasce orarie in cui
+                desideri prestare servizio. La struttura accoglie fino a due volontari per fascia.
+            </p>
+        </details>
+
+        <p><a href="faq.php" class="btn btn-primario">Tutte le domande frequenti</a></p>
+    </section>
 
 </main>
 <?php require 'includes/footer.php'; ?>

@@ -24,9 +24,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $profilo = profiloAttivo();
     $utente_id = $profilo ? (int) $profilo['id'] : 0;
 
-    $fasce  = [];
+    $fasce = [];
     $inizio = new DateTime('today 09:00');
-    $fine   = new DateTime('+1 year 17:00');
+    $fine = new DateTime('+1 year 17:00');
     $adesso = new DateTime();
     $cursore = clone $inizio;
 
@@ -49,9 +49,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
             mysqli_stmt_bind_param($stm, 's', $iso);
             mysqli_stmt_execute($stm);
-            $risultato  = mysqli_stmt_get_result($stm);
-            $riga       = mysqli_fetch_assoc($risultato);
-            $conteggio  = (int) ($riga['conteggio'] ?? 0);
+            $risultato = mysqli_stmt_get_result($stm);
+            $riga = mysqli_fetch_assoc($risultato);
+            $conteggio = (int) ($riga['conteggio'] ?? 0);
             mysqli_stmt_close($stm);
 
             // L'utente è già iscritto a questa fascia?
@@ -72,11 +72,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
             $fasce[] = [
                 'fascia_oraria' => $iso,
-                'etichetta'     => $cursore->format('D d/m/Y H:i'),
-                'iscritti'      => $conteggio,
-                'max'           => MAX_VOLONTARI,
-                'piena'         => ($conteggio >= MAX_VOLONTARI),
-                'gia_iscritto'  => $gia_iscritto,
+                'etichetta' => $cursore->format('D d/m/Y H:i'),
+                'iscritti' => $conteggio,
+                'max' => MAX_VOLONTARI,
+                'piena' => ($conteggio >= MAX_VOLONTARI),
+                'gia_iscritto' => $gia_iscritto,
             ];
         }
 
@@ -102,15 +102,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
-    $fasce_grezze    = $_POST['fasce'] ?? '';
+    $fasce_grezze = $_POST['fasce'] ?? '';
     $fasce_richieste = [];
 
     if (is_string($fasce_grezze)) {
         foreach (explode(',', $fasce_grezze) as $f) {
-            $f  = trim($f);
+            $f = trim($f);
             $dt = DateTime::createFromFormat('Y-m-d H:i:s', $f)
-               ?: DateTime::createFromFormat('Y-m-d\TH:i', $f);
-            if ($dt) $fasce_richieste[] = $dt->format('Y-m-d H:i:s');
+                ?: DateTime::createFromFormat('Y-m-d\TH:i', $f);
+            if ($dt)
+                $fasce_richieste[] = $dt->format('Y-m-d H:i:s');
         }
     }
 
@@ -128,9 +129,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     $avvisi_turni = [];
-    $inseriti     = 0;
-    $utente_id    = (int) $profilo['id'];
-    $errore_db    = false;
+    $inseriti = 0;
+    $utente_id = (int) $profilo['id'];
+    $errore_db = false;
 
     foreach ($fasce_richieste as $fascia) {
 
@@ -143,9 +144,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         mysqli_stmt_bind_param($stm, 's', $fascia);
         mysqli_stmt_execute($stm);
-        $risultato  = mysqli_stmt_get_result($stm);
-        $riga       = mysqli_fetch_assoc($risultato);
-        $conteggio  = (int) ($riga['c'] ?? 0);
+        $risultato = mysqli_stmt_get_result($stm);
+        $riga = mysqli_fetch_assoc($risultato);
+        $conteggio = (int) ($riga['c'] ?? 0);
         mysqli_stmt_close($stm);
 
         if ($conteggio >= MAX_VOLONTARI) {
@@ -153,7 +154,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $avvisi_turni[] = [
                 'codice' => 'SHIFT_FULL',
                 'fascia' => $fascia,
-                'msg'    => 'Fascia del ' . $dt->format('d/m/Y H:i') . ' già piena (2/2 volontari).',
+                'msg' => 'Fascia del ' . $dt->format('d/m/Y H:i') . ' già piena (2/2 volontari).',
             ];
             continue;
         }
@@ -176,7 +177,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $avvisi_turni[] = [
                 'codice' => 'ALREADY_BOOKED',
                 'fascia' => $fascia,
-                'msg'    => 'Sei già iscritto alla fascia del ' . $dt->format('d/m/Y H:i') . '.',
+                'msg' => 'Sei già iscritto alla fascia del ' . $dt->format('d/m/Y H:i') . '.',
             ];
             continue;
         }
@@ -210,17 +211,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($inseriti === 0 && !empty($avvisi_turni)) {
         http_response_code(409);
         echo json_encode([
-            'errore'   => 'Nessun turno è stato prenotato.',
-            'codice'   => 'ALL_FAILED',
+            'errore' => 'Nessun turno è stato prenotato.',
+            'codice' => 'ALL_FAILED',
             'dettagli' => $avvisi_turni,
         ], JSON_UNESCAPED_UNICODE);
     } else {
         echo json_encode([
-            'successo'  => true,
-            'inseriti'  => $inseriti,
-            'avvisi'    => $avvisi_turni,
+            'successo' => true,
+            'inseriti' => $inseriti,
+            'avvisi' => $avvisi_turni,
             'messaggio' => "Prenotati {$inseriti} turno/i con successo!"
-                         . (empty($avvisi_turni) ? '' : ' Alcuni turni non sono stati prenotati (vedi avvisi).'),
+                . (empty($avvisi_turni) ? '' : ' Alcuni turni non sono stati prenotati (vedi avvisi).'),
         ], JSON_UNESCAPED_UNICODE);
     }
     exit;

@@ -8,19 +8,19 @@
     if (!form) return;
 
     const campi = {
-        nome:            { el: document.getElementById('gatto-nome'),            err: document.getElementById('err-gatto-nome')           },
-        razza:           { el: document.getElementById('gatto-razza'),           err: document.getElementById('err-gatto-razza')          },
-        sesso:           { el: document.getElementById('gatto-sesso'),           err: document.getElementById('err-gatto-sesso')          },
-        eta:             { el: document.getElementById('gatto-eta'),             err: document.getElementById('err-gatto-eta')            },
-        peso:            { el: document.getElementById('gatto-peso'),            err: document.getElementById('err-gatto-peso')           },
+        nome: { el: document.getElementById('gatto-nome'), err: document.getElementById('err-gatto-nome') },
+        razza: { el: document.getElementById('gatto-razza'), err: document.getElementById('err-gatto-razza') },
+        sesso: { el: document.getElementById('gatto-sesso'), err: document.getElementById('err-gatto-sesso') },
+        eta: { el: document.getElementById('gatto-eta'), err: document.getElementById('err-gatto-eta') },
+        peso: { el: document.getElementById('gatto-peso'), err: document.getElementById('err-gatto-peso') },
         colore_mantello: { el: document.getElementById('gatto-colore-mantello'), err: document.getElementById('err-gatto-colore-mantello') },
-        lunghezza_pelo:  { el: document.getElementById('gatto-lunghezza-pelo'),  err: document.getElementById('err-gatto-lunghezza-pelo') },
-        colore_occhi:    { el: document.getElementById('gatto-colore-occhi'),    err: document.getElementById('err-gatto-colore-occhi')   },
-        data_arrivo:     { el: document.getElementById('gatto-data-arrivo'),     err: document.getElementById('err-gatto-data-arrivo')    },
-        descrizione:     { el: document.getElementById('gatto-descrizione'),     err: document.getElementById('err-gatto-descrizione')    },
+        lunghezza_pelo: { el: document.getElementById('gatto-lunghezza-pelo'), err: document.getElementById('err-gatto-lunghezza-pelo') },
+        colore_occhi: { el: document.getElementById('gatto-colore-occhi'), err: document.getElementById('err-gatto-colore-occhi') },
+        data_arrivo: { el: document.getElementById('gatto-data-arrivo'), err: document.getElementById('err-gatto-data-arrivo') },
+        descrizione: { el: document.getElementById('gatto-descrizione'), err: document.getElementById('err-gatto-descrizione') },
     };
 
-    const textarea  = campi.descrizione.el;
+    const textarea = campi.descrizione.el;
     const contatore = document.getElementById('contatore-desc');
     const max_descrizione = textarea ? parseInt(textarea.getAttribute('maxlength') || '2000', 10) : 2000;
 
@@ -45,28 +45,28 @@
         }
     }
 
-    function validaNome()           { const v = campi.nome.el ? campi.nome.el.value.trim() : ''; if (!v || v.length > 50) { mostraErrore(campi.nome, 'Nome obbligatorio (1-50 caratteri).'); return false; } mostraErrore(campi.nome, ''); return true; }
-    function validaRazza()          { const v = campi.razza.el ? campi.razza.el.value.trim() : ''; if (!v || v.length > 50) { mostraErrore(campi.razza, 'Razza obbligatoria (max 50 caratteri).'); return false; } mostraErrore(campi.razza, ''); return true; }
-    function validaSesso()          { const v = campi.sesso.el ? campi.sesso.el.value : ''; if (!['M','F'].includes(v)) { mostraErrore(campi.sesso, 'Seleziona il sesso.'); return false; } mostraErrore(campi.sesso, ''); return true; }
-    function validaEta()            { const v = campi.eta.el ? parseInt(campi.eta.el.value, 10) : NaN; if (isNaN(v) || v < 0 || v > 300) { mostraErrore(campi.eta, 'Età in mesi: valore tra 0 e 300.'); return false; } mostraErrore(campi.eta, ''); return true; }
-    function validaPeso()           { const v = campi.peso.el ? parseFloat(campi.peso.el.value) : NaN; if (isNaN(v) || v < 0.1 || v > 20) { mostraErrore(campi.peso, 'Peso in kg: tra 0.1 e 20.'); return false; } mostraErrore(campi.peso, ''); return true; }
+    function validaNome() { const v = campi.nome.el ? campi.nome.el.value.trim() : ''; if (!v || v.length > 50) { mostraErrore(campi.nome, 'Nome obbligatorio (1-50 caratteri).'); return false; } mostraErrore(campi.nome, ''); return true; }
+    function validaRazza() { const v = campi.razza.el ? campi.razza.el.value.trim() : ''; if (!v || v.length > 50) { mostraErrore(campi.razza, 'Razza obbligatoria (max 50 caratteri).'); return false; } mostraErrore(campi.razza, ''); return true; }
+    function validaSesso() { const v = campi.sesso.el ? campi.sesso.el.value : ''; if (!['M', 'F'].includes(v)) { mostraErrore(campi.sesso, 'Seleziona il sesso.'); return false; } mostraErrore(campi.sesso, ''); return true; }
+    function validaEta() { const v = campi.eta.el ? parseInt(campi.eta.el.value, 10) : NaN; if (isNaN(v) || v < 0 || v > 300) { mostraErrore(campi.eta, 'Età in mesi: valore tra 0 e 300.'); return false; } mostraErrore(campi.eta, ''); return true; }
+    function validaPeso() { const v = campi.peso.el ? parseFloat(campi.peso.el.value) : NaN; if (isNaN(v) || v < 0.1 || v > 20) { mostraErrore(campi.peso, 'Peso in kg: tra 0.1 e 20.'); return false; } mostraErrore(campi.peso, ''); return true; }
     function validaColoreMantello() { const v = campi.colore_mantello.el ? campi.colore_mantello.el.value.trim() : ''; if (!v) { mostraErrore(campi.colore_mantello, 'Inserisci il colore del mantello.'); return false; } mostraErrore(campi.colore_mantello, ''); return true; }
-    function validaLunghezzaPelo()  { const v = campi.lunghezza_pelo.el ? campi.lunghezza_pelo.el.value : ''; if (!v) { mostraErrore(campi.lunghezza_pelo, 'Seleziona la lunghezza del pelo.'); return false; } mostraErrore(campi.lunghezza_pelo, ''); return true; }
-    function validaColoreOcchi()    { const v = campi.colore_occhi.el ? campi.colore_occhi.el.value.trim() : ''; if (!v) { mostraErrore(campi.colore_occhi, 'Inserisci il colore degli occhi.'); return false; } mostraErrore(campi.colore_occhi, ''); return true; }
-    function validaDataArrivo()     { const v = campi.data_arrivo.el ? campi.data_arrivo.el.value : ''; if (!v) { mostraErrore(campi.data_arrivo, 'La data di arrivo è obbligatoria.'); return false; } const dt = new Date(v); if (isNaN(dt.getTime()) || dt > new Date()) { mostraErrore(campi.data_arrivo, 'Inserisci una data valida (non futura).'); return false; } mostraErrore(campi.data_arrivo, ''); return true; }
-    function validaDescrizione()    { const v = campi.descrizione.el ? campi.descrizione.el.value.trim() : ''; if (v.length < 10) { mostraErrore(campi.descrizione, 'Descrizione: almeno 10 caratteri.'); return false; } mostraErrore(campi.descrizione, ''); return true; }
+    function validaLunghezzaPelo() { const v = campi.lunghezza_pelo.el ? campi.lunghezza_pelo.el.value : ''; if (!v) { mostraErrore(campi.lunghezza_pelo, 'Seleziona la lunghezza del pelo.'); return false; } mostraErrore(campi.lunghezza_pelo, ''); return true; }
+    function validaColoreOcchi() { const v = campi.colore_occhi.el ? campi.colore_occhi.el.value.trim() : ''; if (!v) { mostraErrore(campi.colore_occhi, 'Inserisci il colore degli occhi.'); return false; } mostraErrore(campi.colore_occhi, ''); return true; }
+    function validaDataArrivo() { const v = campi.data_arrivo.el ? campi.data_arrivo.el.value : ''; if (!v) { mostraErrore(campi.data_arrivo, 'La data di arrivo è obbligatoria.'); return false; } const dt = new Date(v); if (isNaN(dt.getTime()) || dt > new Date()) { mostraErrore(campi.data_arrivo, 'Inserisci una data valida (non futura).'); return false; } mostraErrore(campi.data_arrivo, ''); return true; }
+    function validaDescrizione() { const v = campi.descrizione.el ? campi.descrizione.el.value.trim() : ''; if (v.length < 10) { mostraErrore(campi.descrizione, 'Descrizione: almeno 10 caratteri.'); return false; } mostraErrore(campi.descrizione, ''); return true; }
 
     const validatori = {
-        'gatto-nome':            validaNome,
-        'gatto-razza':           validaRazza,
-        'gatto-sesso':           validaSesso,
-        'gatto-eta':             validaEta,
-        'gatto-peso':            validaPeso,
+        'gatto-nome': validaNome,
+        'gatto-razza': validaRazza,
+        'gatto-sesso': validaSesso,
+        'gatto-eta': validaEta,
+        'gatto-peso': validaPeso,
         'gatto-colore-mantello': validaColoreMantello,
-        'gatto-lunghezza-pelo':  validaLunghezzaPelo,
-        'gatto-colore-occhi':    validaColoreOcchi,
-        'gatto-data-arrivo':     validaDataArrivo,
-        'gatto-descrizione':     validaDescrizione,
+        'gatto-lunghezza-pelo': validaLunghezzaPelo,
+        'gatto-colore-occhi': validaColoreOcchi,
+        'gatto-data-arrivo': validaDataArrivo,
+        'gatto-descrizione': validaDescrizione,
     };
 
     Object.keys(campi).forEach(function (chiave) {

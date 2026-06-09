@@ -15,12 +15,12 @@ $successo = '';
 $campi = ['nome' => '', 'cognome' => '', 'indirizzo' => '', 'username' => ''];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $nome      = trim(filter_input(INPUT_POST, 'nome', FILTER_SANITIZE_SPECIAL_CHARS) ?? '');
-    $cognome   = trim(filter_input(INPUT_POST, 'cognome', FILTER_SANITIZE_SPECIAL_CHARS) ?? '');
+    $nome = trim(filter_input(INPUT_POST, 'nome', FILTER_SANITIZE_SPECIAL_CHARS) ?? '');
+    $cognome = trim(filter_input(INPUT_POST, 'cognome', FILTER_SANITIZE_SPECIAL_CHARS) ?? '');
     $indirizzo = trim(filter_input(INPUT_POST, 'indirizzo', FILTER_SANITIZE_SPECIAL_CHARS) ?? '');
-    $username  = trim(filter_input(INPUT_POST, 'username', FILTER_SANITIZE_SPECIAL_CHARS) ?? '');
-    $password  = $_POST['password'] ?? '';
-    $conferma  = $_POST['conferma_password'] ?? '';
+    $username = trim(filter_input(INPUT_POST, 'username', FILTER_SANITIZE_SPECIAL_CHARS) ?? '');
+    $password = $_POST['password'] ?? '';
+    $conferma = $_POST['conferma_password'] ?? '';
     $campi = compact('nome', 'cognome', 'indirizzo', 'username');
 
     $errori = [];
@@ -129,7 +129,8 @@ $attributo_tema = in_array($tema_cookie, ['chiaro', 'scuro'], true)
     : '';
 ?>
 <!DOCTYPE html>
-<html lang="it"<?= $attributo_tema ?>>
+<html lang="it" <?= $attributo_tema ?>>
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
@@ -148,120 +149,123 @@ $attributo_tema = in_array($tema_cookie, ['chiaro', 'scuro'], true)
 <main id="contenuto-principale" tabindex="-1">
 
 
-<section aria-labelledby="titolo-registrazione">
-    <h1 id="titolo-registrazione">Crea il tuo profilo</h1>
-    <p>Già registrato? <a href="login.php">Accedi qui</a>.</p>
-</section>
-<section>
-    <?php if ($errore):
-        echo avvisoUtente($errore, 'errore');
-    endif; ?>
-    <?php if ($successo):
-        echo avvisoUtente($successo, 'successo'); ?>
-        <p><a href="login.php" class="btn btn-primario">Vai al login</a></p>
-    <?php endif; ?>
+    <section aria-labelledby="titolo-registrazione">
+        <h1 id="titolo-registrazione">Crea il tuo profilo</h1>
+        <p>Già registrato? <a href="login.php">Accedi qui</a>.</p>
+    </section>
+    <section>
+        <?php if ($errore):
+            echo avvisoUtente($errore, 'errore');
+        endif; ?>
+        <?php if ($successo):
+            echo avvisoUtente($successo, 'successo'); ?>
+            <p><a href="login.php" class="btn btn-primario">Vai al login</a></p>
+        <?php endif; ?>
 
-    <?php if (!$successo): ?>
-        <form id="form-registrazione" method="post" action="registrazione.php" novalidate
-            aria-label="Modulo di registrazione">
+        <?php if (!$successo): ?>
+            <form id="form-registrazione" method="post" action="registrazione.php" novalidate
+                aria-label="Modulo di registrazione">
 
-            <fieldset>
-                <legend>Dati anagrafici</legend>
-                <label for="reg-nome" class="campo-obbligatorio">
-                    Nome</label>
-                <input type="text" id="reg-nome" name="nome" value="<?= ripulisci($campi['nome']) ?>" autocomplete="given-name"
-                    required maxlength="50">
-                <output class="errore-campo" id="err-nome" role="alert" aria-live="polite" hidden></output>
+                <fieldset>
+                    <legend>Dati anagrafici</legend>
+                    <label for="reg-nome" class="campo-obbligatorio">
+                        Nome</label>
+                    <input type="text" id="reg-nome" name="nome" value="<?= ripulisci($campi['nome']) ?>"
+                        autocomplete="given-name" required maxlength="50">
+                    <output class="errore-campo" id="err-nome" role="alert" aria-live="polite" hidden></output>
 
-                <label for="reg-cognome" class="campo-obbligatorio">
-                    Cognome</label>
-                <input type="text" id="reg-cognome" name="cognome" value="<?= ripulisci($campi['cognome']) ?>"
-                    autocomplete="family-name" required maxlength="50">
-                <output class="errore-campo" id="err-cognome" role="alert" aria-live="polite" hidden></output>
+                    <label for="reg-cognome" class="campo-obbligatorio">
+                        Cognome</label>
+                    <input type="text" id="reg-cognome" name="cognome" value="<?= ripulisci($campi['cognome']) ?>"
+                        autocomplete="family-name" required maxlength="50">
+                    <output class="errore-campo" id="err-cognome" role="alert" aria-live="polite" hidden></output>
 
-                <label for="reg-indirizzo" class="campo-obbligatorio">
-                    Indirizzo</label>
-                <input type="text" id="reg-indirizzo" name="indirizzo" value="<?= ripulisci($campi['indirizzo']) ?>" required
-                    maxlength="100" placeholder="Via/Corso, numero, città">
-                <output class="errore-campo" id="err-indirizzo" role="alert" aria-live="polite" hidden></output>
+                    <label for="reg-indirizzo" class="campo-obbligatorio">
+                        Indirizzo</label>
+                    <input type="text" id="reg-indirizzo" name="indirizzo" value="<?= ripulisci($campi['indirizzo']) ?>"
+                        required maxlength="100" placeholder="Via/Corso, numero, città">
+                    <output class="errore-campo" id="err-indirizzo" role="alert" aria-live="polite" hidden></output>
 
-            </fieldset>
+                </fieldset>
 
-            <fieldset>
-                <legend>Credenziali di accesso</legend>
-                <label for="reg-username" class="campo-obbligatorio">
-                    Username</label>
-                <input type="text" id="reg-username" name="username" value="<?= ripulisci($campi['username']) ?>"
-                    autocomplete="username" required aria-describedby="aiuto-reg-username" maxlength="50" spellcheck="false"
-                    pattern="[a-zA-Z][a-zA-Z0-9_]{2,49}">
-                <em id="aiuto-reg-username" class="aiuto-campo">
-                    Inizia con una lettera; solo lettere, numeri e underscore; 3-50 caratteri.
-                </em>
-                <output class="errore-campo" id="err-reg-username" role="alert" aria-live="polite" hidden></output>
+                <fieldset>
+                    <legend>Credenziali di accesso</legend>
+                    <label for="reg-username" class="campo-obbligatorio">
+                        Username</label>
+                    <input type="text" id="reg-username" name="username" value="<?= ripulisci($campi['username']) ?>"
+                        autocomplete="username" required aria-describedby="aiuto-reg-username" maxlength="50"
+                        spellcheck="false" pattern="[a-zA-Z][a-zA-Z0-9_]{2,49}">
+                    <em id="aiuto-reg-username" class="aiuto-campo">
+                        Inizia con una lettera; solo lettere, numeri e underscore; 3-50 caratteri.
+                    </em>
+                    <output class="errore-campo" id="err-reg-username" role="alert" aria-live="polite" hidden></output>
 
-                <label for="reg-password" class="campo-obbligatorio">
-                    Password</label>
-                <span class="campo-password">
-                    <input type="password" id="reg-password" name="password" autocomplete="new-password" required
-                        aria-describedby="aiuto-reg-password" minlength="8" maxlength="16">
-                    <button type="button" id="btn-mostra-password" class="mostra-password" aria-controls="reg-password" aria-pressed="false"
-                        aria-label="Mostra la password" title="Mostra o nascondi la password">
-                        <svg class="icona-occhio" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false">
-                            <path class="occhio-contorno" d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z" fill="none"
-                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                            <circle class="occhio-pupilla" cx="12" cy="12" r="3" fill="none" stroke="currentColor"
-                                stroke-width="2" />
-                            <line class="occhio-barra" x1="3" y1="3" x2="21" y2="21" stroke="currentColor"
-                                stroke-width="2" stroke-linecap="round" />
-                        </svg>
-                    </button>
-                </span>
-                <em id="aiuto-reg-password" class="aiuto-campo">
-                    8-16 caratteri: almeno una maiuscola, una minuscola, un numero e un carattere speciale.
-                </em>
-                <output class="errore-campo" id="err-reg-password" role="alert" aria-live="polite" hidden></output>
-                <label for="forza-password" class="sr-solo">Forza della password</label>
-                <meter id="forza-password" min="0" max="4" low="2" high="3" optimum="4" value="0"
-                    aria-label="Forza della password" title="Forza password: 0 debole, 4 ottima"></meter>
-                <em id="forza-password-testo" class="aiuto-campo" aria-live="polite"></em>
+                    <label for="reg-password" class="campo-obbligatorio">
+                        Password</label>
+                    <span class="campo-password">
+                        <input type="password" id="reg-password" name="password" autocomplete="new-password" required
+                            aria-describedby="aiuto-reg-password" minlength="8" maxlength="16">
+                        <button type="button" id="btn-mostra-password" class="mostra-password" aria-controls="reg-password"
+                            aria-pressed="false" aria-label="Mostra la password" title="Mostra o nascondi la password">
+                            <svg class="icona-occhio" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"
+                                focusable="false">
+                                <path class="occhio-contorno" d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z" fill="none"
+                                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                <circle class="occhio-pupilla" cx="12" cy="12" r="3" fill="none" stroke="currentColor"
+                                    stroke-width="2" />
+                                <line class="occhio-barra" x1="3" y1="3" x2="21" y2="21" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" />
+                            </svg>
+                        </button>
+                    </span>
+                    <em id="aiuto-reg-password" class="aiuto-campo">
+                        8-16 caratteri: almeno una maiuscola, una minuscola, un numero e un carattere speciale.
+                    </em>
+                    <output class="errore-campo" id="err-reg-password" role="alert" aria-live="polite" hidden></output>
+                    <label for="forza-password" class="sr-solo">Forza della password</label>
+                    <meter id="forza-password" min="0" max="4" low="2" high="3" optimum="4" value="0"
+                        aria-label="Forza della password" title="Forza password: 0 debole, 4 ottima"></meter>
+                    <em id="forza-password-testo" class="aiuto-campo" aria-live="polite"></em>
 
-                <label for="reg-conferma" class="campo-obbligatorio">
-                    Conferma password</label>
-                <span class="campo-password">
-                    <input type="password" id="reg-conferma" name="conferma_password" autocomplete="new-password" required
-                        minlength="8" maxlength="16">
-                    <button type="button" id="btn-mostra-conferma" class="mostra-password" aria-controls="reg-conferma" aria-pressed="false"
-                        aria-label="Mostra la password" title="Mostra o nascondi la password">
-                        <svg class="icona-occhio" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false">
-                            <path class="occhio-contorno" d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z" fill="none"
-                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                            <circle class="occhio-pupilla" cx="12" cy="12" r="3" fill="none" stroke="currentColor"
-                                stroke-width="2" />
-                            <line class="occhio-barra" x1="3" y1="3" x2="21" y2="21" stroke="currentColor"
-                                stroke-width="2" stroke-linecap="round" />
-                        </svg>
-                    </button>
-                </span>
-                <output class="errore-campo" id="err-reg-conferma" role="alert" aria-live="polite" hidden></output>
+                    <label for="reg-conferma" class="campo-obbligatorio">
+                        Conferma password</label>
+                    <span class="campo-password">
+                        <input type="password" id="reg-conferma" name="conferma_password" autocomplete="new-password"
+                            required minlength="8" maxlength="16">
+                        <button type="button" id="btn-mostra-conferma" class="mostra-password" aria-controls="reg-conferma"
+                            aria-pressed="false" aria-label="Mostra la password" title="Mostra o nascondi la password">
+                            <svg class="icona-occhio" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"
+                                focusable="false">
+                                <path class="occhio-contorno" d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z" fill="none"
+                                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                <circle class="occhio-pupilla" cx="12" cy="12" r="3" fill="none" stroke="currentColor"
+                                    stroke-width="2" />
+                                <line class="occhio-barra" x1="3" y1="3" x2="21" y2="21" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" />
+                            </svg>
+                        </button>
+                    </span>
+                    <output class="errore-campo" id="err-reg-conferma" role="alert" aria-live="polite" hidden></output>
 
-            </fieldset>
+                </fieldset>
 
-            <p>
-                <label for="progresso-form" class="sr-solo">Completamento modulo</label>
-                <progress id="progresso-form" max="6" value="0"
-                    aria-label="Completamento modulo di registrazione"></progress>
-                <em id="progresso-testo" class="aiuto-campo" aria-live="polite">Compila tutti i campi per procedere.</em>
-            </p>
-            <p class="campo-obbligatorio nota-obbligatori">Campi obbligatori</p>
+                <p>
+                    <label for="progresso-form" class="sr-solo">Completamento modulo</label>
+                    <progress id="progresso-form" max="6" value="0"
+                        aria-label="Completamento modulo di registrazione"></progress>
+                    <em id="progresso-testo" class="aiuto-campo" aria-live="polite">Compila tutti i campi per
+                        procedere.</em>
+                </p>
+                <p class="campo-obbligatorio nota-obbligatori">Campi obbligatori</p>
 
-            <button type="submit" id="btn-registra" class="btn btn-primario" disabled>
-                Crea profilo
-            </button>
-        </form>
-    <?php endif; ?>
-</section>
+                <button type="submit" id="btn-registra" class="btn btn-primario" disabled>
+                    Crea profilo
+                </button>
+            </form>
+        <?php endif; ?>
+    </section>
 
-<script src="js/registrazione.js" defer></script>
-<script src="js/mostra-password.js" defer></script>
+    <script src="js/registrazione.js" defer></script>
+    <script src="js/mostra-password.js" defer></script>
 </main>
 <?php require 'includes/footer.php'; ?>

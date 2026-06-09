@@ -91,7 +91,8 @@ $attributo_tema = in_array($tema_cookie, ['chiaro', 'scuro'], true)
     : '';
 ?>
 <!DOCTYPE html>
-<html lang="it"<?= $attributo_tema ?>>
+<html lang="it" <?= $attributo_tema ?>>
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
@@ -110,77 +111,79 @@ $attributo_tema = in_array($tema_cookie, ['chiaro', 'scuro'], true)
 <main id="contenuto-principale" tabindex="-1">
 
 
-<section aria-labelledby="titolo-login">
-    <h1 id="titolo-login">Accedi al tuo profilo</h1>
-    <p>Non hai ancora un account? <a href="registrazione.php">Registrati gratuitamente</a>.</p>
-</section>
-<section>
-    <?php if ($errore):
-        echo avvisoUtente($errore, 'errore');
-    endif; ?>
+    <section aria-labelledby="titolo-login">
+        <h1 id="titolo-login">Accedi al tuo profilo</h1>
+        <p>Non hai ancora un account? <a href="registrazione.php">Registrati gratuitamente</a>.</p>
+    </section>
+    <section>
+        <?php if ($errore):
+            echo avvisoUtente($errore, 'errore');
+        endif; ?>
 
-    <form id="form-login" method="post" action="login.php" novalidate aria-label="Modulo di accesso">
-    <fieldset>
-            <legend>Credenziali di accesso</legend>
+        <form id="form-login" method="post" action="login.php" novalidate aria-label="Modulo di accesso">
+            <fieldset>
+                <legend>Credenziali di accesso</legend>
 
-            <label for="username" class="campo-obbligatorio">
-                Username</label>
-            <input type="text" id="username" name="username" autocomplete="username" value="<?= $username_precompilato ?>"
-                required aria-describedby="aiuto-username" maxlength="50" spellcheck="false">
-            <output class="errore-campo" id="err-username" role="alert" aria-live="polite" hidden></output>
+                <label for="username" class="campo-obbligatorio">
+                    Username</label>
+                <input type="text" id="username" name="username" autocomplete="username"
+                    value="<?= $username_precompilato ?>" required aria-describedby="aiuto-username" maxlength="50"
+                    spellcheck="false">
+                <output class="errore-campo" id="err-username" role="alert" aria-live="polite" hidden></output>
 
 
-            <label for="password" class="campo-obbligatorio">
-                Password</label>
-            <span class="campo-password">
-                <input type="password" id="password" name="password" autocomplete="current-password" required
-                    maxlength="16">
-                <button type="button" id="btn-mostra-password" class="mostra-password" aria-controls="password" aria-pressed="false"
-                    aria-label="Mostra la password" title="Mostra o nascondi la password">
-                    <svg class="icona-occhio" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false">
-                        <path class="occhio-contorno" d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                        <circle class="occhio-pupilla" cx="12" cy="12" r="3" fill="none" stroke="currentColor"
-                            stroke-width="2" />
-                        <line class="occhio-barra" x1="3" y1="3" x2="21" y2="21" stroke="currentColor"
-                            stroke-width="2" stroke-linecap="round" />
-                    </svg>
-                </button>
-            </span>
-            <output class="errore-campo" id="err-password" role="alert" aria-live="polite" hidden></output>
-        </fieldset>
+                <label for="password" class="campo-obbligatorio">
+                    Password</label>
+                <span class="campo-password">
+                    <input type="password" id="password" name="password" autocomplete="current-password" required
+                        maxlength="16">
+                    <button type="button" id="btn-mostra-password" class="mostra-password" aria-controls="password"
+                        aria-pressed="false" aria-label="Mostra la password" title="Mostra o nascondi la password">
+                        <svg class="icona-occhio" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"
+                            focusable="false">
+                            <path class="occhio-contorno" d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            <circle class="occhio-pupilla" cx="12" cy="12" r="3" fill="none" stroke="currentColor"
+                                stroke-width="2" />
+                            <line class="occhio-barra" x1="3" y1="3" x2="21" y2="21" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" />
+                        </svg>
+                    </button>
+                </span>
+                <output class="errore-campo" id="err-password" role="alert" aria-live="polite" hidden></output>
+            </fieldset>
 
-        <?php $consenso_cookie = isset($_COOKIE['consenso_cookie']); ?>
+            <?php $consenso_cookie = isset($_COOKIE['consenso_cookie']); ?>
 
-        <fieldset class="blocco-ricordami">
-            <legend>Ricordami</legend>
+            <fieldset class="blocco-ricordami">
+                <legend>Ricordami</legend>
 
-            <?php if (!$consenso_cookie): ?>
-                <p class="messaggio messaggio-avviso" role="note">
-                    Per usare <strong>&ldquo;Ricordami&rdquo;</strong> devi prima
-                    <strong>accettare i cookie</strong> dal banner in basso o dalla
-                    <a href="privacy.php">pagina privacy</a>.
-                </p>
-            <?php endif; ?>
+                <?php if (!$consenso_cookie): ?>
+                    <p class="messaggio messaggio-avviso" role="note">
+                        Per usare <strong>&ldquo;Ricordami&rdquo;</strong> devi prima
+                        <strong>accettare i cookie</strong> dal banner in basso o dalla
+                        <a href="privacy.php">pagina privacy</a>.
+                    </p>
+                <?php endif; ?>
 
-            <label class="campo-checkbox" for="ricordami">
-                <input type="checkbox" id="ricordami" name="ricordami" value="1"
-                    aria-describedby="aiuto-ricordami" <?= $consenso_cookie ? '' : 'disabled' ?>>
-                Ricordami su questo browser per 72 ore
-            </label>
-            <em id="aiuto-ricordami" class="aiuto-campo">
-                Il tuo username verrà precompilato al prossimo accesso.
-                La password non viene mai memorizzata.
-            </em>
-        </fieldset>
+                <label class="campo-checkbox" for="ricordami">
+                    <input type="checkbox" id="ricordami" name="ricordami" value="1" aria-describedby="aiuto-ricordami"
+                        <?= $consenso_cookie ? '' : 'disabled' ?>>
+                    Ricordami su questo browser per 72 ore
+                </label>
+                <em id="aiuto-ricordami" class="aiuto-campo">
+                    Il tuo username verrà precompilato al prossimo accesso.
+                    La password non viene mai memorizzata.
+                </em>
+            </fieldset>
 
-        <p class="campo-obbligatorio nota-obbligatori">Campi obbligatori</p>
-        <button type="submit" id="btn-login" class="btn btn-primario">Accedi</button>
-    </form>
-</section>
+            <p class="campo-obbligatorio nota-obbligatori">Campi obbligatori</p>
+            <button type="submit" id="btn-login" class="btn btn-primario">Accedi</button>
+        </form>
+    </section>
 
-<script src="js/login.js" defer></script>
-<script src="js/mostra-password.js" defer></script>
+    <script src="js/login.js" defer></script>
+    <script src="js/mostra-password.js" defer></script>
 
 </main>
 <?php require 'includes/footer.php'; ?>

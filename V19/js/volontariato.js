@@ -8,8 +8,8 @@
 
 (function () {
     const contenitore = document.getElementById('contenitore-turni');
-    const input_data  = document.getElementById('data-turno');
-    const form        = document.getElementById('form-volontariato');
+    const input_data = document.getElementById('data-turno');
+    const form = document.getElementById('form-volontariato');
     const bottone_volontariato = document.getElementById('btn-volontariato');
     const messaggio_volontariato = document.getElementById('msg-volontariato');
     const nota_bottone = document.getElementById('note-btn-volontariato');

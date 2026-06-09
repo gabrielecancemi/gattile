@@ -7,19 +7,19 @@
     if (!form) return;
 
     let campi = {
-        nome:      { input: document.getElementById('reg-nome'),      errore: document.getElementById('err-nome') },
-        cognome:   { input: document.getElementById('reg-cognome'),   errore: document.getElementById('err-cognome') },
+        nome: { input: document.getElementById('reg-nome'), errore: document.getElementById('err-nome') },
+        cognome: { input: document.getElementById('reg-cognome'), errore: document.getElementById('err-cognome') },
         indirizzo: { input: document.getElementById('reg-indirizzo'), errore: document.getElementById('err-indirizzo') },
-        username:  { input: document.getElementById('reg-username'),  errore: document.getElementById('err-reg-username') },
-        password:  { input: document.getElementById('reg-password'),  errore: document.getElementById('err-reg-password') },
-        conferma:  { input: document.getElementById('reg-conferma'),  errore: document.getElementById('err-reg-conferma') },
+        username: { input: document.getElementById('reg-username'), errore: document.getElementById('err-reg-username') },
+        password: { input: document.getElementById('reg-password'), errore: document.getElementById('err-reg-password') },
+        conferma: { input: document.getElementById('reg-conferma'), errore: document.getElementById('err-reg-conferma') },
     };
 
-    let meter_forza  = document.getElementById('forza-password');
-    let testo_forza  = document.getElementById('forza-password-testo');
+    let meter_forza = document.getElementById('forza-password');
+    let testo_forza = document.getElementById('forza-password-testo');
     let barra_progresso = document.getElementById('progresso-form');
     let testo_progresso = document.getElementById('progresso-testo');
-    let bottone_invia   = document.getElementById('btn-registra');
+    let bottone_invia = document.getElementById('btn-registra');
 
     let REGEX_PASSWORD = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[^a-zA-Z\d]).{8,16}$/;
     let REGEX_USERNAME = /^[a-zA-Z][a-zA-Z0-9_]{2,49}$/;

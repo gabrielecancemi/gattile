@@ -3,7 +3,7 @@
 'use strict';
 
 (function () {
-    const form     = document.getElementById('form-login');
+    const form = document.getElementById('form-login');
     const campo_username = document.getElementById('username');
     const campo_password = document.getElementById('password');
     const errore_username = document.getElementById('err-username');
@@ -37,11 +37,11 @@
     }
 
     if (campo_username) {
-        campo_username.addEventListener('blur',  validaUsername);
+        campo_username.addEventListener('blur', validaUsername);
         campo_username.addEventListener('input', function () { mostraErrore(campo_username, errore_username, ''); });
     }
     if (campo_password) {
-        campo_password.addEventListener('blur',  validaPassword);
+        campo_password.addEventListener('blur', validaPassword);
         campo_password.addEventListener('input', function () { mostraErrore(campo_password, errore_password, ''); });
     }
 

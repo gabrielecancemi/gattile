@@ -5,15 +5,15 @@
 'use strict';
 
 (function () {
-    const form            = document.getElementById('form-prenotazione');
+    const form = document.getElementById('form-prenotazione');
     const input_gatti_ids = document.getElementById('gatti-ids');
-    const riepilogo       = document.getElementById('gatti-selezionati-riepilogo');
-    const input_data      = document.getElementById('data-visita');
-    const select_ora      = document.getElementById('ora-visita');
+    const riepilogo = document.getElementById('gatti-selezionati-riepilogo');
+    const input_data = document.getElementById('data-visita');
+    const select_ora = document.getElementById('ora-visita');
     const bottone_prenota = document.getElementById('btn-prenota');
-    const errore_data     = document.getElementById('err-data-visita');
+    const errore_data = document.getElementById('err-data-visita');
     const messaggio_prenotazione = document.getElementById('msg-prenotazione');
-    const nota_bottone    = document.getElementById('note-btn-prenota');
+    const nota_bottone = document.getElementById('note-btn-prenota');
 
     if (!form) return; // solo per utenti loggati non-admin
 
@@ -55,9 +55,9 @@
     function aggiornaStatoPulsante() {
         if (!bottone_prenota) return;
         const ha_gatti = gatti_correnti.length > 0;
-        const ha_data  = input_data && input_data.value.trim() !== '';
-        const ha_ora   = select_ora && select_ora.value.trim() !== '';
-        const pronto   = ha_gatti && ha_data && ha_ora;
+        const ha_data = input_data && input_data.value.trim() !== '';
+        const ha_ora = select_ora && select_ora.value.trim() !== '';
+        const pronto = ha_gatti && ha_data && ha_ora;
 
         bottone_prenota.disabled = !pronto;
         bottone_prenota.setAttribute('aria-disabled', String(!pronto));

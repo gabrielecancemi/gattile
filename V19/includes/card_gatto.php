@@ -16,7 +16,7 @@ if (!function_exists('etaInParole')) {
         if ($mesi < 12) {
             return $mesi . ' ' . ($mesi === 1 ? 'mese' : 'mesi');
         }
-        $anni  = intdiv($mesi, 12);
+        $anni = intdiv($mesi, 12);
         $resto = $mesi % 12;
         $testo = $anni . ' ' . ($anni === 1 ? 'anno' : 'anni');
         if ($resto > 0) {
@@ -31,25 +31,25 @@ if (!function_exists('costruisciSchedaGatto')) {
     // $gatto: riga del DB. $opzioni: ['nuovo' => bool] per il badge "Nuovo".
     function costruisciSchedaGatto(array $gatto, array $opzioni = []): string
     {
-        $nuovo  = !empty($opzioni['nuovo']);
-        $id     = (int) ($gatto['id'] ?? 0);
-        $sesso  = ($gatto['sesso'] ?? 'F') === 'M' ? 'Maschio' : 'Femmina';
-        $eta    = etaInParole((int) ($gatto['eta'] ?? 0));
+        $nuovo = !empty($opzioni['nuovo']);
+        $id = (int) ($gatto['id'] ?? 0);
+        $sesso = ($gatto['sesso'] ?? 'F') === 'M' ? 'Maschio' : 'Femmina';
+        $eta = etaInParole((int) ($gatto['eta'] ?? 0));
         $immagine = (isset($gatto['foto']) && trim((string) $gatto['foto']) !== '')
             ? $gatto['foto']
             : 'img/placeholder-gatto.svg';
 
         $id_titolo = 'gatto-' . $id;
-        $nome      = ripulisci($gatto['nome'] ?? '');
+        $nome = ripulisci($gatto['nome'] ?? '');
         $descrizione = ripulisci($gatto['descrizione'] ?? '');
-        $mantello  = ripulisci($gatto['colore_mantello'] ?? '');
-        $pelo      = ripulisci($gatto['lunghezza_pelo'] ?? '');
-        $razza     = ripulisci($gatto['razza'] ?? '');
-        $occhi     = ripulisci($gatto['colore_occhi'] ?? '');
-        $peso      = ripulisci((string) ($gatto['peso'] ?? ''));
+        $mantello = ripulisci($gatto['colore_mantello'] ?? '');
+        $pelo = ripulisci($gatto['lunghezza_pelo'] ?? '');
+        $razza = ripulisci($gatto['razza'] ?? '');
+        $occhi = ripulisci($gatto['colore_occhi'] ?? '');
+        $peso = ripulisci((string) ($gatto['peso'] ?? ''));
         $immagine_pulita = ripulisci($immagine);
-        $data_iso  = ripulisci($gatto['data_arrivo'] ?? '');
-        $data_it   = !empty($gatto['data_arrivo'])
+        $data_iso = ripulisci($gatto['data_arrivo'] ?? '');
+        $data_it = !empty($gatto['data_arrivo'])
             ? date('d/m/Y', (int) strtotime((string) $gatto['data_arrivo']))
             : '';
 

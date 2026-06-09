@@ -8,8 +8,8 @@ define('DB_NAME', 'gattile_db');
 define('DB_CHARSET', 'utf8mb4');
 
 const ELENCO_UTENTI_DB = [
-    'reader'      => ['user' => 'lecture',     'pass' => 'P@ssw0rd!'],
-    'modifier'    => ['user' => 'modifier',    'pass' => 'Str0ng#Admin9'],
+    'reader' => ['user' => 'lecture', 'pass' => 'P@ssw0rd!'],
+    'modifier' => ['user' => 'modifier', 'pass' => 'Str0ng#Admin9'],
     'registrator' => ['user' => 'registrator', 'pass' => 'ToB31nsert?'],
 ];
 

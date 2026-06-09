@@ -48,7 +48,8 @@ if ($profilo && (bool) $profilo['is_admin']) {
         <button type="button" id="toggle-tema" class="toggle-tema btn" aria-label="Cambia tema (attuale: sistema)"
             title="Cambia tema: Sistema / Chiaro / Scuro">
             <svg class="icona-tema" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true" focusable="false">
-                <circle class="icona-tema-bordo" cx="8" cy="8" r="6" fill="none" stroke="currentColor" stroke-width="2" />
+                <circle class="icona-tema-bordo" cx="8" cy="8" r="6" fill="none" stroke="currentColor"
+                    stroke-width="2" />
                 <path class="icona-tema-meta" d="M8 2a6 6 0 0 1 0 12z" fill="currentColor" />
                 <circle class="icona-tema-pieno" cx="8" cy="8" r="6" fill="currentColor" />
             </svg>
@@ -58,7 +59,8 @@ if ($profilo && (bool) $profilo['is_admin']) {
         <section class="stato-autenticazione" id="autenticazione" aria-label="Stato autenticazione">
             <?php if ($profilo): ?>
                 <p class="utente-info">
-                    <svg class="icona-utente" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true" focusable="false">
+                    <svg class="icona-utente" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"
+                        focusable="false">
                         <circle cx="8" cy="5" r="3" fill="currentColor" />
                         <path d="M2 15a6 6 0 0 1 12 0z" fill="currentColor" />
                     </svg>
