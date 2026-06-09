@@ -1,14 +1,7 @@
 <?php
-// Renderer condiviso della scheda gatto.
-//
-// Un'unica funzione produce il markup della scheda, usata sia nei "Nuovi
-// arrivi" della home sia, a livello di struttura/CSS, dalle schede generate
-// dal componente React in gatti.php. Una sola fonte di verità per markup e
-// classi: niente CSS duplicato e niente query ripetute (la home prende solo
-// gli ultimi 2 arrivi, la pagina adozioni usa l'endpoint JSON).
-//
-// strict_types e ripulisci() arrivano dal contesto chiamante (layout.php).
+// Visualizzazione condivisa della scheda gatto.
 
+// function_exist viene utilizzato per evitare errori, in aggiunta ..._once
 if (!function_exists('etaInParole')) {
     // Converte un'età in mesi in testo leggibile (es. "1 anno e 3 mesi").
     function etaInParole(int $mesi): string
@@ -27,8 +20,7 @@ if (!function_exists('etaInParole')) {
 }
 
 if (!function_exists('costruisciSchedaGatto')) {
-    // Markup HTML di una scheda gatto.
-    // $gatto: riga del DB. $opzioni: ['nuovo' => bool] per il badge "Nuovo".
+    // Trasformazioni HTML delle schede gatto.
     function costruisciSchedaGatto(array $gatto, array $opzioni = []): string
     {
         $nuovo = !empty($opzioni['nuovo']);

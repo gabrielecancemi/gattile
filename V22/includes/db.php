@@ -1,7 +1,5 @@
 <?php
 // Connessioni al database, una per ruolo (lettura / modifica / inserimento).
-// Niente eccezioni MySQLi: controllo sempre il valore di ritorno.
-// strict_types lo dichiarano i file che includono questo.
 
 define('DB_HOST', 'localhost');
 define('DB_NAME', 'gattile_db');
@@ -25,8 +23,7 @@ function connessioneDb(string $ruolo = 'reader'): ?mysqli
 
     mysqli_report(MYSQLI_REPORT_OFF);
 
-    // La @ silenzia il warning di connessione fallita; l'errore vero lo
-    // intercetto subito sotto e finisce solo nel log, mai a video.
+    // La @ silenzia il warning di connessione fallita
     $conn = @mysqli_connect(DB_HOST, $credenziali['user'], $credenziali['pass'], DB_NAME);
 
     if (!$conn || mysqli_connect_errno()) {
