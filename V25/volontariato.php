@@ -47,12 +47,12 @@ if (!headers_sent()) {
         <h1 id="titolo-volontariato">Fai volontariato</h1>
         <p>
             Il tuo aiuto fa la differenza. Scegli quante fasce orarie vuoi.
-            La struttura accoglie <strong>al massimo 2 volontari per fascia oraria</strong>.
+            La struttura accoglie al <strong>massimo 2 volontari per fascia oraria</strong>.
         </p>
         <?php if (!$loggato): ?>
             <aside class="messaggio messaggio-avviso" role="note">
                 <p>
-                    <strong>Per prenotare un turno devi prima</strong>
+                    Per prenotare un turno devi prima
                     <a href="login.php">accedere</a> o
                     <a href="registrazione.php">registrarti</a>.
                 </p>

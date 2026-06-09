@@ -1,6 +1,5 @@
 // GattiComponent.js — versione compilata di GattiComponent.jsx.
-// Generata dalla build Babel (build/ -> npm run build-react). Non modificare
-// a mano: intervenire sul sorgente .jsx e ricompilare.
+
 'use strict';
 
 (function () {
@@ -9,8 +8,6 @@
     useEffect,
     useCallback
   } = React;
-
-  /* Utilità ------------------------------------------------------- */
 
   function etaInParole(mesi) {
     if (mesi < 12) return mesi + ' ' + (mesi === 1 ? 'mese' : 'mesi');
@@ -29,7 +26,7 @@
     }));
   }
 
-  /* Card singola — struttura identica al renderer PHP ------------- */
+  /* Card singola */
 
   function CardGatto({
     gatto,
@@ -113,7 +110,7 @@
     }, new Date(gatto.data_arrivo).toLocaleDateString('it-IT')))))));
   }
 
-  /* Componente principale ----------------------------------------- */
+  /* Componente principale */
 
   function GattiApp({
     utenteLoggato,
@@ -130,8 +127,7 @@
     useEffect(function () {
       setCaricamento(true);
       setErrore('');
-      // Errore di rete o risposta non valida gestiti dal secondo handler di
-      // then() (onRejected): nessun blocco try/catch/finally.
+      // Errore di rete o risposta non valida
       function gestisciErrore(err) {
         console.error('[GattiComponent] errore:', err.message);
         setErrore('Impossibile caricare i gatti: ' + err.message);
@@ -196,7 +192,7 @@
       }
     });
 
-    // Gli ultimi 2 gatti arrivati ricevono il badge "Nuovo" (come la home).
+    // Gli ultimi 2 gatti arrivati ricevono il badge "Nuovo".
     const id_nuovi = gatti.slice().sort(function (a, b) {
       return new Date(b.data_arrivo) - new Date(a.data_arrivo);
     }).slice(0, 2).map(function (g) {
@@ -287,7 +283,7 @@
     })));
   }
 
-  /* Mount --------------------------------------------------------- */
+  /* Creazione */
 
   const radice = document.getElementById('react-gatti-root');
   if (!radice) {

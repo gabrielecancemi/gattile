@@ -128,9 +128,9 @@ if (!headers_sent()) {
         </h1>
 
         <p>
-            Ogni gatto che arriva al Gattile San Paolo ha una storia.
+            Ogni gatto che arriva al <strong>Gattile San Paolo</strong> ha una storia.
             Alcuni sono stati abbandonati, altri recuperati dalla strada,
-            altri ancora hanno semplicemente bisogno di una nuova famiglia.
+            altri ancora hanno semplicemente bisogno di una <strong>nuova famiglia</strong>.
         </p>
 
         <p>

@@ -73,6 +73,14 @@ JavaScript per i form.
     logo.png
     placeholder-gatto.svg
 
+PREMESSE:
+I turni di volontariato sono stati impostati di una ampiezza pari a 2 ore, 
+con orari sempre dall 9 alle 18 (orario utilizzato come apertura del gattile)
+
+Le immagini delle card non sono state gestite con il tag <picture> perchè è previsto 
+l'aggiornamento futuro in cui le immagini saranno prelevate dal db, ottenendo di conseguenza 
+un solo formato
+
 
 3. REACT ↔ VANILLA JS (CustomEvent)
 -----------------------------------
@@ -495,10 +503,6 @@ con privilegi DB diversi. Ridurle a un solo metodo NON è possibile senza
 perdere una delle due funzioni richieste dalla traccia e senza violare il
 principio dei privilegi minimi (il percorso di lettura non deve poter scrivere).
 Si mantengono quindi entrambi i metodi nello stesso endpoint.
-
-
-I turni di volontariato sono stati impostati di una ampiezza pari a 2 ore, 
-con orari sempre dall 9 alle 18 (orario utilizzato come apertura del gattile)
 
 
 E. HEAD CENTRALIZZATO E MEDIA QUERY COLLEGATE CON <link media>

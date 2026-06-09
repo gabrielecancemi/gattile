@@ -38,7 +38,10 @@ $icone_nav = [
     <header class="header">
 
         <a href="index.php" class="brand-logo" aria-label="Torna alla Home Page">
-            <img src="img/logo.png" alt="Logo Gattile San Paolo" class="logo-img" width="48" height="48">
+            <picture class="logo-container">
+                <source srcset="img/logo_grande.png" media="(min-width: 600px)">
+                <img src="img/logo_piccolo.png" alt="Logo Gattile San Paolo" class="logo-img">
+            </picture>
             <strong>Gattile San Paolo</strong>
         </a>
 

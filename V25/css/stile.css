@@ -43,9 +43,7 @@
 /* ============================================================
    2. RESET & BASE
    ============================================================ */
-*,
-*::before,
-*::after {
+* {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
@@ -185,6 +183,7 @@ a:focus {
     z-index: 1000;
 }
 
+
 @media (max-width: 1300px) {
     .header {
         grid-template-columns: 1fr auto auto;
@@ -217,10 +216,14 @@ a:focus {
 }
 
 .logo-img {
-    width: 44px;
-    height: 44px;
-    object-fit: contain;
     flex-shrink: 0;
+    width: 50px;
+    height: 50px;
+}
+
+.logo-container {
+    display: flex;
+    align-items: center; /* centratura verticale */
 }
 
 
@@ -497,6 +500,10 @@ a:focus {
     color: white;
 }
 
+.btn:active {
+    zoom: 95%;
+}
+
 .btn-login:hover,
 .btn-login:focus {
     background-color: #6b3410;
@@ -745,6 +752,10 @@ address p {
     color: white;
     background-color: #3e5022;
     border-color: #6b3410;
+}
+
+.faq-button:active {
+    zoom: 95%;
 }
 
 

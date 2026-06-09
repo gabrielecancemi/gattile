@@ -1,20 +1,10 @@
 // GattiComponent.jsx — Componente React: lista, filtro, ordinamento e
 // selezione gatti.
-//
-// La struttura HTML della card è volutamente IDENTICA a quella prodotta dal
-// renderer PHP condiviso (includes/card_gatto.php), così i "Nuovi arrivi"
-// della home e le card della pagina adozioni condividono lo stesso stile
-// (.card-gatto, .card-gatto-corpo, ecc.) senza duplicare il CSS.
-//
-// La selezione viene comunicata al form Vanilla JS con un CustomEvent
-// ('gattiSelezionatiAggiornati'): disaccoppia React e Vanilla senza variabili
-// globali e resta testabile in isolamento.
+
 'use strict';
 
 (function () {
     const { useState, useEffect, useCallback } = React;
-
-    /* Utilità ------------------------------------------------------- */
 
     function etaInParole(mesi) {
         if (mesi < 12) return mesi + ' ' + (mesi === 1 ? 'mese' : 'mesi');
@@ -32,7 +22,7 @@
         }));
     }
 
-    /* Card singola — struttura identica al renderer PHP ------------- */
+    /* Card singola */
 
     function CardGatto({ gatto, selezionabile, selezionata, onToggle, nuovo }) {
         const etichetta_sesso = gatto.sesso === 'M' ? 'Maschio' : 'Femmina';
@@ -61,7 +51,7 @@
                             : undefined
                     }
                 >
-                    {/* Badge selezione — SVG inline, stampabile su tutti i browser */}
+                    {/* Badge selezione — SVG */}
                     <svg className="card-badge-selezione" viewBox="0 0 32 32" width="32" height="32" aria-hidden="true" focusable="false">
                         <circle cx="16" cy="16" r="16" fill="saddlebrown" />
                         <path d="M9 16.5l4.5 4.5L23 11" fill="none" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
@@ -113,7 +103,7 @@
         );
     }
 
-    /* Componente principale ----------------------------------------- */
+    /* Componente principale */
 
     function GattiApp({ utenteLoggato, isAdmin }) {
         const [gatti, setGatti] = useState([]);
@@ -127,9 +117,7 @@
         useEffect(function () {
             setCaricamento(true);
             setErrore('');
-            // Errore di rete o risposta non valida gestiti dal secondo handler
-            // di then() (onRejected): nessun blocco try/catch/finally. Si
-            // controlla r.ok perché fetch non segnala errore sui codici 4xx/5xx.
+            // Errore di rete o risposta non valida
             function gestisciErrore(err) {
                 console.error('[GattiComponent] errore:', err.message);
                 setErrore('Impossibile caricare i gatti: ' + err.message);
@@ -153,8 +141,7 @@
         }, [selezionati, gatti]);
 
         // A prenotazione avvenuta il form Vanilla JS chiede di azzerare la
-        // selezione: cosi' le card tornano deselezionate (il messaggio di
-        // successo resta gestito dal form, qui non lo tocco).
+        // selezione: cosi' le card tornano deselezionate
         useEffect(function () {
             function azzera() { setSelezionati(new Set()); }
             document.addEventListener('gattiDeselezionaTutti', azzera);
@@ -186,10 +173,7 @@
                 }
             });
 
-        // Gli ultimi 2 gatti arrivati (per data di arrivo) ricevono il badge
-        // "Nuovo", come nella sezione "Nuovi arrivi" della home: l'insieme è
-        // calcolato sulla lista completa, così il badge resta sugli stessi 2
-        // gatti indipendentemente da ricerca e ordinamento correnti.
+        // Gli ultimi 2 gatti arrivati (per data di arrivo) ricevono il badge "Nuovo"
         const id_nuovi = gatti
             .slice()
             .sort(function (a, b) { return new Date(b.data_arrivo) - new Date(a.data_arrivo); })
@@ -293,7 +277,7 @@
         );
     }
 
-    /* Mount --------------------------------------------------------- */
+    /* Creazione */
 
     const radice = document.getElementById('react-gatti-root');
     if (!radice) {

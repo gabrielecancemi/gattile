@@ -48,20 +48,20 @@ if (!headers_sent()) {
 
     <section aria-labelledby="titolo-gatti">
         <h1 id="titolo-gatti">I nostri ospiti felini</h1>
-        <p>Seleziona i nostri gatti e <strong>prenota una visita</strong> conoscitiva.</p>
+        <p>Seleziona i nostri gatti e prenota una visita conoscitiva.</p>
         <?php if (!$loggato): ?>
             <aside class="messaggio messaggio-avviso" role="note" aria-label="Avviso accesso">
                 <p>
-                    <strong>Per prenotare una visita</strong> devi prima
+                    Per prenotare una visita devi prima
                     <a href="login.php">accedere</a> o <a href="registrazione.php">registrarti</a>.
-                    Puoi comunque sfogliare e filtrare tutti i gatti disponibili.
+                    Puoi comunque <strong>sfogliare e filtrare</strong> tutti i gatti disponibili.
                 </p>
             </aside>
         <?php elseif ($is_admin): ?>
             <aside class="messaggio messaggio-avviso" role="note" aria-label="Avviso prenotazione">
                 <p>
-                    <strong>Per prenotare una visita</strong> devi essere un utente, non un amministratore.
-                    Puoi comunque sfogliare e filtrare tutti i gatti disponibili.
+                    Per prenotare una visita devi essere un utente, non un amministratore.
+                    Puoi comunque <strong>sfogliare e filtrare</strong> tutti i gatti disponibili.
                 </p>
             </aside>
         <?php endif; ?>
