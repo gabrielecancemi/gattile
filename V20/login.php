@@ -134,22 +134,8 @@ $attributo_tema = in_array($tema_cookie, ['chiaro', 'scuro'], true)
 
                 <label for="password" class="campo-obbligatorio">
                     Password</label>
-                <span class="campo-password">
-                    <input type="password" id="password" name="password" autocomplete="current-password" required
-                        maxlength="16">
-                    <button type="button" id="btn-mostra-password" class="mostra-password" aria-controls="password"
-                        aria-pressed="false" aria-label="Mostra la password" title="Mostra o nascondi la password">
-                        <svg class="icona-occhio" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"
-                            focusable="false">
-                            <path class="occhio-contorno" d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z" fill="none"
-                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                            <circle class="occhio-pupilla" cx="12" cy="12" r="3" fill="none" stroke="currentColor"
-                                stroke-width="2" />
-                            <line class="occhio-barra" x1="3" y1="3" x2="21" y2="21" stroke="currentColor"
-                                stroke-width="2" stroke-linecap="round" />
-                        </svg>
-                    </button>
-                </span>
+                <input type="password" id="password" name="password" autocomplete="current-password" required
+                    maxlength="16">
                 <output class="errore-campo" id="err-password" role="alert" aria-live="polite" hidden></output>
             </fieldset>
 
@@ -182,7 +168,6 @@ $attributo_tema = in_array($tema_cookie, ['chiaro', 'scuro'], true)
     </section>
 
     <script src="js/login.js" defer></script>
-    <script src="js/mostra-password.js" defer></script>
 
 </main>
 <?php require 'includes/footer.php'; ?>
