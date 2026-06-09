@@ -1,5 +1,5 @@
 <?php
-// Prende i gatti disponibili nella tabella 'gatti' del db
+// Prenota una visita, inserendola nel db
 
 declare(strict_types=1);
 
@@ -40,9 +40,8 @@ if (empty($data_ora)) {
     exit;
 }
 
-$dt = DateTime::createFromFormat('Y-m-d\TH:i', $data_ora)
-    ?: DateTime::createFromFormat('Y-m-d H:i:s', $data_ora)
-    ?: DateTime::createFromFormat('Y-m-d H:i', $data_ora);
+$timestamp = strtotime($data_ora);
+$dt = $timestamp ? (new DateTime())->setTimestamp($timestamp) : false;
 
 if (!$dt || $dt < new DateTime()) {
     http_response_code(400);
@@ -86,6 +85,7 @@ mysqli_begin_transaction($conn);
 $inserimento = mysqli_prepare($conn, 'INSERT INTO prenotazioni_visite (utente_id, data_ora) VALUES (?, ?)');
 if (!$inserimento) {
     error_log('[prenota_visita] prepare: ' . mysqli_error($conn));
+    // Annulla modifiche già apportate al db
     mysqli_rollback($conn);
     mysqli_close($conn);
     http_response_code(500);

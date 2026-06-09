@@ -271,6 +271,13 @@ tipografia serif; tabelle con bordi; <details> forzati aperti.
 - Ogni blocco DB ha gestione errore e fallback all'utente.
 - Il form di prenotazione è inaccessibile se non si è loggati (controllo PHP +
   controllo API).
+- La sezione di prenotazione visita è riservata agli UTENTI: agli
+  amministratori non viene mostrata (la sezione e lo script prenotazione.js
+  sono emessi solo se $loggato && !$is_admin). Al loro posto, come per il
+  visitatore non autenticato, compare un avviso (.messaggio-avviso) che spiega
+  che per prenotare bisogna essere utenti e non amministratori. La prenotazione
+  è infatti una funzionalità di chi vuole adottare, mentre l'amministratore
+  gestisce gli inserimenti dei gatti.
 - Le API JSON restituiscono codici HTTP appropriati (200, 400, 401, 403, 405,
   409, 500).
 
@@ -420,6 +427,10 @@ Motivazione finale:
   Allineare la persistenza del tema al consenso rende il comportamento
   coerente con l'informativa privacy e con il principio "nessun salvataggio
   senza consenso", senza alterare l'uso del tema durante la navigazione.
+
+
+I turni di volontariato sono stati impostati di una ampiezza pari a 2 ore, 
+con orari sempre dall 9 alle 18 (orario utilizzato come apertura del gattile)
 
 ================================================================================
 Fine documento
