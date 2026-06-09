@@ -1,24 +1,4 @@
-/* ============================================================
-   1. TEMA SCURO
-   ============================================================
-   Generato come RICOLORAZIONE del tema chiaro: ogni proprieta'-colore del
-   tema light e' rimappata su un colore scuro in base al RUOLO, con due mappe
-   che garantiscono "stesso colore nel light => stesso colore nel dark":
-     - uso come TESTO/BORDO (foreground): saddlebrown->#e8975a,
-       darkolivegreen->#8fae5a, darkred->#f08a8a, black->#f3ece1, dimgray->
-       #cdbfa8, tan->#5a4a33, ...
-     - uso come SFONDO (background): saddlebrown->#4a2c14,
-       darkolivegreen->#3a4a22, white->#262019, cornsilk->#1b1712,
-       wheat->#33291d, mistyrose->#3a2020, honeydew->#1e3324, ...
-   La distinzione testo/sfondo serve perche' nel light alcuni colori brand
-   sono usati SIA come testo (su fondo chiaro) SIA come sfondo (con testo
-   bianco): un'unica mappa renderebbe illeggibili quegli sfondi. Dentro
-   ciascun ruolo la corrispondenza e' 1:1.
-
-   Due attivatori con gli STESSI valori (generati da un'unica fonte):
-     - automatico: @media (prefers-color-scheme: dark) su html:not([data-tema]);
-     - manuale:    html[data-tema="scuro"].
-   ============================================================ */
+/* TEMA SCURO */
 
 @media (prefers-color-scheme: dark) {
     html:not([data-tema]) {
@@ -41,6 +21,10 @@
 
     html:not([data-tema]) strong {
         color: #e8975a;
+    }
+
+    html:not([data-tema]) .header strong {
+        color: white;
     }
 
     html:not([data-tema]) code {
@@ -154,7 +138,7 @@
     html:not([data-tema]) .btn-signin {
         background-color: #262019;
         border-color: #e8975a;
-        color: #e8975a;
+        color: white;
     }
 
     html:not([data-tema]) .btn-signin:hover,
@@ -669,6 +653,10 @@ html[data-tema="scuro"] strong {
     color: #e8975a;
 }
 
+html[data-tema="scuro"] .header strong {
+    color: white;
+}
+
 html[data-tema="scuro"] code {
     background: #33291d;
     color: #f3ece1;
@@ -780,7 +768,7 @@ html[data-tema="scuro"] .btn-login:focus {
 html[data-tema="scuro"] .btn-signin {
     background-color: #262019;
     border-color: #e8975a;
-    color: #e8975a;
+    color: white;
 }
 
 html[data-tema="scuro"] .btn-signin:hover,
