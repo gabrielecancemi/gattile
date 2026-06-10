@@ -138,7 +138,7 @@ if (!headers_sent()) {
         endif; ?>
         <?php if ($successo):
             echo avvisoUtente($successo, 'successo'); ?>
-            <p><a href="gatti.php" class="btn btn-secondario">Vedi tutti i gatti</a></p>
+            <p><a href="gatti.php" class="btn btn-primario">Vedi tutti i gatti</a></p>
         <?php endif; ?>
 
         <form id="form-inserisci-gatto" method="post" action="inserisci_gatto.php" novalidate

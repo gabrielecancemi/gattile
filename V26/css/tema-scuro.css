@@ -27,13 +27,17 @@
         color: white;
     }
 
+    html:not([data-tema]) .footer strong {
+        color: white;
+    }
+
     html:not([data-tema]) code {
         background: #33291d;
         color: #f3ece1;
     }
 
     html:not([data-tema]) a {
-        color: #e8975a;
+        color: white;
     }
 
     html:not([data-tema]) a:hover,
@@ -231,7 +235,7 @@
     }
 
     html:not([data-tema]) .banner-cookie p a {
-        color: #33291d;
+        color: #e8975a;
     }
 
     html:not([data-tema]) main>section:first-child {
@@ -278,10 +282,10 @@
     }
 
     html:not([data-tema]) .statistiche dt {
-        color: #8fae5a;
+        color: white;
         background: #262019;
         border: 1px solid #5a4a33;
-        border-bottom: 3px solid #8fae5a;
+        border-bottom: 3px solid white;
     }
 
     html:not([data-tema]) .statistiche dd {
@@ -657,13 +661,17 @@ html[data-tema="scuro"] .header strong {
     color: white;
 }
 
+html[data-tema="scuro"] .footer strong {
+    color: white;
+}
+
 html[data-tema="scuro"] code {
     background: #33291d;
     color: #f3ece1;
 }
 
 html[data-tema="scuro"] a {
-    color: #e8975a;
+    color: white;
 }
 
 html[data-tema="scuro"] a:hover,
@@ -861,7 +869,7 @@ html[data-tema="scuro"] .banner-cookie {
 }
 
 html[data-tema="scuro"] .banner-cookie p a {
-    color: #33291d;
+    color: #e8975a;
 }
 
 html[data-tema="scuro"] main>section:first-child {
@@ -908,17 +916,17 @@ html[data-tema="scuro"] main>aside>p:last-child {
 }
 
 html[data-tema="scuro"] .statistiche dt {
-    color: #8fae5a;
+    color: white;
     background: #262019;
     border: 1px solid #5a4a33;
-    border-bottom: 3px solid #8fae5a;
+    border-bottom: 3px solid white;
 }
 
 html[data-tema="scuro"] .statistiche dd {
-    color: #8fae5a;
+    color: white;
     background: #262019;
     border: 1px solid #5a4a33;
-    border-top: 3px solid #8fae5a;
+    border-top: 3px solid white;
 }
 
 html[data-tema="scuro"] .btn-primario {
