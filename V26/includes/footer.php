@@ -1,5 +1,5 @@
 <?php
-// Piè di pagina comune, incluso da generaPiePagina().
+// Piè di pagina comune
 
 $pagina_corrente = basename($_SERVER['PHP_SELF']);
 $anno = date('Y');

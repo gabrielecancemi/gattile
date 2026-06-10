@@ -68,7 +68,7 @@
             } else if (!ha_gatti) {
                 nota_bottone.textContent = 'Seleziona almeno un gatto dalle card qui sopra.';
             } else if (!ha_data) {
-                nota_bottone.textContent = 'Scegli il giorno della visita.';
+                nota_bottone.textContent = 'Scegli il giorno e l\u2019orario della visita.';
             } else if (!ha_ora) {
                 nota_bottone.textContent = 'Scegli l\u2019orario della visita.';
             } else {

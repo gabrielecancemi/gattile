@@ -1,10 +1,9 @@
 <?php
-// Utility condivise per l'output. La generazione di head, testata, apertura e
-// chiusura del main e piè di pagina è scritta direttamente nelle pagine.
+// funzioni condivise per l'output
 
 require_once 'sessione.php';
 
-// Escape HTML sicuro per ogni valore stampato a video.
+// HTML sicuro per ogni valore stampato a video.
 function ripulisci(mixed $valore): string
 {
     return htmlspecialchars((string) $valore, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');

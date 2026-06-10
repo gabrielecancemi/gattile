@@ -183,6 +183,15 @@ a:focus {
     z-index: 1000;
 }
 
+.header svg {
+    width: 16px;
+    height: 16px;
+}
+
+.testo-tema {
+    font-style: normal;
+}
+
 
 @media (max-width: 1300px) {
     .header {
@@ -223,7 +232,8 @@ a:focus {
 
 .logo-container {
     display: flex;
-    align-items: center; /* centratura verticale */
+    align-items: center;
+    /* centratura verticale */
 }
 
 
@@ -469,7 +479,7 @@ a:focus {
     flex-shrink: 0;
 }
 
-.badge-gatto {
+.badge-utente {
     display: inline-block;
     padding: .1rem .45rem;
     background: darkolivegreen;
@@ -1215,6 +1225,11 @@ main>aside>p:last-child {
     list-style: none;
     padding: 0;
     margin-top: 1.5rem;
+}
+
+article svg {
+    width: 32px;
+    height: 32px;
 }
 
 /* Su schermi molto larghi due card orizzontali affiancate */
@@ -2029,6 +2044,11 @@ main .main-faq section {
 
     .card-gatto-meta {
         gap: .2rem;
+    }
+
+    article svg {
+        width: 20px;
+        height: 20px;
     }
 
     .tag {

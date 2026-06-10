@@ -1,5 +1,4 @@
-// GattiComponent.jsx — Componente React: lista, filtro, ordinamento e
-// selezione gatti.
+// Componente React dei gatti
 
 'use strict';
 
@@ -26,7 +25,7 @@
     }));
   }
 
-  /* Card singola */
+  // Card singola
 
   function CardGatto({
     gatto,
@@ -57,8 +56,6 @@
     }, /*#__PURE__*/React.createElement("svg", {
       className: "card-badge-selezione",
       viewBox: "0 0 32 32",
-      width: "32",
-      height: "32",
       "aria-hidden": "true",
       focusable: "false"
     }, /*#__PURE__*/React.createElement("circle", {
@@ -109,7 +106,7 @@
     }, new Date(gatto.data_arrivo).toLocaleDateString('it-IT')))))));
   }
 
-  /* Componente principale */
+  // Componente principale
 
   function GattiApp({
     utenteLoggato,
@@ -126,22 +123,27 @@
     useEffect(function () {
       setCaricamento(true);
       setErrore('');
-      // Errore di rete o risposta non valida
-      function gestisciErrore(err) {
-        console.error('[GattiComponent] errore:', err.message);
+      // Errori di risposta
+      function gestisciErrore() {
+        console.error('[GattiComponent] errore');
         setErrore('Impossibile caricare i gatti, riprova tra qualche minuto.');
         setCaricamento(false);
       }
       fetch('api/gatti.php', {
         credentials: 'same-origin'
       }).then(function (r) {
-        if (!r.ok) return Promise.reject(new Error('Risposta server: ' + r.status));
+        if (!r.ok) {
+          return null;
+        }
         return r.json();
       }).then(function (dati) {
-        if (dati.errore) return Promise.reject(new Error(dati.errore));
+        if (dati === null || dati.errore) {
+          gestisciErrore();
+          return;
+        }
         setGatti(dati.gatti || []);
         setCaricamento(false);
-      }, gestisciErrore);
+      });
     }, []);
 
     // A ogni cambio di selezione notifica il form Vanilla JS.
@@ -151,8 +153,7 @@
       }));
     }, [selezionati, gatti]);
 
-    // A prenotazione avvenuta il form Vanilla JS chiede di azzerare la
-    // selezione: cosi' le card tornano deselezionate
+    // Azzeramento selezione dopo prenotazione
     useEffect(function () {
       function azzera() {
         setSelezionati(new Set());
@@ -162,7 +163,7 @@
         document.removeEventListener('gattiDeselezionaTutti', azzera);
       };
     }, []);
-    const cambiaSelezione = useCallback(function (gatto) {
+    const cambiaSelezione = function (gatto) {
       setSelezionati(function (precedenti) {
         const nuovi = new Set(precedenti);
         if (nuovi.has(gatto.id)) {
@@ -172,9 +173,9 @@
         }
         return nuovi;
       });
-    }, []);
+    };
 
-    // Filtro per testo + ordinamento.
+    // Filtro per testo e ordinamento.
     const gatti_visibili = gatti.filter(function (g) {
       if (!ricerca.trim()) return true;
       const termine = ricerca.trim().toLowerCase();
@@ -194,12 +195,18 @@
       }
     });
 
-    // Gli ultimi 2 gatti arrivati (per data di arrivo) ricevono il badge "Nuovo"
-    const id_nuovi = gatti.slice().sort(function (a, b) {
+    // Gli ultimi 2 gatti hanno il badge "Nuovo"
+    const copia = gatti.slice();
+    copia.sort(function (a, b) {
       return new Date(b.data_arrivo) - new Date(a.data_arrivo);
-    }).slice(0, 2).map(function (g) {
-      return g.id;
     });
+    const duePiuRecenti = copia.slice(0, 2);
+    const id_nuovi = [];
+    for (let i = 0; i < duePiuRecenti.length; i++) {
+      id_nuovi.push(duePiuRecenti[i].id);
+    }
+
+    // Aiuti per utente
     if (caricamento) {
       return /*#__PURE__*/React.createElement("p", {
         className: "caricamento",
@@ -272,19 +279,24 @@
       id: "lista-gatti",
       className: "griglia-gatti",
       "aria-label": "Elenco gatti disponibili"
-    }, gatti_visibili.map(function (gatto) {
-      return /*#__PURE__*/React.createElement(CardGatto, {
-        key: gatto.id,
-        gatto: gatto,
-        selezionabile: utenteLoggato && !isAdmin,
-        selezionata: selezionati.has(gatto.id),
-        onToggle: cambiaSelezione,
-        nuovo: id_nuovi.indexOf(gatto.id) !== -1
-      });
-    })));
+    }, (() => {
+      const cards = [];
+      for (let i = 0; i < gatti_visibili.length; i++) {
+        const gatto = gatti_visibili[i];
+        cards.push(/*#__PURE__*/React.createElement(CardGatto, {
+          key: gatto.id,
+          gatto: gatto,
+          selezionabile: utenteLoggato && !isAdmin,
+          selezionata: selezionati.has(gatto.id),
+          onToggle: cambiaSelezione,
+          nuovo: id_nuovi.indexOf(gatto.id) !== -1
+        }));
+      }
+      return cards;
+    })()));
   }
 
-  /* Creazione */
+  // Creazione
 
   const radice = document.getElementById('react-gatti-root');
   if (!radice) {

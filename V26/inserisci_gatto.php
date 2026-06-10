@@ -31,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (strlen($nome) < 1 || strlen($nome) > 50)
         $errori[] = 'Nome: 1-50 caratteri.';
     if (strlen($descrizione) < 10)
-        $errori[] = 'Descrizione: almeno 10 caratteri.';
+        $errori[] = 'Descrizione non valida.';
     if ($peso === false || $peso < 0.1 || $peso > 20)
         $errori[] = 'Peso: tra 0.1 e 20 kg.';
     if (!in_array($sesso, ['M', 'F'], true))

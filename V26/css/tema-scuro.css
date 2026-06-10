@@ -117,7 +117,7 @@
         color: #f0a878;
     }
 
-    html:not([data-tema]) .badge-gatto {
+    html:not([data-tema]) .badge-utente {
         background: #3a4a22;
         color: #f3ece1;
     }
@@ -751,7 +751,7 @@ html[data-tema="scuro"] .icona-utente {
     color: #f0a878;
 }
 
-html[data-tema="scuro"] .badge-gatto {
+html[data-tema="scuro"] .badge-utente {
     background: #3a4a22;
     color: #f3ece1;
 }

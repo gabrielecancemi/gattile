@@ -1,5 +1,4 @@
-// GattiComponent.jsx — Componente React: lista, filtro, ordinamento e
-// selezione gatti.
+// Componente React dei gatti
 
 'use strict';
 
@@ -22,7 +21,7 @@
         }));
     }
 
-    /* Card singola */
+    // Card singola
 
     function CardGatto({ gatto, selezionabile, selezionata, onToggle, nuovo }) {
         const etichetta_sesso = gatto.sesso === 'M' ? 'Maschio' : 'Femmina';
@@ -52,7 +51,7 @@
                     }
                 >
                     {/* Badge selezione — SVG */}
-                    <svg className="card-badge-selezione" viewBox="0 0 32 32" width="32" height="32" aria-hidden="true" focusable="false">
+                    <svg className="card-badge-selezione" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
                         <circle cx="16" cy="16" r="16" fill="saddlebrown" />
                         <path d="M9 16.5l4.5 4.5L23 11" fill="none" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
@@ -95,7 +94,7 @@
         );
     }
 
-    /* Componente principale */
+    // Componente principale
 
     function GattiApp({ utenteLoggato, isAdmin }) {
         const [gatti, setGatti] = useState([]);
@@ -109,22 +108,27 @@
         useEffect(function () {
             setCaricamento(true);
             setErrore('');
-            // Errore di rete o risposta non valida
-            function gestisciErrore(err) {
-                console.error('[GattiComponent] errore:', err.message);
+            // Errori di risposta
+            function gestisciErrore() {
+                console.error('[GattiComponent] errore');
                 setErrore('Impossibile caricare i gatti, riprova tra qualche minuto.');
                 setCaricamento(false);
             }
             fetch('api/gatti.php', { credentials: 'same-origin' })
                 .then(function (r) {
-                    if (!r.ok) return Promise.reject(new Error('Risposta server: ' + r.status));
+                    if (!r.ok) {
+                        return null;
+                    }
                     return r.json();
                 })
                 .then(function (dati) {
-                    if (dati.errore) return Promise.reject(new Error(dati.errore));
+                    if (dati === null || dati.errore) {
+                        gestisciErrore();
+                        return;
+                    }
                     setGatti(dati.gatti || []);
                     setCaricamento(false);
-                }, gestisciErrore);
+                });
         }, []);
 
         // A ogni cambio di selezione notifica il form Vanilla JS.
@@ -132,23 +136,28 @@
             emettiSelezione(gatti.filter(function (g) { return selezionati.has(g.id); }));
         }, [selezionati, gatti]);
 
-        // A prenotazione avvenuta il form Vanilla JS chiede di azzerare la
-        // selezione: cosi' le card tornano deselezionate
+        // Azzeramento selezione dopo prenotazione
         useEffect(function () {
             function azzera() { setSelezionati(new Set()); }
             document.addEventListener('gattiDeselezionaTutti', azzera);
             return function () { document.removeEventListener('gattiDeselezionaTutti', azzera); };
         }, []);
 
-        const cambiaSelezione = useCallback(function (gatto) {
+        const cambiaSelezione = function (gatto) {
             setSelezionati(function (precedenti) {
                 const nuovi = new Set(precedenti);
-                if (nuovi.has(gatto.id)) { nuovi.delete(gatto.id); } else { nuovi.add(gatto.id); }
+
+                if (nuovi.has(gatto.id)) {
+                    nuovi.delete(gatto.id);
+                } else {
+                    nuovi.add(gatto.id);
+                }
+
                 return nuovi;
             });
-        }, []);
+        };
 
-        // Filtro per testo + ordinamento.
+        // Filtro per testo e ordinamento.
         const gatti_visibili = gatti
             .filter(function (g) {
                 if (!ricerca.trim()) return true;
@@ -165,13 +174,22 @@
                 }
             });
 
-        // Gli ultimi 2 gatti arrivati (per data di arrivo) ricevono il badge "Nuovo"
-        const id_nuovi = gatti
-            .slice()
-            .sort(function (a, b) { return new Date(b.data_arrivo) - new Date(a.data_arrivo); })
-            .slice(0, 2)
-            .map(function (g) { return g.id; });
+        // Gli ultimi 2 gatti hanno il badge "Nuovo"
+        const copia = gatti.slice();
 
+        copia.sort(function (a, b) {
+            return new Date(b.data_arrivo) - new Date(a.data_arrivo);
+        });
+
+        const duePiuRecenti = copia.slice(0, 2);
+
+        const id_nuovi = [];
+
+        for (let i = 0; i < duePiuRecenti.length; i++) {
+            id_nuovi.push(duePiuRecenti[i].id);
+        }
+
+        // Aiuti per utente
         if (caricamento) {
             return (
                 <p className="caricamento" role="status" aria-live="polite">
@@ -192,7 +210,7 @@
             <section className="react-gatti-wrap" aria-labelledby="titolo-lista-gatti">
                 <h2 id="titolo-lista-gatti" className="sr-solo">Lista gatti disponibili</h2>
 
-                {/* Barra ricerca e ordinamento (form di sola interazione) */}
+                {/* Barra ricerca e ordinamento*/}
                 <form
                     className="barra-controlli"
                     role="search"
@@ -244,32 +262,45 @@
                     </p>
                 )}
 
-                {gatti_visibili.length === 0 ? (
-                    <p role="status" aria-live="polite">
-                        Nessun gatto corrisponde alla ricerca «{ricerca}».
-                    </p>
-                ) : (
-                    <ul id="lista-gatti" className="griglia-gatti"
-                        aria-label="Elenco gatti disponibili">
-                        {gatti_visibili.map(function (gatto) {
-                            return (
-                                <CardGatto
-                                    key={gatto.id}
-                                    gatto={gatto}
-                                    selezionabile={utenteLoggato && !isAdmin}
-                                    selezionata={selezionati.has(gatto.id)}
-                                    onToggle={cambiaSelezione}
-                                    nuovo={id_nuovi.indexOf(gatto.id) !== -1}
-                                />
-                            );
-                        })}
-                    </ul>
-                )}
+                {
+                    gatti_visibili.length === 0 ? (
+                        <p role="status" aria-live="polite">
+                            Nessun gatto corrisponde alla ricerca «{ricerca}».
+                        </p>
+                    ) : (
+                        <ul
+                            id="lista-gatti"
+                            className="griglia-gatti"
+                            aria-label="Elenco gatti disponibili"
+                        >
+                            {(() => {
+                                const cards = [];
+
+                                for (let i = 0; i < gatti_visibili.length; i++) {
+                                    const gatto = gatti_visibili[i];
+
+                                    cards.push(
+                                        <CardGatto
+                                            key={gatto.id}
+                                            gatto={gatto}
+                                            selezionabile={utenteLoggato && !isAdmin}
+                                            selezionata={selezionati.has(gatto.id)}
+                                            onToggle={cambiaSelezione}
+                                            nuovo={id_nuovi.indexOf(gatto.id) !== -1}
+                                        />
+                                    );
+                                }
+
+                                return cards;
+                            })()}
+                        </ul>
+                    )
+                }
             </section>
         );
     }
 
-    /* Creazione */
+    // Creazione
 
     const radice = document.getElementById('react-gatti-root');
     if (!radice) {

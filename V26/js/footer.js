@@ -1,17 +1,11 @@
-// Script condiviso del footer: banner cookie (accettazione + ricarica) e
-// posizionamento del pulsante FAQ.
-//
-// Quando l'utente accetta i cookie:
-//   1. scrive il cookie di consenso;
-//   2. ricarica la pagina.
-// La preferenza del tema NON dipende dal consenso: è salvata nel localStorage
-// (vedi tema.js) ed è quindi disponibile anche senza accettare i cookie.
+// Script condiviso del footer: banner cookie FAQ.
+
 'use strict';
 
 (function () {
     const bottone_faq = document.getElementById('faq');
 
-    // URL corrente esposto come attributo data- per il CSS di stampa.
+    // per il CSS di stampa.
     const footer = document.querySelector('.footer');
     if (footer) {
         footer.setAttribute('data-url', window.location.href);

@@ -1,5 +1,6 @@
 <?php
-// Testata comune, inclusa da generaTestata().
+// Header comune
+
 require_once __DIR__ . '/sessione.php';
 
 $profilo = profiloAttivo();
@@ -14,8 +15,7 @@ if ($profilo && (bool) $profilo['is_admin']) {
     $voci_nav['inserisci_gatto.php'] = 'Inserisci gatto';
 }
 
-// Icone monocromatiche del menu (SVG inline, currentColor, decorative).
-// Semplici e coerenti tra loro: stessa viewBox 16x16 e stesso tratto.
+// Icone del menu (SVG)
 $icone_nav = [
     'index.php' =>
         '<path d="M8 2 2 7v7h4v-4h4v4h4V7z" fill="currentColor"/>',
@@ -57,7 +57,7 @@ $icone_nav = [
                     ?>
                     <li>
                         <a href="<?= $href ?>" class="btn <?= $attivo ? 'active' : '' ?>" <?= $attivo ? 'aria-current="page"' : '' ?>>
-                            <svg class="icona-menu" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"
+                            <svg class="icona-menu" viewBox="0 0 16 16" aria-hidden="true"
                                 focusable="false"><?= $icone_nav[$href] ?? '' ?></svg>
                             <?= $etichetta ?>
                         </a>
@@ -66,32 +66,30 @@ $icone_nav = [
             </ul>
         </nav>
 
-        <h2 class="sr-solo">Account</h2>
-
         <button type="button" id="toggle-tema" class="toggle-tema btn" aria-label="Cambia tema (attuale: sistema)"
             title="Cambia tema: Sistema / Chiaro / Scuro">
-            <svg class="icona-tema" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true" focusable="false">
+            <svg class="icona-tema" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
                 <circle class="icona-tema-bordo" cx="8" cy="8" r="6" fill="none" stroke="currentColor"
                     stroke-width="2" />
                 <path class="icona-tema-meta" d="M8 2a6 6 0 0 1 0 12z" fill="currentColor" />
                 <circle class="icona-tema-pieno" cx="8" cy="8" r="6" fill="currentColor" />
             </svg>
-            <span class="testo-tema">Tema: sistema</span>
+            <em class="testo-tema">Tema: sistema</em>
         </button>
 
         <section class="stato-autenticazione" id="autenticazione" aria-label="Stato autenticazione">
+            <h2 class="sr-solo">Account</h2>
             <?php if ($profilo): ?>
                 <p class="utente-info">
-                    <svg class="icona-utente" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"
-                        focusable="false">
+                    <svg class="icona-utente" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
                         <circle cx="8" cy="5" r="3" fill="currentColor" />
                         <path d="M2 15a6 6 0 0 1 12 0z" fill="currentColor" />
                     </svg>
                     <em class="nome-utente"><?= ripulisci($profilo['username']) ?></em>
                     <?php if ((bool) $profilo['is_admin']): ?>
-                        <em class="badge-gatto">Amministratore</em>
+                        <em class="badge-utente">Amministratore</em>
                     <?php else: ?>
-                        <em class="badge-gatto">Utente</em>
+                        <em class="badge-utente">Utente</em>
                     <?php endif; ?>
                 </p>
                 <p class="account-azioni">

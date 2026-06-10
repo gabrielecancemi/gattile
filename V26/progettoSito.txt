@@ -51,7 +51,7 @@ In questa release le password sono salvate nel database in chiaro, per scelta co
 In un contesto reale è obbligatorio usare una funzione di hashing robusta e specifica per le password, come password_hash() con l'algoritmo bcrypt o Argon2, eventualmente integrata con un pepper applicativo. La password non deve mai essere leggibile, né dal codice dell'applicazione né dagli amministratori del sistema. Restano comunque attivi i vincoli di complessità imposti in fase di registrazione (da 8 a 16 caratteri, con almeno una lettera maiuscola, una minuscola, un numero e un carattere speciale) e la password non viene mai inserita in sessione. Il confronto usa hash_equals() a tempo costante, che previene attacchi di tipo timing.
 7. OWASP Top 10 (2025): analisi e contromisure
 Di seguito si analizza come il progetto affronta ciascuna delle vulnerabilità elencate nell'OWASP Top 10 nella versione 2025.
-A1 – Broken Access Control. Le funzioni esigeAccesso() ed esigeAdmin() vengono invocate all'inizio di ogni pagina e endpoint che richiedono autenticazione o privilegi di amministratore. Le API rispondono con 401 in assenza di sessione valida e con 403 in caso di ruolo non sufficiente, prima di eseguire qualsiasi operazione.
+A1 – Broken Access Control. Le funzioni richiedeAccesso() ed esigeAdmin() vengono invocate all'inizio di ogni pagina e endpoint che richiedono autenticazione o privilegi di amministratore. Le API rispondono con 401 in assenza di sessione valida e con 403 in caso di ruolo non sufficiente, prima di eseguire qualsiasi operazione.
 A2 – Security Misconfiguration. Gli header di sicurezza sono emessi su ogni pagina. La CSP è restrittiva. Il charset è dichiarato esplicitamente come utf8mb4 sia nella connessione MySQL sia nel meta dell'HTML. I dettagli degli errori non raggiungono mai il browser.
 A3 – Software and Data Integrity Failures / Supply Chain. React e ReactDOM sono caricati da CDN con versione pinnata esatta (18.3.1): non ci sono aggiornamenti automatici che potrebbero introdurre codice malevolo. Per una sicurezza ulteriore si potrebbe aggiungere l'attributo integrity con l'hash SRI, oppure ospitare i file localmente.
 A4 – Cryptographic Failures. L'unica eccezione concordata riguarda le password in chiaro (descritta nella sezione 6.4). Per il resto: il gettone "ricordami" usa random_bytes() con entropia crittograficamente sicura, i cookie sono impostati con Secure in HTTPS, il confronto della password usa hash_equals() a tempo costante.
@@ -330,7 +330,7 @@ H. Errori — all'utente messaggi generici; i dettagli tecnici solo in
    valore di ritorno: nessuno stack trace o errore SQL raggiunge l'utente.
 
 I. Controllo accessi — pagine e endpoint protetti verificano sempre il login
-   (esigeAccesso / 401) e, dove serve, il ruolo admin (esigeAdmin / 403)
+   (richiedeAccesso / 401) e, dove serve, il ruolo admin (esigeAdmin / 403)
    PRIMA di qualunque operazione.
 
 J. Supply chain (dipendenze esterne) — React/ReactDOM sono caricati da unpkg
@@ -344,7 +344,7 @@ J. Supply chain (dipendenze esterne) — React/ReactDOM sono caricati da unpkg
 
 7. OWASP TOP 10 (2025) — COME VIENE AFFRONTATO
 -----------------------------------------------
-A1 Broken access control — esigeAccesso()/esigeAdmin() sulle pagine; endpoint
+A1 Broken access control — richiedeAccesso()/esigeAdmin() sulle pagine; endpoint
    con 401 (login) e 403 (ruolo) prima di ogni azione (sez. 6.I).
 A2 Security misconfiguration — header di sicurezza su tutte le pagine, CSP
    stretta, charset esplicito utf8mb4, errori non esposti (sez. 6.G/6.H).
