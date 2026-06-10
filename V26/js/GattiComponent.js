@@ -1,4 +1,5 @@
-// GattiComponent.js — versione compilata di GattiComponent.jsx.
+// GattiComponent.jsx — Componente React: lista, filtro, ordinamento e
+// selezione gatti.
 
 'use strict';
 
@@ -8,7 +9,6 @@
     useEffect,
     useCallback
   } = React;
-
   function etaInParole(mesi) {
     if (mesi < 12) return mesi + ' ' + (mesi === 1 ? 'mese' : 'mesi');
     const anni = Math.floor(mesi / 12);
@@ -39,9 +39,9 @@
     function gestisciClick() {
       if (selezionabile) onToggle(gatto);
     }
-    function gestisciTasto(e) {
-      if (selezionabile && (e.key === 'Enter' || e.key === ' ')) {
-        e.preventDefault();
+    function gestisciTasto(evento) {
+      if (selezionabile && (evento.key === 'Enter' || evento.key === ' ')) {
+        evento.preventDefault();
         onToggle(gatto);
       }
     }
@@ -73,16 +73,15 @@
       strokeWidth: "3",
       strokeLinecap: "round",
       strokeLinejoin: "round"
-    })), /*#__PURE__*/React.createElement("figure", null, /*#__PURE__*/React.createElement("img", {
-      src: gatto.foto,
-      alt: 'Sagoma stilizzata — foto di ' + gatto.nome + ' non ancora disponibile',
-      width: "320",
-      height: "240",
+    })), /*#__PURE__*/React.createElement("picture", null, /*#__PURE__*/React.createElement("source", {
+      srcset: gatto.foto
+    }), /*#__PURE__*/React.createElement("img", {
+      src: "img/placeholder-gatto.svg",
+      alt: 'Placeholder di ' + gatto.nome,
       loading: "lazy",
-      decoding: "async"
-    }), /*#__PURE__*/React.createElement("figcaption", {
-      className: "sr-solo"
-    }, "Placeholder foto per ", gatto.nome)), /*#__PURE__*/React.createElement("div", {
+      decoding: "async",
+      class: "foto-gatto"
+    })), /*#__PURE__*/React.createElement("div", {
       className: "card-gatto-corpo"
     }, /*#__PURE__*/React.createElement("h3", {
       id: 'gatto-' + gatto.id
@@ -123,7 +122,7 @@
     const [ordinamento, setOrdinamento] = useState('data_arrivo_desc');
     const [selezionati, setSelezionati] = useState(new Set());
 
-    /* Recupera i gatti dal backend al primo render. */
+    // Recupera i gatti dal backend al primo render.
     useEffect(function () {
       setCaricamento(true);
       setErrore('');
@@ -145,12 +144,15 @@
       }, gestisciErrore);
     }, []);
 
-    /* A ogni cambio di selezione notifica il form Vanilla JS. */
+    // A ogni cambio di selezione notifica il form Vanilla JS.
     useEffect(function () {
       emettiSelezione(gatti.filter(function (g) {
         return selezionati.has(g.id);
       }));
     }, [selezionati, gatti]);
+
+    // A prenotazione avvenuta il form Vanilla JS chiede di azzerare la
+    // selezione: cosi' le card tornano deselezionate
     useEffect(function () {
       function azzera() {
         setSelezionati(new Set());
@@ -172,7 +174,7 @@
       });
     }, []);
 
-    /* Filtro per testo + ordinamento. */
+    // Filtro per testo + ordinamento.
     const gatti_visibili = gatti.filter(function (g) {
       if (!ricerca.trim()) return true;
       const termine = ricerca.trim().toLowerCase();
@@ -192,7 +194,7 @@
       }
     });
 
-    // Gli ultimi 2 gatti arrivati ricevono il badge "Nuovo".
+    // Gli ultimi 2 gatti arrivati (per data di arrivo) ricevono il badge "Nuovo"
     const id_nuovi = gatti.slice().sort(function (a, b) {
       return new Date(b.data_arrivo) - new Date(a.data_arrivo);
     }).slice(0, 2).map(function (g) {

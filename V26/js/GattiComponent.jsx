@@ -56,18 +56,10 @@
                         <circle cx="16" cy="16" r="16" fill="saddlebrown" />
                         <path d="M9 16.5l4.5 4.5L23 11" fill="none" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
-
-                    <figure>
-                        <img
-                            src={gatto.foto}
-                            alt={'Sagoma stilizzata — foto di ' + gatto.nome + ' non ancora disponibile'}
-                            width="320"
-                            height="240"
-                            loading="lazy"
-                            decoding="async"
-                        />
-                        <figcaption className="sr-solo">Placeholder foto per {gatto.nome}</figcaption>
-                    </figure>
+                    <picture>
+                        <source srcset={gatto.foto} />
+                        <img src='img/placeholder-gatto.svg' alt={'Placeholder di ' + gatto.nome} loading='lazy' decoding='async' class='foto-gatto' />
+                    </picture>
 
                     <div className="card-gatto-corpo">
                         <h3 id={'gatto-' + gatto.id}>

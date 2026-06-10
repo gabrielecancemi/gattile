@@ -49,13 +49,12 @@ if (!function_exists('costruisciSchedaGatto')) {
         return <<<HTML
 <li>
     <article class="card-gatto" aria-labelledby="{$id_titolo}">
-        <figure>
-            <img src="{$immagine_pulita}"
-                 alt="Sagoma stilizzata — foto di {$nome} non ancora disponibile"
-                 width="320" height="240" loading="lazy" decoding="async">
-            <figcaption class="sr-solo">Placeholder foto per {$nome}</figcaption>
-        </figure>
-        <div class="card-gatto-corpo">
+        <!-- Nel caso in cui l'immagine non fosse supportata dal browser -->
+        <picture>
+            <source srcset="{$immagine_pulita}">
+            <img src="img/placeholder-gatto.svg" alt="Placeholder di {$nome}" loading="lazy" decoding="async" class="foto-gatto">
+        </picture>
+        <section class="card-gatto-corpo">
             <h3 id="{$id_titolo}">{$nome}{$badge}</h3>
             <ul class="card-gatto-meta" aria-label="Caratteristiche principali">
                 <li class="tag">{$sesso}</li>
@@ -76,7 +75,7 @@ if (!function_exists('costruisciSchedaGatto')) {
             <a href="gatti.php" class="btn btn-primario" aria-label="Vai alla pagina adozioni per {$nome}">
                 Adotta
             </a>
-        </div>
+        </section>
     </article>
 </li>
 HTML;

@@ -1217,9 +1217,10 @@ main>aside>p:last-child {
 }
 
 /* Su schermi molto larghi due card orizzontali affiancate */
-@media (min-width: 1200px) {
+@media (min-width: 900px) {
     .griglia-gatti {
         grid-template-columns: repeat(2, 1fr);
+        text-align: center;
     }
 }
 
@@ -1228,7 +1229,7 @@ main>aside>p:last-child {
    riservato prima del caricamento dell'immagine → niente layout shift (CLS). */
 .card-gatto {
     display: grid;
-    grid-template-columns: 200px 1fr;
+    grid-template-columns: auto 1fr;
     align-items: stretch;
     background: white;
     border: 1px solid tan;
@@ -1254,7 +1255,7 @@ main>aside>p:last-child {
     outline-offset: -3px;
 }
 
-.card-gatto figure {
+.card-gatto picture {
     margin: 0;
     /* Larghezza/altezza riservate: rapporto fisso, nessun salto di layout */
     width: 200px;
@@ -1263,7 +1264,7 @@ main>aside>p:last-child {
     background: wheat;
 }
 
-.card-gatto figure img {
+.card-gatto .foto-gatto {
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -1274,14 +1275,14 @@ main>aside>p:last-child {
     display: flex;
     flex-direction: column;
     padding: 1rem;
-    gap: .25rem;
+    gap: .4rem;
     min-width: 0;
 }
 
 .card-gatto-descr {
     overflow: hidden;
-    margin-bottom: .25rem;
-    margin-top: .25rem;
+    margin-bottom: 0;
+    margin-top: 0;
     font-style: italic;
     font-size: .92rem;
     line-height: 1.5;
@@ -1297,6 +1298,7 @@ main>aside>p:last-child {
     margin-bottom: 0;
     letter-spacing: .02em;
     text-transform: uppercase;
+    text-align: left;
 }
 
 /* Tag / etichette */
@@ -1324,9 +1326,10 @@ main>aside>p:last-child {
 .card-gatto dl {
     display: grid;
     grid-template-columns: auto 1fr;
-    gap: .25rem .5rem;
+    gap: .25rem .8rem;
     font-size: .88rem;
-    margin-top: .25rem;
+    margin-bottom: .25rem;
+    text-align: left;
 }
 
 .card-gatto dt {
@@ -2001,17 +2004,17 @@ main .main-faq section {
        immagine più piccola, padding/font ridotti, così occupano meno
        spazio verticale invece di diventare molto alte. */
     .card-gatto {
-        grid-template-columns: 110px 1fr;
+        grid-template-columns: auto 1fr;
         grid-template-rows: none;
     }
 
-    .card-gatto figure {
-        width: 110px;
+    .card-gatto picture {
+        width: 150px;
     }
 
     .card-gatto-corpo {
         padding: .6rem .7rem;
-        gap: .15rem;
+        gap: .4rem;
     }
 
     .card-gatto-corpo h3 {
@@ -2020,7 +2023,6 @@ main .main-faq section {
 
     .card-gatto-descr {
         font-size: .82rem;
-        margin-bottom: .15rem;
     }
 
     .card-gatto-meta {
@@ -2034,8 +2036,8 @@ main .main-faq section {
 
     .card-gatto dl {
         font-size: .78rem;
-        gap: .1rem .4rem;
-        margin-top: .15rem;
+        gap: .2rem .6rem;
+        margin-bottom: .15rem;
     }
 
     .card-gatto .btn {
@@ -2176,11 +2178,11 @@ main aside.messaggio p,
 
     /* Card ancora più compatte sui telefoni piccoli */
     .card-gatto {
-        grid-template-columns: 92px 1fr;
+        grid-template-columns: auto 1fr;
     }
 
-    .card-gatto figure {
-        width: 92px;
+    .card-gatto picture {
+        width: 120px;
     }
 
     .card-gatto-corpo {
@@ -2212,7 +2214,7 @@ main aside.messaggio p,
 /* Griglia: indice laterale + contenuti */
 .privacy-griglia {
     display: grid;
-    grid-template-columns: 230px 1fr;
+    grid-template-columns: auto 1fr;
     gap: 2rem;
     align-items: start;
 }
