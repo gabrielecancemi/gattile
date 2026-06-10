@@ -1123,6 +1123,7 @@ main>aside>p:last-child {
     background: mistyrose;
     color: darkred;
     border-color: darkred;
+    line-height: 1.6;
 }
 
 .messaggio-successo {

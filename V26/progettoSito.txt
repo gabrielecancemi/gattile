@@ -524,14 +524,14 @@ Soluzione adottata:
     separate da virgola (sintassi del corso).
   - PALETTE DERIVATA DAL CHIARO: i colori scuri non sono inventati, ma ricavati
     dal ruolo che hanno in chiaro, così la logica cromatica è la stessa:
-      accento brand  saddlebrown  -> #e8975a (stesso hue bruno/arancio)
-      secondario     darkolivegreen -> #8fae5a (stesso hue olivastro)
+      accento brand  saddlebrown  -> #ffb36b (stesso hue bruno/arancio)
+      secondario     darkolivegreen -> #b9e07a (stesso hue olivastro)
       header bg      darkolivegreen -> #3a4a22 (olivastro scuro)
       footer bg      saddlebrown    -> #4a2c14 (bruno scuro)
       fondo pagina   cornsilk       -> #1b1712
       pannelli       white          -> #262019
       riempimenti    wheat          -> #33291d
-      bordi          tan            -> #5a4a33
+      bordi          tan            -> #8c7656
       errore         darkred        -> #f08a8a   successo darkgreen -> #7ed694
     Gli elementi che in chiaro condividono un colore lo condividono anche in
     scuro: es. .messaggio-avviso e legend usano l'accento, esattamente come

@@ -57,7 +57,7 @@ if (!headers_sent()) {
             <?= avvisoUtente('I tuoi cookie sono stati eliminati con successo.', 'successo') ?>
         <?php endif; ?>
 
-        <div class="privacy-griglia">
+        <article class="privacy-griglia">
 
             <nav class="privacy-indice" aria-label="Indice della pagina">
                 <h2>In questa pagina</h2>
@@ -176,7 +176,7 @@ if (!headers_sent()) {
                 </article>
 
             </section>
-        </div>
+        </article>
     </section>
 
     <script src="js/privacy.js" defer></script>

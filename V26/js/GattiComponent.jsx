@@ -61,7 +61,7 @@
                         <img src='img/placeholder-gatto.svg' alt={'Placeholder di ' + gatto.nome} loading='lazy' decoding='async' class='foto-gatto' />
                     </picture>
 
-                    <div className="card-gatto-corpo">
+                    <section className="card-gatto-corpo">
                         <h3 id={'gatto-' + gatto.id}>
                             {gatto.nome}
                             {nuovo && <strong className="badge-nuovo">Nuovo</strong>}
@@ -89,7 +89,7 @@
                                 </time>
                             </dd>
                         </dl>
-                    </div>
+                    </section>
                 </article>
             </li>
         );
@@ -112,7 +112,7 @@
             // Errore di rete o risposta non valida
             function gestisciErrore(err) {
                 console.error('[GattiComponent] errore:', err.message);
-                setErrore('Impossibile caricare i gatti: ' + err.message);
+                setErrore('Impossibile caricare i gatti, riprova tra qualche minuto.');
                 setCaricamento(false);
             }
             fetch('api/gatti.php', { credentials: 'same-origin' })
@@ -236,7 +236,7 @@
 
                 {/* Istruzione selezione */}
                 {utenteLoggato && !isAdmin && (
-                    <p className="aiuto-campo" aria-live="polite">
+                    <p aria-live="polite">
                         Clicca su una card per selezionare il gatto.
                         {selezionati.size > 0 && (
                             <strong> {selezionati.size} {selezionati.size === 1 ? 'gatto selezionato' : 'gatti selezionati'}.</strong>

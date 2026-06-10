@@ -36,7 +36,7 @@
         // res.ok perché fetch non considera errore i codici HTTP 4xx/5xx.
         function gestisciErrore(err) {
             console.error('[Volontariato] errore caricamento turni:', err.message);
-            contenitore.innerHTML = '<output class="messaggio messaggio-errore" role="alert">Impossibile caricare i turni: ' + ripuliscihtml(err.message) + '. Ricarica la pagina per riprovare.</output>';
+            contenitore.innerHTML = '<output class="messaggio messaggio-errore" role="alert">Impossibile caricare i turni. Riprova tra qualche minuto.</output>';
             contenitore.removeAttribute('aria-busy');
         }
 

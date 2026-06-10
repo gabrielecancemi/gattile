@@ -20,8 +20,8 @@ $statistiche = [
 
 $conn = connessioneDb('reader');
 if (!$conn) {
-    $errore_db = 'Impossibile connettersi al database. Riprova tra qualche minuto.';
-    $errore_statistiche = 'Statistiche non disponibili al momento.';
+    $errore_db = 'Impossibile caricare i nuovi arrivi. Riprova tra qualche minuto.';
+    $errore_statistiche = 'Statistiche non disponibili al momento. Riprova tra qualche minuto.';
 } else {
     $stm = mysqli_prepare(
         $conn,
@@ -60,11 +60,11 @@ if (!$conn) {
 
     if (!$stm) {
         error_log('[index] prepare statistiche fallita: ' . mysqli_error($conn));
-        $errore_statistiche = 'Statistiche non disponibili al momento.';
+        $errore_statistiche = 'Statistiche non disponibili al momento. Riprova tra qualche minuto.';
     } else {
         if (!mysqli_stmt_execute($stm)) {
             error_log('[index] execute statistiche fallita: ' . mysqli_stmt_error($stm));
-            $errore_statistiche = 'Statistiche non disponibili al momento.';
+            $errore_statistiche = 'Statistiche non disponibili al momento. Riprova tra qualche minuto.';
         } else {
             $risultato = mysqli_stmt_get_result($stm);
             if ($risultato !== false) {
@@ -75,10 +75,10 @@ if (!$conn) {
                     $statistiche['volontari'] = (int) $riga['totale_volontari'];
                     $statistiche['arrivi'] = (int) $riga['nuovi_arrivi'];
                 } else {
-                    $errore_statistiche = 'Statistiche non disponibili al momento.';
+                    $errore_statistiche = 'Statistiche non disponibili al momento. Riprova tra qualche minuto.';
                 }
             } else {
-                $errore_statistiche = 'Statistiche non disponibili al momento.';
+                $errore_statistiche = 'Statistiche non disponibili al momento. Riprova tra qualche minuto.';
             }
         }
         mysqli_stmt_close($stm);
@@ -143,18 +143,18 @@ if (!headers_sent()) {
         <h2 id="titolo-perche">Perché adottare dal Gattile San Paolo?</h2>
 
         <dl class="griglia-vantaggi">
-            <div class="box-vantaggio">
+            <article class="box-vantaggio">
                 <dt>Controlli veterinari</dt>
                 <dd>Tutti i gatti vengono seguiti e monitorati prima dell'adozione.</dd>
-            </div>
-            <div class="box-vantaggio">
+            </article>
+            <article class="box-vantaggio">
                 <dt>Supporto all'adozione</dt>
                 <dd>Ti aiutiamo a trovare il gatto più adatto alla tua situazione.</dd>
-            </div>
-            <div class="box-vantaggio">
+            </article>
+            <article class="box-vantaggio">
                 <dt>Volontari qualificati</dt>
                 <dd>Ogni giorno persone dedicate si prendono cura dei nostri ospiti.</dd>
-            </div>
+            </article>
         </dl>
     </section>
 

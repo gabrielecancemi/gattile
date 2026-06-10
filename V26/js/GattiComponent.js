@@ -81,7 +81,7 @@
       loading: "lazy",
       decoding: "async",
       class: "foto-gatto"
-    })), /*#__PURE__*/React.createElement("div", {
+    })), /*#__PURE__*/React.createElement("section", {
       className: "card-gatto-corpo"
     }, /*#__PURE__*/React.createElement("h3", {
       id: 'gatto-' + gatto.id
@@ -129,7 +129,7 @@
       // Errore di rete o risposta non valida
       function gestisciErrore(err) {
         console.error('[GattiComponent] errore:', err.message);
-        setErrore('Impossibile caricare i gatti: ' + err.message);
+        setErrore('Impossibile caricare i gatti, riprova tra qualche minuto.');
         setCaricamento(false);
       }
       fetch('api/gatti.php', {
@@ -264,7 +264,6 @@
       className: "sr-solo",
       role: "status"
     }, gatti_visibili.length === gatti.length ? gatti.length + ' gatti disponibili.' : gatti_visibili.length + ' gatti trovati su ' + gatti.length + '.', selezionati.size > 0 ? ' ' + selezionati.size + ' selezionati.' : ''), utenteLoggato && !isAdmin && /*#__PURE__*/React.createElement("p", {
-      className: "aiuto-campo",
       "aria-live": "polite"
     }, "Clicca su una card per selezionare il gatto.", selezionati.size > 0 && /*#__PURE__*/React.createElement("strong", null, " ", selezionati.size, " ", selezionati.size === 1 ? 'gatto selezionato' : 'gatti selezionati', ".")), gatti_visibili.length === 0 ? /*#__PURE__*/React.createElement("p", {
       role: "status",
