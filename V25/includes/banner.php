@@ -1,30 +1,6 @@
 <?php
-// ============================================================
-// banner.php — Banner pubblicitari (negozio per animali).
-// ------------------------------------------------------------
-// Espone due helper, usati da header.php e footer.php:
-//
-//   bannerLaterali()
-//     Stampa i due <aside> pubblicitari verticali, uno a sinistra
-//     e uno a destra, che restano fissi allo scroll (CSS position:
-//     fixed) finché c'è spazio laterale a sufficienza. Quando la
-//     finestra si restringe oltre la soglia (larghezza immagine +
-//     bordo), questi vengono nascosti via CSS e subentrano i
-//     banner orizzontali.
-//
-//   bannerOrizzontale(string $posizione)
-//     Stampa un <aside> pubblicitario orizzontale. Ne viene messo
-//     uno prima dell'<h1> della pagina ($posizione = 'alto') e uno
-//     in fondo a tutto ($posizione = 'basso'). Sono visibili solo
-//     quando i banner laterali non ci stanno più.
-//
-// Il passaggio automatico tra versione verticale e orizzontale è
-// gestito dal tag <picture> con attributo media sulle <source>,
-// così il browser scarica solo l'immagine effettivamente mostrata.
-// ============================================================
+// Banner pubblicitari (negozio per animali).
 
-// Soglia oltre la quale i banner laterali verticali lasciano il
-// posto a quelli orizzontali. Deve coincidere con quella del CSS.
 if (!defined('BANNER_SOGLIA')) {
     define('BANNER_SOGLIA', '1500px');
 }

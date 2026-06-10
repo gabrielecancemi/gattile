@@ -31,16 +31,10 @@ if (!empty($_SESSION['utente']['is_admin'])) {
     </aside>
 <?php endif; ?>
 
-<?php bannerOrizzontale('basso'); ?>
-
-
 <footer class="footer">
 
     <a href="index.php" class="brand-logo" aria-label="Torna alla Home Page">
-        <picture class="logo-container">
-            <source srcset="img/logo_grande.png" media="(min-width: 600px)">
-            <img src="img/logo_piccolo.png" alt="Logo Gattile San Paolo" class="logo-img">
-        </picture>
+        <img src="img/logo.png" alt="Logo Gattile San Paolo" class="logo-img" width="48" height="48">
         <strong>Gattile San Paolo</strong>
     </a>
 
@@ -89,7 +83,6 @@ if (!empty($_SESSION['utente']['is_admin'])) {
 
 <script src="js/tema.js" defer></script>
 <script src="js/footer.js" defer></script>
-<script src="js/banner.js" defer></script>
 
 </body>
 

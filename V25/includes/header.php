@@ -1,6 +1,7 @@
 <?php
 // Testata comune, inclusa da generaTestata().
 require_once __DIR__ . '/sessione.php';
+require_once __DIR__ . '/banner.php';
 
 $profilo = profiloAttivo();
 $pagina_corrente = basename($_SERVER['PHP_SELF']);
@@ -34,6 +35,8 @@ $icone_nav = [
 ?>
 
 <body>
+
+    <?php bannerLaterali(); ?>
 
     <header class="header">
 
@@ -114,5 +117,7 @@ $icone_nav = [
         </section>
 
     </header>
+
+    <?php bannerOrizzontale('alto'); ?>
 
     <script src="js/menu.js" defer></script>
