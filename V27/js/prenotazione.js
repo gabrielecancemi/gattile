@@ -1,7 +1,5 @@
-// Form di prenotazione visita (Vanilla JS). Si mette in ascolto dell'evento
-// 'gattiSelezionatiAggiornati' emesso dal componente React a ogni cambio di
-// selezione. Giorno e orario si scelgono separatamente (input date + select)
-// e poi vengono combinati nel valore 'data_ora' atteso dal backend.
+// Form di prenotazione visita
+
 'use strict';
 
 (function () {
@@ -15,7 +13,7 @@
     const messaggio_prenotazione = document.getElementById('msg-prenotazione');
     const nota_bottone = document.getElementById('note-btn-prenota');
 
-    if (!form) return; // solo per utenti loggati non-admin
+    if (!form) return;
 
     let gatti_correnti = [];
 
@@ -44,7 +42,7 @@
         } else {
             let html = '<p><strong>Gatti selezionati (' + gatti.length + '):</strong></p><ul>';
             gatti.forEach(function (g) {
-                html += '<li>' + ripuliscihtml(g.nome) + ' — ' + ripuliscihtml(g.razza) + ', ' + ripuliscihtml(g.colore_mantello) + '</li>';
+                html += '<li><strong>' + ripuliscihtml(g.nome) + '</strong>: ' + ripuliscihtml(g.razza) + ', ' + ripuliscihtml(g.colore_mantello) + '</li>';
             });
             html += '</ul>';
             riepilogo.innerHTML = html;
@@ -68,9 +66,9 @@
             } else if (!ha_gatti) {
                 nota_bottone.textContent = 'Seleziona almeno un gatto dalle card qui sopra.';
             } else if (!ha_data) {
-                nota_bottone.textContent = 'Scegli il giorno e l\u2019orario della visita.';
+                nota_bottone.textContent = 'Scegli il giorno e l\'orario della visita.';
             } else if (!ha_ora) {
-                nota_bottone.textContent = 'Scegli l\u2019orario della visita.';
+                nota_bottone.textContent = 'Scegli l\'orario della visita.';
             } else {
                 nota_bottone.textContent = '';
             }
@@ -138,8 +136,7 @@
         bottone_prenota.disabled = true;
         bottone_prenota.textContent = 'Invio in corso…';
 
-        // Ripristino del pulsante eseguito in entrambi gli esiti (successo o
-        // errore di rete), senza ricorrere a blocchi try/catch/finally.
+        // Ripristino del pulsante eseguito in entrambi gli esiti
         function ripristinaPulsante() {
             bottone_prenota.disabled = false;
             bottone_prenota.textContent = 'Conferma prenotazione';
@@ -172,7 +169,6 @@
         messaggio_prenotazione.textContent = testo;
         messaggio_prenotazione.className = 'messaggio messaggio-' + tipo;
         messaggio_prenotazione.classList.remove('sr-solo');
-        messaggio_prenotazione.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
 
     aggiornaStatoPulsante();

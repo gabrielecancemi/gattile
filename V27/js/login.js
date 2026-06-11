@@ -1,5 +1,5 @@
-// Validazione del form di login. Solo lato client: l'esito definitivo lo
-// decide il server.
+// Validazione del form di login
+
 'use strict';
 
 (function () {
@@ -45,6 +45,7 @@
         campo_password.addEventListener('input', function () { mostraErrore(campo_password, errore_password, ''); });
     }
 
+    // submit del form
     form.addEventListener('submit', function (evento) {
         const ok_username = validaUsername();
         const ok_password = validaPassword();

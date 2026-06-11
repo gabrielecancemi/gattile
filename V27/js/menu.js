@@ -1,12 +1,13 @@
-// Apertura/chiusura del menu su mobile: alterna la classe "aperto" su nav e
-// area account e aggiorna etichetta e stato del pulsante.
+// Apertura/chiusura del menu su mobile
+
 'use strict';
 
 (function () {
     const bottone = document.querySelector('.menu-toggle');
     if (!bottone) return;
 
-    const etichetta = bottone.lastChild; // nodo di testo " Menu"
+    //testo "Menu"
+    const etichetta = bottone.lastChild;
 
     bottone.addEventListener('click', function () {
         const era_aperto = this.getAttribute('aria-expanded') === 'true';
@@ -15,6 +16,7 @@
         this.setAttribute('aria-label', nuovo_stato ? 'Chiudi menu di navigazione' : 'Apri menu di navigazione');
         this.classList.toggle('aperto', nuovo_stato);
 
+        // if inserito solo per evitare errori nel codice
         if (etichetta && etichetta.nodeType === Node.TEXT_NODE) {
             etichetta.textContent = nuovo_stato ? '✕ Chiudi' : '☰ Menu';
         }

@@ -1,5 +1,5 @@
-// Validazione del form di registrazione: indicatore forza password (meter),
-// barra di completamento, controlli su blur e submit.
+// Validazione del form di registrazione
+
 'use strict';
 
 (function () {
@@ -74,6 +74,7 @@
         }
     }
 
+    // barra progresso form
     function aggiornaProgresso() {
         let completati = 0;
 
@@ -256,13 +257,37 @@
     campi.password.input?.addEventListener('blur', validaPassword);
     campi.conferma.input?.addEventListener('blur', validaConferma);
 
-    Object.keys(campi).forEach(function (chiave) {
-        let elemento = campi[chiave].input;
+    const validatori = {
+        nome: validaNome,
+        cognome: validaCognome,
+        indirizzo: validaIndirizzo,
+        username: validaUsername,
+        password: validaPassword,
+        conferma: validaConferma
+    };
 
-        if (elemento) {
-            elemento.addEventListener('input', aggiornaProgresso);
+    for (let chiave in campi) {
+
+        let info = campi[chiave];
+        let elemento = info.input;
+
+        if (!elemento) {
+            continue;
         }
-    });
+
+        elemento.addEventListener('input', function () {
+
+            aggiornaProgresso();
+
+            if (info.errore && !info.errore.hidden) {
+                let valida = validatori[chiave];
+
+                if (valida) {
+                    valida();
+                }
+            }
+        });
+    }
 
     if (campi.password.input) {
         campi.password.input.addEventListener('input', function () {
@@ -274,6 +299,7 @@
         });
     }
 
+    // submit del form
     form.addEventListener('submit', function (evento) {
 
         let esiti = [
@@ -288,10 +314,16 @@
         if (esiti.includes(false)) {
             evento.preventDefault();
 
-            let primo = Object.keys(campi).find(function (chiave) {
-                return campi[chiave].errore &&
-                    !campi[chiave].errore.hidden;
-            });
+            let primo = null;
+
+            for (let chiave in campi) {
+                if (campi[chiave].errore &&
+                    !campi[chiave].errore.hidden) {
+
+                    primo = chiave;
+                    break;
+                }
+            }
 
             if (primo && campi[primo].input) {
                 campi[primo].input.focus();

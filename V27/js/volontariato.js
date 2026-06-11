@@ -1,9 +1,5 @@
-// Prenotazione turni di volontariato (Vanilla JS).
-//
-// L'utente sceglie il giorno con <input type="date">; vengono mostrate solo
-// le fasce di quel giorno. Le fasce piene (2/2) o già prenotate sono
-// disabilitate. Il server riverifica comunque il limite in autonomia. Dopo
-// una prenotazione la pagina viene ricaricata.
+// Prenotazione turni di volontariato
+
 'use strict';
 
 (function () {
@@ -14,7 +10,7 @@
     const messaggio_volontariato = document.getElementById('msg-volontariato');
     const nota_bottone = document.getElementById('note-btn-volontariato');
 
-    if (!form || !contenitore) return; // solo per utenti loggati
+    if (!form || !contenitore) return;
 
     const fasce_selezionate = new Set();
     let fasce_per_data = {};   // { '2026-06-10': [ {...}, ... ] }

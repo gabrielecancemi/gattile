@@ -1,4 +1,4 @@
-// Pulsante "Elimina tutti i miei cookie" nella pagina privacy.
+// Pulsante "Elimina tutti i miei cookie" nella pagina privacy
 'use strict';
 
 (function () {

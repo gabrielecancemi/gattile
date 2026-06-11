@@ -53,8 +53,8 @@
             return false;
         }
 
-        if (v.length < 2) {
-            mostraErrore(campi.nome, 'Il nome deve contenere almeno 2 caratteri.');
+        if (v.length < 1) {
+            mostraErrore(campi.nome, 'Il nome deve contenere almeno 1 carattere.');
             return false;
         }
 
@@ -76,8 +76,8 @@
             return false;
         }
 
-        if (v.length < 2) {
-            mostraErrore(campi.razza, 'La razza deve contenere almeno 2 caratteri.');
+        if (v.length < 1) {
+            mostraErrore(campi.razza, 'La razza deve contenere almeno 1 carattere.');
             return false;
         }
 
@@ -305,13 +305,24 @@
         'gatto-descrizione': validaDescrizione,
     };
 
-    Object.keys(campi).forEach(function (chiave) {
+    for (const chiave in campi) {
         const info = campi[chiave];
-        if (!info.el) return;
-        info.el.addEventListener('blur', function () { const fn = validatori[this.id]; if (fn) fn(); });
-        info.el.addEventListener('input', function () { if (info.err && !info.err.hidden) { const fn = validatori[this.id]; if (fn) fn(); } });
-    });
+        if (!info.el) continue;
 
+        info.el.addEventListener('blur', function () {
+            const fn = validatori[this.id];
+            if (fn) fn();
+        });
+
+        info.el.addEventListener('input', function () {
+            if (info.err && !info.err.hidden) {
+                const fn = validatori[this.id];
+                if (fn) fn();
+            }
+        });
+    }
+
+    // submit del form
     form.addEventListener('submit', function (evento) {
         const esiti = [
             validaNome(), validaRazza(), validaSesso(), validaEta(), validaPeso(),
@@ -320,7 +331,14 @@
         ];
         if (esiti.indexOf(false) !== -1) {
             evento.preventDefault();
-            const primo = Object.keys(campi).find(function (chiave) { return campi[chiave].err && !campi[chiave].err.hidden; });
+            // decide a chi mettere il focus
+            let primo;
+            for (const chiave in campi) {
+                if (campi[chiave].err && !campi[chiave].err.hidden) {
+                    primo = chiave;
+                    break;
+                }
+            }
             if (primo && campi[primo].el) campi[primo].el.focus();
         }
     });

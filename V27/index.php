@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 require_once 'includes/layout.php';
-require_once 'includes/db.php';
+require_once 'includes/connessione_db.php';
 require_once 'includes/card_gatto.php';
 
 aprireSessione();

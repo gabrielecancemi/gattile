@@ -76,15 +76,14 @@ if (!headers_sent()) {
 
         <section aria-labelledby="titolo-prenotazione">
             <h2 id="titolo-prenotazione">Prenota una visita conoscitiva</h2>
-            <p>Seleziona prima i gatti dalle card qui sopra, poi scegli data e ora.</p>
-
-            <section id="gatti-selezionati-riepilogo" role="status" aria-live="polite"
-                aria-label="Gatti selezionati per la visita">
-                <p class="messaggio messaggio-avviso">Nessun gatto selezionato. Clicca sulle card per sceglierli.</p>
-            </section>
 
             <form id="form-prenotazione" method="post" action="api/prenota_visita.php" novalidate
                 aria-label="Modulo prenotazione visita">
+
+                <fieldset id="gatti-selezionati-riepilogo" role="status" aria-live="polite"
+                    aria-label="Gatti selezionati per la visita">
+                    <p class="messaggio messaggio-avviso">Nessun gatto selezionato. Clicca sulle card per sceglierli.</p>
+                </fieldset>
 
                 <input type="hidden" id="gatti-ids" name="gatti_ids" value="">
 

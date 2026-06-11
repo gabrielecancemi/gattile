@@ -1,7 +1,7 @@
 <?php
 // Sessione, accesso e cookie "ricordami"
 
-require_once 'db.php';
+require_once 'connessione_db.php';
 
 // Archivio token
 

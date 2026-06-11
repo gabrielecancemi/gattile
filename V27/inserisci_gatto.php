@@ -2,7 +2,7 @@
 declare(strict_types=1);
 
 require_once 'includes/layout.php';
-require_once 'includes/db.php';
+require_once 'includes/connessione_db.php';
 
 aprireSessione();
 esigeAdmin();
@@ -169,7 +169,7 @@ if (!headers_sent()) {
                 <label for="gatto-nome" class="campo-obbligatorio">Nome</label>
                 <input type="text" id="gatto-nome" name="nome" required maxlength="50"
                     aria-describedby="aiuto-gatto-nome" placeholder="Es. Fuffi">
-                <em id="aiuto-gatto-nome" class="aiuto-campo">Da 1 a 50 caratteri.</em>
+                <em id="aiuto-gatto-nome" class="aiuto-campo">Max 50 caratteri.</em>
                 <output class="errore-campo" id="err-gatto-nome" role="alert" aria-live="polite" hidden></output>
                 <label for="gatto-razza" class="campo-obbligatorio">Razza</label>
                 <input type="text" id="gatto-razza" name="razza" required maxlength="50"

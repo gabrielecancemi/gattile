@@ -32,7 +32,7 @@ L'accesso al database avviene tramite tre utenti MySQL distinti, ciascuno con i 
 Il primo utente è reader (password "lecture"), che dispone del solo privilegio SELECT. Viene utilizzato da tutte le pagine e gli endpoint che leggono dati senza modificarli: la home page per i nuovi arrivi, l'endpoint api/recupera_gatti.php, le parti di sessione.php che verificano le credenziali, turni.php per i conteggi dei volontari e il controllo di unicità dello username prima della registrazione.
 Il secondo utente è modifier (password "modifier"), che dispone di SELECT, INSERT e UPDATE, ma mai di DELETE o DROP. Viene utilizzato dove è necessario scrivere dati: la pagina inserisci_gatto.php, l'endpoint api/prenota_visita.php e api/turni.php quando gestisce le richieste POST di iscrizione ai turni.
 Il terzo utente è registrator (password "registrator"), che dispone del solo privilegio INSERT sulla tabella degli utenti. Viene usato esclusivamente dalla pagina di registrazione. Non può leggere i dati degli altri utenti né modificare nulla: il suo perimetro è limitato alla sola operazione che gli compete.
-In nessun caso viene usato l'utente root o un account con privilegi GRANT, DROP o DELETE. La selezione del ruolo avviene dentro la funzione connessioneDb($ruolo) in includes/db.php: ogni pagina e ogni endpoint richiedono esplicitamente il ruolo minimo necessario.
+In nessun caso viene usato l'utente root o un account con privilegi GRANT, DROP o DELETE. La selezione del ruolo avviene dentro la funzione connessioneDb($ruolo) in includes/connessione_db.php: ogni pagina e ogni endpoint richiedono esplicitamente il ruolo minimo necessario.
 5. Autenticazione e funzionalità "ricordami"
 L'accesso è sempre subordinato alla verifica della password tramite sessione PHP, indipendentemente da qualsiasi altro meccanismo. La sessione viene gestita con session_regenerate_id(true) dopo ogni login riuscito, per prevenire attacchi di session fixation.
 La funzionalità "ricordami" non memorizza le credenziali nel cookie. Il cookie contiene esclusivamente un gettone opaco di 64 caratteri esadecimali, generato con random_bytes(32) — quindi con entropia crittograficamente sicura. L'associazione gettone → username è conservata lato server in un file JSON all'interno della directory includes/gattile_tokens/, con una scadenza di 72 ore e una procedura automatica di pulizia dei gettoni scaduti.
@@ -147,7 +147,7 @@ JavaScript per i form.
   s326548_struttura.txt   Elenco pagine e id dei form
 
   includes/
-    db.php           Connessioni DB a privilegio minimo
+    connessione_db.php           Connessioni DB a privilegio minimo
     sessione.php     Sessione, accesso, cookie ricordami (archivio JSON)
     card_gatto.php   Renderer condiviso della scheda gatto
     head.php         Head HTML comune (meta, fogli di stile, favicon)
@@ -263,7 +263,7 @@ Tre utenti MySQL distinti, secondo il principio del minimo privilegio:
                           deve poter leggere altri utenti né modificare nulla.
 
 Non si usa mai root né un utente con GRANT/DROP/DELETE. La scelta del ruolo
-avviene in connessioneDb($ruolo) dentro includes/db.php: ogni pagina ed
+avviene in connessioneDb($ruolo) dentro includes/connessione_db.php: ogni pagina ed
 endpoint chiede il ruolo minimo che gli serve.
 
 

@@ -1,24 +1,9 @@
-// Selettore tema a 3 stati: Sistema / Chiaro / Scuro.
-//
-// La preferenza esplicita (chiaro/scuro) viene memorizzata nel localStorage
-// (chiave "tema"). Essendo una semplice impostazione tecnica di interfaccia
-// (nessun dato personale, nessun tracciamento), è utilizzabile anche senza il
-// consenso ai cookie: la scelta persiste quindi tra le visite a prescindere
-// dal banner.
-//
-// Il rilevamento della preferenza di sistema è demandato al CSS, tramite la
-// media query (prefers-color-scheme: dark) applicata a html:not([data-tema]):
-// il JavaScript imposta l'attributo data-tema solo quando l'utente sceglie
-// manualmente chiaro o scuro; in stato "sistema" l'attributo viene rimosso e
-// vince quindi la preferenza di sistema rilevata dal CSS.
-//
-//   "sistema" -> segue prefers-color-scheme (nessun attributo data-tema)
-//   "chiaro"  -> forza tema chiaro
-//   "scuro"   -> forza tema scuro
+// Selettore tema a 3 stati: Sistema / Chiaro / Scuro
+
 'use strict';
 
 (function () {
-    const radice = document.documentElement;
+    const radice = document.querySelector('html'); 
     const bottone = document.getElementById('toggle-tema');
     if (!bottone) return;
 
@@ -31,7 +16,7 @@
     };
 
     function leggiPreferenza() {
-        // La preferenza persiste nel localStorage (impostazione tecnica).
+        // La preferenza viene salvata nel localStorage
         const salvato = window.localStorage ? localStorage.getItem('tema') : null;
         if (STATI.indexOf(salvato) !== -1) return salvato;
         return 'sistema';

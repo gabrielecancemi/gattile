@@ -2,7 +2,7 @@
 declare(strict_types=1);
 
 require_once 'includes/layout.php';
-require_once 'includes/db.php';
+require_once 'includes/connessione_db.php';
 
 aprireSessione();
 if (profiloAttivo()) {
@@ -174,7 +174,7 @@ if (!headers_sent()) {
                     <input type="text" id="reg-nome" name="nome" value="<?= ripulisci($campi['nome']) ?>"
                         autocomplete="given-name" required maxlength="50">
                     <em id="aiuto-reg-username" class="aiuto-campo">
-                        Almeno 2 caratteri.
+                        Solo lettere; almeno 2 caratteri.
                     </em>
                     <output class="errore-campo" id="err-nome" role="alert" aria-live="polite" hidden></output>
 
@@ -183,7 +183,7 @@ if (!headers_sent()) {
                     <input type="text" id="reg-cognome" name="cognome" value="<?= ripulisci($campi['cognome']) ?>"
                         autocomplete="family-name" required maxlength="50">
                     <em id="aiuto-reg-username" class="aiuto-campo">
-                        Almeno 2 caratteri.
+                        Solo lettere; almeno 2 caratteri.
                     </em>
                     <output class="errore-campo" id="err-cognome" role="alert" aria-live="polite" hidden></output>
 
