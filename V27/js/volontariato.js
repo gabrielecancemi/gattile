@@ -12,8 +12,8 @@
 
     if (!form || !contenitore) return;
 
-    const fasce_selezionate = new Set();
-    let fasce_per_data = {};   // { '2026-06-10': [ {...}, ... ] }
+    const fasce_selezionate = [];
+    let fasce_per_data = {};
 
     function ripuliscihtml(stringa) {
         return String(stringa)
@@ -25,32 +25,53 @@
 
     function caricaTurni() {
         contenitore.setAttribute('aria-busy', 'true');
-        contenitore.innerHTML = '<p class="caricamento">Caricamento fasce orarie in corso…</p>';
+        contenitore.innerHTML =
+            '<p class="caricamento">Caricamento fasce orarie in corso…</p>';
 
-        // Errore di rete o risposta non valida gestiti dal secondo handler di
-        // then() (onRejected), senza blocchi try/catch/finally. Si controlla
-        // res.ok perché fetch non considera errore i codici HTTP 4xx/5xx.
-        function gestisciErrore(err) {
-            console.error('[Volontariato] errore caricamento turni:', err.message);
-            contenitore.innerHTML = '<output class="messaggio messaggio-errore" role="alert">Impossibile caricare i turni. Riprova tra qualche minuto.</output>';
+        function gestisciErrore(messaggio) {
+            console.error('[Volontariato] errore caricamento turni:', messaggio);
+            contenitore.innerHTML =
+                '<output class="messaggio messaggio-errore" role="alert">' +
+                messaggio +
+                '</output>';
             contenitore.removeAttribute('aria-busy');
         }
 
         fetch('api/turni.php', { credentials: 'same-origin' })
             .then(function (r) {
-                if (!r.ok) return Promise.reject(new Error('Risposta server: ' + r.status));
+
+                if (!r.ok) {
+                    gestisciErrore('Impossibile caricare le fasce. Riprova tra qualche minuto.');
+                    return;
+                }
+
                 return r.json();
+
             })
             .then(function (dati) {
-                if (dati.errore) return Promise.reject(new Error(dati.errore));
+
+                if (!dati) return;
+
+                if (dati.errore) {
+                    gestisciErrore(dati.errore);
+                    return;
+                }
+
                 preparaDati(dati.fasce || []);
                 contenitore.removeAttribute('aria-busy');
-            }, gestisciErrore);
+
+            }, function () {
+
+                gestisciErrore(
+                    'Impossibile caricare i turni. Riprova tra qualche minuto.'
+                );
+
+            });
     }
 
     // Raggruppa le fasce per data e imposta i limiti del selettore.
     function preparaDati(fasce) {
-        fasce_selezionate.clear();
+        fasce_selezionate.length = 0;
         aggiornaStatoPulsante();
 
         fasce_per_data = {};
@@ -60,7 +81,13 @@
             fasce_per_data[giorno].push(f);
         });
 
-        const giorni = Object.keys(fasce_per_data).sort();
+        let giorni = [];
+
+        for (let giorno in fasce_per_data) {
+            giorni.push(giorno);
+        }
+
+        giorni.sort();
 
         if (input_data) {
             if (giorni.length === 0) {
@@ -73,8 +100,7 @@
             input_data.max = giorni[giorni.length - 1];
         }
 
-        // Dati caricati ma nessun giorno scelto: invito a scegliere il giorno,
-        // niente messaggio di caricamento residuo.
+        // Dati caricati ma nessun giorno scelto
         if (!input_data || !input_data.value) {
             contenitore.innerHTML = '';
         } else {
@@ -83,7 +109,7 @@
     }
 
     function mostraGiorno(giorno) {
-        fasce_selezionate.clear();
+        fasce_selezionate.length = 0;
         aggiornaStatoPulsante();
 
         if (!fasce_per_data[giorno]) {
@@ -142,8 +168,22 @@
 
         contenitore.querySelectorAll('input[type="checkbox"]').forEach(function (checkbox) {
             checkbox.addEventListener('change', function () {
-                if (this.checked) { fasce_selezionate.add(this.value); }
-                else { fasce_selezionate.delete(this.value); }
+
+                if (this.checked) {
+
+                    if (!fasce_selezionate.includes(this.value)) {
+                        fasce_selezionate.push(this.value);
+                    }
+
+                } else {
+
+                    let indice = fasce_selezionate.indexOf(this.value);
+
+                    if (indice !== -1) {
+                        fasce_selezionate.splice(indice, 1);
+                    }
+                }
+
                 aggiornaStatoPulsante();
             });
         });
@@ -151,12 +191,18 @@
 
     function aggiornaStatoPulsante() {
         if (!bottone_volontariato) return;
-        const ha_selezionati = fasce_selezionate.size > 0;
+
+        const ha_selezionati = fasce_selezionate.length > 0;
+
         bottone_volontariato.disabled = !ha_selezionati;
         bottone_volontariato.setAttribute('aria-disabled', String(!ha_selezionati));
+
         if (nota_bottone) {
             nota_bottone.textContent = ha_selezionati
-                ? fasce_selezionate.size + ' ' + (fasce_selezionate.size === 1 ? 'fascia selezionata' : 'fasce selezionate') + '.'
+                ? fasce_selezionate.length + ' ' +
+                (fasce_selezionate.length === 1
+                    ? 'fascia selezionata'
+                    : 'fasce selezionate') + '.'
                 : 'Seleziona un giorno e almeno una fascia oraria disponibile.';
         }
     }
@@ -166,7 +212,6 @@
         messaggio_volontariato.textContent = testo;
         messaggio_volontariato.className = 'messaggio messaggio-' + tipo;
         messaggio_volontariato.classList.remove('sr-solo');
-        messaggio_volontariato.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
 
     if (input_data) {
@@ -177,18 +222,19 @@
 
     form.addEventListener('submit', function (evento) {
         evento.preventDefault();
-        if (fasce_selezionate.size === 0) {
+
+        if (fasce_selezionate.length === 0) {
             mostraMessaggio('Seleziona almeno una fascia oraria.', 'errore');
             return;
         }
 
         const corpo = new FormData();
-        corpo.append('fasce', Array.from(fasce_selezionate).join(','));
+        corpo.append('fasce', fasce_selezionate.join(','));
 
         bottone_volontariato.disabled = true;
         bottone_volontariato.textContent = 'Invio in corso…';
 
-        // Ripristino del pulsante in entrambi gli esiti, senza try/catch/finally.
+        // Ripristino del pulsante in entrambi gli esiti
         function ripristinaPulsante() {
             bottone_volontariato.textContent = 'Conferma turni selezionati';
             aggiornaStatoPulsante();
@@ -210,14 +256,13 @@
                         testo += ' Avvisi: ' + dati.avvisi.map(function (a) { return a.msg; }).join('; ');
                     }
                     mostraMessaggio(testo, 'successo');
-                    // Ricarico solo le fasce per aggiornare i conteggi: senza
-                    // reload della pagina il messaggio di successo resta a video.
+                    // Ricarico le fasce per aggiornare i conteggi
                     caricaTurni();
                 }
                 ripristinaPulsante();
             }, function (err) {
                 console.error('[Volontariato] errore fetch:', err);
-                mostraMessaggio('Errore di rete. Controlla la connessione e riprova.', 'errore');
+                mostraMessaggio('Errore di rete. Riprova tra qualche minuto.', 'errore');
                 ripristinaPulsante();
             });
     });
