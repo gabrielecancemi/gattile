@@ -204,7 +204,7 @@ if (!headers_sent()) {
                 <label for="gatto-colore-mantello" class="campo-obbligatorio">Colore del mantello</label>
                 <input type="text" id="gatto-colore-mantello" name="colore_mantello" required maxlength="30"
                     aria-describedby="aiuto-gatto-colore-mantello" placeholder="Es. Tigrato, Bianco">
-                <em id="aiuto-gatto-colore-mantello" class="aiuto-campo">Max 30 caratteri (es. Tigrato, Nero, Bianco, Tricolore).</em>
+                <em id="aiuto-gatto-colore-mantello" class="aiuto-campo">Max 30 caratteri.</em>
                 <output class="errore-campo" id="err-gatto-colore-mantello" role="alert" aria-live="polite"
                     hidden></output>
                 <label for="gatto-lunghezza-pelo" class="campo-obbligatorio">Lunghezza del pelo </label>
@@ -221,7 +221,7 @@ if (!headers_sent()) {
                 <label for="gatto-colore-occhi" class="campo-obbligatorio">Colore degli occhi </label>
                 <input type="text" id="gatto-colore-occhi" name="colore_occhi" required maxlength="30"
                     aria-describedby="aiuto-gatto-colore-occhi" placeholder="Es. Verdi, Azzurri">
-                <em id="aiuto-gatto-colore-occhi" class="aiuto-campo">Max 30 caratteri (es. Verdi, Gialli, Azzurri, Eterocromia).</em>
+                <em id="aiuto-gatto-colore-occhi" class="aiuto-campo">Max 30 caratteri.</em>
                 <output class="errore-campo" id="err-gatto-colore-occhi" role="alert" aria-live="polite"
                     hidden></output>
             </fieldset>

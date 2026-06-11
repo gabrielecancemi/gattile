@@ -173,18 +173,27 @@ if (!headers_sent()) {
                         Nome</label>
                     <input type="text" id="reg-nome" name="nome" value="<?= ripulisci($campi['nome']) ?>"
                         autocomplete="given-name" required maxlength="50">
+                    <em id="aiuto-reg-username" class="aiuto-campo">
+                        Almeno 2 caratteri.
+                    </em>
                     <output class="errore-campo" id="err-nome" role="alert" aria-live="polite" hidden></output>
 
                     <label for="reg-cognome" class="campo-obbligatorio">
                         Cognome</label>
                     <input type="text" id="reg-cognome" name="cognome" value="<?= ripulisci($campi['cognome']) ?>"
                         autocomplete="family-name" required maxlength="50">
+                    <em id="aiuto-reg-username" class="aiuto-campo">
+                        Almeno 2 caratteri.
+                    </em>
                     <output class="errore-campo" id="err-cognome" role="alert" aria-live="polite" hidden></output>
 
                     <label for="reg-indirizzo" class="campo-obbligatorio">
                         Indirizzo</label>
                     <input type="text" id="reg-indirizzo" name="indirizzo" value="<?= ripulisci($campi['indirizzo']) ?>"
                         required maxlength="100" placeholder="Via/Corso, numero, città">
+                    <em id="aiuto-reg-username" class="aiuto-campo">
+                        Almeno 5 caratteri.
+                    </em>
                     <output class="errore-campo" id="err-indirizzo" role="alert" aria-live="polite" hidden></output>
 
                 </fieldset>
@@ -216,8 +225,8 @@ if (!headers_sent()) {
 
                     <label for="reg-conferma" class="campo-obbligatorio">
                         Conferma password</label>
-                    <input type="password" id="reg-conferma" name="conferma_password" autocomplete="new-password"
-                        required minlength="8" maxlength="16">
+                    <input type="password" id="reg-conferma" name="conferma_password" autocomplete="new-password" required
+                        minlength="8" maxlength="16">
                     <output class="errore-campo" id="err-reg-conferma" role="alert" aria-live="polite" hidden></output>
 
                 </fieldset>

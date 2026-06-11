@@ -70,12 +70,12 @@
         if (testo_progresso) testo_progresso.textContent = completati + ' di 6 campi completati correttamente.';
     }
 
-    function validaNome() { let v = campi.nome.input ? campi.nome.input.value.trim() : ''; if (v.length < 2) { mostraErrore(campi.nome, 'Almeno 2 caratteri.'); return false; } mostraErrore(campi.nome, ''); return true; }
-    function validaCognome() { let v = campi.cognome.input ? campi.cognome.input.value.trim() : ''; if (v.length < 2) { mostraErrore(campi.cognome, 'Almeno 2 caratteri.'); return false; } mostraErrore(campi.cognome, ''); return true; }
-    function validaIndirizzo() { let v = campi.indirizzo.input ? campi.indirizzo.input.value.trim() : ''; if (v.length < 5) { mostraErrore(campi.indirizzo, 'Almeno 5 caratteri.'); return false; } mostraErrore(campi.indirizzo, ''); return true; }
-    function validaUsername() { let v = campi.username.input ? campi.username.input.value.trim() : ''; if (!REGEX_USERNAME.test(v)) { mostraErrore(campi.username, 'Username non valido.'); return false; } mostraErrore(campi.username, ''); return true; }
-    function validaPassword() { let v = campi.password.input ? campi.password.input.value : ''; aggiornaForza(v); if (!REGEX_PASSWORD.test(v)) { mostraErrore(campi.password, 'Password non valida.'); return false; } mostraErrore(campi.password, ''); return true; }
-    function validaConferma() { let v = campi.conferma.input ? campi.conferma.input.value : ''; let p = campi.password.input ? campi.password.input.value : ''; if (!v) { mostraErrore(campi.conferma, 'Conferma la password.'); return false; } if (v !== p) { mostraErrore(campi.conferma, 'Le due password non coincidono.'); return false; } mostraErrore(campi.conferma, ''); return true; }
+    function validaNome() { let v = campi.nome.input ? campi.nome.input.value.trim() : ''; if (v.length < 2) { mostraErrore(campi.nome, 'Inserire un nome valido.'); return false; } mostraErrore(campi.nome, ''); return true; }
+    function validaCognome() { let v = campi.cognome.input ? campi.cognome.input.value.trim() : ''; if (v.length < 2) { mostraErrore(campi.cognome, 'Inserire un cognome valido.'); return false; } mostraErrore(campi.cognome, ''); return true; }
+    function validaIndirizzo() { let v = campi.indirizzo.input ? campi.indirizzo.input.value.trim() : ''; if (v.length < 5) { mostraErrore(campi.indirizzo, 'Inserire un indirizzo valido.'); return false; } mostraErrore(campi.indirizzo, ''); return true; }
+    function validaUsername() { let v = campi.username.input ? campi.username.input.value.trim() : ''; if (!REGEX_USERNAME.test(v)) { mostraErrore(campi.username, 'Inserire un username valido.'); return false; } mostraErrore(campi.username, ''); return true; }
+    function validaPassword() { let v = campi.password.input ? campi.password.input.value : ''; aggiornaForza(v); if (!REGEX_PASSWORD.test(v)) { mostraErrore(campi.password, 'Inserire una password valida.'); return false; } mostraErrore(campi.password, ''); return true; }
+    function validaConferma() { let v = campi.conferma.input ? campi.conferma.input.value : ''; let p = campi.password.input ? campi.password.input.value : ''; if (!v) { mostraErrore(campi.conferma, 'Inserire la conferma della password corretta.'); return false; } if (v !== p) { mostraErrore(campi.conferma, 'Le due password non coincidono.'); return false; } mostraErrore(campi.conferma, ''); return true; }
 
     campi.nome.input && campi.nome.input.addEventListener('blur', validaNome);
     campi.cognome.input && campi.cognome.input.addEventListener('blur', validaCognome);

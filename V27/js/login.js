@@ -26,13 +26,13 @@
 
     function validaUsername() {
         const valore = campo_username ? campo_username.value.trim() : '';
-        if (!valore) { mostraErrore(campo_username, errore_username, 'Inserisci il tuo username.'); return false; }
+        if (!valore) { mostraErrore(campo_username, errore_username, 'Inserire l\'username.'); return false; }
         if (!/^[a-zA-Z]/.test(valore)) { mostraErrore(campo_username, errore_username, 'Lo username deve iniziare con una lettera.'); return false; }
         mostraErrore(campo_username, errore_username, ''); return true;
     }
 
     function validaPassword() {
-        if (!campo_password || !campo_password.value) { mostraErrore(campo_password, errore_password, 'Inserisci la password.'); return false; }
+        if (!campo_password || !campo_password.value) { mostraErrore(campo_password, errore_password, 'Inserire la password.'); return false; }
         mostraErrore(campo_password, errore_password, ''); return true;
     }
 

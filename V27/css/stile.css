@@ -155,9 +155,15 @@ a:focus {
    5. FOCUS & ACCESSIBILITÀ
    ============================================================ */
 :focus-visible {
-    outline: 3px solid gold;
+    outline: 3px solid orange;
     outline-offset: 3px;
     border-radius: .5rem;
+}
+
+summary:focus-visible {
+    outline: none;
+    background: orange !important;
+    color: white;
 }
 
 
@@ -1813,9 +1819,7 @@ details[open] summary {
     border-bottom: 1px solid tan;
 }
 
-/* (#2) Freccia dell'accordion disegnata via CSS (niente carattere/glifo
-   che in alcuni font compare come testo strano): è un chevron fatto con
-   due bordi di un quadratino ruotato. */
+/* Freccietta */
 summary::after {
     content: "";
     flex-shrink: 0;
@@ -1825,7 +1829,6 @@ summary::after {
     border-bottom: 2px solid saddlebrown;
     transform: rotate(45deg);
     transform-origin: center;
-    transition: transform 200ms ease-in-out;
     opacity: 0.7;
     margin-bottom: .15rem;
 }
