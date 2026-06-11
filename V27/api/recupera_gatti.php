@@ -30,7 +30,7 @@ $stm = mysqli_prepare(
 );
 
 if (!$stm) {
-    error_log('Errore DB api/gatti.php prepare: ' . mysqli_error($conn));
+    error_log('Errore DB api/recupera_gatti.php prepare: ' . mysqli_error($conn));
     mysqli_close($conn);
     http_response_code(500);
     echo json_encode(['errore' => "Errore del database: impossibile recuperare l'elenco dei gatti.", 'codice' => 'DB_ERROR']);
@@ -38,7 +38,7 @@ if (!$stm) {
 }
 
 if (!mysqli_stmt_execute($stm)) {
-    error_log('Errore DB api/gatti.php execute: ' . mysqli_stmt_error($stm));
+    error_log('Errore DB api/recupera_gatti.php execute: ' . mysqli_stmt_error($stm));
     mysqli_stmt_close($stm);
     mysqli_close($conn);
     http_response_code(500);

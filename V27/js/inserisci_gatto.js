@@ -1,6 +1,5 @@
-// Validazione del form di inserimento gatto (area admin). Lo stato "in
-// esaurimento" del contatore caratteri è gestito via classe CSS, mai stile
-// in-line.
+// Validazione del form di inserimento gatto
+
 'use strict';
 
 (function () {
@@ -45,16 +44,253 @@
         }
     }
 
-    function validaNome() { const v = campi.nome.el ? campi.nome.el.value.trim() : ''; if (!v || v.length > 50) { mostraErrore(campi.nome, 'Inserire il nome.'); return false; } mostraErrore(campi.nome, ''); return true; }
-    function validaRazza() { const v = campi.razza.el ? campi.razza.el.value.trim() : ''; if (!v || v.length > 50) { mostraErrore(campi.razza, 'Inserire la razza.'); return false; } mostraErrore(campi.razza, ''); return true; }
-    function validaSesso() { const v = campi.sesso.el ? campi.sesso.el.value : ''; if (!['M', 'F'].includes(v)) { mostraErrore(campi.sesso, 'Selezionare il sesso.'); return false; } mostraErrore(campi.sesso, ''); return true; }
-    function validaEta() { const v = campi.eta.el ? parseInt(campi.eta.el.value, 10) : NaN; if (isNaN(v) || v < 0 || v > 300) { mostraErrore(campi.eta, 'Inserire l\'età.'); return false; } mostraErrore(campi.eta, ''); return true; }
-    function validaPeso() { const v = campi.peso.el ? parseFloat(campi.peso.el.value) : NaN; if (isNaN(v) || v < 0.1 || v > 20) { mostraErrore(campi.peso, 'Inserire il peso.'); return false; } mostraErrore(campi.peso, ''); return true; }
-    function validaColoreMantello() { const v = campi.colore_mantello.el ? campi.colore_mantello.el.value.trim() : ''; if (!v) { mostraErrore(campi.colore_mantello, 'Inserire il colore del mantello.'); return false; } mostraErrore(campi.colore_mantello, ''); return true; }
-    function validaLunghezzaPelo() { const v = campi.lunghezza_pelo.el ? campi.lunghezza_pelo.el.value : ''; if (!v) { mostraErrore(campi.lunghezza_pelo, 'Selezionare la lunghezza del pelo.'); return false; } mostraErrore(campi.lunghezza_pelo, ''); return true; }
-    function validaColoreOcchi() { const v = campi.colore_occhi.el ? campi.colore_occhi.el.value.trim() : ''; if (!v) { mostraErrore(campi.colore_occhi, 'Inserire il colore degli occhi.'); return false; } mostraErrore(campi.colore_occhi, ''); return true; }
-    function validaDataArrivo() { const v = campi.data_arrivo.el ? campi.data_arrivo.el.value : ''; if (!v) { mostraErrore(campi.data_arrivo, 'Inserire la data di arrivo.'); return false; } const dt = new Date(v); if (isNaN(dt.getTime()) || dt > new Date()) { mostraErrore(campi.data_arrivo, 'Inserisci una data valida (non futura).'); return false; } mostraErrore(campi.data_arrivo, ''); return true; }
-    function validaDescrizione() { const v = campi.descrizione.el ? campi.descrizione.el.value.trim() : ''; if (v.length < 10) { mostraErrore(campi.descrizione, 'Inserire la descrizione.'); return false; } mostraErrore(campi.descrizione, ''); return true; }
+    function validaNome() {
+
+        const v = campi.nome.el ? campi.nome.el.value.trim() : '';
+
+        if (!v) {
+            mostraErrore(campi.nome, 'Il nome del gatto è obbligatorio.');
+            return false;
+        }
+
+        if (v.length < 2) {
+            mostraErrore(campi.nome, 'Il nome deve contenere almeno 2 caratteri.');
+            return false;
+        }
+
+        if (v.length > 50) {
+            mostraErrore(campi.nome, 'Il nome non può superare i 50 caratteri.');
+            return false;
+        }
+
+        mostraErrore(campi.nome, '');
+        return true;
+    }
+
+    function validaRazza() {
+
+        const v = campi.razza.el ? campi.razza.el.value.trim() : '';
+
+        if (!v) {
+            mostraErrore(campi.razza, 'La razza è obbligatoria.');
+            return false;
+        }
+
+        if (v.length < 2) {
+            mostraErrore(campi.razza, 'La razza deve contenere almeno 2 caratteri.');
+            return false;
+        }
+
+        if (v.length > 50) {
+            mostraErrore(campi.razza, 'La razza non può superare i 50 caratteri.');
+            return false;
+        }
+
+        mostraErrore(campi.razza, '');
+        return true;
+    }
+
+    function validaSesso() {
+
+        const v = campi.sesso.el ? campi.sesso.el.value : '';
+
+        if (!v) {
+            mostraErrore(campi.sesso, 'Selezionare il sesso.');
+            return false;
+        }
+
+        if (!['M', 'F'].includes(v)) {
+            mostraErrore(campi.sesso, 'Valore del sesso non valido.');
+            return false;
+        }
+
+        mostraErrore(campi.sesso, '');
+        return true;
+    }
+
+    function validaEta() {
+
+        const valore = campi.eta.el ? campi.eta.el.value.trim() : '';
+
+        if (!valore) {
+            mostraErrore(campi.eta, 'L\'età è obbligatoria.');
+            return false;
+        }
+
+        const v = parseInt(valore, 10);
+
+        if (isNaN(v)) {
+            mostraErrore(campi.eta, 'L\'età deve essere un numero.');
+            return false;
+        }
+
+        if (v < 0) {
+            mostraErrore(campi.eta, 'L\'età non può essere negativa.');
+            return false;
+        }
+
+        if (v > 300) {
+            mostraErrore(campi.eta, 'L\'età non può superare 300 mesi.');
+            return false;
+        }
+
+        mostraErrore(campi.eta, '');
+        return true;
+    }
+
+    function validaPeso() {
+
+        const valore = campi.peso.el ? campi.peso.el.value.trim() : '';
+
+        if (!valore) {
+            mostraErrore(campi.peso, 'Il peso è obbligatorio.');
+            return false;
+        }
+
+        const v = parseFloat(valore);
+
+        if (isNaN(v)) {
+            mostraErrore(campi.peso, 'Il peso deve essere un numero.');
+            return false;
+        }
+
+        if (v < 0.1) {
+            mostraErrore(campi.peso, 'Il peso deve essere almeno 0.1 kg.');
+            return false;
+        }
+
+        if (v > 20) {
+            mostraErrore(campi.peso, 'Il peso non può superare 20 kg.');
+            return false;
+        }
+
+        mostraErrore(campi.peso, '');
+        return true;
+    }
+
+    function validaColoreMantello() {
+
+        const v = campi.colore_mantello.el
+            ? campi.colore_mantello.el.value.trim()
+            : '';
+
+        if (!v) {
+            mostraErrore(
+                campi.colore_mantello,
+                'Inserire il colore del mantello.'
+            );
+            return false;
+        }
+
+        mostraErrore(campi.colore_mantello, '');
+        return true;
+    }
+
+    function validaLunghezzaPelo() {
+
+        const v = campi.lunghezza_pelo.el
+            ? campi.lunghezza_pelo.el.value
+            : '';
+
+        if (!v) {
+            mostraErrore(
+                campi.lunghezza_pelo,
+                'Selezionare la lunghezza del pelo.'
+            );
+            return false;
+        }
+
+        mostraErrore(campi.lunghezza_pelo, '');
+        return true;
+    }
+
+    function validaColoreOcchi() {
+
+        const v = campi.colore_occhi.el
+            ? campi.colore_occhi.el.value.trim()
+            : '';
+
+        if (!v) {
+            mostraErrore(
+                campi.colore_occhi,
+                'Inserire il colore degli occhi.'
+            );
+            return false;
+        }
+
+        mostraErrore(campi.colore_occhi, '');
+        return true;
+    }
+
+    function validaDataArrivo() {
+
+        const v = campi.data_arrivo.el
+            ? campi.data_arrivo.el.value
+            : '';
+
+        if (!v) {
+            mostraErrore(
+                campi.data_arrivo,
+                'La data di arrivo è obbligatoria.'
+            );
+            return false;
+        }
+
+        const dt = new Date(v);
+
+        if (isNaN(dt.getTime())) {
+            mostraErrore(
+                campi.data_arrivo,
+                'Formato data non valido.'
+            );
+            return false;
+        }
+
+        if (dt > new Date()) {
+            mostraErrore(
+                campi.data_arrivo,
+                'La data non può essere futura.'
+            );
+            return false;
+        }
+
+        mostraErrore(campi.data_arrivo, '');
+        return true;
+    }
+
+    function validaDescrizione() {
+
+        const v = campi.descrizione.el
+            ? campi.descrizione.el.value.trim()
+            : '';
+
+        if (!v) {
+            mostraErrore(
+                campi.descrizione,
+                'La descrizione è obbligatoria.'
+            );
+            return false;
+        }
+
+        if (v.length < 10) {
+            mostraErrore(
+                campi.descrizione,
+                'La descrizione deve contenere almeno 10 caratteri.'
+            );
+            return false;
+        }
+
+        if (v.length > max_descrizione) {
+            mostraErrore(
+                campi.descrizione,
+                'La descrizione supera il limite consentito.'
+            );
+            return false;
+        }
+
+        mostraErrore(campi.descrizione, '');
+        return true;
+    }
 
     const validatori = {
         'gatto-nome': validaNome,

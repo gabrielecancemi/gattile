@@ -29,7 +29,7 @@ Le alternative scartate e le relative motivazioni sono le seguenti. Una variabil
 4. Separazione dei privilegi sul database
 L'accesso al database avviene tramite tre utenti MySQL distinti, ciascuno con i soli permessi strettamente necessari alle operazioni che deve compiere. Questa scelta segue il principio del minimo privilegio: se una componente viene compromessa, l'attaccante ottiene solo le capacità di quell'utente, non l'accesso illimitato all'intero database.
 4.1 I tre ruoli
-Il primo utente è reader (password "lecture"), che dispone del solo privilegio SELECT. Viene utilizzato da tutte le pagine e gli endpoint che leggono dati senza modificarli: la home page per i nuovi arrivi, l'endpoint api/gatti.php, le parti di sessione.php che verificano le credenziali, turni.php per i conteggi dei volontari e il controllo di unicità dello username prima della registrazione.
+Il primo utente è reader (password "lecture"), che dispone del solo privilegio SELECT. Viene utilizzato da tutte le pagine e gli endpoint che leggono dati senza modificarli: la home page per i nuovi arrivi, l'endpoint api/recupera_gatti.php, le parti di sessione.php che verificano le credenziali, turni.php per i conteggi dei volontari e il controllo di unicità dello username prima della registrazione.
 Il secondo utente è modifier (password "modifier"), che dispone di SELECT, INSERT e UPDATE, ma mai di DELETE o DROP. Viene utilizzato dove è necessario scrivere dati: la pagina inserisci_gatto.php, l'endpoint api/prenota_visita.php e api/turni.php quando gestisce le richieste POST di iscrizione ai turni.
 Il terzo utente è registrator (password "registrator"), che dispone del solo privilegio INSERT sulla tabella degli utenti. Viene usato esclusivamente dalla pagina di registrazione. Non può leggere i dati degli altri utenti né modificare nulla: il suo perimetro è limitato alla sola operazione che gli compete.
 In nessun caso viene usato l'utente root o un account con privilegi GRANT, DROP o DELETE. La selezione del ruolo avviene dentro la funzione connessioneDb($ruolo) in includes/db.php: ogni pagina e ogni endpoint richiedono esplicitamente il ruolo minimo necessario.
@@ -157,7 +157,7 @@ JavaScript per i form.
     gattile_tokens/  Archivio JSON dei gettoni "ricordami"
 
   api/
-    gatti.php           Endpoint JSON: lista gatti (GET)
+    recupera_gatti.php           Endpoint JSON: lista gatti (GET)
     prenota_visita.php  Endpoint JSON: prenota visita (POST)
     turni.php           Endpoint JSON: fasce volontariato (GET/POST)
     elimina_cookie.php  Elimina cookie e sessione (POST)
@@ -251,7 +251,7 @@ stesso CSS, stesso badge.
 Tre utenti MySQL distinti, secondo il principio del minimo privilegio:
 
   reader / 'lecture'      Solo SELECT. Usato dalle pagine di sola lettura:
-                          index.php (nuovi arrivi), api/gatti.php, parti di
+                          index.php (nuovi arrivi), api/recupera_gatti.php, parti di
                           sessione.php, turni.php (conteggi), e dal controllo
                           unicità username prima dell'insert.
 

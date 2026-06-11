@@ -129,7 +129,7 @@
         setErrore('Impossibile caricare i gatti, riprova tra qualche minuto.');
         setCaricamento(false);
       }
-      fetch('api/gatti.php', {
+      fetch('api/recupera_gatti.php', {
         credentials: 'same-origin'
       }).then(function (r) {
         if (!r.ok) {
