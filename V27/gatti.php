@@ -1,6 +1,6 @@
 <?php
-// Pagina adozioni: componente React per la lista + form prenotazione in
-// Vanilla JS. React comunica col form via CustomEvent sul DOM.
+// Pagina adozioni
+
 declare(strict_types=1);
 
 require_once 'includes/layout.php';
@@ -10,19 +10,16 @@ $profilo = profiloAttivo();
 $loggato = ($profilo !== null);
 $is_admin = $loggato && (bool) $profilo['is_admin'];
 
-// Intestazione della pagina (titolo + descrizione per SEO).
+// Intestazione della pagina
 $titolo_pagina = 'Adotta un gatto';
 $descrizione_pagina = 'Sfoglia i gatti disponibili per l\'adozione al Gattile San Paolo di Torino. Filtra per età, colore o nome.';
 
-// Header di sicurezza HTTP: difesa in profondità contro XSS, clickjacking e
-// MIME-sniffing. Vanno emessi prima di qualsiasi output.
+// Sicurezza
 if (!headers_sent()) {
     header('X-Content-Type-Options: nosniff');
     header('X-Frame-Options: DENY');
     header('Referrer-Policy: strict-origin-when-cross-origin');
     header('Permissions-Policy: geolocation=(), microphone=(), camera=()');
-    // CSP: tutto dal proprio dominio, React/ReactDOM solo da unpkg. Niente
-    // 'unsafe-inline' perché nel sito non uso script o stili inline.
     header(
         "Content-Security-Policy: "
         . "default-src 'self'; "
@@ -43,9 +40,9 @@ if (!headers_sent()) {
 
 <?php require 'includes/head.php'; ?>
 <?php require 'includes/header.php'; ?>
-<main id="contenuto-principale" tabindex="-1">
+<main id="contenuto-principale">
 
-
+    <!-- intestazione -->
     <section aria-labelledby="titolo-gatti">
         <h1 id="titolo-gatti">I nostri ospiti felini</h1>
         <p>Seleziona i nostri gatti e prenota una visita conoscitiva.</p>
@@ -66,15 +63,18 @@ if (!headers_sent()) {
             </aside>
         <?php endif; ?>
     </section>
+
+    <!-- card gatti -->
     <section id="react-gatti-root" data-utente-loggato="<?= $loggato ? 'true' : 'false' ?>"
         data-is-admin="<?= $is_admin ? 'true' : 'false' ?>" aria-label="Elenco gatti con filtri e ordinamento"
         aria-busy="true">
         <p class="caricamento" aria-live="polite">Caricamento schede gatti in corso…</p>
     </section>
 
+    <!-- prenotazione -->
     <?php if ($loggato && !$is_admin): ?>
-
         <section aria-labelledby="titolo-prenotazione">
+
             <h2 id="titolo-prenotazione">Prenota una visita conoscitiva</h2>
 
             <form id="form-prenotazione" method="post" action="api/prenota_visita.php" novalidate
@@ -134,15 +134,7 @@ if (!headers_sent()) {
         </section>
     <?php endif; ?>
 
-    <!-- React e ReactDOM da CDN, versione PINNATA a 18.3.1 (ultima con build UMD):
-     evita aggiornamenti automatici imprevisti, riduce il rischio supply chain
-     (OWASP A3) e mantiene il sito riproducibile. crossorigin="anonymous" è
-     raccomandato da React per il caricamento da CDN.
-     Per integrità verificata (OWASP A8) si può aggiungere l'attributo
-     integrity="sha384-..." con l'hash SRI ufficiale del file servito (vedi
-     progettoSito.txt, sez. SUPPLY CHAIN). In alternativa, ospitare i due file
-     in locale è la soluzione preferita dalla teoria (risorse sullo stesso
-     server della pagina). -->
+    <!-- React -->
     <script src="https://unpkg.com/react@18.3.1/umd/react.production.min.js" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js" crossorigin="anonymous"></script>
     <script defer src="js/GattiComponent.js"></script>

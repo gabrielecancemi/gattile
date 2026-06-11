@@ -1,7 +1,6 @@
 <?php
-// Pagina di accesso. Il cookie "ricordami" salva un gettone opaco, mai le
-// credenziali. Validazione lato client (js/login.js) + controllo definitivo
-// lato server.
+// Pagina di accesso
+
 declare(strict_types=1);
 
 require_once 'includes/layout.php';
@@ -34,12 +33,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             case ESITO_PASSWORD_ERRATA:
                 $errore = 'Password errata. Riprova.';
-                error_log('[login] password errata per username: ' . mb_substr($username, 0, 30));
+                error_log('[login] password errata per username: ' . $username);
                 break;
 
             case ESITO_UTENTE_ASSENTE:
                 $errore = 'Nessun utente trovato con questo username. Controlla lo username o registrati.';
-                error_log('[login] username inesistente: ' . mb_substr($username, 0, 30));
+                error_log('[login] username inesistente: ' . $username);
                 break;
 
             case ESITO_ERRORE_DB:
@@ -57,19 +56,16 @@ if ($username_cookie) {
     $username_precompilato = ripulisci($username_cookie);
 }
 
-// Intestazione della pagina (titolo + descrizione per SEO).
+// Intestazione della pagina
 $titolo_pagina = 'Accedi';
 $descrizione_pagina = 'Accedi al tuo profilo Gattile San Paolo per prenotare visite o turni di volontariato.';
 
-// Header di sicurezza HTTP: difesa in profondità contro XSS, clickjacking e
-// MIME-sniffing. Vanno emessi prima di qualsiasi output.
+// Sicurezza
 if (!headers_sent()) {
     header('X-Content-Type-Options: nosniff');
     header('X-Frame-Options: DENY');
     header('Referrer-Policy: strict-origin-when-cross-origin');
     header('Permissions-Policy: geolocation=(), microphone=(), camera=()');
-    // CSP: tutto dal proprio dominio, React/ReactDOM solo da unpkg. Niente
-    // 'unsafe-inline' perché nel sito non uso script o stili inline.
     header(
         "Content-Security-Policy: "
         . "default-src 'self'; "
@@ -90,14 +86,17 @@ if (!headers_sent()) {
 
 <?php require 'includes/head.php'; ?>
 <?php require 'includes/header.php'; ?>
-<main id="contenuto-principale" tabindex="-1">
+<main id="contenuto-principale">
 
-
+    <!-- intestazione -->
     <section aria-labelledby="titolo-login">
         <h1 id="titolo-login">Accedi al tuo profilo</h1>
         <p>Non hai ancora un account? <a href="registrazione.php">Registrati gratuitamente</a>.</p>
     </section>
+
+    <!-- form accedi -->
     <section>
+        <h2 class="sr-solo">Accedi</h2>
         <?php if ($errore):
             echo avvisoUtente($errore, 'errore');
         endif; ?>

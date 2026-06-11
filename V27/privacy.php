@@ -1,6 +1,6 @@
 <?php
-// Informativa privacy e gestione cookie. Layout a due colonne con indice
-// laterale, diverso dalle altre pagine.
+// Informativa privacy e gestione cookie
+
 declare(strict_types=1);
 
 require_once 'includes/layout.php';
@@ -8,19 +8,16 @@ require_once 'includes/layout.php';
 aprireSessione();
 $eliminati = isset($_GET['eliminati']) && $_GET['eliminati'] === '1';
 
-// Intestazione della pagina (titolo + descrizione per SEO).
+// Intestazione della pagina
 $titolo_pagina = 'Privacy e Cookie';
 $descrizione_pagina = 'Informativa sulla privacy e gestione dei cookie del sito Gattile San Paolo.';
 
-// Header di sicurezza HTTP: difesa in profondità contro XSS, clickjacking e
-// MIME-sniffing. Vanno emessi prima di qualsiasi output.
+// Sicurezza
 if (!headers_sent()) {
     header('X-Content-Type-Options: nosniff');
     header('X-Frame-Options: DENY');
     header('Referrer-Policy: strict-origin-when-cross-origin');
     header('Permissions-Policy: geolocation=(), microphone=(), camera=()');
-    // CSP: tutto dal proprio dominio, React/ReactDOM solo da unpkg. Niente
-    // 'unsafe-inline' perché nel sito non uso script o stili inline.
     header(
         "Content-Security-Policy: "
         . "default-src 'self'; "
@@ -41,9 +38,9 @@ if (!headers_sent()) {
 
 <?php require 'includes/head.php'; ?>
 <?php require 'includes/header.php'; ?>
-<main id="contenuto-principale" tabindex="-1">
+<main id="contenuto-principale">
 
-
+    <!-- intestazione -->
     <section class="privacy-hero" aria-labelledby="titolo-privacy">
         <h1 id="titolo-privacy">Privacy &amp; Cookie</h1>
         <p class="privacy-sottotitolo">
@@ -52,13 +49,16 @@ if (!headers_sent()) {
         <p><time datetime="<?= date('Y-m-d') ?>">Aggiornata il <?= date('d/m/Y') ?></time></p>
     </section>
 
+    <!-- info privacy -->
     <section class="privacy-layout" aria-label="Contenuto informativa">
+        <h2 class="sr-solo">Informazioni privacy</h2>
         <?php if ($eliminati): ?>
             <?= avvisoUtente('I tuoi cookie sono stati eliminati con successo.', 'successo') ?>
         <?php endif; ?>
 
         <article class="privacy-griglia">
 
+            <!-- navigazione tra paragrafi -->
             <nav class="privacy-indice" aria-label="Indice della pagina">
                 <h2>In questa pagina</h2>
                 <ul>
@@ -70,8 +70,9 @@ if (!headers_sent()) {
                 </ul>
             </nav>
 
+            <!-- uso dei dati -->
             <section class="privacy-contenuto">
-
+                <h2 class="sr-solo">Privacy</h2>
                 <article class="privacy-blocco" id="sez-titolare" aria-labelledby="h-titolare">
                     <h2 id="h-titolare">Titolare del trattamento</h2>
                     <address>

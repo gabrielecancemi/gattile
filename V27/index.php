@@ -87,19 +87,16 @@ if (!$conn) {
 }
 
 
-// Intestazione della pagina (titolo + descrizione per SEO).
+// Intestazione della pagina
 $titolo_pagina = 'Home';
 $descrizione_pagina = 'Gattile San Paolo: adotta un gatto o diventa volontario a Torino. Scopri i nostri ospiti felini.';
 
-// Header di sicurezza HTTP: difesa in profondità contro XSS, clickjacking e
-// MIME-sniffing. Vanno emessi prima di qualsiasi output.
+// Sicurezza
 if (!headers_sent()) {
     header('X-Content-Type-Options: nosniff');
     header('X-Frame-Options: DENY');
     header('Referrer-Policy: strict-origin-when-cross-origin');
     header('Permissions-Policy: geolocation=(), microphone=(), camera=()');
-    // CSP: tutto dal proprio dominio, React/ReactDOM solo da unpkg. Niente
-    // 'unsafe-inline' perché nel sito non uso script o stili inline.
     header(
         "Content-Security-Policy: "
         . "default-src 'self'; "
@@ -115,13 +112,15 @@ if (!headers_sent()) {
 }
 
 ?>
+
 <!DOCTYPE html>
 <html lang="it">
 
 <?php require 'includes/head.php'; ?>
 <?php require 'includes/header.php'; ?>
-<main id="contenuto-principale" tabindex="-1" class="main-home">
+<main id="contenuto-principale" class="main-home">
 
+    <!-- intestazione -->
     <section class="zona-hero" aria-labelledby="titolo-home">
         <h1 id="titolo-home">
             Una casa, una famiglia, una seconda possibilità
@@ -139,6 +138,7 @@ if (!headers_sent()) {
         </p>
     </section>
 
+    <!-- informazioni -->
     <section class="zona-perche" aria-labelledby="titolo-perche">
         <h2 id="titolo-perche">Perché adottare dal Gattile San Paolo?</h2>
 
@@ -158,6 +158,7 @@ if (!headers_sent()) {
         </dl>
     </section>
 
+    <!-- dati numerici dal database -->
     <section class="zona-impatto" aria-labelledby="titolo-impatto">
         <h2 id="titolo-impatto">Il nostro impatto</h2>
 
@@ -180,6 +181,7 @@ if (!headers_sent()) {
         <?php endif; ?>
     </section>
 
+    <!-- come funziona -->
     <section class="come-funziona zona-come" aria-labelledby="titolo-come-funziona">
         <h2 id="titolo-come-funziona">Come funziona</h2>
         <ol>
@@ -206,6 +208,7 @@ if (!headers_sent()) {
         </ol>
     </section>
 
+    <!-- testimonianze -->
     <aside class="zona-storia" aria-labelledby="titolo-testimonianza">
         <h2 id="titolo-testimonianza">Storie di successo</h2>
 
@@ -234,6 +237,7 @@ if (!headers_sent()) {
         </figure>
     </aside>
 
+    <!-- nuovi arrivi -->
     <section class="nuovi-arrivi zona-arrivi" aria-labelledby="titolo-nuovi-arrivi">
         <h2 id="titolo-nuovi-arrivi">Nuovi arrivi</h2>
         <p>Gli ultimi ospiti entrati nella struttura che aspettano una famiglia:</p>
@@ -252,6 +256,7 @@ if (!headers_sent()) {
         <?php endif; ?>
     </section>
 
+    <!-- volontariato -->
     <section class="zona-aiuta" aria-labelledby="titolo-aiuta">
         <h2 id="titolo-aiuta">Non puoi adottare?</h2>
 
@@ -272,6 +277,7 @@ if (!headers_sent()) {
         </p>
     </section>
 
+    <!-- domande più richieste -->
     <section class="zona-faq" aria-labelledby="titolo-faq">
         <h2 id="titolo-faq">Domande frequenti</h2>
 

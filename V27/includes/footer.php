@@ -15,6 +15,7 @@ if (!empty($_SESSION['utente']['is_admin'])) {
 }
 ?>
 
+<!-- cookie -->
 <?php if (!isset($_COOKIE['consenso_cookie'])): ?>
     <aside id="banner-cookie" class="banner-cookie" role="dialog" aria-live="polite" aria-label="Informativa cookie">
         <p>
@@ -31,6 +32,7 @@ if (!empty($_SESSION['utente']['is_admin'])) {
     </aside>
 <?php endif; ?>
 
+<!-- footer -->
 <footer class="footer">
 
     <a href="index.php" class="brand-logo" aria-label="Torna alla Home Page">

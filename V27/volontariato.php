@@ -7,19 +7,16 @@ require_once 'includes/layout.php';
 aprireSessione();
 $loggato = (profiloAttivo() !== null);
 
-// Intestazione della pagina (titolo + descrizione per SEO).
+// Intestazione della pagina
 $titolo_pagina = 'Volontariato';
 $descrizione_pagina = 'Diventa volontario al Gattile San Paolo di Torino: scegli le fasce orarie in cui prestare aiuto.';
 
-// Header di sicurezza HTTP: difesa in profondità contro XSS, clickjacking e
-// MIME-sniffing. Vanno emessi prima di qualsiasi output.
+// Sicurezza
 if (!headers_sent()) {
     header('X-Content-Type-Options: nosniff');
     header('X-Frame-Options: DENY');
     header('Referrer-Policy: strict-origin-when-cross-origin');
     header('Permissions-Policy: geolocation=(), microphone=(), camera=()');
-    // CSP: tutto dal proprio dominio, React/ReactDOM solo da unpkg. Niente
-    // 'unsafe-inline' perché nel sito non uso script o stili inline.
     header(
         "Content-Security-Policy: "
         . "default-src 'self'; "
@@ -40,9 +37,9 @@ if (!headers_sent()) {
 
 <?php require 'includes/head.php'; ?>
 <?php require 'includes/header.php'; ?>
-<main id="contenuto-principale" tabindex="-1" class="volontario-main">
+<main id="contenuto-principale" class="volontario-main">
 
-
+    <!-- intestazione -->
     <section aria-labelledby="titolo-volontariato">
         <h1 id="titolo-volontariato">Fai volontariato</h1>
         <p>
@@ -59,6 +56,8 @@ if (!headers_sent()) {
             </aside>
         <?php endif; ?>
     </section>
+
+    <!-- ruoli volontario -->
     <section aria-labelledby="titolo-info-vol">
         <h2 id="titolo-info-vol">Cosa fare da volontario</h2>
         <ul>
@@ -70,6 +69,8 @@ if (!headers_sent()) {
                 Per info: <a href="mailto:info@gattile-sanpaolo.it">info@gattile-sanpaolo.it</a>.</li>
         </ul>
     </section>
+
+    <!-- form turni volontario -->
     <section>
         <?php if ($loggato): ?>
             <h2>Prenota i turni</h2>

@@ -1,24 +1,22 @@
 <?php
-// Domande frequenti, raggiungibili dal pulsante "?" fisso in basso a destra.
+// Domande frequenti (pulsante "?" fisso in basso a destra)
+
 declare(strict_types=1);
 
 require_once 'includes/layout.php';
 
 aprireSessione();
 
-// Intestazione della pagina (titolo + descrizione per SEO).
+// Intestazione della pagina
 $titolo_pagina = 'Domande frequenti';
 $descrizione_pagina = 'Risposte alle domande più comuni su adozioni, volontariato e servizi del Gattile San Paolo di Torino.';
 
-// Header di sicurezza HTTP: difesa in profondità contro XSS, clickjacking e
-// MIME-sniffing. Vanno emessi prima di qualsiasi output.
+// Sicurezza
 if (!headers_sent()) {
     header('X-Content-Type-Options: nosniff');
     header('X-Frame-Options: DENY');
     header('Referrer-Policy: strict-origin-when-cross-origin');
     header('Permissions-Policy: geolocation=(), microphone=(), camera=()');
-    // CSP: tutto dal proprio dominio, React/ReactDOM solo da unpkg. Niente
-    // 'unsafe-inline' perché nel sito non uso script o stili inline.
     header(
         "Content-Security-Policy: "
         . "default-src 'self'; "
@@ -39,9 +37,9 @@ if (!headers_sent()) {
 
 <?php require 'includes/head.php'; ?>
 <?php require 'includes/header.php'; ?>
-<main id="contenuto-principale" tabindex="-1" class="main-faq">
+<main id="contenuto-principale" class="main-faq">
 
-
+    <!-- intestazione -->
     <section aria-labelledby="titolo-faq">
         <h1 id="titolo-faq">Domande frequenti</h1>
         <p>
@@ -50,6 +48,7 @@ if (!headers_sent()) {
         </p>
     </section>
 
+    <!-- domande -->
     <section class="faq-categoria" aria-labelledby="faq-adozioni">
         <h2 id="faq-adozioni">Adozioni</h2>
 

@@ -75,8 +75,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     error_log('[inserisci_gatto] execute: ' . mysqli_stmt_error($stm));
                     $errore = "Errore del database durante l'inserimento. Riprova tra qualche minuto.";
                 } else {
-                    // Post/Redirect/Get: salvo l'esito in sessione e reindirizzo,
-                    // così premendo F5 non si reinserisce un gatto identico.
+                    // Salvo l'esito in sessione e reindirizzo
                     impostaMessaggioFlash(
                         'successo',
                         'Gatto «' . $nome . '» inserito con successo (immagine placeholder assegnata).'
@@ -95,8 +94,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// Recupero l'eventuale messaggio di successo lasciato in sessione dal redirect
-// (schema Post/Redirect/Get).
+// Recupero l'eventuale messaggio di successo
 $flash = leggiMessaggioFlash();
 if ($flash) {
     if ($flash['tipo'] === 'successo') {
@@ -106,19 +104,16 @@ if ($flash) {
     }
 }
 
-// Intestazione della pagina (titolo + descrizione per SEO).
+// Intestazione della pagina
 $titolo_pagina = 'Inserisci nuovo gatto';
 $descrizione_pagina = 'Area riservata: inserisci un nuovo gatto nella struttura.';
 
-// Header di sicurezza HTTP: difesa in profondità contro XSS, clickjacking e
-// MIME-sniffing. Vanno emessi prima di qualsiasi output.
+// Sicurezza
 if (!headers_sent()) {
     header('X-Content-Type-Options: nosniff');
     header('X-Frame-Options: DENY');
     header('Referrer-Policy: strict-origin-when-cross-origin');
     header('Permissions-Policy: geolocation=(), microphone=(), camera=()');
-    // CSP: tutto dal proprio dominio, React/ReactDOM solo da unpkg. Niente
-    // 'unsafe-inline' perché nel sito non uso script o stili inline.
     header(
         "Content-Security-Policy: "
         . "default-src 'self'; "
@@ -139,9 +134,9 @@ if (!headers_sent()) {
 
 <?php require 'includes/head.php'; ?>
 <?php require 'includes/header.php'; ?>
-<main id="contenuto-principale" tabindex="-1">
+<main id="contenuto-principale">
 
-
+    <!-- intestazione -->
     <section aria-labelledby="titolo-inserisci">
         <h1 id="titolo-inserisci">Inserisci un nuovo ospite</h1>
         <p>
@@ -151,8 +146,10 @@ if (!headers_sent()) {
             Le foto reali saranno disponibili in una futura versione.
         </p>
     </section>
-    <section>
 
+    <!-- form inserisci gatto -->
+    <section>
+        <h2 class="sr-solo">Inserisci gatto</h2>
         <?php if ($errore):
             echo avvisoUtente($errore, 'errore');
         endif; ?>

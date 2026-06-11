@@ -36,7 +36,7 @@ $icone_nav = [
 <body>
 
     <header class="header">
-
+        <!-- logo -->
         <a href="index.php" class="brand-logo" aria-label="Torna alla Home Page">
             <picture class="logo-container">
                 <source srcset="img/logo_grande.png" media="(min-width: 600px)">
@@ -50,6 +50,7 @@ $icone_nav = [
             ☰ Menu
         </button>
 
+        <!-- pagine -->
         <nav id="menu-principale" aria-label="Navigazione principale">
             <ul>
                 <?php foreach ($voci_nav as $href => $etichetta):
@@ -66,6 +67,7 @@ $icone_nav = [
             </ul>
         </nav>
 
+        <!-- tema -->
         <button type="button" id="toggle-tema" class="toggle-tema btn" aria-label="Cambia tema (attuale: sistema)"
             title="Cambia tema: Sistema / Chiaro / Scuro">
             <svg class="icona-tema" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
@@ -77,6 +79,7 @@ $icone_nav = [
             <em class="testo-tema">Tema: sistema</em>
         </button>
 
+        <!-- account -->
         <section class="stato-autenticazione" id="autenticazione" aria-label="Stato autenticazione">
             <h2 class="sr-solo">Account</h2>
             <?php if ($profilo): ?>

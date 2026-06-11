@@ -1,4 +1,6 @@
 <?php
+// Registrazione nuovo utente
+
 declare(strict_types=1);
 
 require_once 'includes/layout.php';
@@ -64,7 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     if (!$conn_inserimento) {
                         $errore = 'Errore del database. Riprova tra qualche minuto.';
                     } else {
-                        // Password salvata in chiaro nel DB (vedi note-progetto.txt).
+                        // Password salvata in chiaro nel DB
                         $password_salvataggio = preparaPasswordSalvataggio($password);
                         $inserimento = mysqli_prepare(
                             $conn_inserimento,
@@ -80,9 +82,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 error_log('[registrazione] execute: ' . mysqli_stmt_error($inserimento));
                                 $errore = 'Errore del database. Riprova tra qualche minuto.';
                             } else {
-                                // Post/Redirect/Get: salvo l'esito in sessione e
-                                // reindirizzo, così premendo F5 non si registra di
-                                // nuovo lo stesso utente.
                                 impostaMessaggioFlash(
                                     'successo',
                                     "Registrazione avvenuta! Ora puoi effettuare l'accesso."
@@ -104,7 +103,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// Recupero l'eventuale messaggio lasciato in sessione dal redirect (PRG).
 $flash = leggiMessaggioFlash();
 if ($flash) {
     if ($flash['tipo'] === 'successo') {
@@ -114,19 +112,16 @@ if ($flash) {
     }
 }
 
-// Intestazione della pagina (titolo + descrizione per SEO).
+// Intestazione della pagina
 $titolo_pagina = 'Registrazione';
 $descrizione_pagina = 'Crea il tuo profilo Gattile San Paolo.';
 
-// Header di sicurezza HTTP: difesa in profondità contro XSS, clickjacking e
-// MIME-sniffing. Vanno emessi prima di qualsiasi output.
+// Sicurezza
 if (!headers_sent()) {
     header('X-Content-Type-Options: nosniff');
     header('X-Frame-Options: DENY');
     header('Referrer-Policy: strict-origin-when-cross-origin');
     header('Permissions-Policy: geolocation=(), microphone=(), camera=()');
-    // CSP: tutto dal proprio dominio, React/ReactDOM solo da unpkg. Niente
-    // 'unsafe-inline' perché nel sito non uso script o stili inline.
     header(
         "Content-Security-Policy: "
         . "default-src 'self'; "
@@ -147,13 +142,15 @@ if (!headers_sent()) {
 
 <?php require 'includes/head.php'; ?>
 <?php require 'includes/header.php'; ?>
-<main id="contenuto-principale" tabindex="-1">
+<main id="contenuto-principale">
 
-
+    <!-- intestazione -->
     <section aria-labelledby="titolo-registrazione">
         <h1 id="titolo-registrazione">Crea il tuo profilo</h1>
         <p>Già registrato? <a href="login.php">Accedi qui</a>.</p>
     </section>
+
+    <!-- form registrazione -->
     <section>
         <?php if ($errore):
             echo avvisoUtente($errore, 'errore');
