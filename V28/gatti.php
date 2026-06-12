@@ -11,7 +11,7 @@ $loggato = ($profilo !== null);
 $is_admin = $loggato && (bool) $profilo['is_admin'];
 
 // Intestazione della pagina
-$titolo_pagina = 'Adotta un gatto';
+$titolo_pagina = 'Adozioni';
 $descrizione_pagina = 'Sfoglia i gatti disponibili per l\'adozione al Gattile San Paolo di Torino. Filtra per età, colore o nome.';
 
 // Sicurezza

@@ -6,7 +6,7 @@ $anno = date('Y');
 
 $voci_nav = [
     'index.php' => 'Home',
-    'gatti.php' => 'Adotta un gatto',
+    'gatti.php' => 'Adozioni',
     'volontariato.php' => 'Volontariato',
     'faq.php' => 'FAQ',
 ];

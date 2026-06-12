@@ -8,7 +8,7 @@ $pagina_corrente = basename($_SERVER['PHP_SELF']);
 
 $voci_nav = [
     'index.php' => 'Home',
-    'gatti.php' => 'Adotta un gatto',
+    'gatti.php' => 'Adozioni',
     'volontariato.php' => 'Volontariato',
 ];
 if ($profilo && (bool) $profilo['is_admin']) {
