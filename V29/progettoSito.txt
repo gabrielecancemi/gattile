@@ -14,7 +14,7 @@ Questa scelta non è arbitraria: tenere gli endpoint in una sottodirectory dedic
 La specifica richiede due meccanismi distinti per visualizzare le schede dei gatti. Nella home page gli ultimi due arrivati vengono estratti dal database lato server e renderizzati da PHP tramite la funzione costruisciSchedaGatto() in includes/card_gatto.php. Nella pagina gatti.php, invece, tutta la sezione di visualizzazione, ordinamento e selezione è affidata al componente React, come imposto dalla traccia.
 I due runtime non possono condividere codice direttamente — PHP gira sul server, React nel browser — ma condividono la stessa struttura HTML e le stesse classi CSS (.card-gatto, .card-gatto-corpo, .tag e così via). Questo significa che il foglio di stile non è mai duplicato: un unico blocco CSS vale per entrambe le modalità di rendering.
 Il badge "Nuovo" segue la stessa logica: in home lo applica il renderer PHP passando l'opzione ['nuovo' => true] agli ultimi due inserimenti; in gatti.php lo applica React ai due gatti con la data di arrivo più recente, calcolati sull'intera lista. In questo modo il badge è sempre sugli stessi due animali, indipendentemente dall'ordinamento o dal filtro attivo nell'interfaccia React.
-C'è una ridondanza residua che vale la pena dichiarare: piccole funzioni di formattazione come il calcolo dell'età in parole (mesi → "1 anno e 3 mesi"), l'etichetta del sesso e il formato della data esistono sia in PHP sia in JavaScript. Non sono unificabili in un'unica copia senza spostare il calcolo tutto sul backend e modificare il contratto JSON dell'endpoint, cosa che va oltre lo scopo del progetto. La ridondanza è pertanto ridotta al minimo strutturale: una funzione per runtime, stesso markup, stesso CSS, stesso badge.
+C'è una ridondanza residua che vale la pena dichiarare: piccole funzioni di formattazione come il calcolo dell'età in parole (mesi → "1 anno e 3 mesi"), l'etichetta del sesso e il formato della data esistono sia in PHP sia in JavaScript. Non sono unificabili in un'unica copia senza spostare il calcolo tutto sul backend e modificare il contratto JSON dell'endpoint, cosa che va oltre lo scopo del progetto. Sul solo versante JavaScript, invece, le funzioni che prima erano copiate in più file (la sanitizzazione dell'HTML, la visualizzazione degli errori inline, il calcolo dell'età in parole e i messaggi all'utente) sono ora centralizzate in un unico file js/comuni.js, che le dichiara come funzioni globali (ripuliscihtml, mostraErroreCampo, etaInParole, messaggioErrore, mostraMessaggioComune, bottoniConferma) ed è incluso una sola volta in includes/head.php prima degli altri script: gli script di pagina (home.js, prenotazione.js, volontariato.js e il componente React) le richiamano per nome senza ridefinirle. La ridondanza è pertanto ridotta al minimo strutturale: una funzione per runtime, stesso markup, stesso CSS, stesso badge.
 3. Comunicazione tra il modulo React e il form Vanilla JavaScript
 La pagina gatti.php ospita contemporaneamente due tecnologie con responsabilità distinte: il componente React gestisce la lista dei gatti, i filtri, l'ordinamento e la selezione; il form di prenotazione visita è sviluppato in Vanilla JavaScript. Il problema da risolvere è come trasmettere l'elenco dei gatti selezionati dall'uno all'altro senza creare un accoppiamento rigido.
 La soluzione adottata è un CustomEvent del DOM, inviato sul document ogni volta che la selezione cambia:
@@ -71,7 +71,7 @@ Il foglio tema-scuro.css non usa l'attributo media perché contiene sia la media
 La preferenza dell'utente (chiaro, scuro, sistema) è salvata nel localStorage del browser con la chiave "tema". La scelta di localStorage rispetto ai cookie è motivata dalla natura dell'informazione: si tratta di una semplice impostazione di interfaccia, senza dati personali e senza necessità di essere trasmessa al server. Non rientra quindi tra i cookie soggetti al banner del consenso, e persiste tra le visite anche per chi non ha accettato i cookie.
 Il server PHP non può leggere il localStorage, quindi non è in grado di emettere l'attributo data-tema sull'elemento html prima della risposta. L'anti-FOUC è gestito interamente lato client da tema-iniziale.js, incluso nell'head.
 9. Gestione dei turni di volontariato
-I turni di volontariato hanno una durata fissa di due ore e si svolgono nell'orario di apertura del gattile, dalle 9 alle 18. La pagina presenta all'utente tutte le fasce disponibili nei prossimi tre mesi, con indicazione del numero di iscritti e della disponibilità residua.
+I turni di volontariato hanno una durata fissa di un'ora e si svolgono nell'orario di apertura del gattile, dalle 9 alle 18. La pagina presenta all'utente tutte le fasce disponibili nei prossimi tre mesi, con indicazione del numero di iscritti e della disponibilità residua.
 Il limite di due volontari contemporanei per fascia è verificato su due livelli indipendenti. Lato client, volontariato.js interroga l'endpoint api/turni.php con una richiesta GET per ottenere lo stato attuale di tutte le fasce: quelle che hanno già raggiunto il limite vengono rese visivamente non selezionabili e viene impedita la loro sottomissione. Lato server, ogni richiesta POST ricontrolla il limite in modo indipendente: se nel frattempo un altro utente ha occupato l'ultimo posto, il backend restituisce una risposta JSON strutturata con un codice di errore che il JavaScript intercetta e visualizza come messaggio esplicito.
 La doppia verifica è necessaria per due ragioni distinte. Quella lato client garantisce un'esperienza d'uso fluida: l'utente non può nemmeno selezionare fasce esaurite, quindi il feedback è immediato. Quella lato server è invece indispensabile per la correttezza del sistema: il client non è un ambiente fidato, e un utente malintenzionato potrebbe inviare richieste POST aggirando completamente l'interfaccia.
 9.1 Due metodi HTTP sullo stesso endpoint
@@ -171,6 +171,7 @@ JavaScript per i form.
   js/
     GattiComponent.jsx  Sorgente React: lista/filtro/selezione gatti
     GattiComponent.js   Versione compilata (Babel), quella inclusa dalle pagine
+    comuni.js           Funzioni globali condivise (ripuliscihtml, mostraErroreCampo, etaInParole, messaggi)
     prenotazione.js     Form prenotazione visita
     volontariato.js     Form turni di volontariato
     login.js            Validazione form di accesso
@@ -192,7 +193,7 @@ JavaScript per i form.
     placeholder-gatto.svg
 
 PREMESSE:
-I turni di volontariato sono stati impostati di una ampiezza pari a 2 ore, 
+I turni di volontariato sono stati impostati di una ampiezza pari a 1 ora, 
 con orari sempre dall 9 alle 18 (orario utilizzato come apertura del gattile)
 
 Le immagini delle card non sono state gestite con il tag <picture> perchè è previsto 
@@ -607,7 +608,7 @@ D. TURNI VOLONTARIATO — DUE METODI (GET e POST) NELLO STESSO ENDPOINT
 ---------------------------------------------------------------------
 Verifica richiesta: api/turni.php gestisce sia GET sia POST; non si tratta di
 operazioni duplicate, ma di due responsabilità diverse, entrambe necessarie:
-  - GET: SOLA LETTURA. Calcola, per ogni fascia da 2 ore dei prossimi 3 mesi,
+  - GET: SOLA LETTURA. Calcola, per ogni fascia da 1 ora dei prossimi 3 mesi,
     il numero di iscritti, se è piena (2/2) e se l'utente è già iscritto. Serve
     a volontariato.js per disegnare la lista e disabilitare le fasce piene
     (requisito della traccia). Usa l'utente DB "reader" (solo letture).
@@ -677,6 +678,40 @@ Motivazione finale:
   L'SVG inline monocromatico è leggero, scalabile, accessibile (decorativo con
   testo a fianco) e coerente con le icone esistenti; è inoltre tra gli argomenti
   del corso (grafica SVG).
+
+================================================================================
+G. MODULO CONDIVISO js/comuni.js — CONFERME, ERRORI INLINE, HELPER PARAMETRICI
+================================================================================
+Soluzione adottata:
+  - File unico (js/comuni.js, incluso una sola volta in includes/head.php prima
+    degli altri script) che raccoglie come funzioni globali quelle prima
+    duplicate nei vari script: ripuliscihtml (escape HTML), mostraErroreCampo
+    (errore inline sotto il campo), etaInParole, messaggioErrore,
+    mostraMessaggioComune e bottoniConferma. Sono semplici funzioni dichiarate
+    a livello globale e richiamate per nome dagli altri file (nessun namespace
+    su window, nessun modulo ES): tutti gli script condividono lo stesso scope
+    globale del documento.
+  - Helper del DOM parametrici: le funzioni che manipolano il DOM ricevono per
+    parametro i nodi su cui agire (mostraErroreCampo(campo, output, messaggio),
+    mostraMessaggioComune(elemento, testo, tipo), bottoniConferma(elemento,
+    bottoni)), così sono riutilizzabili da qualunque pagina senza dipendere da
+    id fissi.
+  - Conferme dopo l'invio dei form gestiti in JavaScript: come già avviene
+    nella pagina di inserimento gatto, anche dopo una prenotazione visita
+    (prenotazione.js) e dopo la prenotazione dei turni (volontariato.js), al
+    messaggio di successo seguono i bottoni per ripetere l'operazione o
+    spostarsi su pagine coerenti del sito (generati da bottoniConferma).
+  - Errori di compilazione inline anche nei form di adozione e volontariato:
+    gli errori di validazione di questi due form vengono ora mostrati in rosso
+    sotto il campo errato tramite gli <output class="errore-campo"> dedicati
+    (err-gatti-selezione in gatti.php, err-fasce-turni in volontariato.php, oltre
+    a quelli di data e ora già presenti), in modo coerente con gli altri form
+    del sito, invece di comparire solo come messaggio generico.
+Motivazione finale:
+  Un'unica sede per le funzioni comuni elimina la duplicazione lato JavaScript,
+  rende gli helper del DOM riutilizzabili (parametri al posto di id fissi) e
+  uniforma l'esperienza dei form (stessa segnalazione inline degli errori e
+  stessi bottoni di conferma a fine invio) su tutte le pagine.
 
 ================================================================================
 Fine documento

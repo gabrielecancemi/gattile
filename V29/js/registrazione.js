@@ -29,23 +29,8 @@
     ];
 
     function mostraErrore(info, messaggio) {
-        if (!info || !info.errore) return;
-
-        if (messaggio) {
-            info.errore.textContent = messaggio;
-            info.errore.hidden = false;
-
-            if (info.input) {
-                info.input.setAttribute('aria-invalid', 'true');
-            }
-        } else {
-            info.errore.textContent = '';
-            info.errore.hidden = true;
-
-            if (info.input) {
-                info.input.removeAttribute('aria-invalid');
-            }
-        }
+        if (!info) return;
+        mostraErroreCampo(info.input, info.errore, messaggio);
     }
 
     function calcolaForza(password) {

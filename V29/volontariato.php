@@ -96,6 +96,7 @@ if (!headers_sent()) {
                         aria-label="Fasce orarie disponibili">
                         <p class="caricamento">Caricamento fasce orarie…</p>
                     </section>
+                    <output class="errore-campo" id="err-fasce-turni" role="alert" aria-live="polite" hidden></output>
                 </fieldset>
 
                 <output id="msg-volontariato" aria-live="polite" class="sr-solo"></output>

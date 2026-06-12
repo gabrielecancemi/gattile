@@ -89,6 +89,7 @@ if (!headers_sent()) {
                 </fieldset>
 
                 <input type="hidden" id="gatti-ids" name="gatti_ids" value="">
+                <output class="errore-campo" id="err-gatti-selezione" role="alert" aria-live="polite" hidden></output>
 
                 <fieldset>
                     <legend>Scegli data e ora della visita</legend>

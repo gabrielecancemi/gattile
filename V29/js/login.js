@@ -11,38 +11,25 @@
 
     if (!form) return;
 
-    function mostraErrore(campo, elemento, messaggio) {
-        if (!elemento) return;
-        if (messaggio) {
-            elemento.textContent = messaggio;
-            elemento.hidden = false;
-            if (campo) campo.setAttribute('aria-invalid', 'true');
-        } else {
-            elemento.hidden = true;
-            elemento.textContent = '';
-            if (campo) campo.removeAttribute('aria-invalid');
-        }
-    }
-
     function validaUsername() {
         const valore = campo_username ? campo_username.value.trim() : '';
-        if (!valore) { mostraErrore(campo_username, errore_username, 'Inserire l\'username.'); return false; }
-        if (!/^[a-zA-Z]/.test(valore)) { mostraErrore(campo_username, errore_username, 'Lo username deve iniziare con una lettera.'); return false; }
-        mostraErrore(campo_username, errore_username, ''); return true;
+        if (!valore) { mostraErroreCampo(campo_username, errore_username, 'Inserire l\'username.'); return false; }
+        if (!/^[a-zA-Z]/.test(valore)) { mostraErroreCampo(campo_username, errore_username, 'Lo username deve iniziare con una lettera.'); return false; }
+        mostraErroreCampo(campo_username, errore_username, ''); return true;
     }
 
     function validaPassword() {
-        if (!campo_password || !campo_password.value) { mostraErrore(campo_password, errore_password, 'Inserire la password.'); return false; }
-        mostraErrore(campo_password, errore_password, ''); return true;
+        if (!campo_password || !campo_password.value) { mostraErroreCampo(campo_password, errore_password, 'Inserire la password.'); return false; }
+        mostraErroreCampo(campo_password, errore_password, ''); return true;
     }
 
     if (campo_username) {
         campo_username.addEventListener('blur', validaUsername);
-        campo_username.addEventListener('input', function () { mostraErrore(campo_username, errore_username, ''); });
+        campo_username.addEventListener('input', function () { mostraErroreCampo(campo_username, errore_username, ''); });
     }
     if (campo_password) {
         campo_password.addEventListener('blur', validaPassword);
-        campo_password.addEventListener('input', function () { mostraErrore(campo_password, errore_password, ''); });
+        campo_password.addEventListener('input', function () { mostraErroreCampo(campo_password, errore_password, ''); });
     }
 
     // submit del form

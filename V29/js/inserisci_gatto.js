@@ -32,16 +32,8 @@
     }
 
     function mostraErrore(info, messaggio) {
-        if (!info || !info.err) return;
-        if (messaggio) {
-            info.err.textContent = messaggio;
-            info.err.hidden = false;
-            if (info.el) info.el.setAttribute('aria-invalid', 'true');
-        } else {
-            info.err.hidden = true;
-            info.err.textContent = '';
-            if (info.el) info.el.removeAttribute('aria-invalid');
-        }
+        if (!info) return;
+        mostraErroreCampo(info.el, info.err, messaggio);
     }
 
     function validaNome() {

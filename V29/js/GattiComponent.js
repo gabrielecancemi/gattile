@@ -8,14 +8,6 @@
     useEffect,
     useCallback
   } = React;
-  function etaInParole(mesi) {
-    if (mesi < 12) return mesi + ' ' + (mesi === 1 ? 'mese' : 'mesi');
-    const anni = Math.floor(mesi / 12);
-    const resto = mesi % 12;
-    let testo = anni + ' ' + (anni === 1 ? 'anno' : 'anni');
-    if (resto > 0) testo += ' e ' + resto + ' ' + (resto === 1 ? 'mese' : 'mesi');
-    return testo;
-  }
   function emettiSelezione(gatti) {
     document.dispatchEvent(new CustomEvent('gattiSelezionatiAggiornati', {
       detail: {

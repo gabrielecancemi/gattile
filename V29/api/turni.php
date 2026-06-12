@@ -84,8 +84,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         }
 
         // Generazione dei turni da 2 ore
-        $inizio->modify('+2 hours');
-        if ((int) $inizio->format('H') >= 19) {
+        $inizio->modify('+1 hour');
+        if ((int) $inizio->format('H') >= 18) {
             $inizio->modify('+1 day 00:00:00');
             $inizio->setTime(9, 0);
         }

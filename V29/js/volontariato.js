@@ -10,6 +10,7 @@
     const messaggio_volontariato = document.getElementById('msg-volontariato');
     const nota_bottone = document.getElementById('note-btn-volontariato');
     const errore_data = document.getElementById('err-data-turno');
+    const errore_fasce = document.getElementById('err-fasce-turni');
     const successo_volontariato = document.getElementById('successo-volontariato');
 
     if (!form || !contenitore) return;
@@ -17,59 +18,38 @@
     const fasce_selezionate = [];
     let fasce_per_data = {};
 
-    function ripuliscihtml(stringa) {
-        return String(stringa)
-            .replace(/&/g, '&amp;')
-            .replace(/</g, '&lt;')
-            .replace(/>/g, '&gt;')
-            .replace(/"/g, '&quot;');
-    }
-
-    function mostraErrore(campo, output, messaggio) {
-        if (!output) return;
-        if (messaggio) {
-            output.textContent = messaggio;
-            output.hidden = false;
-            if (campo) campo.setAttribute('aria-invalid', 'true');
-        } else {
-            output.textContent = '';
-            output.hidden = true;
-            if (campo) campo.removeAttribute('aria-invalid');
-        }
-    }
-
     function validaGiorno(mostra = true) {
         const v = input_data ? input_data.value : '';
 
         if (!v) {
-            if (mostra) mostraErrore(input_data, errore_data, 'Scegli un giorno per visualizzare le fasce orarie.');
+            if (mostra) mostraErroreCampo(input_data, errore_data, 'Scegli un giorno per visualizzare le fasce orarie.');
             return false;
         }
 
         const scelta = new Date(v + 'T00:00');
         if (isNaN(scelta.getTime())) {
-            if (mostra) mostraErrore(input_data, errore_data, 'Formato data non valido.');
+            if (mostra) mostraErroreCampo(input_data, errore_data, 'Formato data non valido.');
             return false;
         }
 
         const oggi = new Date();
         oggi.setHours(0, 0, 0, 0);
         if (scelta < oggi) {
-            if (mostra) mostraErrore(input_data, errore_data, 'La data non può essere nel passato.');
+            if (mostra) mostraErroreCampo(input_data, errore_data, 'La data non può essere nel passato.');
             return false;
         }
 
         if (input_data && input_data.min && v < input_data.min) {
-            if (mostra) mostraErrore(input_data, errore_data, 'Nessuna fascia disponibile prima di questa data.');
+            if (mostra) mostraErroreCampo(input_data, errore_data, 'Nessuna fascia disponibile prima di questa data.');
             return false;
         }
 
         if (input_data && input_data.max && v > input_data.max) {
-            if (mostra) mostraErrore(input_data, errore_data, 'Nessuna fascia disponibile dopo questa data.');
+            if (mostra) mostraErroreCampo(input_data, errore_data, 'Nessuna fascia disponibile dopo questa data.');
             return false;
         }
 
-        if (mostra) mostraErrore(input_data, errore_data, '');
+        if (mostra) mostraErroreCampo(input_data, errore_data, '');
         return true;
     }
 
@@ -224,6 +204,7 @@
                     if (!fasce_selezionate.includes(this.value)) {
                         fasce_selezionate.push(this.value);
                     }
+                    mostraErroreCampo(null, errore_fasce, '');
 
                 } else {
 
@@ -258,10 +239,7 @@
     }
 
     function mostraMessaggio(testo, tipo) {
-        if (!messaggio_volontariato) return;
-        messaggio_volontariato.textContent = testo;
-        messaggio_volontariato.className = 'messaggio messaggio-' + tipo;
-        messaggio_volontariato.classList.remove('sr-solo');
+        mostraMessaggioComune(messaggio_volontariato, testo, tipo);
     }
 
     if (input_data) {
@@ -280,7 +258,7 @@
         }
 
         if (fasce_selezionate.length === 0) {
-            mostraMessaggio('Seleziona almeno una fascia oraria.', 'errore');
+            mostraErroreCampo(null, errore_fasce, 'Seleziona almeno una fascia oraria.');
             return;
         }
 
@@ -316,6 +294,11 @@
                         successo_volontariato.innerHTML =
                             '<output class="messaggio messaggio-successo" role="status" aria-live="assertive">' +
                             ripuliscihtml(testo) + '</output>';
+                        bottoniConferma(successo_volontariato, [
+                            { href: 'volontariato.php', testo: 'Prenota altri turni' },
+                            { href: 'gatti.php', testo: 'Vai alle adozioni' },
+                            { href: 'index.php', testo: 'Torna alla home' }
+                        ]);
                     }
                     form.hidden = true;
                 }

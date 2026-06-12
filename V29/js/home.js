@@ -8,33 +8,11 @@
 
     if (!contenitore_statistiche && !contenitore_arrivi) return;
 
-    function ripuliscihtml(stringa) {
-        return String(stringa)
-            .replace(/&/g, '&amp;')
-            .replace(/</g, '&lt;')
-            .replace(/>/g, '&gt;')
-            .replace(/"/g, '&quot;');
-    }
-
-    function etaInParole(mesi) {
-        if (mesi < 12) return mesi + ' ' + (mesi === 1 ? 'mese' : 'mesi');
-        const anni = Math.floor(mesi / 12);
-        const resto = mesi % 12;
-        let testo = anni + ' ' + (anni === 1 ? 'anno' : 'anni');
-        if (resto > 0) testo += ' e ' + resto + ' ' + (resto === 1 ? 'mese' : 'mesi');
-        return testo;
-    }
-
     function dataItaliana(iso) {
         if (!iso) return '';
         const parti = String(iso).slice(0, 10).split('-');
         if (parti.length !== 3) return '';
         return parti[2] + '/' + parti[1] + '/' + parti[0];
-    }
-
-    function messaggioErrore(testo) {
-        return '<output class="messaggio messaggio-errore" role="alert" aria-live="assertive">'
-            + ripuliscihtml(testo) + '</output>';
     }
 
     function mostraStatistiche(statistiche, errore) {
