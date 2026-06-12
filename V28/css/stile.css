@@ -1,0 +1,2540 @@
+/* ============================================================
+   stile.css
+   ============================================================
+   INDICE
+   (Le media query sono in file CSS separati, collegati nell'head con <link>:
+    tema-scuro.css = tema scuro;  movimento-ridotto.css = prefers-reduced-motion)
+   2.  Reset & base
+   3.  Tipografia
+   4.  Link & utilità testo
+   5.  Focus & accessibilità
+   6.  Layout: Header
+       6a.  Logo
+       6b.  Hamburger
+       6c.  Nav principale
+       6d.  Area account (stato autenticazione)
+   7.  Layout: Footer
+       7a.  Logo footer
+       7b.  Sezione centrale (nav + privacy)
+       7c.  Contatti
+       7d.  Copyright
+   8.  Pulsante FAQ fisso
+   9.  Banner cookie
+   10. Main / contenuto
+   11. Pulsanti generali
+   12. Messaggi di feedback
+   13. Azioni principali (home)
+   14. Card gatto
+   15. Barra controlli
+   16. Form & campi
+   17. Progress & Meter
+   18. Caricamento
+   19. Turni volontariato
+   20. Tabelle
+   21. Details / Summary (accordion)
+   22. Separatore
+   23. Utility classi
+   24. Pagina FAQ
+   25. Responsive ≤ 900px
+   26. Responsive ≤ 600px
+   ============================================================ */
+
+
+/* ============================================================
+   2. RESET & BASE
+   ============================================================ */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    font-size: 100%;
+}
+
+body {
+    font-family: 'Segoe UI', 'Tahoma', 'Geneva', 'Verdana', sans-serif;
+    font-size: 1rem;
+    color: black;
+    background-color: cornsilk;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+
+/* ============================================================
+   3. TIPOGRAFIA
+   ============================================================ */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: 'Georgia', 'Times New Roman', serif;
+    color: saddlebrown;
+    line-height: 1.3;
+    margin-bottom: 1rem;
+}
+
+h1 {
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+h2 {
+    font-size: clamp(1.3rem, 3vw, 1.9rem);
+}
+
+h3 {
+    font-size: clamp(1.05rem, 2.5vw, 1.4rem);
+}
+
+p,
+blockquote {
+    margin-bottom: 1rem;
+    font-size: clamp(0.9rem, 1vw + 0.6rem, 1.1rem);
+    text-align: left;
+    line-height: 1.6;
+}
+
+ul,
+ol {
+    padding-left: 2rem;
+}
+
+abbr[title] {
+    text-decoration: none;
+    cursor: help;
+}
+
+strong {
+    color: saddlebrown;
+    font-weight: 700;
+}
+
+/*
+ * Nei contesti con sfondo scuro (header, footer),
+ * strong non deve ereditare il colore brand ma il bianco del genitore.
+ */
+.stato-autenticazione strong,
+.utente-info strong,
+.brand-logo strong,
+.footer strong {
+    color: inherit;
+}
+
+code {
+    background: wheat;
+    color: black;
+    padding: .1em .3em;
+    border-radius: .5rem;
+    font-size: .9em;
+}
+
+
+/* ============================================================
+   4. LINK & UTILITÀ TESTO
+   ============================================================ */
+a {
+    color: saddlebrown;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+a:hover,
+a:focus {
+    color: darkolivegreen;
+}
+
+
+/* ============================================================
+   5. FOCUS & ACCESSIBILITÀ
+   ============================================================ */
+:focus-visible {
+    outline: 3px solid orange;
+    outline-offset: 3px;
+    border-radius: .5rem;
+}
+
+summary:focus-visible {
+    outline: none;
+    background: orange !important;
+    color: white;
+}
+
+
+/* ============================================================
+   6. LAYOUT: HEADER
+   ============================================================
+   Desktop — tre colonne: [ logo 1fr ] [ nav 2fr ] [ account 1fr ]
+   Mobile  — due colonne: [ logo 1fr ] [ menu auto ]
+             la nav e l'account scendono sotto se .aperto
+   ============================================================ */
+.header {
+    display: grid;
+    grid-template-columns: auto 1fr auto auto;
+    grid-template-areas: "logo nav tema account";
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background-color: darkolivegreen;
+    border-bottom: 4px solid saddlebrown;
+    font-size: 1.1rem;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.header svg {
+    width: 16px;
+    height: 16px;
+}
+
+.testo-tema {
+    font-style: normal;
+}
+
+
+@media (max-width: 1300px) {
+    .header {
+        grid-template-columns: 1fr auto auto;
+        grid-template-areas: "logo tema account"
+            "nav nav nav";
+
+    }
+}
+
+
+
+
+/* ── 6a. Logo ─────────────────────────────────────────────── */
+.brand-logo {
+    grid-area: logo;
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    color: white;
+    text-decoration: none;
+    font-size: 1.3rem;
+    font-weight: 700;
+    flex-wrap: nowrap;
+}
+
+.brand-logo:hover,
+.brand-logo:focus {
+    opacity: .88;
+    color: white;
+}
+
+.logo-img {
+    flex-shrink: 0;
+    width: 50px;
+    height: 50px;
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+    /* centratura verticale */
+}
+
+
+/* ── 6b. Hamburger ────────────────────────────────────────── */
+/*
+ * Su desktop è rimosso dal flusso (position: absolute) così non
+ * occupa nessuna cella della grid.
+ * Su mobile torna in posizione statica (vedi §25).
+ */
+.menu-toggle {
+    display: none;
+    position: absolute;
+    /* fuori dalla grid su desktop */
+    align-items: center;
+    gap: .45rem;
+    padding: .45rem .7rem;
+    border: 2px solid transparent;
+    border-radius: .5rem;
+    background: transparent;
+    color: white;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    line-height: 1;
+}
+
+.menu-toggle:hover,
+.menu-toggle:focus {
+    background: #3e5022;
+}
+
+/* Icona "hamburger" disegnata via CSS (niente emoji): tre barre. */
+.menu-toggle-icona {
+    display: inline-block;
+    width: 1.1rem;
+    height: 2px;
+    background: currentColor;
+    position: relative;
+}
+
+.menu-toggle-icona::before,
+.menu-toggle-icona::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: currentColor;
+}
+
+.menu-toggle-icona::before {
+    top: -5px;
+}
+
+.menu-toggle-icona::after {
+    top: 5px;
+}
+
+/* Stato aperto: le barre diventano una "X". */
+.menu-toggle.aperto .menu-toggle-icona {
+    background: transparent;
+}
+
+.menu-toggle.aperto .menu-toggle-icona::before {
+    top: 0;
+    transform: rotate(45deg);
+}
+
+.menu-toggle.aperto .menu-toggle-icona::after {
+    top: 0;
+    transform: rotate(-45deg);
+}
+
+.menu-toggle:hover {
+    background: #3e5022;
+}
+
+
+/* ── 6c. Nav principale ───────────────────────────────────── */
+.header>nav {
+    grid-area: nav;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.header>nav ul {
+    display: flex;
+    gap: 1rem;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    align-items: center;
+}
+
+.header>nav a {
+    background-color: darkolivegreen;
+    color: white;
+    border-color: darkolivegreen;
+    font-size: inherit;
+    display: inline-flex;
+    align-items: center;
+    gap: .4rem;
+}
+
+/* Icona monocromatica della voce di menu: eredita il colore del testo del
+   link (currentColor), così resta coerente in ogni stato e tema. */
+.icona-menu {
+    width: 1rem;
+    height: 1rem;
+    color: currentColor;
+    flex-shrink: 0;
+}
+
+.header>nav a:hover,
+.header>nav a:focus {
+    background: #3e5022;
+}
+
+.header nav a.active {
+    background-color: black;
+    border-color: black;
+    color: white;
+}
+
+/* Link account nella nav: nascosti su desktop, visibili su mobile */
+.nav-conto {
+    display: none;
+}
+
+
+/* Selettore tema (3 stati). Icona disegnata via CSS: cerchio metà pieno. */
+.toggle-tema {
+    display: inline-flex;
+    align-items: center;
+    gap: .4rem;
+    background: transparent;
+    border: 2px solid white;
+    color: white;
+    padding: .35rem .6rem;
+    font-size: .85rem;
+    font-weight: 700;
+    line-height: 1;
+    flex-shrink: 0;
+    cursor: pointer;
+    grid-area: tema;
+}
+
+.toggle-tema:hover,
+.toggle-tema:focus {
+    background: #3e5022;
+    color: white;
+}
+
+/* Icona tema in SVG (stampabile su tutti i browser): un cerchio con la metà
+   destra piena. Lo stato cambia quanta parte del disco è riempita.
+   Due forme sovrapposte (metà / pieno) commutate via opacity: nessuna
+   dipendenza dalla proprietà CSS "d:", supportata ovunque e in stampa. */
+.toggle-tema .icona-tema {
+    width: 1rem;
+    height: 1rem;
+    color: currentColor;
+    flex-shrink: 0;
+}
+
+/* "sistema" (default): metà disco pieno. */
+.toggle-tema .icona-tema-meta {
+    opacity: 1;
+}
+
+.toggle-tema .icona-tema-pieno {
+    opacity: 0;
+}
+
+/* "chiaro": disco vuoto (solo contorno). */
+.toggle-tema[data-stato="chiaro"] .icona-tema-meta,
+.toggle-tema[data-stato="chiaro"] .icona-tema-pieno {
+    opacity: 0;
+}
+
+/* "scuro": disco interamente pieno. */
+.toggle-tema[data-stato="scuro"] .icona-tema-meta {
+    opacity: 0;
+}
+
+.toggle-tema[data-stato="scuro"] .icona-tema-pieno {
+    opacity: 1;
+}
+
+/* Contenitore bianco compatto: [ icona + nome + badge | pulsante ] */
+/*.stato-autenticazione {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    row-gap: .6rem;
+    padding: .6rem;
+    background: white;
+    color: black;
+    border-radius: .5rem;
+}*/
+
+.stato-autenticazione {
+    grid-area: account;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    gap: .5rem;
+    padding: .6rem;
+    background: white;
+    color: black;
+    border-radius: .5rem;
+}
+
+.utente-info {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    margin: 0;
+    padding-right: .8rem;
+    font-size: 1rem;
+    color: black;
+    min-width: 0;
+    flex-wrap: wrap;
+}
+
+.nome-utente {
+    font-weight: 700;
+    font-style: normal;
+    color: saddlebrown;
+    white-space: nowrap;
+    max-width: 100px;
+}
+
+/* Icona utente disegnata in SVG (testa + spalle): stampabile su tutti i
+   browser, nessuna emoji, nessuno pseudo-elemento. */
+.icona-utente {
+    display: inline-block;
+    width: 1.1rem;
+    height: 1.1rem;
+    color: #6b3410;
+    flex-shrink: 0;
+}
+
+.badge-utente {
+    display: inline-block;
+    padding: .1rem .45rem;
+    background: darkolivegreen;
+    color: white;
+    border-radius: .5rem;
+    font-size: .72rem;
+    font-weight: 700;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+/* Separatore verticale tra info utente e pulsante azione */
+.account-azioni {
+    border-left: 1px solid black;
+    padding-left: .8rem;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: .8rem;
+    margin-bottom: 0;
+}
+
+/* Pulsanti area account */
+
+.btn-login {
+    background-color: saddlebrown;
+    border-color: saddlebrown;
+    color: white;
+}
+
+.btn:active {
+    zoom: 95%;
+}
+
+.btn-login:hover,
+.btn-login:focus {
+    background-color: #6b3410;
+    border-color: #6b3410;
+    color: white;
+}
+
+.btn-signin {
+    background-color: white;
+    border-color: saddlebrown;
+    color: saddlebrown;
+}
+
+.btn-signin:hover,
+.btn-signin:focus {
+    border-color: #6b3410;
+    color: #6b3410;
+    background-color: cornsilk;
+}
+
+
+.btn-logout {
+    background: darkred;
+    color: white;
+    border-color: darkred;
+}
+
+.btn-logout:hover,
+.btn-logout:focus {
+    background: maroon;
+    color: white;
+    border-color: maroon;
+}
+
+
+/* ============================================================
+   7. LAYOUT: FOOTER
+   ============================================================
+   Desktop — tre colonne:
+     [ logo ]  [ nav principale + nav privacy ]  [ contatti ]
+     [ copyright — larghezza piena ]
+   Mobile  — singola colonna (vedi §25)
+   ============================================================ */
+.footer {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: auto auto;
+    grid-template-areas:
+        "f-logo  f-centro  f-contatti"
+        "f-copy  f-copy    f-copy";
+    align-items: center;
+    column-gap: 2rem;
+    row-gap: 1rem;
+    padding: 1.5rem 2rem;
+    background: saddlebrown;
+    border-top: 4px solid darkolivegreen;
+    color: white;
+    margin-top: auto;
+    font-size: 1rem;
+}
+
+.footer .brand-logo {
+    grid-area: f-logo;
+}
+
+.footer .footer-navigazione {
+    grid-area: f-centro;
+}
+
+.footer .footer-contatti {
+    grid-area: f-contatti;
+    justify-self: end;
+}
+
+.footer .footer-copy {
+    grid-area: f-copy;
+}
+
+
+/* ── 7a. Logo footer ──────────────────────────────────────── */
+.footer .brand-logo {
+    color: white;
+}
+
+.footer .brand-logo:hover,
+.footer .brand-logo:focus {
+    opacity: .88;
+    color: white;
+}
+
+
+/* ── 7b. Sezione centrale (nav principale + nav privacy) ──── */
+.footer-navigazione {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: .5rem;
+}
+
+/* Nav principale footer */
+.footer-navigazione>nav:first-child ul {
+    display: flex;
+    gap: .25rem;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.footer-navigazione>nav:first-child a {
+    padding: .3rem .6rem;
+    color: white;
+    background-color: saddlebrown;
+    border-color: saddlebrown;
+}
+
+.footer-navigazione>nav:first-child a:hover,
+.footer-navigazione>nav:first-child a:focus {
+    background-color: #6b3410;
+    border-color: #6b3410;
+    color: white;
+}
+
+.footer-navigazione>nav:first-child a.active,
+.faq-button.active {
+    background-color: black;
+    color: white;
+    border-color: black;
+}
+
+/* Nav privacy (sotto la nav principale) */
+.footer-privacy ul {
+    display: flex;
+    gap: 1rem;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.footer-privacy a,
+.footer-privacy .link-button {
+    font-size: .82rem;
+    color: rgba(255, 255, 255, .75);
+}
+
+.footer-privacy a:hover,
+.footer-privacy a:focus,
+.footer-privacy .link-button:hover,
+.footer-privacy .link-button:focus {
+    color: white;
+    text-decoration: underline;
+}
+
+
+/* ── 7c. Contatti ─────────────────────────────────────────── */
+.footer-contatti {
+    font-style: normal;
+    line-height: 1.6;
+    font-size: .88rem;
+}
+
+/* I paragrafi degli indirizzi restano compatti */
+.footer-contatti p,
+address p {
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+.footer-contatti a {
+    color: rgba(255, 255, 255, .85);
+}
+
+.footer-contatti a:hover {
+    color: white;
+    text-decoration: underline;
+}
+
+/* Pulsante testuale generico (usato nel footer privacy) */
+.link-button {
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, .85);
+    text-decoration: underline;
+    cursor: pointer;
+    font: inherit;
+    font-size: .88rem;
+    padding: 0;
+}
+
+.link-button:hover {
+    color: white;
+}
+
+/* URL pagina — visibile solo in stampa */
+.footer-url {
+    display: none;
+}
+
+
+/* ── 7d. Copyright ────────────────────────────────────────── */
+.footer-copy {
+    border-top: 1px solid rgba(255, 255, 255, .2);
+    padding-top: 1rem;
+    text-align: center;
+    font-size: .82rem;
+    color: rgba(255, 255, 255, .75);
+}
+
+
+/* ============================================================
+   8. PULSANTE FAQ FISSO
+   ============================================================ */
+.faq-button {
+    position: fixed;
+    right: max(1rem, env(safe-area-inset-right));
+    bottom: max(1rem, env(safe-area-inset-bottom));
+    width: 3.5rem;
+    height: 3.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: darkolivegreen;
+    color: white;
+    text-decoration: none;
+    font-size: 1.5rem;
+    font-weight: 700;
+    border: 2px solid saddlebrown;
+    z-index: 999;
+}
+
+/* Quando il banner cookie è visibile, il pulsante FAQ si solleva
+   (commutato via classList da footer.js, non con stile in-line). */
+.faq-button--alzato {
+    bottom: max(5rem, env(safe-area-inset-bottom));
+}
+
+.faq-button:hover,
+.faq-button:focus-visible {
+    transform: scale(1.07);
+    color: white;
+    background-color: #3e5022;
+    border-color: #6b3410;
+}
+
+.faq-button:active {
+    zoom: 95%;
+}
+
+
+/* ============================================================
+   9. BANNER COOKIE
+   ============================================================ */
+.banner-cookie {
+    position: sticky;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: saddlebrown;
+    color: white;
+    padding: 1rem 5rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem;
+    z-index: 800;
+    border-top: 4px solid darkolivegreen;
+}
+
+.banner-cookie p {
+    margin: 0;
+    flex: 1;
+    min-width: 200px;
+    font-size: .9rem;
+}
+
+.banner-cookie p a {
+    color: wheat;
+}
+
+.banner-cookie nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    gap: .5rem;
+}
+
+
+/* ============================================================
+   10. MAIN / CONTENUTO
+   ============================================================ */
+main {
+    flex: 1;
+    width: 100%;
+    line-height: 1.4;
+    color-scheme: light;
+}
+
+/*
+ * Container interno a ogni section/aside del main:
+ * centra e limita la larghezza senza toccare il markup PHP.
+ * Usiamo un selettore diretto sui figli di <main>.
+ * (Escluso il main della home, che usa una griglia a aree dedicata.)
+ */
+main:not(.main-home)>section,
+main:not(.main-home)>aside,
+main:not(.main-home)>article {
+    width: 100%;
+    max-width: 1100px;
+    margin-inline: auto;
+    padding: clamp(1.5rem, 4vw, 3rem) clamp(1rem, 5vw, 3rem);
+}
+
+/* ============================================================
+   10b. HOME — LAYOUT A GRIGLIA CON AREE NOMINATE (grid-template-areas)
+   ============================================================
+   DESKTOP (≥ 901px): impaginazione "a rivista" su due colonne.
+     hero      → larghezza piena
+     perche / impatto    → affiancate
+     come  / storia      → affiancate
+     arrivi              → larghezza piena (vetrina)
+     aiuta / faq         → affiancate
+   MOBILE / TABLET (≤ 900px): le aree collassano in colonna unica
+   con un ordine di lettura naturale (vedi §25). La differenza fra
+   desktop e mobile è quindi marcata: due colonne ricche vs flusso
+   verticale lineare.
+   ============================================================ */
+.main-home {
+    display: grid;
+    width: 100%;
+    max-width: 1100px;
+    margin-inline: auto;
+    gap: 0;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+        "hero hero"
+        "perche impatto"
+        "come storia"
+        "arrivi arrivi"
+        "aiuta faq";
+    align-items: stretch;
+}
+
+.main-home>section,
+.main-home>aside {
+    padding: clamp(1.5rem, 4vw, 3rem) clamp(1rem, 5vw, 3rem);
+    min-width: 0;
+    /* evita overflow dei contenuti nella cella */
+}
+
+.main-home .zona-hero {
+    grid-area: hero;
+}
+
+.main-home .zona-perche {
+    grid-area: perche;
+}
+
+.main-home .zona-impatto {
+    grid-area: impatto;
+}
+
+.main-home .zona-come {
+    grid-area: come;
+}
+
+.main-home .zona-storia {
+    grid-area: storia;
+}
+
+.main-home .zona-arrivi {
+    grid-area: arrivi;
+}
+
+.main-home .zona-aiuta {
+    grid-area: aiuta;
+}
+
+.main-home .zona-faq {
+    grid-area: faq;
+}
+
+/*
+ * (#2) Nessun bordo di separazione tra le sezioni del main.
+ * L'unico bordo previsto è quello inferiore della PRIMA section
+ * di ogni main (quella che contiene l'h1), definito più sotto.
+ */
+
+/* (#2) Prima sezione (hero, con h1): unico bordo è quello inferiore. */
+main>section:first-child {
+    background: white;
+    padding-block: clamp(2rem, 6vw, 4rem);
+    border-bottom: 4px solid saddlebrown;
+    border-radius: .5rem;
+}
+
+/* ── Hero: titolo H1 centrato, paragrafi centrati ── */
+main>section:first-child h1 {
+    margin-inline: auto;
+}
+
+main>section:first-child>p {
+    max-width: 70ch;
+    margin-inline: auto;
+    text-align: center;
+    font-size: clamp(1rem, 1.5vw + 0.5rem, 1.15rem);
+    color: dimgray;
+}
+
+/* ── Liste punti (ul/ol nelle sezioni informative) ── */
+main>section ul:not([class]),
+main>section ol:not([class]) {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding-left: 0;
+    list-style: none;
+    margin-top: 1rem;
+}
+
+main>section ul:not([class]) li,
+main>section ol:not([class]) li {
+    padding: 1rem 1rem 1rem 3.2rem;
+    background: white;
+    border: 1px solid tan;
+    border-left: 4px solid saddlebrown;
+    border-radius: .5rem;
+    position: relative;
+    font-size: clamp(0.9rem, 1vw + 0.5rem, 1rem);
+    line-height: 1.6;
+}
+
+main>section ol:not([class]) {
+    counter-reset: passi;
+}
+
+main>section ol:not([class]) li {
+    counter-increment: passi;
+    border-left-color: darkolivegreen;
+}
+
+main>section ol:not([class]) li::before {
+    content: counter(passi);
+    position: absolute;
+    left: 0.9rem;
+    width: 1.6rem;
+    height: 1.6rem;
+    top: calc(50% - 0.8rem);
+    background: darkolivegreen;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.8rem;
+    line-height: 1;
+}
+
+main>section ul:not([class]) li::before {
+    content: '';
+    position: absolute;
+    left: 0.9rem;
+    top: 1.5rem;
+    width: .5rem;
+    height: .5rem;
+    border-radius: 50%;
+    background: saddlebrown;
+}
+
+/* ── Blockquote stile testimonianza ── */
+blockquote {
+    position: relative;
+    background: white;
+    border-left: 5px solid saddlebrown;
+    border-radius: .5rem;
+    padding: 1.5rem 1.5rem 1.5rem calc(2rem + 1rem);
+    margin: 1.5rem 0 .5rem;
+    font-size: clamp(1rem, 1.5vw + 0.3rem, 1.15rem);
+    font-style: italic;
+    color: dimgray;
+}
+
+blockquote::before {
+    content: '"';
+    position: absolute;
+    left: 0.6rem;
+    top: 0.2rem;
+    font-size: 3.5rem;
+    color: saddlebrown;
+    opacity: 0.35;
+    font-family: 'Georgia', 'Times New Roman', serif;
+    line-height: 1;
+}
+
+/* Autore testimonianza */
+main>aside>p:last-child {
+    color: saddlebrown;
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-top: -0.5rem;
+}
+
+/* ── Statistiche (dl.statistiche) ── */
+.statistiche {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+    list-style: none;
+    padding: 0;
+    margin-top: 1.5rem;
+    max-width: 100%;
+}
+
+.statistiche dt {
+    font-size: clamp(0.75rem, 1vw + 0.4rem, 0.85rem);
+    font-weight: 600;
+    color: darkolivegreen;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: .25rem;
+    line-height: 1.3;
+    background: white;
+    border-radius: .5rem .5rem 0 0;
+    padding: 1rem 1rem .25rem;
+    border: 1px solid tan;
+    border-bottom: 3px solid darkolivegreen;
+    margin: 0;
+}
+
+.statistiche dd {
+    font-family: 'Georgia', 'Times New Roman', serif;
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 700;
+    color: darkolivegreen;
+    margin: 0;
+    line-height: 1;
+    background: white;
+    border-radius: 0 0 .5rem .5rem;
+    padding: .25rem 1rem 1rem;
+    border: 1px solid tan;
+    border-top: 3px solid darkolivegreen;
+}
+
+
+
+
+/* ============================================================
+   11. PULSANTI GENERALI
+   ============================================================ */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: .25rem;
+    padding: .45rem .8rem;
+    border-radius: .5rem;
+    font-family: 'Segoe UI', 'Tahoma', 'Geneva', 'Verdana', sans-serif;
+    font-size: clamp(0.85rem, 1vw + 0.4rem, 1rem);
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    border-width: 2px;
+    border-style: solid;
+    white-space: nowrap;
+}
+
+.btn:active {
+    transform: translateY(0);
+}
+
+.btn-primario {
+    background: darkolivegreen;
+    color: white;
+    border-color: darkolivegreen;
+}
+
+.btn-primario:hover,
+.btn-primario:focus {
+    background: #3e5022;
+    border-color: #3e5022;
+    color: white;
+}
+
+.btn-secondario {
+    background: transparent;
+    color: white;
+    border-color: darkolivegreen;
+}
+
+.btn-secondario:hover,
+.btn-secondario:focus {
+    background: #6b3410;
+    border-color: #3e5022;
+    color: white;
+}
+
+
+/* ============================================================
+   12. MESSAGGI DI FEEDBACK
+   ============================================================ */
+.messaggio {
+    display: block;
+    padding: 1rem 1.5rem;
+    border-radius: .5rem;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+    border-left: 4px solid;
+}
+
+.messaggio-errore {
+    background: mistyrose;
+    color: darkred;
+    border-color: darkred;
+    line-height: 1.6;
+}
+
+.messaggio-successo {
+    background: honeydew;
+    color: darkgreen;
+    border-color: darkgreen;
+}
+
+.messaggio-avviso {
+    background: cornsilk;
+    color: saddlebrown;
+    border-color: saddlebrown;
+}
+
+/* Etichetta testuale (al posto delle emoji): pillola colorata mostrata davanti
+   a ogni messaggio tramite ::before, in modo coerente anche per i messaggi
+   generati via JavaScript. */
+.messaggio::before {
+    content: 'Nota';
+    display: inline-block;
+    margin-right: .5rem;
+    padding: .05rem .5rem;
+    border-radius: 1rem;
+    font-size: .72rem;
+    font-weight: 700;
+    letter-spacing: .03em;
+    text-transform: uppercase;
+    color: white;
+    vertical-align: middle;
+    background: saddlebrown;
+}
+
+.messaggio-errore::before {
+    content: 'Errore';
+    background: darkred;
+}
+
+.messaggio-successo::before {
+    content: 'OK';
+    background: darkgreen;
+}
+
+.messaggio-avviso::before {
+    content: 'Info';
+    background: saddlebrown;
+}
+
+/* Manteniamo le vecchie regole .messaggio-tag per i pochi punti che ancora
+   inseriscono l'elemento (es. componente React), evitando una doppia pillola. */
+.messaggio-tag {
+    display: inline-block;
+    margin-right: .5rem;
+    padding: .05rem .5rem;
+    border-radius: 1rem;
+    font-size: .72rem;
+    font-weight: 700;
+    letter-spacing: .03em;
+    text-transform: uppercase;
+    color: white;
+    vertical-align: middle;
+}
+
+.messaggio-errore .messaggio-tag {
+    background: darkred;
+}
+
+.messaggio-successo .messaggio-tag {
+    background: darkgreen;
+}
+
+.messaggio-avviso .messaggio-tag {
+    background: saddlebrown;
+}
+
+
+/* ============================================================
+   13. AZIONI PRINCIPALI (home)
+   ============================================================ */
+.azioni-principali ul {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    list-style: none;
+    padding: 0;
+    margin-top: 1.5rem;
+}
+
+/* Sezione "nuovi arrivi": sfondo caldo distinto */
+.nuovi-arrivi {
+    border-radius: .5rem;
+    border: 1px solid tan !important;
+}
+
+.nuovi-arrivi h2 {
+    font-size: clamp(1.2rem, 2.5vw, 1.7rem);
+}
+
+.badge-nuovo {
+    display: inline-block;
+    background: darkred;
+    color: white;
+    font-size: .72rem;
+    padding: 2px .5rem;
+    border-radius: .5rem;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    font-weight: 700;
+    margin-left: .25rem;
+    vertical-align: middle;
+}
+
+
+/* ============================================================
+   14. CARD GATTO
+   ============================================================ */
+.griglia-gatti {
+    display: grid;
+    /* Card orizzontali: una colonna larga (su schermi ampi due colonne) */
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    list-style: none;
+    padding: 0;
+    margin-top: 1.5rem;
+}
+
+article svg {
+    width: 32px;
+    height: 32px;
+}
+
+/* Su schermi molto larghi due card orizzontali affiancate */
+@media (min-width: 900px) {
+    .griglia-gatti {
+        grid-template-columns: repeat(2, 1fr);
+        text-align: center;
+    }
+}
+
+/* CARD ORIZZONTALE: immagine a sinistra, contenuti a destra.
+   Le dimensioni della colonna immagine sono fisse così lo spazio è
+   riservato prima del caricamento dell'immagine → niente layout shift (CLS). */
+.card-gatto {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: stretch;
+    background: white;
+    border: 1px solid tan;
+    border-radius: .5rem;
+    overflow: hidden;
+    position: relative;
+}
+
+.card-gatto[role="checkbox"] {
+    cursor: pointer;
+}
+
+/* (#3) All'hover si sposta SOLO l'intera card, senza ombre e
+   senza ingrandire l'immagine. Effetto attivo solo sulle card cliccabili
+   (quelle selezionabili per prenotare la visita, con role="checkbox"). */
+.card-gatto[role="checkbox"]:hover {
+    transform: translateY(-3px);
+}
+
+/* Stato selezionato */
+.card-gatto.selezionata {
+    outline: 3px solid saddlebrown;
+    outline-offset: -3px;
+}
+
+.card-gatto picture {
+    margin: 0;
+    /* Larghezza/altezza riservate: rapporto fisso, nessun salto di layout */
+    width: 200px;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    background: wheat;
+}
+
+.card-gatto .foto-gatto {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.card-gatto-corpo {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    gap: .4rem;
+    min-width: 0;
+}
+
+.card-gatto-descr {
+    overflow: hidden;
+    margin-bottom: 0;
+    margin-top: 0;
+    font-style: italic;
+    font-size: .92rem;
+    line-height: 1.5;
+}
+
+.card-gatto .btn {
+    align-self: flex-start;
+    margin-top: auto;
+}
+
+.card-gatto-corpo h3 {
+    font-size: clamp(1.05rem, 1.5vw + 0.3rem, 1.25rem);
+    margin-bottom: 0;
+    letter-spacing: .02em;
+    text-transform: uppercase;
+    text-align: left;
+}
+
+/* Tag / etichette */
+.card-gatto-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .25rem;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.tag {
+    font-size: .66rem;
+    padding: 2px .5rem;
+    border-radius: .5rem;
+    background: wheat;
+    color: saddlebrown;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+}
+
+/* Definizione lista dati gatto */
+.card-gatto dl {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: .25rem .8rem;
+    font-size: .88rem;
+    margin-bottom: .25rem;
+    text-align: left;
+}
+
+.card-gatto dt {
+    font-weight: 600;
+    color: saddlebrown;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    font-size: .76rem;
+    align-self: center;
+}
+
+.card-gatto dd {
+    margin: 0;
+}
+
+.card-gatto meter {
+    width: 100%;
+    height: .6rem;
+    margin-top: .25rem;
+    accent-color: saddlebrown;
+}
+
+/* Badge di selezione mostrato solo quando la card è selezionata.
+   Il segno di spunta è un SVG inline: stampabile su tutti i browser. */
+.card-badge-selezione {
+    position: absolute;
+    top: .5rem;
+    right: .5rem;
+    width: 2rem;
+    height: 2rem;
+    display: none;
+    pointer-events: none;
+    z-index: 3;
+}
+
+.card-gatto.selezionata .card-badge-selezione {
+    display: block;
+}
+
+
+/* (#8) Spazio tra il riepilogo dei gatti selezionati e il form di
+   prenotazione, nella pagina "Adotta un gatto". */
+#gatti-selezionati-riepilogo {
+    margin-bottom: 2rem;
+}
+
+/* ============================================================
+   15. BARRA CONTROLLI
+   ============================================================ */
+/* Riserva spazio per il componente React mentre carica:
+   riduce il Cumulative Layout Shift (CLS) sulla pagina "adotta". */
+#react-gatti-root {
+    display: block;
+    min-height: 60vh;
+}
+
+#react-gatti-root .caricamento {
+    min-height: 40vh;
+    align-items: center;
+}
+
+.barra-controlli {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: flex-end;
+    margin-bottom: 1.5rem;
+    padding: 1rem 1.5rem;
+    background: white;
+    border-radius: .5rem;
+    border: 1px solid tan;
+    max-width: none;
+    width: 100%;
+}
+
+.barra-controlli label {
+    display: flex;
+    flex-direction: column;
+    gap: .25rem;
+    flex: 1;
+    min-width: 160px;
+    font-size: .9rem;
+    font-weight: 600;
+}
+
+
+/* ============================================================
+   16. FORM & CAMPI
+   ============================================================ */
+form {
+    max-width: 600px;
+}
+
+/* Form centrato nella pagina (login, registrazione) */
+main>section>form,
+main>section>div>form {
+    margin-inline: auto;
+}
+
+fieldset {
+    border: 1px solid tan;
+    border-radius: .5rem;
+    padding: 1.5rem;
+    margin-bottom: .8rem;
+    background: white;
+}
+
+/* Contiene il float della legend dentro il fieldset. */
+fieldset::after {
+    content: "";
+    display: block;
+    clear: both;
+}
+
+legend {
+    /* Per default il browser "aggancia" la legend sul bordo superiore del
+       fieldset. Con float:left perde quel rendering speciale e si comporta
+       come un normale blocco in cima al contenuto, quindi sotto il bordo. */
+    float: left;
+    width: 100%;
+    font-family: 'Georgia', 'Times New Roman', serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: saddlebrown;
+    padding: 0;
+    margin-bottom: .75rem;
+    background-color: transparent;
+    border-radius: 0;
+}
+
+/* La legend è in float: questo riporta in flusso il contenuto del fieldset. */
+legend+* {
+    clear: both;
+}
+
+label {
+    display: flex;
+    flex-direction: row;
+    gap: .25rem;
+    margin-top: .8rem;
+    margin-bottom: .4rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: black;
+}
+
+/* Campi testo comuni */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+input[type="date"],
+input[type="datetime-local"],
+input[type="search"],
+select,
+textarea {
+    width: 100%;
+    padding: .5rem 1rem;
+    border: 2px solid tan;
+    border-radius: .5rem;
+    font-family: 'Segoe UI', 'Tahoma', 'Geneva', 'Verdana', sans-serif;
+    font-size: 1rem;
+    color: black;
+    background: white;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    border-color: #1a5ea8;
+    outline: none;
+}
+
+/* Stato di errore accessibile via aria-invalid */
+input[aria-invalid="true"],
+select[aria-invalid="true"],
+textarea[aria-invalid="true"] {
+    border-color: darkred;
+}
+
+textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+/* Checkbox e radio */
+.campo-checkbox {
+    flex-direction: row;
+    align-items: center;
+    gap: .5rem;
+}
+
+/* (#6) Checkbox e radio: l'accent-color colora SOLO la spunta quando
+   sono selezionati. Da non selezionati restano una casella chiara con
+   bordo, mai con sfondo scuro (anche in tema scuro forziamo lo schema
+   chiaro del controllo). */
+input[type="checkbox"],
+input[type="radio"] {
+    width: 1.2rem;
+    height: 1.2rem;
+    accent-color: saddlebrown;
+    color-scheme: light;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+/* Testi ausiliari del form */
+.campo-obbligatorio::before {
+    content: '* ';
+    color: darkred;
+}
+
+.aiuto-campo {
+    display: block;
+    font-size: .85rem;
+    font-weight: normal;
+    margin-top: .5rem;
+    margin-bottom: .5rem;
+}
+
+
+/* Contatore caratteri "in esaurimento" (commutato via classList) */
+.contatore-basso {
+    color: darkred;
+    font-weight: 700;
+}
+
+.errore-campo {
+    font-size: .85rem;
+    color: darkred;
+    font-weight: normal;
+    display: flex;
+    align-items: center;
+    gap: .25rem;
+    margin-top: 0.2rem;
+}
+
+/* Etichetta "Errore" davanti a ogni messaggio di errore di campo. */
+.errore-campo::before {
+    content: 'Errore';
+    display: inline-block;
+    padding: .05rem .5rem;
+    border-radius: 1rem;
+    font-size: .72rem;
+    font-weight: 700;
+    letter-spacing: .03em;
+    text-transform: uppercase;
+    color: white;
+    background: darkred;
+    flex-shrink: 0;
+}
+
+/* Nasconde l'etichetta quando il campo non ha errori (output svuotato). */
+.errore-campo[hidden] {
+    display: none;
+}
+
+/* ============================================================
+   17. PROGRESS & METER
+   ============================================================ */
+progress,
+meter {
+    width: 100%;
+    height: 1rem;
+    border-radius: .5rem;
+    border: 1px solid tan;
+    color: white;
+    overflow: hidden;
+    accent-color: saddlebrown;
+}
+
+
+/* ============================================================
+   18. CARICAMENTO
+   ============================================================ */
+.caricamento {
+    display: flex;
+    justify-content: center;
+    padding: 2rem;
+    color: saddlebrown;
+    font-style: italic;
+}
+
+
+/* ============================================================
+   19. TURNI VOLONTARIATO
+   ============================================================ */
+.griglia-turni {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(185px, 1fr));
+    gap: 1rem;
+    list-style: none;
+    padding: 0;
+    margin-top: 1rem;
+}
+
+.turno-item {
+    border: 2px solid tan;
+    border-radius: .5rem;
+    padding: 1rem;
+    background: white;
+}
+
+.turno-item.disponibile {
+    cursor: pointer;
+}
+
+.turno-item.disponibile:hover {
+    border-color: darkolivegreen;
+    background: wheat;
+}
+
+.turno-item.pieno {
+    opacity: .55;
+    cursor: not-allowed;
+    background: wheat;
+}
+
+/* Fascia a cui l'utente è già iscritto: evidenziata, non riselezionabile */
+.turno-item.iscritto {
+    border-color: darkolivegreen;
+    background: wheat;
+    border-left: 4px solid darkolivegreen;
+}
+
+.turno-ora {
+    font-weight: 700;
+}
+
+.stato-turno {
+    font-size: .8rem;
+    font-weight: 700;
+    margin-top: .25rem;
+}
+
+.stato-turno.pieno {
+    color: darkred;
+}
+
+.stato-turno.libero {
+    color: darkgreen;
+}
+
+.stato-turno.iscritto {
+    color: darkolivegreen;
+}
+
+
+/* ============================================================
+   20. TABELLE
+   ============================================================ */
+.table-responsive {
+    overflow-x: auto;
+    border-radius: .5rem;
+    border: 1px solid tan;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1.5rem;
+    font-size: clamp(0.82rem, 1vw + 0.4rem, 1rem);
+}
+
+caption {
+    text-align: left;
+    font-weight: 700;
+    font-family: 'Georgia', 'Times New Roman', serif;
+    color: saddlebrown;
+    margin-bottom: .5rem;
+    font-size: 1.05rem;
+}
+
+th,
+td {
+    padding: .5rem 1rem;
+    border: 1px solid tan;
+    text-align: left;
+    vertical-align: top;
+}
+
+th {
+    background: saddlebrown;
+    color: white;
+    font-family: 'Georgia', 'Times New Roman', serif;
+    font-size: 0.9rem;
+    letter-spacing: 0.03em;
+    font-weight: 700;
+}
+
+tr:nth-child(even) td {
+    background: wheat;
+}
+
+tr:hover td {
+    background: tan;
+}
+
+
+/* ============================================================
+   21. DETAILS / SUMMARY (accordion)
+   ============================================================ */
+details {
+    border: 1px solid tan;
+    border-radius: .5rem;
+    margin-bottom: .5rem;
+    background: white;
+    overflow: hidden;
+}
+
+summary {
+    padding: 1rem 1.5rem;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: clamp(0.9rem, 1vw + 0.4rem, 1rem);
+    color: saddlebrown;
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: white;
+    gap: 1rem;
+}
+
+summary:hover {
+    background: wheat;
+}
+
+details[open] summary {
+    background: wheat;
+    border-bottom: 1px solid tan;
+}
+
+/* Freccietta */
+summary::after {
+    content: "";
+    flex-shrink: 0;
+    width: .55rem;
+    height: .55rem;
+    border-right: 2px solid saddlebrown;
+    border-bottom: 2px solid saddlebrown;
+    transform: rotate(45deg);
+    transform-origin: center;
+    opacity: 0.7;
+    margin-bottom: .15rem;
+}
+
+details[open] summary::after {
+    transform: rotate(225deg);
+    margin-bottom: -.15rem;
+}
+
+details>*:not(summary) {
+    padding: 1rem 1.5rem 1.5rem;
+}
+
+details>p:not(summary) {
+    max-width: none;
+}
+
+
+/* ============================================================
+   22. SEPARATORE
+   ============================================================ */
+.separatore {
+    border: 0;
+    border-top: 1px solid tan;
+    margin: 2rem 0;
+}
+
+
+/* ============================================================
+   23. UTILITY CLASSI
+   ============================================================ */
+
+/* Solo per screen reader — invisibile visivamente */
+.sr-solo {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+.testo-centro {
+    text-align: center;
+}
+
+.testo-errore {
+    color: darkred;
+}
+
+.testo-successo {
+    color: darkgreen;
+}
+
+
+/* ============================================================
+   24. PAGINA FAQ
+   ============================================================ */
+
+.faq-categoria p {
+    margin-bottom: 0;
+}
+
+main .main-faq section {
+    padding-top: 0;
+}
+
+.faq-processo {
+    line-height: 1.7;
+}
+
+
+.faq-categoria h2 {
+    border-bottom: 2px solid tan;
+    padding-bottom: .5rem;
+    margin-bottom: 1rem;
+    font-size: clamp(1.15rem, 2vw + 0.3rem, 1.6rem);
+}
+
+
+/* ============================================================
+   25. RESPONSIVE — ≤ 900px (tablet e mobile)
+   ============================================================
+   La grid dell'header diventa [ logo 1fr ] [ menu auto ].
+   L'hamburger (menu-toggle) torna nel flusso (position: static).
+   Nav e account scendono sotto, visibili solo se .aperto.
+   Il footer collassa in colonna singola.
+   ============================================================ */
+@media (max-width: 900px) {
+
+    .header {
+        grid-template-columns: 1fr auto;
+        grid-template-areas:
+            "logo toggle"
+            "nav  nav"
+            "account account"
+            "tema tema";
+        gap: 0;
+        padding: 1rem;
+        align-items: center;
+    }
+
+    .stato-autenticazione,
+    .toggle-tema {
+        justify-self: center;
+        width: fit-content;
+    }
+
+    .toggle-tema {
+        margin-top: 1rem;
+        justify-content: center;
+    }
+
+    .menu-toggle {
+        display: flex;
+        position: static;
+        /* torna nel flusso della grid */
+        grid-area: toggle;
+    }
+
+    .header>nav {
+        padding: 1rem 0;
+        border-top: 1px solid rgba(255, 255, 255, .2);
+        margin-top: 1rem;
+    }
+
+    .stato-autenticazione {
+        justify-content: center;
+    }
+
+    /* Nav e account nascosti finché non si apre il menu */
+    .header>nav,
+    .stato-autenticazione,
+    .toggle-tema {
+        display: none;
+    }
+
+    .header>nav.aperto,
+    .stato-autenticazione.aperto,
+    .toggle-tema.aperto {
+        display: flex;
+    }
+
+    /* Voci di menu in colonna al 50% di larghezza */
+    .header>nav ul {
+        flex-direction: column;
+        gap: 1rem;
+        width: 100%;
+    }
+
+    .header>nav a {
+        display: block;
+        text-align: center;
+        padding: .5rem;
+    }
+
+    /* Footer: colonna singola centrata */
+    .footer {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+            "f-logo"
+            "f-centro"
+            "f-contatti"
+            "f-copy";
+        padding: 1.5rem 1rem;
+        row-gap: 1.5rem;
+        text-align: center;
+    }
+
+    .footer .brand-logo {
+        justify-content: center;
+    }
+
+    .footer .footer-navigazione {
+        align-items: center;
+    }
+
+    .footer .footer-contatti {
+        justify-self: center;
+    }
+
+    /* Main sections: padding ridotto su tablet */
+    main>section,
+    main>aside,
+    main>article {
+        padding: clamp(1.2rem, 3vw, 2rem) clamp(0.75rem, 4vw, 2rem);
+    }
+
+    /* HOME: la griglia a aree collassa in colonna unica.
+       Ordine di lettura naturale tramite le aree impilate. */
+    .main-home {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+            "hero"
+            "perche"
+            "impatto"
+            "come"
+            "storia"
+            "arrivi"
+            "aiuta"
+            "faq";
+    }
+
+    /* (#2) Nessun bordo di separazione tra le celle. */
+
+    /* Statistiche: 2 colonne su tablet */
+    .statistiche {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+
+/* ============================================================
+   26. RESPONSIVE — ≤ 600px
+   ============================================================ */
+@media (max-width: 600px) {
+
+    .logo-img {
+        width: 36px;
+        height: 36px;
+    }
+
+    .brand-logo {
+        font-size: 1.1rem;
+    }
+
+    main>section,
+    main>aside,
+    main>article {
+        padding: 1.5rem 1rem;
+    }
+
+    main>section:first-child {
+        padding-block: 2rem;
+    }
+
+    /* Una sola colonna per le card */
+    .griglia-gatti {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    /* Su viewport piccola le card restano orizzontali ma COMPATTE:
+       immagine più piccola, padding/font ridotti, così occupano meno
+       spazio verticale invece di diventare molto alte. */
+    .card-gatto {
+        grid-template-columns: auto 1fr;
+        grid-template-rows: none;
+    }
+
+    .card-gatto picture {
+        width: 150px;
+    }
+
+    .card-gatto-corpo {
+        padding: .6rem .7rem;
+        gap: .4rem;
+    }
+
+    .card-gatto-corpo h3 {
+        font-size: 1rem;
+    }
+
+    .card-gatto-descr {
+        font-size: .82rem;
+    }
+
+    .card-gatto-meta {
+        gap: .2rem;
+    }
+
+    article svg {
+        width: 20px;
+        height: 20px;
+    }
+
+    .tag {
+        font-size: .68rem;
+        padding: 1px .4rem;
+    }
+
+    .card-gatto dl {
+        font-size: .78rem;
+        gap: .2rem .6rem;
+        margin-bottom: .15rem;
+    }
+
+    .card-gatto .btn {
+        padding: .3rem .7rem;
+    }
+
+    /* Statistiche: 2 colonne anche su mobile piccolo */
+    .statistiche {
+        grid-template-columns: repeat(2, 1fr);
+        gap: .5rem;
+    }
+
+    .statistiche dd {
+        font-size: clamp(1.6rem, 6vw, 2.4rem);
+    }
+
+    .faq-button {
+        width: 3.5rem;
+        height: 3.5rem;
+        font-size: 1.4rem;
+    }
+
+    /* Tabella: overflow scroll su mobile */
+    table {
+        display: block;
+        overflow-x: auto;
+    }
+
+    /* Turni: 1 colonna su mobile piccolo */
+    .griglia-turni {
+        grid-template-columns: 1fr;
+    }
+
+    /* Banner cookie padding adattivo */
+    .banner-cookie {
+        padding: 1rem 1rem;
+    }
+
+    blockquote {
+        padding-left: calc(1.5rem + 1rem);
+    }
+}
+
+/* ============================================================
+   27. SKIP LINK (accessibilità — salta al contenuto)
+   ============================================================ */
+.salta-contenuto {
+    position: absolute;
+    top: -100%;
+    left: 0;
+    padding: .5rem 1rem;
+    background: saddlebrown;
+    color: white;
+    font-weight: 700;
+    text-decoration: none;
+    border-radius: 0 0 .5rem 0;
+    z-index: 9999;
+    transition: top 0.2s;
+}
+
+.salta-contenuto:focus {
+    top: 0;
+}
+
+
+/* ============================================================
+   28. SEZIONE HERO — CTA button group
+   ============================================================ */
+.hero-cta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 2rem;
+}
+
+.hero-cta .btn {
+    padding: .6rem 1.4rem;
+    font-size: clamp(0.9rem, 1.2vw + 0.4rem, 1.05rem);
+}
+
+
+/* ============================================================
+   29. MESSAGGIO AVVISO IN SEZIONE (restyle)
+   ============================================================ */
+main aside.messaggio,
+.messaggio[role="note"] {
+    border-radius: .5rem;
+    background: cornsilk;
+    border-left: 4px solid saddlebrown;
+    padding: 1rem 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+main aside.messaggio p,
+.messaggio[role="note"] p {
+    margin: 0;
+    max-width: none;
+    font-size: clamp(0.88rem, 1vw + 0.4rem, 1rem);
+}
+
+
+/* ============================================================
+   30. MEDIA QUERY ≤ 400px (telefoni molto piccoli)
+   ============================================================ */
+@media (max-width: 400px) {
+    h1 {
+        font-size: clamp(1.3rem, 6vw, 1.6rem);
+    }
+
+    h2 {
+        font-size: clamp(1.1rem, 5vw, 1.3rem);
+    }
+
+    .statistiche {
+        grid-template-columns: 1fr 1fr;
+        gap: .25rem;
+    }
+
+    .statistiche dt,
+    .statistiche dd {
+        padding-left: .5rem;
+        padding-right: .5rem;
+    }
+
+    .statistiche dd {
+        font-size: clamp(1.4rem, 7vw, 2rem);
+    }
+
+    .hero-cta {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .griglia-gatti {
+        grid-template-columns: 1fr;
+    }
+
+    /* Card ancora più compatte sui telefoni piccoli */
+    .card-gatto {
+        grid-template-columns: auto 1fr;
+    }
+
+    .card-gatto picture {
+        width: 120px;
+    }
+
+    .card-gatto-corpo {
+        padding: .5rem .6rem;
+    }
+
+    /* Descrizione limitata a 2 righe per non allungare la card */
+    .card-gatto-descr {
+        overflow: hidden;
+        font-size: .78rem;
+    }
+}
+
+/* ============================================================
+   31. PAGINA PRIVACY (layout dedicato a due colonne)
+   ============================================================ */
+.privacy-hero {
+    text-align: center;
+}
+
+.privacy-sottotitolo {
+    text-align: center;
+    max-width: 60ch;
+    margin-inline: auto;
+    color: dimgray;
+    font-size: clamp(1rem, 1.5vw + 0.4rem, 1.2rem);
+}
+
+/* Griglia: indice laterale + contenuti */
+.privacy-griglia {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 2rem;
+    align-items: start;
+}
+
+/* Indice "appiccicato" mentre si scorre */
+.privacy-indice {
+    position: sticky;
+    top: 6rem;
+    background: white;
+    border: 1px solid tan;
+    border-left: 4px solid saddlebrown;
+    border-radius: .5rem;
+    padding: 1rem 1.5rem;
+}
+
+.privacy-indice h2 {
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    margin-bottom: .5rem;
+}
+
+.privacy-indice ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: .25rem;
+}
+
+.privacy-indice a {
+    display: block;
+    padding: .3rem .4rem;
+    border-radius: .5rem;
+    text-decoration: none;
+    font-size: .92rem;
+}
+
+.privacy-indice a:hover,
+.privacy-indice a:focus {
+    background: wheat;
+}
+
+.privacy-contenuto {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+/* Ogni blocco è una "scheda" distinta */
+.privacy-blocco {
+    background: white;
+    border: 1px solid tan;
+    border-radius: .5rem;
+    padding: 1.5rem;
+    scroll-margin-top: 6rem;
+}
+
+.privacy-blocco h2 {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    margin-bottom: 1rem;
+}
+
+.privacy-icona {
+    font-size: 1.3rem;
+}
+
+.privacy-blocco-azione {
+    border-left: 4px solid darkred;
+}
+
+/* Cookie come schede invece che righe di tabella */
+.privacy-cookie-lista {
+    list-style: none;
+    padding: 0;
+    margin: 1rem 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+}
+
+.privacy-cookie-card {
+    border: 1px solid tan;
+    border-radius: .5rem;
+    padding: 1rem;
+}
+
+.privacy-cookie-card h3 {
+    margin-bottom: .5rem;
+    font-size: 1rem;
+}
+
+.privacy-cookie-card dl {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: .25rem .5rem;
+    margin: 0;
+    font-size: .88rem;
+}
+
+.privacy-cookie-card dt {
+    font-weight: 700;
+    color: saddlebrown;
+}
+
+.privacy-cookie-card dd {
+    margin: 0;
+}
+
+.privacy-nota {
+    font-size: .9rem;
+    color: dimgray;
+    font-style: italic;
+}
+
+/* Responsive: l'indice passa sopra il contenuto e non è più sticky */
+@media (max-width: 900px) {
+    .privacy-griglia {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .privacy-indice {
+        position: static;
+        top: auto;
+    }
+
+    .privacy-indice ul {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+}
+
+
+/* ============================================================
+   32. HOME — bottoni d'azione dentro "Come funziona"
+   ============================================================ */
+.come-funziona ol:not([class]) li .btn {
+    display: block;
+    margin-top: .5rem;
+    width: fit-content;
+}
+
+/* ============================================================
+   33. BLOCCO "RICORDAMI" (login) — #11
+   ============================================================ */
+.blocco-ricordami {
+    margin-top: 1.5rem;
+    background: cornsilk;
+    border: 1px solid tan;
+    border-left: 4px solid darkolivegreen;
+    border-radius: .5rem;
+    padding: 1rem 1.25rem;
+}
+
+.blocco-ricordami legend {
+    color: darkolivegreen;
+}
+
+.blocco-ricordami .campo-checkbox {
+    margin-top: .25rem;
+    font-weight: 600;
+}
+
+.blocco-ricordami .messaggio {
+    margin-bottom: 1rem;
+}
+
+.nota-obbligatori {
+    margin: 1rem 0 .5rem;
+    font-size: .85rem;
+    color: dimgray;
+}
+
+
+/* ============================================================
+   34. STORIE DI SUCCESSO (home) — #12
+   ============================================================ */
+.storia-successo {
+    margin: 0 0 1.25rem;
+    padding: 1rem 0;
+}
+
+.storia-successo:last-child {
+    margin-bottom: 0;
+}
+
+.storia-successo blockquote {
+    margin: 0;
+    font-style: italic;
+    font-size: clamp(0.9rem, 1vw + 0.5rem, 1rem);
+}
+
+.storia-successo blockquote p {
+    margin: 0;
+}
+
+.storia-successo figcaption {
+    margin-top: .6rem;
+    font-weight: 700;
+    color: saddlebrown;
+}
+
+
+/* ============================================================
+   35. VANTAGGI (home) — box come le altre sezioni
+   ============================================================ */
+.griglia-vantaggi {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+
+/* ============================================================
+   36. ELEMENTI AGGIUNTIVI
+   ============================================================ */
+
+.box-vantaggio {
+    background: white;
+    border: 1px solid tan;
+    border-radius: .5rem;
+    padding: 1rem 1.25rem;
+}
+
+.box-vantaggio dt {
+    font-weight: 700;
+    color: saddlebrown;
+    margin-bottom: .35rem;
+}
+
+.box-vantaggio dd {
+    margin: 0;
+}
+
+/* Contatore basso — colore errore */
+.contatore-basso {
+    color: darkred;
+    font-weight: 700;
+}
