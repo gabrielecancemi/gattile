@@ -144,7 +144,7 @@ if (!headers_sent()) {
             </fieldset>
 
             <p class="campo-obbligatorio nota-obbligatori">Campi obbligatori</p>
-            <button type="reset" class="btn btn-secondario">
+            <button type="reset" id="btn-reset-login" class="btn btn-secondario">
                 Cancella
             </button>
             <button type="submit" id="btn-login" class="btn btn-primario">Accedi</button>

@@ -129,7 +129,7 @@ if (!headers_sent()) {
                 </fieldset>
 
                 <output id="msg-prenotazione" role="status" aria-live="polite" class="sr-solo"></output>
-                <button type="reset" class="btn btn-secondario">
+                <button type="reset" id="btn-reset-prenota" class="btn btn-secondario">
                     Cancella
                 </button>
                 <button type="submit" id="btn-prenota" class="btn btn-primario">

@@ -100,7 +100,7 @@ if (!headers_sent()) {
                 </fieldset>
 
                 <output id="msg-volontariato" aria-live="polite" class="sr-solo"></output>
-                <button type="reset" class="btn btn-secondario">
+                <button type="reset" id="btn-reset-volontariato" class="btn btn-secondario">
                     Cancella
                 </button>
                 <button type="submit" id="btn-volontariato" class="btn btn-primario">

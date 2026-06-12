@@ -1,4 +1,13 @@
- /*  MOVIMENTO RIDOTTO */
+/* ============================================================
+   MOVIMENTO RIDOTTO
+   ------------------------------------------------------------
+   Foglio collegato nell'head con media="(prefers-reduced-motion:
+   reduce)": viene applicato solo se l'utente ha chiesto meno
+   movimento nelle impostazioni del sistema.
+   Annulla animazioni e transizioni e azzera gli spostamenti su
+   hover/active (transform: none), cosi' nessun elemento si muove,
+   si ingrandisce o trasla.
+   ============================================================ */
 
 
 * {

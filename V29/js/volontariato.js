@@ -101,7 +101,6 @@
     // Raggruppa le fasce per data e imposta i limiti del selettore.
     function preparaDati(fasce) {
         fasce_selezionate.length = 0;
-        aggiornaStatoPulsante();
 
         fasce_per_data = {};
         fasce.forEach(function (f) {
@@ -139,7 +138,6 @@
 
     function mostraGiorno(giorno) {
         fasce_selezionate.length = 0;
-        aggiornaStatoPulsante();
 
         if (!fasce_per_data[giorno]) {
             contenitore.innerHTML = '<p>Nessuna fascia disponibile per il giorno scelto. Prova un altro giorno.</p>';
@@ -214,16 +212,8 @@
                     }
                 }
 
-                aggiornaStatoPulsante();
             });
         });
-    }
-
-    function aggiornaStatoPulsante() {
-        if (!bottone_volontariato) return;
-
-        const ha_selezionati = fasce_selezionate.length > 0;
-
     }
 
     function mostraMessaggio(testo, tipo) {
@@ -264,7 +254,6 @@
         function ripristinaPulsante() {
             bottone_volontariato.disabled = false;
             bottone_volontariato.textContent = 'Conferma turni selezionati';
-            aggiornaStatoPulsante();
         }
 
         fetch('api/turni.php', { method: 'POST', body: corpo, credentials: 'same-origin' })

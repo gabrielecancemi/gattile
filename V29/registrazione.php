@@ -236,7 +236,7 @@ if (!headers_sent()) {
                         procedere.</em>
                 </p>
                 <p class="campo-obbligatorio nota-obbligatori">Campi obbligatori</p>
-                <button type="reset" class="btn btn-secondario">
+                <button type="reset" id="btn-reset-registra" class="btn btn-secondario">
                     Cancella
                 </button>
                 <button type="submit" id="btn-registra" class="btn btn-primario">

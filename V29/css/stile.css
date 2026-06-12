@@ -1,48 +1,5 @@
-/* ============================================================
-   stile.css
-   ============================================================
-   INDICE
-   (Le media query sono in file CSS separati, collegati nell'head con <link>:
-    tema-scuro.css = tema scuro;  movimento-ridotto.css = prefers-reduced-motion)
-   2.  Reset & base
-   3.  Tipografia
-   4.  Link & utilità testo
-   5.  Focus & accessibilità
-   6.  Layout: Header
-       6a.  Logo
-       6b.  Hamburger
-       6c.  Nav principale
-       6d.  Area account (stato autenticazione)
-   7.  Layout: Footer
-       7a.  Logo footer
-       7b.  Sezione centrale (nav + privacy)
-       7c.  Contatti
-       7d.  Copyright
-   8.  Pulsante FAQ fisso
-   9.  Banner cookie
-   10. Main / contenuto
-   11. Pulsanti generali
-   12. Messaggi di feedback
-   13. Azioni principali (home)
-   14. Card gatto
-   15. Barra controlli
-   16. Form & campi
-   17. Progress & Meter
-   18. Caricamento
-   19. Turni volontariato
-   20. Tabelle
-   21. Details / Summary (accordion)
-   22. Separatore
-   23. Utility classi
-   24. Pagina FAQ
-   25. Responsive ≤ 900px
-   26. Responsive ≤ 600px
-   ============================================================ */
+/* BASE */
 
-
-/* ============================================================
-   2. RESET & BASE
-   ============================================================ */
 * {
     box-sizing: border-box;
     margin: 0;
@@ -64,22 +21,22 @@ body {
 }
 
 
-/* ============================================================
-   3. TIPOGRAFIA
-   ============================================================ */
+/* TESTI */
+
 h1,
 h2,
 h3,
 h4,
 h5,
 h6 {
-    font-family: 'Georgia', 'Times New Roman', serif;
+    font-family: 'Segoe UI', 'Tahoma', 'Geneva', 'Verdana', sans-serif;
     color: saddlebrown;
     line-height: 1.3;
     margin-bottom: 1rem;
 }
 
 h1 {
+    /* ho usato clamp per indizare valori massimi e minimi */
     font-size: clamp(1.6rem, 4vw, 2.4rem);
     text-align: center;
     margin-bottom: 2rem;
@@ -90,7 +47,7 @@ h2 {
 }
 
 h3 {
-    font-size: clamp(1.05rem, 2.5vw, 1.4rem);
+    font-size: clamp(1rem, 2vw, 1.4rem);
 }
 
 p,
@@ -116,10 +73,6 @@ strong {
     font-weight: 700;
 }
 
-/*
- * Nei contesti con sfondo scuro (header, footer),
- * strong non deve ereditare il colore brand ma il bianco del genitore.
- */
 .stato-autenticazione strong,
 .utente-info strong,
 .brand-logo strong,
@@ -136,9 +89,8 @@ code {
 }
 
 
-/* ============================================================
-   4. LINK & UTILITÀ TESTO
-   ============================================================ */
+/* LINK */
+
 a {
     color: saddlebrown;
     text-decoration: underline;
@@ -151,9 +103,7 @@ a:focus {
 }
 
 
-/* ============================================================
-   5. FOCUS & ACCESSIBILITÀ
-   ============================================================ */
+/* ACCESSIBILITÀ */
 :focus-visible {
     outline: 3px solid orange;
     outline-offset: 3px;
@@ -167,13 +117,8 @@ summary:focus-visible {
 }
 
 
-/* ============================================================
-   6. LAYOUT: HEADER
-   ============================================================
-   Desktop — tre colonne: [ logo 1fr ] [ nav 2fr ] [ account 1fr ]
-   Mobile  — due colonne: [ logo 1fr ] [ menu auto ]
-             la nav e l'account scendono sotto se .aperto
-   ============================================================ */
+/* HEADER */
+
 .header {
     display: grid;
     grid-template-columns: auto 1fr auto auto;
@@ -209,9 +154,8 @@ summary:focus-visible {
 }
 
 
+/* logo */
 
-
-/* ── 6a. Logo ─────────────────────────────────────────────── */
 .brand-logo {
     grid-area: logo;
     display: flex;
@@ -226,8 +170,7 @@ summary:focus-visible {
 
 .brand-logo:hover,
 .brand-logo:focus {
-    opacity: .88;
-    color: white;
+    color: cornsilk;
 }
 
 .logo-img {
@@ -239,16 +182,15 @@ summary:focus-visible {
 .logo-container {
     display: flex;
     align-items: center;
-    /* centratura verticale */
 }
 
 
 /* ── 6b. Hamburger ────────────────────────────────────────── */
 /*
- * Su desktop è rimosso dal flusso (position: absolute) così non
- * occupa nessuna cella della grid.
- * Su mobile torna in posizione statica (vedi §25).
- */
+* Su desktop è rimosso dal flusso (position: absolute) così non
+* occupa nessuna cella della grid.
+* Su mobile torna in posizione statica (vedi §25).
+*/
 .menu-toggle {
     display: none;
     position: absolute;
@@ -347,7 +289,7 @@ summary:focus-visible {
 }
 
 /* Icona monocromatica della voce di menu: eredita il colore del testo del
-   link (currentColor), così resta coerente in ogni stato e tema. */
+link (currentColor), così resta coerente in ogni stato e tema. */
 .icona-menu {
     width: 1rem;
     height: 1rem;
@@ -396,9 +338,9 @@ summary:focus-visible {
 }
 
 /* Icona tema in SVG (stampabile su tutti i browser): un cerchio con la metà
-   destra piena. Lo stato cambia quanta parte del disco è riempita.
-   Due forme sovrapposte (metà / pieno) commutate via opacity: nessuna
-   dipendenza dalla proprietà CSS "d:", supportata ovunque e in stampa. */
+destra piena. Lo stato cambia quanta parte del disco è riempita.
+Due forme sovrapposte (metà / pieno) commutate via opacity: nessuna
+dipendenza dalla proprietà CSS "d:", supportata ovunque e in stampa. */
 .toggle-tema .icona-tema {
     width: 1rem;
     height: 1rem;
@@ -432,14 +374,14 @@ summary:focus-visible {
 
 /* Contenitore bianco compatto: [ icona + nome + badge | pulsante ] */
 /*.stato-autenticazione {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    row-gap: .6rem;
-    padding: .6rem;
-    background: white;
-    color: black;
-    border-radius: .5rem;
+display: flex;
+flex-direction: row;
+align-items: center;
+row-gap: .6rem;
+padding: .6rem;
+background: white;
+color: black;
+border-radius: .5rem;
 }*/
 
 .stato-autenticazione {
@@ -476,7 +418,7 @@ summary:focus-visible {
 }
 
 /* Icona utente disegnata in SVG (testa + spalle): stampabile su tutti i
-   browser, nessuna emoji, nessuno pseudo-elemento. */
+browser, nessuna emoji, nessuno pseudo-elemento. */
 .icona-utente {
     display: inline-block;
     width: 1.1rem;
@@ -556,13 +498,13 @@ summary:focus-visible {
 
 
 /* ============================================================
-   7. LAYOUT: FOOTER
-   ============================================================
-   Desktop — tre colonne:
-     [ logo ]  [ nav principale + nav privacy ]  [ contatti ]
-     [ copyright — larghezza piena ]
-   Mobile  — singola colonna (vedi §25)
-   ============================================================ */
+7. LAYOUT: FOOTER
+============================================================
+Desktop — tre colonne:
+    [ logo ]  [ nav principale + nav privacy ]  [ contatti ]
+    [ copyright — larghezza piena ]
+Mobile  — singola colonna (vedi §25)
+============================================================ */
 .footer {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
@@ -735,8 +677,8 @@ address p {
 
 
 /* ============================================================
-   8. PULSANTE FAQ FISSO
-   ============================================================ */
+8. PULSANTE FAQ FISSO
+============================================================ */
 .faq-button {
     position: fixed;
     right: max(1rem, env(safe-area-inset-right));
@@ -757,7 +699,7 @@ address p {
 }
 
 /* Quando il banner cookie è visibile, il pulsante FAQ si solleva
-   (commutato via classList da footer.js, non con stile in-line). */
+(commutato via classList da footer.js, non con stile in-line). */
 .faq-button--alzato {
     bottom: max(5rem, env(safe-area-inset-bottom));
 }
@@ -776,8 +718,8 @@ address p {
 
 
 /* ============================================================
-   9. BANNER COOKIE
-   ============================================================ */
+9. BANNER COOKIE
+============================================================ */
 .banner-cookie {
     position: sticky;
     bottom: 0;
@@ -815,8 +757,8 @@ address p {
 
 
 /* ============================================================
-   10. MAIN / CONTENUTO
-   ============================================================ */
+10. MAIN / CONTENUTO
+============================================================ */
 main {
     flex: 1;
     width: 100%;
@@ -825,11 +767,11 @@ main {
 }
 
 /*
- * Container interno a ogni section/aside del main:
- * centra e limita la larghezza senza toccare il markup PHP.
- * Usiamo un selettore diretto sui figli di <main>.
- * (Escluso il main della home, che usa una griglia a aree dedicata.)
- */
+* Container interno a ogni section/aside del main:
+* centra e limita la larghezza senza toccare il markup PHP.
+* Usiamo un selettore diretto sui figli di <main>.
+* (Escluso il main della home, che usa una griglia a aree dedicata.)
+*/
 main:not(.main-home)>section,
 main:not(.main-home)>aside,
 main:not(.main-home)>article {
@@ -840,19 +782,19 @@ main:not(.main-home)>article {
 }
 
 /* ============================================================
-   10b. HOME — LAYOUT A GRIGLIA CON AREE NOMINATE (grid-template-areas)
-   ============================================================
-   DESKTOP (≥ 901px): impaginazione "a rivista" su due colonne.
-     hero      → larghezza piena
-     perche / impatto    → affiancate
-     come  / storia      → affiancate
-     arrivi              → larghezza piena (vetrina)
-     aiuta / faq         → affiancate
-   MOBILE / TABLET (≤ 900px): le aree collassano in colonna unica
-   con un ordine di lettura naturale (vedi §25). La differenza fra
-   desktop e mobile è quindi marcata: due colonne ricche vs flusso
-   verticale lineare.
-   ============================================================ */
+10b. HOME — LAYOUT A GRIGLIA CON AREE NOMINATE (grid-template-areas)
+============================================================
+DESKTOP (≥ 901px): impaginazione "a rivista" su due colonne.
+    hero      → larghezza piena
+    perche / impatto    → affiancate
+    come  / storia      → affiancate
+    arrivi              → larghezza piena (vetrina)
+    aiuta / faq         → affiancate
+MOBILE / TABLET (≤ 900px): le aree collassano in colonna unica
+con un ordine di lettura naturale (vedi §25). La differenza fra
+desktop e mobile è quindi marcata: due colonne ricche vs flusso
+verticale lineare.
+============================================================ */
 .main-home {
     display: grid;
     width: 100%;
@@ -909,10 +851,10 @@ main:not(.main-home)>article {
 }
 
 /*
- * (#2) Nessun bordo di separazione tra le sezioni del main.
- * L'unico bordo previsto è quello inferiore della PRIMA section
- * di ogni main (quella che contiene l'h1), definito più sotto.
- */
+* (#2) Nessun bordo di separazione tra le sezioni del main.
+* L'unico bordo previsto è quello inferiore della PRIMA section
+* di ogni main (quella che contiene l'h1), definito più sotto.
+*/
 
 /* (#2) Prima sezione (hero, con h1): unico bordo è quello inferiore. */
 main>section:first-child {
@@ -1017,7 +959,7 @@ blockquote::before {
     font-size: 3.5rem;
     color: saddlebrown;
     opacity: 0.35;
-    font-family: 'Georgia', 'Times New Roman', serif;
+    font-family: 'Segoe UI', 'Tahoma', 'Geneva', 'Verdana', sans-serif;
     line-height: 1;
 }
 
@@ -1057,7 +999,7 @@ main>aside>p:last-child {
 }
 
 .statistiche dd {
-    font-family: 'Georgia', 'Times New Roman', serif;
+    font-family: 'Segoe UI', 'Tahoma', 'Geneva', 'Verdana', sans-serif;
     font-size: clamp(2rem, 4vw, 3rem);
     font-weight: 700;
     color: darkolivegreen;
@@ -1074,8 +1016,8 @@ main>aside>p:last-child {
 
 
 /* ============================================================
-   11. PULSANTI GENERALI
-   ============================================================ */
+11. PULSANTI GENERALI
+============================================================ */
 .btn {
     display: inline-flex;
     align-items: center;
@@ -1134,8 +1076,8 @@ form .btn-secondario:focus {
 
 
 /* ============================================================
-   12. MESSAGGI DI FEEDBACK
-   ============================================================ */
+12. MESSAGGI DI FEEDBACK
+============================================================ */
 .messaggio {
     display: block;
     padding: 1rem 1.5rem;
@@ -1165,8 +1107,8 @@ form .btn-secondario:focus {
 }
 
 /* Etichetta testuale (al posto delle emoji): pillola colorata mostrata davanti
-   a ogni messaggio tramite ::before, in modo coerente anche per i messaggi
-   generati via JavaScript. */
+a ogni messaggio tramite ::before, in modo coerente anche per i messaggi
+generati via JavaScript. */
 .messaggio::before {
     content: 'Nota';
     display: inline-block;
@@ -1198,7 +1140,7 @@ form .btn-secondario:focus {
 }
 
 /* Manteniamo le vecchie regole .messaggio-tag per i pochi punti che ancora
-   inseriscono l'elemento (es. componente React), evitando una doppia pillola. */
+inseriscono l'elemento (es. componente React), evitando una doppia pillola. */
 .messaggio-tag {
     display: inline-block;
     margin-right: .5rem;
@@ -1226,8 +1168,8 @@ form .btn-secondario:focus {
 
 
 /* ============================================================
-   13. AZIONI PRINCIPALI (home)
-   ============================================================ */
+13. AZIONI PRINCIPALI (home)
+============================================================ */
 .azioni-principali ul {
     display: flex;
     flex-wrap: wrap;
@@ -1265,8 +1207,8 @@ form .btn-secondario:focus {
 
 
 /* ============================================================
-   14. CARD GATTO
-   ============================================================ */
+14. CARD GATTO
+============================================================ */
 .griglia-gatti {
     display: grid;
     /* Card orizzontali: una colonna larga (su schermi ampi due colonne) */
@@ -1291,8 +1233,8 @@ article svg {
 }
 
 /* CARD ORIZZONTALE: immagine a sinistra, contenuti a destra.
-   Le dimensioni della colonna immagine sono fisse così lo spazio è
-   riservato prima del caricamento dell'immagine → niente layout shift (CLS). */
+Le dimensioni della colonna immagine sono fisse così lo spazio è
+riservato prima del caricamento dell'immagine → niente layout shift (CLS). */
 .card-gatto {
     display: grid;
     grid-template-columns: auto 1fr;
@@ -1309,8 +1251,8 @@ article svg {
 }
 
 /* (#3) All'hover si sposta SOLO l'intera card, senza ombre e
-   senza ingrandire l'immagine. Effetto attivo solo sulle card cliccabili
-   (quelle selezionabili per prenotare la visita, con role="checkbox"). */
+senza ingrandire l'immagine. Effetto attivo solo sulle card cliccabili
+(quelle selezionabili per prenotare la visita, con role="checkbox"). */
 .card-gatto[role="checkbox"]:hover {
     transform: translateY(-3px);
 }
@@ -1419,7 +1361,7 @@ article svg {
 }
 
 /* Badge di selezione mostrato solo quando la card è selezionata.
-   Il segno di spunta è un SVG inline: stampabile su tutti i browser. */
+Il segno di spunta è un SVG inline: stampabile su tutti i browser. */
 .card-badge-selezione {
     position: absolute;
     top: .5rem;
@@ -1437,16 +1379,16 @@ article svg {
 
 
 /* (#8) Spazio tra il riepilogo dei gatti selezionati e il form di
-   prenotazione, nella pagina "Adozioni". */
+prenotazione, nella pagina "Adozioni". */
 #gatti-selezionati-riepilogo {
     margin-bottom: 2rem;
 }
 
 /* ============================================================
-   15. BARRA CONTROLLI
-   ============================================================ */
+15. BARRA CONTROLLI
+============================================================ */
 /* Riserva spazio per il componente React mentre carica:
-   riduce il Cumulative Layout Shift (CLS) sulla pagina "adotta". */
+riduce il Cumulative Layout Shift (CLS) sulla pagina "adotta". */
 #react-gatti-root {
     display: block;
     min-height: 60vh;
@@ -1483,8 +1425,8 @@ article svg {
 
 
 /* ============================================================
-   16. FORM & CAMPI
-   ============================================================ */
+16. FORM & CAMPI
+============================================================ */
 form {
     max-width: 600px;
 }
@@ -1512,11 +1454,11 @@ fieldset::after {
 
 legend {
     /* Per default il browser "aggancia" la legend sul bordo superiore del
-       fieldset. Con float:left perde quel rendering speciale e si comporta
-       come un normale blocco in cima al contenuto, quindi sotto il bordo. */
+    fieldset. Con float:left perde quel rendering speciale e si comporta
+    come un normale blocco in cima al contenuto, quindi sotto il bordo. */
     float: left;
     width: 100%;
-    font-family: 'Georgia', 'Times New Roman', serif;
+    font-family: 'Segoe UI', 'Tahoma', 'Geneva', 'Verdana', sans-serif;
     font-size: 1.1rem;
     font-weight: 700;
     color: saddlebrown;
@@ -1589,9 +1531,9 @@ textarea {
 }
 
 /* (#6) Checkbox e radio: l'accent-color colora SOLO la spunta quando
-   sono selezionati. Da non selezionati restano una casella chiara con
-   bordo, mai con sfondo scuro (anche in tema scuro forziamo lo schema
-   chiaro del controllo). */
+sono selezionati. Da non selezionati restano una casella chiara con
+bordo, mai con sfondo scuro (anche in tema scuro forziamo lo schema
+chiaro del controllo). */
 input[type="checkbox"],
 input[type="radio"] {
     width: 1.2rem;
@@ -1654,8 +1596,8 @@ input[type="radio"] {
 }
 
 /* ============================================================
-   17. PROGRESS & METER
-   ============================================================ */
+17. PROGRESS & METER
+============================================================ */
 progress,
 meter {
     width: 100%;
@@ -1669,8 +1611,8 @@ meter {
 
 
 /* ============================================================
-   18. CARICAMENTO
-   ============================================================ */
+18. CARICAMENTO
+============================================================ */
 .caricamento {
     display: flex;
     justify-content: center;
@@ -1681,8 +1623,8 @@ meter {
 
 
 /* ============================================================
-   19. TURNI VOLONTARIATO
-   ============================================================ */
+19. TURNI VOLONTARIATO
+============================================================ */
 .griglia-turni {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(185px, 1fr));
@@ -1745,8 +1687,8 @@ meter {
 
 
 /* ============================================================
-   20. TABELLE
-   ============================================================ */
+20. TABELLE
+============================================================ */
 .table-responsive {
     overflow-x: auto;
     border-radius: .5rem;
@@ -1763,7 +1705,7 @@ table {
 caption {
     text-align: left;
     font-weight: 700;
-    font-family: 'Georgia', 'Times New Roman', serif;
+    font-family: 'Segoe UI', 'Tahoma', 'Geneva', 'Verdana', sans-serif;
     color: saddlebrown;
     margin-bottom: .5rem;
     font-size: 1.05rem;
@@ -1780,7 +1722,7 @@ td {
 th {
     background: saddlebrown;
     color: white;
-    font-family: 'Georgia', 'Times New Roman', serif;
+    font-family: 'Segoe UI', 'Tahoma', 'Geneva', 'Verdana', sans-serif;
     font-size: 0.9rem;
     letter-spacing: 0.03em;
     font-weight: 700;
@@ -1796,8 +1738,8 @@ tr:hover td {
 
 
 /* ============================================================
-   21. DETAILS / SUMMARY (accordion)
-   ============================================================ */
+21. DETAILS / SUMMARY (accordion)
+============================================================ */
 details {
     border: 1px solid tan;
     border-radius: .5rem;
@@ -1858,8 +1800,8 @@ details>p:not(summary) {
 
 
 /* ============================================================
-   22. SEPARATORE
-   ============================================================ */
+22. SEPARATORE
+============================================================ */
 .separatore {
     border: 0;
     border-top: 1px solid tan;
@@ -1868,8 +1810,8 @@ details>p:not(summary) {
 
 
 /* ============================================================
-   23. UTILITY CLASSI
-   ============================================================ */
+23. UTILITY CLASSI
+============================================================ */
 
 /* Solo per screen reader — invisibile visivamente */
 .sr-solo {
@@ -1898,8 +1840,8 @@ details>p:not(summary) {
 
 
 /* ============================================================
-   24. PAGINA FAQ
-   ============================================================ */
+24. PAGINA FAQ
+============================================================ */
 
 .faq-categoria p {
     margin-bottom: 0;
@@ -1923,13 +1865,13 @@ main .main-faq section {
 
 
 /* ============================================================
-   25. RESPONSIVE — ≤ 900px (tablet e mobile)
-   ============================================================
-   La grid dell'header diventa [ logo 1fr ] [ menu auto ].
-   L'hamburger (menu-toggle) torna nel flusso (position: static).
-   Nav e account scendono sotto, visibili solo se .aperto.
-   Il footer collassa in colonna singola.
-   ============================================================ */
+25. RESPONSIVE — ≤ 900px (tablet e mobile)
+============================================================
+La grid dell'header diventa [ logo 1fr ] [ menu auto ].
+L'hamburger (menu-toggle) torna nel flusso (position: static).
+Nav e account scendono sotto, visibili solo se .aperto.
+Il footer collassa in colonna singola.
+============================================================ */
 @media (max-width: 900px) {
 
     .header {
@@ -2031,7 +1973,7 @@ main .main-faq section {
     }
 
     /* HOME: la griglia a aree collassa in colonna unica.
-       Ordine di lettura naturale tramite le aree impilate. */
+    Ordine di lettura naturale tramite le aree impilate. */
     .main-home {
         grid-template-columns: 1fr;
         grid-template-areas:
@@ -2055,8 +1997,8 @@ main .main-faq section {
 
 
 /* ============================================================
-   26. RESPONSIVE — ≤ 600px
-   ============================================================ */
+26. RESPONSIVE — ≤ 600px
+============================================================ */
 @media (max-width: 600px) {
 
     .logo-img {
@@ -2085,8 +2027,8 @@ main .main-faq section {
     }
 
     /* Su viewport piccola le card restano orizzontali ma COMPATTE:
-       immagine più piccola, padding/font ridotti, così occupano meno
-       spazio verticale invece di diventare molto alte. */
+    immagine più piccola, padding/font ridotti, così occupano meno
+    spazio verticale invece di diventare molto alte. */
     .card-gatto {
         grid-template-columns: auto 1fr;
         grid-template-rows: none;
@@ -2171,8 +2113,8 @@ main .main-faq section {
 }
 
 /* ============================================================
-   27. SKIP LINK (accessibilità — salta al contenuto)
-   ============================================================ */
+27. SKIP LINK (accessibilità — salta al contenuto)
+============================================================ */
 .salta-contenuto {
     position: absolute;
     top: -100%;
@@ -2193,8 +2135,8 @@ main .main-faq section {
 
 
 /* ============================================================
-   28. SEZIONE HERO — CTA button group
-   ============================================================ */
+28. SEZIONE HERO — CTA button group
+============================================================ */
 .hero-cta {
     display: flex;
     flex-wrap: wrap;
@@ -2210,8 +2152,8 @@ main .main-faq section {
 
 
 /* ============================================================
-   29. MESSAGGIO AVVISO IN SEZIONE (restyle)
-   ============================================================ */
+29. MESSAGGIO AVVISO IN SEZIONE (restyle)
+============================================================ */
 main aside.messaggio,
 .messaggio[role="note"] {
     border-radius: .5rem;
@@ -2230,8 +2172,8 @@ main aside.messaggio p,
 
 
 /* ============================================================
-   30. MEDIA QUERY ≤ 400px (telefoni molto piccoli)
-   ============================================================ */
+30. MEDIA QUERY ≤ 400px (telefoni molto piccoli)
+============================================================ */
 @media (max-width: 400px) {
     h1 {
         font-size: clamp(1.3rem, 6vw, 1.6rem);
@@ -2286,8 +2228,8 @@ main aside.messaggio p,
 }
 
 /* ============================================================
-   31. PAGINA PRIVACY (layout dedicato a due colonne)
-   ============================================================ */
+31. PAGINA PRIVACY (layout dedicato a due colonne)
+============================================================ */
 .privacy-hero {
     text-align: center;
 }
@@ -2442,8 +2384,8 @@ main aside.messaggio p,
 
 
 /* ============================================================
-   32. HOME — bottoni d'azione dentro "Come funziona"
-   ============================================================ */
+32. HOME — bottoni d'azione dentro "Come funziona"
+============================================================ */
 .come-funziona ol:not([class]) li .btn {
     display: block;
     margin-top: .5rem;
@@ -2451,8 +2393,8 @@ main aside.messaggio p,
 }
 
 /* ============================================================
-   33. BLOCCO "RICORDAMI" (login) — #11
-   ============================================================ */
+33. BLOCCO "RICORDAMI" (login) — #11
+============================================================ */
 .blocco-ricordami {
     margin-top: 1.5rem;
     background: cornsilk;
@@ -2483,8 +2425,8 @@ main aside.messaggio p,
 
 
 /* ============================================================
-   34. STORIE DI SUCCESSO (home) — #12
-   ============================================================ */
+34. STORIE DI SUCCESSO (home) — #12
+============================================================ */
 .storia-successo {
     margin: 0 0 1.25rem;
     padding: 1rem 0;
@@ -2512,8 +2454,8 @@ main aside.messaggio p,
 
 
 /* ============================================================
-   35. VANTAGGI (home) — box come le altre sezioni
-   ============================================================ */
+35. VANTAGGI (home) — box come le altre sezioni
+============================================================ */
 .griglia-vantaggi {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -2523,8 +2465,8 @@ main aside.messaggio p,
 
 
 /* ============================================================
-   36. ELEMENTI AGGIUNTIVI
-   ============================================================ */
+36. ELEMENTI AGGIUNTIVI
+============================================================ */
 
 .box-vantaggio {
     background: white;

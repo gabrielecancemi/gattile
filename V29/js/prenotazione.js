@@ -98,14 +98,6 @@
             riepilogo.insertAdjacentHTML('afterbegin', html); 
             mostraErroreCampo(null, errore_gatti, '');
         }
-        aggiornaStatoPulsante();
-    }
-
-    function aggiornaStatoPulsante() {
-        if (!bottone_prenota) return;
-        const ha_gatti = gatti_correnti.length > 0;
-        const ha_data = input_data && input_data.value.trim() !== '';
-        const ha_ora = select_ora && select_ora.value.trim() !== '';
     }
 
     function validaQuando() {
@@ -139,11 +131,11 @@
         const oggi = new Date();
         oggi.setMinutes(oggi.getMinutes() - oggi.getTimezoneOffset());
         input_data.min = oggi.toISOString().slice(0, 10);
-        input_data.addEventListener('change', function () { validaGiorno(); validaQuando(); aggiornaStatoPulsante(); });
+        input_data.addEventListener('change', function () { validaGiorno(); validaQuando(); });
         input_data.addEventListener('blur', function () { validaGiorno(); });
     }
     if (select_ora) {
-        select_ora.addEventListener('change', function () { validaOra(); validaQuando(); aggiornaStatoPulsante(); });
+        select_ora.addEventListener('change', function () { validaOra(); validaQuando(); });
         select_ora.addEventListener('blur', function () { validaOra(); });
     }
 
@@ -180,7 +172,6 @@
         function ripristinaPulsante() {
             bottone_prenota.disabled = false;
             bottone_prenota.textContent = 'Conferma prenotazione';
-            aggiornaStatoPulsante();
         }
 
         fetch('api/prenota_visita.php', { method: 'POST', body: corpo, credentials: 'same-origin' })
@@ -215,5 +206,4 @@
         mostraMessaggioComune(messaggio_prenotazione, testo, tipo);
     }
 
-    aggiornaStatoPulsante();
 })();
