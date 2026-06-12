@@ -76,13 +76,25 @@
 
         input_gatti_ids.value = gatti.map(g => g.id).join(',');
 
+        let nodo = riepilogo.firstChild;
+        while (nodo) {
+            const successivo = nodo.nextSibling;
+            if (nodo !== errore_gatti) riepilogo.removeChild(nodo);
+            nodo = successivo;
+        }
+
         if (gatti.length === 0) {
             riepilogo.innerHTML = '<p class="messaggio messaggio-avviso">Nessun gatto selezionato. Clicca sulle card per sceglierli.</p>';
         } else {
             let html = '<p><strong>Gatti selezionati (' + gatti.length + '):</strong></p><ul>';
-            gatti.forEach(function (g) {
-                html += '<li><strong>' + ripuliscihtml(g.nome) + '</strong>: ' + ripuliscihtml(g.razza) + ', ' + ripuliscihtml(g.colore_mantello) + '</li>';
-            });
+            for (let i = 0; i < gatti.length; i++) {
+                let g = gatti[i];
+
+                html += '<li><strong>' + ripuliscihtml(g.nome) + '</strong>: ' +
+                    ripuliscihtml(g.razza) + ', ' +
+                    ripuliscihtml(g.colore_mantello) +
+                    '</li>';
+            }
             html += '</ul>';
             riepilogo.innerHTML = html;
             mostraErroreCampo(null, errore_gatti, '');
@@ -95,10 +107,6 @@
         const ha_gatti = gatti_correnti.length > 0;
         const ha_data = input_data && input_data.value.trim() !== '';
         const ha_ora = select_ora && select_ora.value.trim() !== '';
-        const pronto = ha_gatti && ha_data && ha_ora;
-
-        bottone_prenota.disabled = !pronto;
-        bottone_prenota.setAttribute('aria-disabled', String(!pronto));
 
         if (nota_bottone) {
             if (!ha_gatti && (!ha_data || !ha_ora)) {
@@ -157,27 +165,24 @@
     form.addEventListener('submit', function (evento) {
         evento.preventDefault();
 
-        if (gatti_correnti.length === 0) {
+        const gatti_ok = gatti_correnti.length > 0;
+        if (!gatti_ok) {
             mostraErroreCampo(null, errore_gatti, 'Seleziona almeno un gatto prima di prenotare.');
-            return;
+        } else {
+            mostraErroreCampo(null, errore_gatti, '');
         }
 
         const giorno_ok = validaGiorno();
         const ora_ok = validaOra();
-        if (!giorno_ok || !ora_ok) {
+        const quando_ok = validaQuando();
+
+        if (!gatti_ok || !giorno_ok || !ora_ok || !quando_ok) {
             if (!giorno_ok && input_data) input_data.focus();
             else if (!ora_ok && select_ora) select_ora.focus();
             return;
         }
 
         const data_ora = valoreDataOra();
-        if (!data_ora) {
-            if (input_data) input_data.focus();
-            return;
-        }
-        if (!validaQuando()) {
-            return;
-        }
 
         const corpo = new FormData();
         corpo.append('data_ora', data_ora);
@@ -206,8 +211,7 @@
                             '<output class="messaggio messaggio-successo" role="status" aria-live="assertive">' +
                             ripuliscihtml(dati.messaggio) + '</output>';
                         bottoniConferma(successo_prenotazione, [
-                            { href: 'gatti.php', testo: 'Prenota un\u0027altra visita' },
-                            { href: 'volontariato.php', testo: 'Diventa volontario' },
+                            { href: 'gatti.php', testo: 'Prenota un\'altra visita' },
                             { href: 'index.php', testo: 'Torna alla home' }
                         ]);
                     }

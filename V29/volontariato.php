@@ -103,7 +103,7 @@ if (!headers_sent()) {
                 <button type="reset" class="btn btn-secondario">
                     Cancella
                 </button>
-                <button type="submit" id="btn-volontariato" class="btn btn-primario" disabled>
+                <button type="submit" id="btn-volontariato" class="btn btn-primario">
                     Conferma turni selezionati
                 </button>
                 <p class="aiuto-campo" aria-live="polite" id="note-btn-volontariato">

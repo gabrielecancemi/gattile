@@ -225,9 +225,6 @@
 
         const ha_selezionati = fasce_selezionate.length > 0;
 
-        bottone_volontariato.disabled = !ha_selezionati;
-        bottone_volontariato.setAttribute('aria-disabled', String(!ha_selezionati));
-
         if (nota_bottone) {
             nota_bottone.textContent = ha_selezionati
                 ? fasce_selezionate.length + ' ' +
@@ -252,13 +249,17 @@
     form.addEventListener('submit', function (evento) {
         evento.preventDefault();
 
-        if (!validaGiorno()) {
-            if (input_data) input_data.focus();
-            return;
+        const giorno_ok = validaGiorno();
+
+        const fasce_ok = fasce_selezionate.length > 0;
+        if (!fasce_ok) {
+            mostraErroreCampo(null, errore_fasce, 'Seleziona almeno una fascia oraria.');
+        } else {
+            mostraErroreCampo(null, errore_fasce, '');
         }
 
-        if (fasce_selezionate.length === 0) {
-            mostraErroreCampo(null, errore_fasce, 'Seleziona almeno una fascia oraria.');
+        if (!giorno_ok || !fasce_ok) {
+            if (input_data) input_data.focus();
             return;
         }
 
@@ -270,6 +271,7 @@
 
         // Ripristino del pulsante in entrambi gli esiti
         function ripristinaPulsante() {
+            bottone_volontariato.disabled = false;
             bottone_volontariato.textContent = 'Conferma turni selezionati';
             aggiornaStatoPulsante();
         }

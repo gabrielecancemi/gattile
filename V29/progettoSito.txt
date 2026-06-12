@@ -706,7 +706,12 @@ Soluzione adottata:
     sotto il campo errato tramite gli <output class="errore-campo"> dedicati
     (err-gatti-selezione in gatti.php, err-fasce-turni in volontariato.php, oltre
     a quelli di data e ora già presenti), in modo coerente con gli altri form
-    del sito, invece di comparire solo come messaggio generico.
+    del sito, invece di comparire solo come messaggio generico. Come negli altri
+    form (inserisci_gatto, registrazione), il pulsante di invio non è più
+    disabilitato in attesa che i campi siano compilati: premendolo a vuoto parte
+    la validazione completa, che evidenzia in rosso tutti i campi mancanti e
+    porta il focus al primo. Il controllo di integrità lato server resta in ogni
+    caso attivo e indipendente.
 Motivazione finale:
   Un'unica sede per le funzioni comuni elimina la duplicazione lato JavaScript,
   rende gli helper del DOM riutilizzabili (parametri al posto di id fissi) e

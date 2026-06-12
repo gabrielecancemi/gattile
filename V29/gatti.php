@@ -86,10 +86,10 @@ if (!headers_sent()) {
                 <fieldset id="gatti-selezionati-riepilogo" role="status" aria-live="polite"
                     aria-label="Gatti selezionati per la visita">
                     <p class="messaggio messaggio-avviso">Nessun gatto selezionato. Clicca sulle card per sceglierli.</p>
+                    <output class="errore-campo" id="err-gatti-selezione" role="alert" aria-live="polite" hidden></output>
                 </fieldset>
 
                 <input type="hidden" id="gatti-ids" name="gatti_ids" value="">
-                <output class="errore-campo" id="err-gatti-selezione" role="alert" aria-live="polite" hidden></output>
 
                 <fieldset>
                     <legend>Scegli data e ora della visita</legend>
@@ -132,7 +132,7 @@ if (!headers_sent()) {
                 <button type="reset" class="btn btn-secondario">
                     Cancella
                 </button>
-                <button type="submit" id="btn-prenota" class="btn btn-primario" disabled aria-disabled="true">
+                <button type="submit" id="btn-prenota" class="btn btn-primario">
                     Conferma prenotazione
                 </button>
                 <p class="aiuto-campo" aria-live="polite" id="note-btn-prenota">
