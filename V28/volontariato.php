@@ -27,7 +27,8 @@ if (!headers_sent()) {
         . "base-uri 'self'; "
         . "form-action 'self'; "
         . "frame-ancestors 'none'; "
-        . "object-src 'none'"
+        . "object-src 'none'; "
+        . "upgrade-insecure-requests"
     );
 }
 
@@ -74,6 +75,7 @@ if (!headers_sent()) {
     <section>
         <?php if ($loggato): ?>
             <h2>Prenota i turni</h2>
+            <div id="successo-volontariato" aria-live="polite"></div>
             <form id="form-volontariato" method="post" action="api/turni.php" novalidate
                 aria-label="Modulo prenotazione turni volontariato">
                 <fieldset>
@@ -88,6 +90,7 @@ if (!headers_sent()) {
                     <em id="aiuto-data-turno" class="aiuto-campo">
                         Scegli prima un giorno: verranno mostrate solo le sue fasce orarie.
                     </em>
+                    <output class="errore-campo" id="err-data-turno" role="alert" aria-live="polite" hidden></output>
 
                     <section id="contenitore-turni" aria-live="polite" aria-busy="true"
                         aria-label="Fasce orarie disponibili">
@@ -96,7 +99,9 @@ if (!headers_sent()) {
                 </fieldset>
 
                 <output id="msg-volontariato" aria-live="polite" class="sr-solo"></output>
-
+                <button type="reset" class="btn btn-secondario">
+                    Cancella
+                </button>
                 <button type="submit" id="btn-volontariato" class="btn btn-primario" disabled>
                     Conferma turni selezionati
                 </button>

@@ -9,6 +9,8 @@
     const bottone_volontariato = document.getElementById('btn-volontariato');
     const messaggio_volontariato = document.getElementById('msg-volontariato');
     const nota_bottone = document.getElementById('note-btn-volontariato');
+    const errore_data = document.getElementById('err-data-turno');
+    const successo_volontariato = document.getElementById('successo-volontariato');
 
     if (!form || !contenitore) return;
 
@@ -21,6 +23,54 @@
             .replace(/</g, '&lt;')
             .replace(/>/g, '&gt;')
             .replace(/"/g, '&quot;');
+    }
+
+    function mostraErrore(campo, output, messaggio) {
+        if (!output) return;
+        if (messaggio) {
+            output.textContent = messaggio;
+            output.hidden = false;
+            if (campo) campo.setAttribute('aria-invalid', 'true');
+        } else {
+            output.textContent = '';
+            output.hidden = true;
+            if (campo) campo.removeAttribute('aria-invalid');
+        }
+    }
+
+    function validaGiorno(mostra = true) {
+        const v = input_data ? input_data.value : '';
+
+        if (!v) {
+            if (mostra) mostraErrore(input_data, errore_data, 'Scegli un giorno per visualizzare le fasce orarie.');
+            return false;
+        }
+
+        const scelta = new Date(v + 'T00:00');
+        if (isNaN(scelta.getTime())) {
+            if (mostra) mostraErrore(input_data, errore_data, 'Formato data non valido.');
+            return false;
+        }
+
+        const oggi = new Date();
+        oggi.setHours(0, 0, 0, 0);
+        if (scelta < oggi) {
+            if (mostra) mostraErrore(input_data, errore_data, 'La data non può essere nel passato.');
+            return false;
+        }
+
+        if (input_data && input_data.min && v < input_data.min) {
+            if (mostra) mostraErrore(input_data, errore_data, 'Nessuna fascia disponibile prima di questa data.');
+            return false;
+        }
+
+        if (input_data && input_data.max && v > input_data.max) {
+            if (mostra) mostraErrore(input_data, errore_data, 'Nessuna fascia disponibile dopo questa data.');
+            return false;
+        }
+
+        if (mostra) mostraErrore(input_data, errore_data, '');
+        return true;
     }
 
     function caricaTurni() {
@@ -216,12 +266,18 @@
 
     if (input_data) {
         input_data.addEventListener('change', function () {
-            if (this.value) mostraGiorno(this.value);
+            if (validaGiorno() && this.value) mostraGiorno(this.value);
         });
+        input_data.addEventListener('blur', function () { validaGiorno(); });
     }
 
     form.addEventListener('submit', function (evento) {
         evento.preventDefault();
+
+        if (!validaGiorno()) {
+            if (input_data) input_data.focus();
+            return;
+        }
 
         if (fasce_selezionate.length === 0) {
             mostraMessaggio('Seleziona almeno una fascia oraria.', 'errore');
@@ -250,16 +306,19 @@
                     }
                     mostraMessaggio(dettaglio, 'errore');
                     caricaTurni();
+                    ripristinaPulsante();
                 } else {
                     let testo = dati.messaggio;
                     if (dati.avvisi && dati.avvisi.length > 0) {
                         testo += ' Avvisi: ' + dati.avvisi.map(function (a) { return a.msg; }).join('; ');
                     }
-                    mostraMessaggio(testo, 'successo');
-                    // Ricarico le fasce per aggiornare i conteggi
-                    caricaTurni();
+                    if (successo_volontariato) {
+                        successo_volontariato.innerHTML =
+                            '<output class="messaggio messaggio-successo" role="status" aria-live="assertive">' +
+                            ripuliscihtml(testo) + '</output>';
+                    }
+                    form.hidden = true;
                 }
-                ripristinaPulsante();
             }, function (err) {
                 console.error('[Volontariato] errore fetch:', err);
                 mostraMessaggio('Errore di rete. Riprova tra qualche minuto.', 'errore');

@@ -3,6 +3,20 @@
 
 require_once 'connessione_db.php';
 
+function connessioneSicura(): bool
+{
+    if (!empty($_SERVER['HTTPS']) && strtolower((string) $_SERVER['HTTPS']) !== 'off') {
+        return true;
+    }
+    if (($_SERVER['SERVER_PORT'] ?? '') === '443') {
+        return true;
+    }
+    if (strtolower((string) ($_SERVER['HTTP_X_FORWARDED_PROTO'] ?? '')) === 'https') {
+        return true;
+    }
+    return false;
+}
+
 // Archivio token
 
 function percorsoToken(): string
@@ -48,7 +62,7 @@ function aprireSessione(): void
         session_set_cookie_params([
             'lifetime' => 0,
             'path' => '/',
-            'secure' => isset($_SERVER['HTTPS']),
+            'secure' => connessioneSicura(),
             'httponly' => true,
             'samesite' => 'Strict',
         ]);
@@ -185,7 +199,7 @@ function attivaPromemoria(string $username): void
     setcookie(NOME_COOKIE_PROMEMORIA, $gettone, [
         'expires' => time() + DURATA_PROMEMORIA,
         'path' => '/',
-        'secure' => isset($_SERVER['HTTPS']),
+        'secure' => connessioneSicura(),
         'httponly' => true,
         'samesite' => 'Strict',
     ]);
@@ -219,7 +233,7 @@ function cancellaPromemoria(): void
     setcookie(NOME_COOKIE_PROMEMORIA, '', [
         'expires' => time() - 3600,
         'path' => '/',
-        'secure' => isset($_SERVER['HTTPS']),
+        'secure' => connessioneSicura(),
         'httponly' => true,
         'samesite' => 'Strict',
     ]);

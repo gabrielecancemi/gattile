@@ -30,7 +30,8 @@ if (!headers_sent()) {
         . "base-uri 'self'; "
         . "form-action 'self'; "
         . "frame-ancestors 'none'; "
-        . "object-src 'none'"
+        . "object-src 'none'; "
+        . "upgrade-insecure-requests"
     );
 }
 
@@ -77,6 +78,8 @@ if (!headers_sent()) {
 
             <h2 id="titolo-prenotazione">Prenota una visita conoscitiva</h2>
 
+            <div id="successo-prenotazione" aria-live="polite"></div>
+
             <form id="form-prenotazione" method="post" action="api/prenota_visita.php" novalidate
                 aria-label="Modulo prenotazione visita">
 
@@ -98,6 +101,7 @@ if (!headers_sent()) {
                     <em id="aiuto-data-visita" class="aiuto-campo">
                         Scegli un giorno da oggi in poi.
                     </em>
+                    <output class="errore-campo" id="err-giorno-visita" role="alert" aria-live="polite" hidden></output>
 
                     <label for="ora-visita" class="campo-obbligatorio">
                         Orario della visita
@@ -118,12 +122,15 @@ if (!headers_sent()) {
                     <em id="aiuto-ora-visita" class="aiuto-campo">
                         Le visite sono possibili dalle 9:00 alle 18:00.
                     </em>
+                    <output class="errore-campo" id="err-ora-visita" role="alert" aria-live="polite" hidden></output>
 
                     <output class="errore-campo" id="err-data-visita" role="alert" aria-live="polite" hidden></output>
                 </fieldset>
 
                 <output id="msg-prenotazione" role="status" aria-live="polite" class="sr-solo"></output>
-
+                <button type="reset" class="btn btn-secondario">
+                    Cancella
+                </button>
                 <button type="submit" id="btn-prenota" class="btn btn-primario" disabled aria-disabled="true">
                     Conferma prenotazione
                 </button>

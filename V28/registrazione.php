@@ -132,7 +132,8 @@ if (!headers_sent()) {
         . "base-uri 'self'; "
         . "form-action 'self'; "
         . "frame-ancestors 'none'; "
-        . "object-src 'none'"
+        . "object-src 'none'; "
+        . "upgrade-insecure-requests"
     );
 }
 
@@ -200,8 +201,7 @@ if (!headers_sent()) {
                     <label for="reg-username" class="campo-obbligatorio">
                         Username</label>
                     <input type="text" id="reg-username" name="username" value="<?= ripulisci($campi['username']) ?>"
-                        autocomplete="username" required aria-describedby="aiuto-reg-username" maxlength="50"
-                        spellcheck="false" pattern="[a-zA-Z][a-zA-Z0-9_]{2,49}">
+                        autocomplete="username" required aria-describedby="aiuto-reg-username" maxlength="50" pattern="[a-zA-Z][a-zA-Z0-9_]{2,49}">
                     <em id="aiuto-reg-username" class="aiuto-campo">
                         Inizia con una lettera; solo lettere, numeri e underscore; 3-50 caratteri.
                     </em>
@@ -209,8 +209,8 @@ if (!headers_sent()) {
 
                     <label for="reg-password" class="campo-obbligatorio">
                         Password</label>
-                    <input type="password" id="reg-password" name="password" autocomplete="new-password" required
-                        aria-describedby="aiuto-reg-password" minlength="8" maxlength="16">
+                    <input type="password" id="reg-password" name="password" autocomplete="off" required
+                        aria-describedby="aiuto-reg-password" minlength="8" maxlength="16" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).{8,16}$">
                     <em id="aiuto-reg-password" class="aiuto-campo">
                         8-16 caratteri: almeno una maiuscola, una minuscola, un numero e un carattere speciale.
                     </em>
@@ -236,7 +236,9 @@ if (!headers_sent()) {
                         procedere.</em>
                 </p>
                 <p class="campo-obbligatorio nota-obbligatori">Campi obbligatori</p>
-
+                <button type="reset" class="btn btn-secondario">
+                    Cancella
+                </button>
                 <button type="submit" id="btn-registra" class="btn btn-primario">
                     Crea profilo
                 </button>

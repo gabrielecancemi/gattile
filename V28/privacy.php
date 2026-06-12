@@ -28,7 +28,8 @@ if (!headers_sent()) {
         . "base-uri 'self'; "
         . "form-action 'self'; "
         . "frame-ancestors 'none'; "
-        . "object-src 'none'"
+        . "object-src 'none'; "
+        . "upgrade-insecure-requests"
     );
 }
 

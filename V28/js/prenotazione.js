@@ -10,7 +10,10 @@
     const select_ora = document.getElementById('ora-visita');
     const bottone_prenota = document.getElementById('btn-prenota');
     const errore_data = document.getElementById('err-data-visita');
+    const errore_giorno = document.getElementById('err-giorno-visita');
+    const errore_ora = document.getElementById('err-ora-visita');
     const messaggio_prenotazione = document.getElementById('msg-prenotazione');
+    const successo_prenotazione = document.getElementById('successo-prenotazione');
     const nota_bottone = document.getElementById('note-btn-prenota');
 
     if (!form) return;
@@ -23,6 +26,62 @@
             .replace(/</g, '&lt;')
             .replace(/>/g, '&gt;')
             .replace(/"/g, '&quot;');
+    }
+
+    function mostraErrore(campo, output, messaggio) {
+        if (!output) return;
+        if (messaggio) {
+            output.textContent = messaggio;
+            output.hidden = false;
+            if (campo) campo.setAttribute('aria-invalid', 'true');
+        } else {
+            output.textContent = '';
+            output.hidden = true;
+            if (campo) campo.removeAttribute('aria-invalid');
+        }
+    }
+
+    function validaGiorno(mostra = true) {
+        const v = input_data ? input_data.value : '';
+
+        if (!v) {
+            if (mostra) mostraErrore(input_data, errore_giorno, 'Scegli il giorno della visita.');
+            return false;
+        }
+
+        const scelta = new Date(v + 'T00:00');
+        if (isNaN(scelta.getTime())) {
+            if (mostra) mostraErrore(input_data, errore_giorno, 'Formato data non valido.');
+            return false;
+        }
+
+        const oggi = new Date();
+        oggi.setHours(0, 0, 0, 0);
+        if (scelta < oggi) {
+            if (mostra) mostraErrore(input_data, errore_giorno, 'La data non può essere nel passato.');
+            return false;
+        }
+
+        if (mostra) mostraErrore(input_data, errore_giorno, '');
+        return true;
+    }
+
+    function validaOra(mostra = true) {
+        const v = select_ora ? select_ora.value : '';
+
+        if (!v) {
+            if (mostra) mostraErrore(select_ora, errore_ora, 'Scegli l\u2019orario della visita.');
+            return false;
+        }
+
+        const ora = parseInt(v.slice(0, 2), 10);
+        if (isNaN(ora) || ora < 9 || ora >= 18) {
+            if (mostra) mostraErrore(select_ora, errore_ora, 'Le visite sono possibili dalle 9:00 alle 18:00.');
+            return false;
+        }
+
+        if (mostra) mostraErrore(select_ora, errore_ora, '');
+        return true;
     }
 
     function valoreDataOra() {
@@ -106,10 +165,12 @@
         const oggi = new Date();
         oggi.setMinutes(oggi.getMinutes() - oggi.getTimezoneOffset());
         input_data.min = oggi.toISOString().slice(0, 10);
-        input_data.addEventListener('change', function () { validaQuando(); aggiornaStatoPulsante(); });
+        input_data.addEventListener('change', function () { validaGiorno(); validaQuando(); aggiornaStatoPulsante(); });
+        input_data.addEventListener('blur', function () { validaGiorno(); });
     }
     if (select_ora) {
-        select_ora.addEventListener('change', function () { validaQuando(); aggiornaStatoPulsante(); });
+        select_ora.addEventListener('change', function () { validaOra(); validaQuando(); aggiornaStatoPulsante(); });
+        select_ora.addEventListener('blur', function () { validaOra(); });
     }
 
     form.addEventListener('submit', function (evento) {
@@ -119,6 +180,16 @@
             mostraMessaggio('Seleziona almeno un gatto prima di prenotare.', 'errore');
             return;
         }
+
+        const giorno_ok = validaGiorno();
+        const ora_ok = validaOra();
+        if (!giorno_ok || !ora_ok) {
+            mostraMessaggio('Controlla il giorno e l\u2019orario selezionati.', 'errore');
+            if (!giorno_ok && input_data) input_data.focus();
+            else if (!ora_ok && select_ora) select_ora.focus();
+            return;
+        }
+
         const data_ora = valoreDataOra();
         if (!data_ora) {
             mostraMessaggio('Scegli un giorno e un orario per la visita.', 'errore');
@@ -149,14 +220,17 @@
                 if (dati.errore) {
                     mostraMessaggio('Errore: ' + dati.errore, 'errore');
                     console.error('[Prenotazione] errore server:', dati.errore, '— codice:', dati.codice);
+                    ripristinaPulsante();
                 } else {
-                    mostraMessaggio(dati.messaggio, 'successo');
-                    form.reset();
-                    aggiornaRiepilogo([]);
+                    if (successo_prenotazione) {
+                        successo_prenotazione.innerHTML =
+                            '<output class="messaggio messaggio-successo" role="status" aria-live="assertive">' +
+                            ripuliscihtml(dati.messaggio) + '</output>';
+                    }
+                    form.hidden = true;
                     // Chiede al componente React di deselezionare tutte le card.
                     document.dispatchEvent(new CustomEvent('gattiDeselezionaTutti'));
                 }
-                ripristinaPulsante();
             }, function (err) {
                 console.error('[Prenotazione] errore fetch:', err);
                 mostraMessaggio('Errore di rete durante la prenotazione. Controlla la connessione e riprova.', 'errore');

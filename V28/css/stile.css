@@ -1122,6 +1122,16 @@ main>aside>p:last-child {
     color: white;
 }
 
+form .btn-secondario {
+    color: darkolivegreen;
+}
+
+form .btn-secondario:hover,
+form .btn-secondario:focus {
+    background: tan;
+    color: #3e5022;
+}
+
 
 /* ============================================================
    12. MESSAGGI DI FEEDBACK

@@ -76,7 +76,8 @@ if (!headers_sent()) {
         . "base-uri 'self'; "
         . "form-action 'self'; "
         . "frame-ancestors 'none'; "
-        . "object-src 'none'"
+        . "object-src 'none'; "
+        . "upgrade-insecure-requests"
     );
 }
 
@@ -115,8 +116,7 @@ if (!headers_sent()) {
 
                 <label for="password" class="campo-obbligatorio">
                     Password</label>
-                <input type="password" id="password" name="password" autocomplete="current-password" required
-                    maxlength="16">
+                <input type="password" id="password" name="password" autocomplete="off" required maxlength="16">
                 <output class="errore-campo" id="err-password" role="alert" aria-live="polite" hidden></output>
             </fieldset>
 
@@ -144,6 +144,9 @@ if (!headers_sent()) {
             </fieldset>
 
             <p class="campo-obbligatorio nota-obbligatori">Campi obbligatori</p>
+            <button type="reset" class="btn btn-secondario">
+                Cancella
+            </button>
             <button type="submit" id="btn-login" class="btn btn-primario">Accedi</button>
         </form>
     </section>

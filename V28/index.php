@@ -3,89 +3,8 @@
 declare(strict_types=1);
 
 require_once 'includes/layout.php';
-require_once 'includes/connessione_db.php';
-require_once 'includes/card_gatto.php';
 
 aprireSessione();
-
-$errore_db = null;
-$errore_statistiche = null;
-$nuovi_arrivi = [];
-$statistiche = [
-    'gatti' => 0,
-    'visite' => 0,
-    'volontari' => 0,
-    'arrivi' => 0,
-];
-
-$conn = connessioneDb('reader');
-if (!$conn) {
-    $errore_db = 'Impossibile caricare i nuovi arrivi. Riprova tra qualche minuto.';
-    $errore_statistiche = 'Statistiche non disponibili al momento. Riprova tra qualche minuto.';
-} else {
-    $stm = mysqli_prepare(
-        $conn,
-        'SELECT id, nome, descrizione, peso, eta, sesso,
-                colore_mantello, lunghezza_pelo, razza, colore_occhi, data_arrivo
-         FROM gatti
-         ORDER BY data_arrivo DESC
-         LIMIT 2'
-    );
-
-    if (!$stm) {
-        error_log('[index] prepare arrivi fallita: ' . mysqli_error($conn));
-        $errore_db = 'Impossibile caricare i nuovi arrivi. Riprova tra qualche minuto.';
-    } else {
-        if (!mysqli_stmt_execute($stm)) {
-            error_log('[index] execute arrivi fallita: ' . mysqli_stmt_error($stm));
-            $errore_db = 'Impossibile caricare i nuovi arrivi. Riprova tra qualche minuto.';
-        } else {
-            $risultato = mysqli_stmt_get_result($stm);
-            while ($riga = mysqli_fetch_assoc($risultato)) {
-                $nuovi_arrivi[] = $riga;
-            }
-        }
-        mysqli_stmt_close($stm);
-    }
-
-    $sql = '
-        SELECT
-            (SELECT COUNT(*) FROM gatti) AS totale_gatti,
-            (SELECT COUNT(*) FROM visita_gatti) AS totale_visite,
-            (SELECT COUNT(DISTINCT utente_id) FROM turni_volontariato) AS totale_volontari,
-            (SELECT COUNT(*) FROM gatti WHERE YEAR(data_arrivo) = YEAR(CURDATE())) AS nuovi_arrivi
-    ';
-
-    $stm = mysqli_prepare($conn, $sql);
-
-    if (!$stm) {
-        error_log('[index] prepare statistiche fallita: ' . mysqli_error($conn));
-        $errore_statistiche = 'Statistiche non disponibili al momento. Riprova tra qualche minuto.';
-    } else {
-        if (!mysqli_stmt_execute($stm)) {
-            error_log('[index] execute statistiche fallita: ' . mysqli_stmt_error($stm));
-            $errore_statistiche = 'Statistiche non disponibili al momento. Riprova tra qualche minuto.';
-        } else {
-            $risultato = mysqli_stmt_get_result($stm);
-            if ($risultato !== false) {
-                $riga = mysqli_fetch_assoc($risultato);
-                if ($riga) {
-                    $statistiche['gatti'] = (int) $riga['totale_gatti'];
-                    $statistiche['visite'] = (int) $riga['totale_visite'];
-                    $statistiche['volontari'] = (int) $riga['totale_volontari'];
-                    $statistiche['arrivi'] = (int) $riga['nuovi_arrivi'];
-                } else {
-                    $errore_statistiche = 'Statistiche non disponibili al momento. Riprova tra qualche minuto.';
-                }
-            } else {
-                $errore_statistiche = 'Statistiche non disponibili al momento. Riprova tra qualche minuto.';
-            }
-        }
-        mysqli_stmt_close($stm);
-    }
-    mysqli_close($conn);
-}
-
 
 // Intestazione della pagina
 $titolo_pagina = 'Home';
@@ -107,7 +26,8 @@ if (!headers_sent()) {
         . "base-uri 'self'; "
         . "form-action 'self'; "
         . "frame-ancestors 'none'; "
-        . "object-src 'none'"
+        . "object-src 'none'; "
+        . "upgrade-insecure-requests"
     );
 }
 
@@ -162,23 +82,9 @@ if (!headers_sent()) {
     <section class="zona-impatto" aria-labelledby="titolo-impatto">
         <h2 id="titolo-impatto">Il nostro impatto</h2>
 
-        <?php if ($errore_statistiche): ?>
-            <?= avvisoUtente($errore_statistiche, 'errore') ?>
-        <?php else: ?>
-            <dl class="statistiche">
-                <dt>Gatti ospitati</dt>
-                <dd><?= $statistiche['gatti'] ?></dd>
-
-                <dt>Incontri organizzati</dt>
-                <dd><?= $statistiche['visite'] ?></dd>
-
-                <dt>Volontari attivi</dt>
-                <dd><?= $statistiche['volontari'] ?></dd>
-
-                <dt>Nuovi arrivi quest'anno</dt>
-                <dd><?= $statistiche['arrivi'] ?></dd>
-            </dl>
-        <?php endif; ?>
+        <div id="contenitore-statistiche" aria-live="polite" aria-busy="true">
+            <p class="caricamento">Caricamento statistiche in corso…</p>
+        </div>
     </section>
 
     <!-- come funziona -->
@@ -242,18 +148,9 @@ if (!headers_sent()) {
         <h2 id="titolo-nuovi-arrivi">Nuovi arrivi</h2>
         <p>Gli ultimi ospiti entrati nella struttura che aspettano una famiglia:</p>
 
-        <?php if ($errore_db): ?>
-            <?= avvisoUtente($errore_db, 'errore') ?>
-        <?php elseif (empty($nuovi_arrivi)): ?>
-            <p>Nessun gatto registrato al momento. Torna presto!</p>
-        <?php else: ?>
-            <ul class="griglia-gatti" aria-label="Nuovi arrivi">
-                <?php foreach ($nuovi_arrivi as $gatto): ?>
-                    <?= costruisciSchedaGatto($gatto, ['nuovo' => true]) ?>
-                <?php endforeach; ?>
-            </ul>
-
-        <?php endif; ?>
+        <div id="contenitore-arrivi" aria-live="polite" aria-busy="true">
+            <p class="caricamento">Caricamento nuovi arrivi in corso…</p>
+        </div>
     </section>
 
     <!-- volontariato -->
@@ -309,6 +206,7 @@ if (!headers_sent()) {
 
         <p><a href="faq.php" class="btn btn-primario">Tutte le domande frequenti</a></p>
     </section>
+    <script src="js/home.js" defer></script>
 
 </main>
 <?php require 'includes/footer.php'; ?>
