@@ -15,7 +15,6 @@
     const errore_gatti = document.getElementById('err-gatti-selezione');
     const messaggio_prenotazione = document.getElementById('msg-prenotazione');
     const successo_prenotazione = document.getElementById('successo-prenotazione');
-    const nota_bottone = document.getElementById('note-btn-prenota');
 
     if (!form) return;
 
@@ -84,7 +83,7 @@
         }
 
         if (gatti.length === 0) {
-            riepilogo.innerHTML = '<p class="messaggio messaggio-avviso">Nessun gatto selezionato. Clicca sulle card per sceglierli.</p>';
+            riepilogo.insertAdjacentHTML('afterbegin', '<p class="messaggio messaggio-avviso">Nessun gatto selezionato. Clicca sulle card per sceglierli.</p>');
         } else {
             let html = '<p><strong>Gatti selezionati (' + gatti.length + '):</strong></p><ul>';
             for (let i = 0; i < gatti.length; i++) {
@@ -96,7 +95,7 @@
                     '</li>';
             }
             html += '</ul>';
-            riepilogo.innerHTML = html;
+            riepilogo.insertAdjacentHTML('afterbegin', html); 
             mostraErroreCampo(null, errore_gatti, '');
         }
         aggiornaStatoPulsante();
@@ -107,20 +106,6 @@
         const ha_gatti = gatti_correnti.length > 0;
         const ha_data = input_data && input_data.value.trim() !== '';
         const ha_ora = select_ora && select_ora.value.trim() !== '';
-
-        if (nota_bottone) {
-            if (!ha_gatti && (!ha_data || !ha_ora)) {
-                nota_bottone.textContent = 'Seleziona almeno un gatto, un giorno e un orario per abilitare la prenotazione.';
-            } else if (!ha_gatti) {
-                nota_bottone.textContent = 'Seleziona almeno un gatto dalle card qui sopra.';
-            } else if (!ha_data) {
-                nota_bottone.textContent = 'Scegli il giorno e l\'orario della visita.';
-            } else if (!ha_ora) {
-                nota_bottone.textContent = 'Scegli l\'orario della visita.';
-            } else {
-                nota_bottone.textContent = '';
-            }
-        }
     }
 
     function validaQuando() {

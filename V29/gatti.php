@@ -135,9 +135,6 @@ if (!headers_sent()) {
                 <button type="submit" id="btn-prenota" class="btn btn-primario">
                     Conferma prenotazione
                 </button>
-                <p class="aiuto-campo" aria-live="polite" id="note-btn-prenota">
-                    Seleziona almeno un gatto e una data per abilitare la prenotazione.
-                </p>
             </form>
         </section>
     <?php endif; ?>

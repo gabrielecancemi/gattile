@@ -8,7 +8,6 @@
     const form = document.getElementById('form-volontariato');
     const bottone_volontariato = document.getElementById('btn-volontariato');
     const messaggio_volontariato = document.getElementById('msg-volontariato');
-    const nota_bottone = document.getElementById('note-btn-volontariato');
     const errore_data = document.getElementById('err-data-turno');
     const errore_fasce = document.getElementById('err-fasce-turni');
     const successo_volontariato = document.getElementById('successo-volontariato');
@@ -225,14 +224,6 @@
 
         const ha_selezionati = fasce_selezionate.length > 0;
 
-        if (nota_bottone) {
-            nota_bottone.textContent = ha_selezionati
-                ? fasce_selezionate.length + ' ' +
-                (fasce_selezionate.length === 1
-                    ? 'fascia selezionata'
-                    : 'fasce selezionate') + '.'
-                : 'Seleziona un giorno e almeno una fascia oraria disponibile.';
-        }
     }
 
     function mostraMessaggio(testo, tipo) {
@@ -298,7 +289,6 @@
                             ripuliscihtml(testo) + '</output>';
                         bottoniConferma(successo_volontariato, [
                             { href: 'volontariato.php', testo: 'Prenota altri turni' },
-                            { href: 'gatti.php', testo: 'Vai alle adozioni' },
                             { href: 'index.php', testo: 'Torna alla home' }
                         ]);
                     }

@@ -106,9 +106,6 @@ if (!headers_sent()) {
                 <button type="submit" id="btn-volontariato" class="btn btn-primario">
                     Conferma turni selezionati
                 </button>
-                <p class="aiuto-campo" aria-live="polite" id="note-btn-volontariato">
-                    Seleziona almeno una fascia oraria disponibile.
-                </p>
             </form>
 
         <?php endif; ?>
