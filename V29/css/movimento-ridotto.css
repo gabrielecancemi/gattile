@@ -1,0 +1,28 @@
+ /*  MOVIMENTO RIDOTTO */
+
+
+* {
+    animation-duration: 0.01ms;
+    animation-iteration-count: 1;
+    transition-duration: 0.01ms;
+    scroll-behavior: auto;
+}
+
+/* Annulla gli spostamenti su hover/active */
+.card-gatto[role="checkbox"]:hover {
+    transform: none;
+}
+
+.faq-button:hover,
+.faq-button:focus-visible {
+    transform: none;
+}
+
+.faq-button:active{
+    zoom: 100%
+}
+
+.btn:active {
+    transform: none;
+    zoom: 100%
+}
