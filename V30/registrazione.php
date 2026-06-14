@@ -124,117 +124,120 @@ $descrizione_pagina = 'Crea il tuo profilo Gattile San Paolo.';
 
 // Se è avvenuto un redirect, non si produce alcun output HTML.
 if (!$reindirizzato):
-?>
-<!DOCTYPE html>
-<html lang="it">
+    ?>
+    <!DOCTYPE html>
+    <html lang="it">
 
-<?php require 'includes/head.php'; ?>
-<?php require 'includes/header.php'; ?>
-<main id="contenuto-principale">
+    <?php require 'includes/head.php'; ?>
+    <?php require 'includes/header.php'; ?>
+    <main id="contenuto-principale">
 
-    <!-- intestazione -->
-    <section aria-labelledby="titolo-registrazione">
-        <h1 id="titolo-registrazione">Crea il tuo profilo</h1>
-        <p>Già registrato? <a href="login.php">Accedi qui</a>.</p>
-    </section>
+        <!-- intestazione -->
+        <section aria-labelledby="titolo-registrazione">
+            <h1 id="titolo-registrazione">Crea il tuo profilo</h1>
+            <p>Già registrato? <a href="login.php">Accedi qui</a>.</p>
+        </section>
 
-    <!-- form registrazione -->
-    <section>
-        <h2 class="sr-solo">Inserisci i tuoi dati</h2>
-        <?php if ($errore):
-            echo avvisoUtente($errore, 'errore');
-        endif; ?>
-        <?php if ($successo):
-            echo avvisoUtente($successo, 'successo'); ?>
-            <p><a href="login.php" class="btn btn-primario">Vai al login</a></p>
-        <?php endif; ?>
+        <!-- form registrazione -->
+        <section>
+            <h2 class="sr-solo">Inserisci i tuoi dati</h2>
+            <?php if ($errore):
+                echo avvisoUtente($errore, 'errore');
+            endif; ?>
+            <?php if ($successo):
+                echo avvisoUtente($successo, 'successo'); ?>
+                <p><a href="login.php" class="btn btn-primario">Vai al login</a></p>
+            <?php endif; ?>
 
-        <?php if (!$successo): ?>
-            <form id="form-registrazione" method="post" action="registrazione.php" novalidate
-                aria-label="Modulo di registrazione">
+            <?php if (!$successo): ?>
+                <form id="form-registrazione" method="post" action="registrazione.php" novalidate
+                    aria-label="Modulo di registrazione">
 
-                <fieldset>
-                    <legend>Dati anagrafici</legend>
-                    <label for="reg-nome" class="campo-obbligatorio">
-                        Nome</label>
-                    <input type="text" id="reg-nome" name="nome" value="<?= ripulisci($campi['nome']) ?>"
-                        autocomplete="given-name" required maxlength="50" aria-describedby="aiuto-reg-nome">
-                    <em id="aiuto-reg-nome" class="aiuto-campo">
-                        Solo lettere; almeno 2 caratteri.
-                    </em>
-                    <output class="errore-campo" id="err-nome" role="alert" aria-live="polite" hidden></output>
+                    <fieldset>
+                        <legend>Dati anagrafici</legend>
+                        <label for="reg-nome" class="campo-obbligatorio">
+                            Nome</label>
+                        <input type="text" id="reg-nome" name="nome" value="<?= ripulisci($campi['nome']) ?>"
+                            autocomplete="given-name" required maxlength="50" aria-describedby="aiuto-reg-nome">
+                        <em id="aiuto-reg-nome" class="aiuto-campo">
+                            Solo lettere; almeno 2 caratteri.
+                        </em>
+                        <output class="errore-campo" id="err-nome" role="alert" aria-live="polite" hidden></output>
 
-                    <label for="reg-cognome" class="campo-obbligatorio">
-                        Cognome</label>
-                    <input type="text" id="reg-cognome" name="cognome" value="<?= ripulisci($campi['cognome']) ?>"
-                        autocomplete="family-name" required maxlength="50" aria-describedby="aiuto-reg-cognome">
-                    <em id="aiuto-reg-cognome" class="aiuto-campo">
-                        Solo lettere; almeno 2 caratteri.
-                    </em>
-                    <output class="errore-campo" id="err-cognome" role="alert" aria-live="polite" hidden></output>
+                        <label for="reg-cognome" class="campo-obbligatorio">
+                            Cognome</label>
+                        <input type="text" id="reg-cognome" name="cognome" value="<?= ripulisci($campi['cognome']) ?>"
+                            autocomplete="family-name" required maxlength="50" aria-describedby="aiuto-reg-cognome">
+                        <em id="aiuto-reg-cognome" class="aiuto-campo">
+                            Solo lettere; almeno 2 caratteri.
+                        </em>
+                        <output class="errore-campo" id="err-cognome" role="alert" aria-live="polite" hidden></output>
 
-                    <label for="reg-indirizzo" class="campo-obbligatorio">
-                        Indirizzo</label>
-                    <input type="text" id="reg-indirizzo" name="indirizzo" value="<?= ripulisci($campi['indirizzo']) ?>"
-                        required maxlength="100" placeholder="Via/Corso, numero, città" aria-describedby="aiuto-reg-indirizzo">
-                    <em id="aiuto-reg-indirizzo" class="aiuto-campo">
-                        Almeno 5 caratteri.
-                    </em>
-                    <output class="errore-campo" id="err-indirizzo" role="alert" aria-live="polite" hidden></output>
+                        <label for="reg-indirizzo" class="campo-obbligatorio">
+                            Indirizzo</label>
+                        <input type="text" id="reg-indirizzo" name="indirizzo" value="<?= ripulisci($campi['indirizzo']) ?>"
+                            required maxlength="100" placeholder="Via/Corso, numero, città"
+                            aria-describedby="aiuto-reg-indirizzo">
+                        <em id="aiuto-reg-indirizzo" class="aiuto-campo">
+                            Almeno 5 caratteri.
+                        </em>
+                        <output class="errore-campo" id="err-indirizzo" role="alert" aria-live="polite" hidden></output>
 
-                </fieldset>
+                    </fieldset>
 
-                <fieldset>
-                    <legend>Credenziali di accesso</legend>
-                    <label for="reg-username" class="campo-obbligatorio">
-                        Username</label>
-                    <input type="text" id="reg-username" name="username" value="<?= ripulisci($campi['username']) ?>"
-                        autocomplete="username" required aria-describedby="aiuto-reg-username" maxlength="50" pattern="[a-zA-Z][a-zA-Z0-9_]{2,49}">
-                    <em id="aiuto-reg-username" class="aiuto-campo">
-                        Inizia con una lettera; solo lettere, numeri e underscore; 3-50 caratteri.
-                    </em>
-                    <output class="errore-campo" id="err-reg-username" role="alert" aria-live="polite" hidden></output>
+                    <fieldset>
+                        <legend>Credenziali di accesso</legend>
+                        <label for="reg-username" class="campo-obbligatorio">
+                            Username</label>
+                        <input type="text" id="reg-username" name="username" value="<?= ripulisci($campi['username']) ?>"
+                            autocomplete="username" required aria-describedby="aiuto-reg-username" maxlength="50"
+                            pattern="[a-zA-Z][a-zA-Z0-9_]{2,49}">
+                        <em id="aiuto-reg-username" class="aiuto-campo">
+                            Inizia con una lettera; solo lettere, numeri e underscore; 3-50 caratteri.
+                        </em>
+                        <output class="errore-campo" id="err-reg-username" role="alert" aria-live="polite" hidden></output>
 
-                    <label for="reg-password" class="campo-obbligatorio">
-                        Password</label>
-                    <input type="password" id="reg-password" name="password" autocomplete="off" required
-                        aria-describedby="aiuto-reg-password" minlength="8" maxlength="16" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).{8,16}$">
-                    <em id="aiuto-reg-password" class="aiuto-campo">
-                        8-16 caratteri: almeno una maiuscola, una minuscola, un numero e un carattere speciale.
-                    </em>
-                    <output class="errore-campo" id="err-reg-password" role="alert" aria-live="polite" hidden></output>
-                    <label for="forza-password" class="sr-solo">Forza della password</label>
-                    <meter id="forza-password" min="0" max="4" low="2" high="3" optimum="4" value="0"
-                        aria-label="Forza della password" title="Forza password: 0 debole, 4 ottima"></meter>
-                    <em id="forza-password-testo" class="aiuto-campo" aria-live="polite"></em>
+                        <label for="reg-password" class="campo-obbligatorio">
+                            Password</label>
+                        <input type="password" id="reg-password" name="password" autocomplete="off" required
+                            aria-describedby="aiuto-reg-password" minlength="8" maxlength="16"
+                            pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).{8,16}$">
+                        <em id="aiuto-reg-password" class="aiuto-campo">
+                            8-16 caratteri: almeno una maiuscola, una minuscola, un numero e un carattere speciale.
+                        </em>
+                        <output class="errore-campo" id="err-reg-password" role="alert" aria-live="polite" hidden></output>
+                        <label for="forza-password" class="sr-solo">Forza della password</label>
+                        <meter id="forza-password" min="0" max="4" low="2" high="3" optimum="4" value="0"
+                            aria-label="Forza della password" title="Forza password: 0 debole, 4 ottima"></meter>
+                        <em id="forza-password-testo" class="aiuto-campo" aria-live="polite"></em>
 
-                    <label for="reg-conferma" class="campo-obbligatorio">
-                        Conferma password</label>
-                    <input type="password" id="reg-conferma" name="conferma_password" autocomplete="new-password" required
-                        minlength="8" maxlength="16">
-                    <output class="errore-campo" id="err-reg-conferma" role="alert" aria-live="polite" hidden></output>
+                        <label for="reg-conferma" class="campo-obbligatorio">
+                            Conferma password</label>
+                        <input type="password" id="reg-conferma" name="conferma_password" autocomplete="new-password" required
+                            minlength="8" maxlength="16">
+                        <output class="errore-campo" id="err-reg-conferma" role="alert" aria-live="polite" hidden></output>
 
-                </fieldset>
+                    </fieldset>
 
-                <p>
-                    <label for="progresso-form" class="sr-solo">Completamento modulo</label>
-                    <progress id="progresso-form" max="6" value="0"
-                        aria-label="Completamento modulo di registrazione"></progress>
-                    <em id="progresso-testo" class="aiuto-campo" aria-live="polite">Compila tutti i campi per
-                        procedere.</em>
-                </p>
-                <p class="campo-obbligatorio nota-obbligatori">Campi obbligatori</p>
-                <button type="reset" id="btn-reset-registra" class="btn btn-secondario">
-                    Cancella
-                </button>
-                <button type="submit" id="btn-registra" class="btn btn-primario">
-                    Crea profilo
-                </button>
-            </form>
-        <?php endif; ?>
-    </section>
+                    <p>
+                        <label for="progresso-form" class="sr-solo">Completamento modulo</label>
+                        <progress id="progresso-form" max="6" value="0"
+                            aria-label="Completamento modulo di registrazione"></progress>
+                        <em id="progresso-testo" class="aiuto-campo" aria-live="polite">Compila tutti i campi per
+                            procedere.</em>
+                    </p>
+                    <p class="campo-obbligatorio nota-obbligatori">Campi obbligatori</p>
+                    <button type="reset" id="btn-reset-registra" class="btn btn-secondario">
+                        Cancella
+                    </button>
+                    <button type="submit" id="btn-registra" class="btn btn-primario">
+                        Crea profilo
+                    </button>
+                </form>
+            <?php endif; ?>
+        </section>
 
-    <script src="js/registrazione.js" defer></script>
-</main>
-<?php require 'includes/footer.php'; ?>
+        <script src="js/registrazione.js" defer></script>
+    </main>
+    <?php require 'includes/footer.php'; ?>
 <?php endif; ?>

@@ -3,7 +3,7 @@
 'use strict';
 
 (function () {
-    const radice = document.querySelector('html'); 
+    const radice = document.querySelector('html');
     const bottone = document.getElementById('toggle-tema');
     if (!bottone) return;
 

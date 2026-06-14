@@ -153,7 +153,7 @@
         padding: 4pt;
     }
 
-    html details > *:not(summary) {
+    html details>*:not(summary) {
         display: block;
         padding: 4pt 8pt;
     }

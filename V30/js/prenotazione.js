@@ -127,7 +127,7 @@
         // Data minima
         const oggi = new Date();
         const anno = oggi.getFullYear();
-        let mese = (oggi.getMonth() + 1) + '';  
+        let mese = (oggi.getMonth() + 1) + '';
         let giorno = oggi.getDate() + '';
         if (mese.length < 2) mese = '0' + mese;
         if (giorno.length < 2) giorno = '0' + giorno;

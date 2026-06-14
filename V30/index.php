@@ -52,8 +52,7 @@ $descrizione_pagina = 'Gattile San Paolo: adotta un gatto o diventa volontario a
     </section>
 
     <!-- dati numerici dal database -->
-    <section class="zona-impatto" id="contenitore-statistiche" aria-busy="true"
-        aria-labelledby="titolo-impatto">
+    <section class="zona-impatto" id="contenitore-statistiche" aria-busy="true" aria-labelledby="titolo-impatto">
         <h2 id="titolo-impatto">Il nostro impatto</h2>
         <p class="caricamento" id="caricamento-statistiche" aria-live="polite">Caricamento statistiche in corso…</p>
     </section>
