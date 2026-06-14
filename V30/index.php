@@ -20,7 +20,7 @@ $descrizione_pagina = 'Gattile San Paolo: adotta un gatto o diventa volontario a
 <main id="contenuto-principale" class="main-home">
 
     <!-- intestazione -->
-    <section class="zona-hero" aria-labelledby="titolo-home">
+    <section class="zona-intro" aria-labelledby="titolo-home">
         <h1 id="titolo-home">
             Una casa, una famiglia, una seconda possibilità
         </h1>

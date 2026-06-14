@@ -279,12 +279,6 @@ summary:focus-visible {
     background: #3e5022;
 }
 
-.header nav a.active {
-    background-color: black;
-    border-color: black;
-    color: white;
-}
-
 
 /* Selettore tema (3 stati)*/
 .toggle-tema {
@@ -451,6 +445,14 @@ summary:focus-visible {
     background: maroon;
     color: white;
     border-color: maroon;
+}
+
+.header nav a.active,
+.btn-login.active,
+.btn-signin.active {
+    background-color: black;
+    border-color: black;
+    color: white;
 }
 
 
@@ -725,7 +727,7 @@ main:not(.main-home)>article {
     gap: 0;
     grid-template-columns: 1fr 1fr;
     grid-template-areas:
-        "hero hero"
+        "intro intro"
         "perche impatto"
         "come storia"
         "arrivi arrivi"
@@ -739,8 +741,8 @@ main:not(.main-home)>article {
     min-width: 0;
 }
 
-.main-home .zona-hero {
-    grid-area: hero;
+.main-home .zona-intro {
+    grid-area: intro;
 }
 
 .main-home .zona-perche {
@@ -1773,7 +1775,7 @@ main aside.messaggio p,
 
 
 /* PAGINA PRIVACY */
-.privacy-hero {
+.privacy-intro {
     text-align: center;
 }
 
@@ -2032,7 +2034,7 @@ main aside.messaggio p,
     .main-home {
         grid-template-columns: 1fr;
         grid-template-areas:
-            "hero"
+            "intro"
             "perche"
             "impatto"
             "come"

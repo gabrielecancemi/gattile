@@ -21,7 +21,7 @@ $descrizione_pagina = 'Informativa sulla privacy e gestione dei cookie del sito 
 <main id="contenuto-principale">
 
     <!-- intestazione -->
-    <section class="privacy-hero" aria-labelledby="titolo-privacy">
+    <section class="privacy-intro" aria-labelledby="titolo-privacy">
         <h1 id="titolo-privacy">Privacy &amp; Cookie</h1>
         <p class="privacy-sottotitolo">
             <strong>Trasparenza totale</strong>: usiamo solo cookie tecnici, nessuna profilazione.
