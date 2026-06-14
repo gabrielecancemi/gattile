@@ -1,79 +1,85 @@
 <?php
 // Prende i gatti disponibili nella tabella 'gatti' del db
 
-declare(strict_types=1);
-
 require_once '../includes/connessione_db.php';
+require_once '../includes/log.php';
 
-// Sicurezza
 header('Content-Type: application/json; charset=utf-8');
-header('X-Content-Type-Options: nosniff');
 
 if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
-    http_response_code(405);
+    header('HTTP/1.1 405 Method Not Allowed');
     echo json_encode(['errore' => 'Metodo non consentito']);
-    exit;
+} else {
+    $conn = connessioneDb('reader');
+    if (!$conn) {
+        scriviLog('errore', 'recupera_gatti: connessione al database non riuscita');
+        header('HTTP/1.1 500 Internal Server Error');
+        echo json_encode(['errore' => "Errore del database: impossibile recuperare l'elenco dei gatti.", 'codice' => 'DB_ERROR']);
+    } else {
+        $stm = mysqli_prepare(
+            $conn,
+            'SELECT id, nome, descrizione, peso, colore_mantello, lunghezza_pelo,
+                    razza, colore_occhi, eta, sesso, data_arrivo
+             FROM gatti
+             ORDER BY data_arrivo DESC'
+        );
+
+        if (!$stm) {
+            scriviLog('errore', 'recupera_gatti: prepare fallita - ' . mysqli_error($conn));
+            mysqli_close($conn);
+            header('HTTP/1.1 500 Internal Server Error');
+            echo json_encode(['errore' => "Errore del database: impossibile recuperare l'elenco dei gatti.", 'codice' => 'DB_ERROR']);
+        } else if (!mysqli_stmt_execute($stm)) {
+            scriviLog('errore', 'recupera_gatti: execute fallita - ' . mysqli_stmt_error($stm));
+            mysqli_stmt_close($stm);
+            mysqli_close($conn);
+            header('HTTP/1.1 500 Internal Server Error');
+            echo json_encode(['errore' => "Errore del database: impossibile recuperare l'elenco dei gatti.", 'codice' => 'DB_ERROR']);
+        } else {
+            // Lettura
+            mysqli_stmt_bind_result(
+                $stm,
+                $id,
+                $nome,
+                $descrizione,
+                $peso,
+                $colore_mantello,
+                $lunghezza_pelo,
+                $razza,
+                $colore_occhi,
+                $eta,
+                $sesso,
+                $data_arrivo
+            );
+
+            $elenco_gatti = [];
+
+            while (mysqli_stmt_fetch($stm)) {
+                $elenco_gatti[] = [
+                    'id' => (int) $id,
+                    'nome' => $nome,
+                    'descrizione' => $descrizione,
+                    'peso' => (float) $peso,
+                    'colore_mantello' => $colore_mantello,
+                    'lunghezza_pelo' => $lunghezza_pelo,
+                    'razza' => $razza,
+                    'colore_occhi' => $colore_occhi,
+                    'eta' => (int) $eta,
+                    'sesso' => $sesso,
+                    'data_arrivo' => $data_arrivo,
+                    // Placeholder fisso (foto reali in una versione futura).
+                    'foto' => 'img/placeholder-gatto.jpg',
+                ];
+            }
+
+            mysqli_stmt_close($stm);
+            mysqli_close($conn);
+
+            echo json_encode([
+                'successo' => true,
+                'gatti' => $elenco_gatti,
+                'totale' => count($elenco_gatti),
+            ], JSON_UNESCAPED_UNICODE);
+        }
+    }
 }
-
-$conn = connessioneDb('reader');
-if (!$conn) {
-    http_response_code(500);
-    echo json_encode(['errore' => "Errore del database: impossibile recuperare l'elenco dei gatti.", 'codice' => 'DB_ERROR']);
-    exit;
-}
-
-$stm = mysqli_prepare(
-    $conn,
-    'SELECT *
-     FROM gatti
-     ORDER BY data_arrivo DESC'
-);
-
-if (!$stm) {
-    error_log('Errore DB api/recupera_gatti.php prepare: ' . mysqli_error($conn));
-    mysqli_close($conn);
-    http_response_code(500);
-    echo json_encode(['errore' => "Errore del database: impossibile recuperare l'elenco dei gatti.", 'codice' => 'DB_ERROR']);
-    exit;
-}
-
-if (!mysqli_stmt_execute($stm)) {
-    error_log('Errore DB api/recupera_gatti.php execute: ' . mysqli_stmt_error($stm));
-    mysqli_stmt_close($stm);
-    mysqli_close($conn);
-    http_response_code(500);
-    echo json_encode(['errore' => "Errore del database: impossibile recuperare l'elenco dei gatti.", 'codice' => 'DB_ERROR']);
-    exit;
-}
-
-$risultato_query = mysqli_stmt_get_result($stm);
-$elenco_gatti = [];
-
-while ($g = mysqli_fetch_assoc($risultato_query)) {
-    $elenco_gatti[] = [
-        'id' => (int) $g['id'],
-        'nome' => $g['nome'],
-        'descrizione' => $g['descrizione'],
-        'peso' => (float) $g['peso'],
-        'colore_mantello' => $g['colore_mantello'],
-        'lunghezza_pelo' => $g['lunghezza_pelo'],
-        'razza' => $g['razza'],
-        'colore_occhi' => $g['colore_occhi'],
-        'eta' => (int) $g['eta'],
-        'sesso' => $g['sesso'],
-        'data_arrivo' => $g['data_arrivo'],
-        // Previsto per futura versione con immagini dei gatti salvati sul db
-        'foto' => isset($g['foto']) && trim((string) $g['foto']) !== ''
-            ? $g['foto']
-            : 'img/placeholder-gatto.svg',
-    ];
-}
-
-mysqli_stmt_close($stm);
-mysqli_close($conn);
-
-echo json_encode([
-    'successo' => true,
-    'gatti' => $elenco_gatti,
-    'totale' => count($elenco_gatti),
-], JSON_UNESCAPED_UNICODE);

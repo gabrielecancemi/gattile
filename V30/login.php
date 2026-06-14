@@ -1,19 +1,21 @@
 <?php
 // Pagina di accesso
 
-declare(strict_types=1);
 
 require_once 'includes/layout.php';
+require_once 'includes/log.php';
 
 aprireSessione();
-if (profiloAttivo()) {
-    header('Location: index.php');
-    exit;
-}
 
 $errore = '';
+// Se già autenticato, redirect alla home.
+$reindirizzato = false;
+if (profiloAttivo()) {
+    header('Location: index.php');
+    $reindirizzato = true;
+}
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+if (!$reindirizzato && $_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = trim(filter_input(INPUT_POST, 'username', FILTER_SANITIZE_SPECIAL_CHARS) ?? '');
     $password = $_POST['password'] ?? '';
     $ricordami = isset($_POST['ricordami']);
@@ -23,27 +25,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         $esito = verificaCredenziali($username, $password);
         switch ($esito['stato']) {
-            case ESITO_OK:
+            case 'ok':
                 registraProfiloInSessione($esito['utente']);
                 if ($ricordami) {
                     attivaPromemoria($username);
                 }
+                scriviLog('info', 'login: accesso riuscito - ' . $username);
                 header('Location: index.php');
-                exit;
+                $reindirizzato = true;
+                break;
 
-            case ESITO_PASSWORD_ERRATA:
+            case 'password_errata':
                 $errore = 'Password errata. Riprova.';
-                error_log('[login] password errata per username: ' . $username);
+                scriviLog('avviso', 'login: password errata per username - ' . $username);
                 break;
 
-            case ESITO_UTENTE_ASSENTE:
+            case 'utente_assente':
                 $errore = 'Nessun utente trovato con questo username. Controlla lo username o registrati.';
-                error_log('[login] username inesistente: ' . $username);
+                scriviLog('avviso', 'login: username inesistente - ' . $username);
                 break;
 
-            case ESITO_ERRORE_DB:
+            case 'errore_db':
             default:
                 $errore = 'Servizio momentaneamente non disponibile. Riprova tra qualche minuto.';
+                scriviLog('errore', 'login: errore database durante la verifica credenziali');
                 break;
         }
     }
@@ -60,27 +65,9 @@ if ($username_cookie) {
 $titolo_pagina = 'Accedi';
 $descrizione_pagina = 'Accedi al tuo profilo Gattile San Paolo per prenotare visite o turni di volontariato.';
 
-// Sicurezza
-if (!headers_sent()) {
-    header('X-Content-Type-Options: nosniff');
-    header('X-Frame-Options: DENY');
-    header('Referrer-Policy: strict-origin-when-cross-origin');
-    header('Permissions-Policy: geolocation=(), microphone=(), camera=()');
-    header(
-        "Content-Security-Policy: "
-        . "default-src 'self'; "
-        . "script-src 'self' https://unpkg.com; "
-        . "style-src 'self'; "
-        . "img-src 'self' data:; "
-        . "connect-src 'self'; "
-        . "base-uri 'self'; "
-        . "form-action 'self'; "
-        . "frame-ancestors 'none'; "
-        . "object-src 'none'; "
-        . "upgrade-insecure-requests"
-    );
-}
 
+// Se è avvenuto un redirect, non si produce alcun output HTML.
+if (!$reindirizzato):
 ?>
 <!DOCTYPE html>
 <html lang="it">
@@ -109,7 +96,7 @@ if (!headers_sent()) {
                 <label for="username" class="campo-obbligatorio">
                     Username</label>
                 <input type="text" id="username" name="username" autocomplete="username"
-                    value="<?= $username_precompilato ?>" required aria-describedby="aiuto-username" maxlength="50"
+                    value="<?= $username_precompilato ?>" required maxlength="50"
                     spellcheck="false">
                 <output class="errore-campo" id="err-username" role="alert" aria-live="polite" hidden></output>
 
@@ -155,3 +142,4 @@ if (!headers_sent()) {
 
 </main>
 <?php require 'includes/footer.php'; ?>
+<?php endif; ?>

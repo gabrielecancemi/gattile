@@ -1,16 +1,17 @@
 <?php
-declare(strict_types=1);
 
 require_once 'includes/layout.php';
 require_once 'includes/connessione_db.php';
+require_once 'includes/log.php';
 
 aprireSessione();
-esigeAdmin();
 
 $errore = '';
 $successo = '';
+// Se non è admin
+$reindirizzato = !esigeAdmin();
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+if (!$reindirizzato && $_SERVER['REQUEST_METHOD'] === 'POST') {
     $nome = trim(filter_input(INPUT_POST, 'nome', FILTER_SANITIZE_SPECIAL_CHARS) ?? '');
     $descrizione = trim(filter_input(INPUT_POST, 'descrizione', FILTER_SANITIZE_SPECIAL_CHARS) ?? '');
     $peso = filter_input(INPUT_POST, 'peso', FILTER_VALIDATE_FLOAT);
@@ -28,15 +29,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $data_arrivo = filter_input(INPUT_POST, 'data_arrivo', FILTER_SANITIZE_SPECIAL_CHARS) ?? '';
 
     $errori = [];
-    if (strlen($nome) < 1 || strlen($nome) > 50)
+    if (!preg_match('/^.{1,50}$/s', $nome))
         $errori[] = 'Nome: 1-50 caratteri.';
-    if (strlen($descrizione) < 10)
+    if (!preg_match('/^.{10,}$/s', $descrizione))
         $errori[] = 'Descrizione non valida.';
     if ($peso === false || $peso < 0.1 || $peso > 20)
         $errori[] = 'Peso: tra 0.1 e 20 kg.';
-    if (!in_array($sesso, ['M', 'F'], true))
+    if ($sesso !== 'M' && $sesso !== 'F')
         $errori[] = 'Seleziona il sesso del gatto.';
-    if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $data_arrivo) || !strtotime($data_arrivo))
+    // Controlla formato e validità della data.
+    $data_valida = false;
+    if (preg_match('/^\d{4}-\d{2}-\d{2}$/', $data_arrivo)) {
+        $pd = explode('-', $data_arrivo);
+        $ts_data = mktime(0, 0, 0, (int) $pd[1], (int) $pd[2], (int) $pd[0]);
+        if ($ts_data !== false && date('Y-m-d', $ts_data) === $data_arrivo) {
+            $data_valida = true;
+        }
+    }
+    if (!$data_valida)
         $errori[] = 'Data di arrivo non valida.';
     if ($eta === false)
         $errori[] = 'Età in mesi: numero intero tra 0 e 300.';
@@ -54,7 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
             );
             if (!$stm) {
-                error_log('[inserisci_gatto] prepare: ' . mysqli_error($conn));
+                scriviLog('errore', 'inserisci_gatto: prepare fallita - ' . mysqli_error($conn));
                 $errore = "Errore del database durante l'inserimento. Riprova tra qualche minuto.";
             } else {
                 mysqli_stmt_bind_param(
@@ -72,10 +82,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $data_arrivo
                 );
                 if (!mysqli_stmt_execute($stm)) {
-                    error_log('[inserisci_gatto] execute: ' . mysqli_stmt_error($stm));
+                    scriviLog('errore', 'inserisci_gatto: execute fallita - ' . mysqli_stmt_error($stm));
                     $errore = "Errore del database durante l'inserimento. Riprova tra qualche minuto.";
+                    mysqli_stmt_close($stm);
                 } else {
                     // Salvo l'esito in sessione e reindirizzo
+                    scriviLog('info', 'inserisci_gatto: nuovo gatto inserito - ' . $nome);
                     impostaMessaggioFlash(
                         'successo',
                         'Gatto «' . $nome . '» inserito con successo (immagine placeholder assegnata).'
@@ -83,11 +95,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     mysqli_stmt_close($stm);
                     mysqli_close($conn);
                     header('Location: inserisci_gatto.php');
+                    $reindirizzato = true;
                     exit;
                 }
-                mysqli_stmt_close($stm);
             }
-            mysqli_close($conn);
+            if (!$reindirizzato) {
+                mysqli_close($conn);
+            }
         }
     } else {
         $errore = implode(' ', $errori);
@@ -108,27 +122,8 @@ if ($flash) {
 $titolo_pagina = 'Inserisci nuovo gatto';
 $descrizione_pagina = 'Area riservata: inserisci un nuovo gatto nella struttura.';
 
-// Sicurezza
-if (!headers_sent()) {
-    header('X-Content-Type-Options: nosniff');
-    header('X-Frame-Options: DENY');
-    header('Referrer-Policy: strict-origin-when-cross-origin');
-    header('Permissions-Policy: geolocation=(), microphone=(), camera=()');
-    header(
-        "Content-Security-Policy: "
-        . "default-src 'self'; "
-        . "script-src 'self' https://unpkg.com; "
-        . "style-src 'self'; "
-        . "img-src 'self' data:; "
-        . "connect-src 'self'; "
-        . "base-uri 'self'; "
-        . "form-action 'self'; "
-        . "frame-ancestors 'none'; "
-        . "object-src 'none'; "
-        . "upgrade-insecure-requests"
-    );
-}
-
+// Se è avvenuto il redirect, non si produce alcun output HTML.
+if (!$reindirizzato):
 ?>
 <!DOCTYPE html>
 <html lang="it">
@@ -261,3 +256,4 @@ if (!headers_sent()) {
     <script src="js/inserisci_gatto.js" defer></script>
 </main>
 <?php require 'includes/footer.php'; ?>
+<?php endif; ?>

@@ -13,7 +13,7 @@
         scelta manuale dal selettore tema (vince sul sistema).
 
    I due blocchi restano separati perche', senza custom
-   properties (fuori dagli argomenti del corso), non e' possibile
+   properties, non e' possibile
    scrivere ogni colore una sola volta: i valori sono pero'
    identici al 100% tra i due attivatori.
 
@@ -387,7 +387,7 @@
     }
 
     html:not([data-tema]) .nuovi-arrivi {
-        border: 1px solid #8c7656 !important;
+        border: 1px solid #8c7656;
     }
 
     html:not([data-tema]) .badge-nuovo {
@@ -1038,7 +1038,7 @@ html[data-tema="scuro"] .messaggio-avviso .messaggio-tag {
 }
 
 html[data-tema="scuro"] .nuovi-arrivi {
-    border: 1px solid #8c7656 !important;
+    border: 1px solid #8c7656;
 }
 
 html[data-tema="scuro"] .badge-nuovo {

@@ -1,36 +1,39 @@
 <?php
 // Registrazione nuovo utente
 
-declare(strict_types=1);
 
 require_once 'includes/layout.php';
 require_once 'includes/connessione_db.php';
+require_once 'includes/log.php';
 
 aprireSessione();
-if (profiloAttivo()) {
-    header('Location: index.php');
-    exit;
-}
 
 $errore = '';
 $successo = '';
 $campi = ['nome' => '', 'cognome' => '', 'indirizzo' => '', 'username' => ''];
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+// Se l'utente è già autenticato, si imposta il redirect alla home.
+$reindirizzato = false;
+if (profiloAttivo()) {
+    header('Location: index.php');
+    $reindirizzato = true;
+}
+
+if (!$reindirizzato && $_SERVER['REQUEST_METHOD'] === 'POST') {
     $nome = trim(filter_input(INPUT_POST, 'nome', FILTER_SANITIZE_SPECIAL_CHARS) ?? '');
     $cognome = trim(filter_input(INPUT_POST, 'cognome', FILTER_SANITIZE_SPECIAL_CHARS) ?? '');
     $indirizzo = trim(filter_input(INPUT_POST, 'indirizzo', FILTER_SANITIZE_SPECIAL_CHARS) ?? '');
     $username = trim(filter_input(INPUT_POST, 'username', FILTER_SANITIZE_SPECIAL_CHARS) ?? '');
     $password = $_POST['password'] ?? '';
     $conferma = $_POST['conferma_password'] ?? '';
-    $campi = compact('nome', 'cognome', 'indirizzo', 'username');
+    $campi = ['nome' => $nome, 'cognome' => $cognome, 'indirizzo' => $indirizzo, 'username' => $username];
 
     $errori = [];
-    if (strlen($nome) < 2)
+    if (!preg_match('/^.{2,}$/s', $nome))
         $errori[] = 'Il nome deve avere almeno 2 caratteri.';
-    if (strlen($cognome) < 2)
+    if (!preg_match('/^.{2,}$/s', $cognome))
         $errori[] = 'Il cognome deve avere almeno 2 caratteri.';
-    if (strlen($indirizzo) < 5)
+    if (!preg_match('/^.{5,}$/s', $indirizzo))
         $errori[] = 'Inserisci un indirizzo valido (min. 5 caratteri).';
     if (!preg_match('/^[a-zA-Z][a-zA-Z0-9_]{2,49}$/', $username))
         $errori[] = 'Username non valido: inizia con lettera, 3-50 caratteri alfanumerici o _.';
@@ -48,14 +51,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } else {
             $controllo = mysqli_prepare($conn_lettura, 'SELECT id FROM utenti WHERE username = ? LIMIT 1');
             if (!$controllo) {
-                error_log('[registrazione] prepare controllo: ' . mysqli_error($conn_lettura));
+                scriviLog('errore', 'registrazione: prepare controllo username fallita - ' . mysqli_error($conn_lettura));
                 $errore = 'Errore del database. Riprova tra qualche minuto.';
                 mysqli_close($conn_lettura);
             } else {
                 mysqli_stmt_bind_param($controllo, 's', $username);
                 mysqli_stmt_execute($controllo);
-                $risultato = mysqli_stmt_get_result($controllo);
-                $esiste = mysqli_fetch_assoc($risultato);
+                mysqli_stmt_bind_result($controllo, $id_trovato);
+                $esiste = mysqli_stmt_fetch($controllo);
                 mysqli_stmt_close($controllo);
                 mysqli_close($conn_lettura);
 
@@ -74,14 +77,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                              VALUES (?, ?, ?, ?, ?, FALSE)'
                         );
                         if (!$inserimento) {
-                            error_log('[registrazione] prepare insert: ' . mysqli_error($conn_inserimento));
+                            scriviLog('errore', 'registrazione: prepare inserimento fallita - ' . mysqli_error($conn_inserimento));
                             $errore = 'Errore del database. Riprova tra qualche minuto.';
+                            mysqli_close($conn_inserimento);
                         } else {
                             mysqli_stmt_bind_param($inserimento, 'sssss', $nome, $cognome, $indirizzo, $username, $password_salvataggio);
                             if (!mysqli_stmt_execute($inserimento)) {
-                                error_log('[registrazione] execute: ' . mysqli_stmt_error($inserimento));
+                                scriviLog('errore', 'registrazione: execute inserimento fallita - ' . mysqli_stmt_error($inserimento));
                                 $errore = 'Errore del database. Riprova tra qualche minuto.';
+                                mysqli_stmt_close($inserimento);
+                                mysqli_close($conn_inserimento);
                             } else {
+                                scriviLog('info', 'registrazione: nuovo utente registrato - ' . $username);
                                 impostaMessaggioFlash(
                                     'successo',
                                     "Registrazione avvenuta! Ora puoi effettuare l'accesso."
@@ -89,11 +96,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 mysqli_stmt_close($inserimento);
                                 mysqli_close($conn_inserimento);
                                 header('Location: registrazione.php');
+                                $reindirizzato = true;
                                 exit;
                             }
-                            mysqli_stmt_close($inserimento);
                         }
-                        mysqli_close($conn_inserimento);
                     }
                 }
             }
@@ -116,27 +122,8 @@ if ($flash) {
 $titolo_pagina = 'Registrazione';
 $descrizione_pagina = 'Crea il tuo profilo Gattile San Paolo.';
 
-// Sicurezza
-if (!headers_sent()) {
-    header('X-Content-Type-Options: nosniff');
-    header('X-Frame-Options: DENY');
-    header('Referrer-Policy: strict-origin-when-cross-origin');
-    header('Permissions-Policy: geolocation=(), microphone=(), camera=()');
-    header(
-        "Content-Security-Policy: "
-        . "default-src 'self'; "
-        . "script-src 'self' https://unpkg.com; "
-        . "style-src 'self'; "
-        . "img-src 'self' data:; "
-        . "connect-src 'self'; "
-        . "base-uri 'self'; "
-        . "form-action 'self'; "
-        . "frame-ancestors 'none'; "
-        . "object-src 'none'; "
-        . "upgrade-insecure-requests"
-    );
-}
-
+// Se è avvenuto un redirect, non si produce alcun output HTML.
+if (!$reindirizzato):
 ?>
 <!DOCTYPE html>
 <html lang="it">
@@ -170,8 +157,8 @@ if (!headers_sent()) {
                     <label for="reg-nome" class="campo-obbligatorio">
                         Nome</label>
                     <input type="text" id="reg-nome" name="nome" value="<?= ripulisci($campi['nome']) ?>"
-                        autocomplete="given-name" required maxlength="50">
-                    <em id="aiuto-reg-username" class="aiuto-campo">
+                        autocomplete="given-name" required maxlength="50" aria-describedby="aiuto-reg-nome">
+                    <em id="aiuto-reg-nome" class="aiuto-campo">
                         Solo lettere; almeno 2 caratteri.
                     </em>
                     <output class="errore-campo" id="err-nome" role="alert" aria-live="polite" hidden></output>
@@ -179,8 +166,8 @@ if (!headers_sent()) {
                     <label for="reg-cognome" class="campo-obbligatorio">
                         Cognome</label>
                     <input type="text" id="reg-cognome" name="cognome" value="<?= ripulisci($campi['cognome']) ?>"
-                        autocomplete="family-name" required maxlength="50">
-                    <em id="aiuto-reg-username" class="aiuto-campo">
+                        autocomplete="family-name" required maxlength="50" aria-describedby="aiuto-reg-cognome">
+                    <em id="aiuto-reg-cognome" class="aiuto-campo">
                         Solo lettere; almeno 2 caratteri.
                     </em>
                     <output class="errore-campo" id="err-cognome" role="alert" aria-live="polite" hidden></output>
@@ -188,8 +175,8 @@ if (!headers_sent()) {
                     <label for="reg-indirizzo" class="campo-obbligatorio">
                         Indirizzo</label>
                     <input type="text" id="reg-indirizzo" name="indirizzo" value="<?= ripulisci($campi['indirizzo']) ?>"
-                        required maxlength="100" placeholder="Via/Corso, numero, città">
-                    <em id="aiuto-reg-username" class="aiuto-campo">
+                        required maxlength="100" placeholder="Via/Corso, numero, città" aria-describedby="aiuto-reg-indirizzo">
+                    <em id="aiuto-reg-indirizzo" class="aiuto-campo">
                         Almeno 5 caratteri.
                     </em>
                     <output class="errore-campo" id="err-indirizzo" role="alert" aria-live="polite" hidden></output>
@@ -249,3 +236,4 @@ if (!headers_sent()) {
     <script src="js/registrazione.js" defer></script>
 </main>
 <?php require 'includes/footer.php'; ?>
+<?php endif; ?>

@@ -39,7 +39,7 @@
         const eta = etaInParole(gatto.eta);
         const immagine = gatto.foto && String(gatto.foto).trim() !== ''
             ? gatto.foto
-            : 'img/placeholder-gatto.svg';
+            : 'img/placeholder-gatto.jpg';
         const nome = ripuliscihtml(gatto.nome);
         const data_iso = ripuliscihtml(gatto.data_arrivo);
         const data_it = dataItaliana(gatto.data_arrivo);
@@ -48,7 +48,7 @@
         html += '<article class="card-gatto" aria-labelledby="' + id_titolo + '">';
         html += '<picture>';
         html += '<source srcset="' + ripuliscihtml(immagine) + '">';
-        html += '<img src="img/placeholder-gatto.svg" alt="Placeholder di ' + nome + '" loading="lazy" decoding="async" class="foto-gatto">';
+        html += '<img src="img/placeholder-gatto.jpg" alt="Placeholder di ' + nome + '" loading="lazy" decoding="async" class="foto-gatto">';
         html += '</picture>';
         html += '<section class="card-gatto-corpo">';
         html += '<h3 id="' + id_titolo + '">' + nome + ' <strong class="badge-nuovo">Nuovo</strong></h3>';

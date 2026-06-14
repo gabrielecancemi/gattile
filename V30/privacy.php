@@ -1,7 +1,6 @@
 <?php
 // Informativa privacy e gestione cookie
 
-declare(strict_types=1);
 
 require_once 'includes/layout.php';
 
@@ -12,26 +11,6 @@ $eliminati = isset($_GET['eliminati']) && $_GET['eliminati'] === '1';
 $titolo_pagina = 'Privacy e Cookie';
 $descrizione_pagina = 'Informativa sulla privacy e gestione dei cookie del sito Gattile San Paolo.';
 
-// Sicurezza
-if (!headers_sent()) {
-    header('X-Content-Type-Options: nosniff');
-    header('X-Frame-Options: DENY');
-    header('Referrer-Policy: strict-origin-when-cross-origin');
-    header('Permissions-Policy: geolocation=(), microphone=(), camera=()');
-    header(
-        "Content-Security-Policy: "
-        . "default-src 'self'; "
-        . "script-src 'self' https://unpkg.com; "
-        . "style-src 'self'; "
-        . "img-src 'self' data:; "
-        . "connect-src 'self'; "
-        . "base-uri 'self'; "
-        . "form-action 'self'; "
-        . "frame-ancestors 'none'; "
-        . "object-src 'none'; "
-        . "upgrade-insecure-requests"
-    );
-}
 
 ?>
 <!DOCTYPE html>

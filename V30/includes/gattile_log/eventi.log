@@ -1,0 +1,32 @@
+2026-06-14 15:09:40 [errore] recupera_gatti: connessione al database non riuscita
+2026-06-14 15:11:50 [errore] recupera_gatti: connessione al database non riuscita
+2026-06-14 15:12:01 [errore] recupera_home: connessione al database non riuscita
+2026-06-14 15:12:16 [errore] recupera_gatti: connessione al database non riuscita
+2026-06-14 15:12:23 [errore] recupera_home: connessione al database non riuscita
+2026-06-14 15:13:11 [errore] verificaCredenziali: connessione al database non riuscita
+2026-06-14 15:13:11 [errore] login: errore database durante la verifica credenziali
+2026-06-14 15:13:45 [errore] verificaCredenziali: connessione al database non riuscita
+2026-06-14 15:13:45 [errore] login: errore database durante la verifica credenziali
+2026-06-14 15:14:00 [errore] verificaCredenziali: connessione al database non riuscita
+2026-06-14 15:14:00 [errore] login: errore database durante la verifica credenziali
+2026-06-14 15:15:42 [errore] recupera_home: connessione al database non riuscita
+2026-06-14 15:15:48 [errore] recupera_gatti: connessione al database non riuscita
+2026-06-14 15:15:58 [errore] verificaCredenziali: connessione al database non riuscita
+2026-06-14 15:15:58 [errore] login: errore database durante la verifica credenziali
+2026-06-14 15:16:51 [info] login: accesso riuscito - gabricanci
+2026-06-14 15:17:00 [info] prenota_visita: visita 15 prenotata da utente 7
+2026-06-14 15:39:21 [info] turni POST: 1 turno/i prenotati da utente 7
+2026-06-14 15:39:50 [errore] recupera_home: connessione al database non riuscita
+2026-06-14 15:39:56 [errore] recupera_gatti: connessione al database non riuscita
+2026-06-14 15:40:01 [errore] turni GET: connessione al database non riuscita
+2026-06-14 15:40:18 [errore] recupera_home: connessione al database non riuscita
+2026-06-14 15:40:56 [info] login: accesso riuscito - anna_admin
+2026-06-14 15:41:17 [info] inserisci_gatto: nuovo gatto inserito - dd
+2026-06-14 15:46:42 [info] inserisci_gatto: nuovo gatto inserito - ricc
+2026-06-14 15:49:14 [info] registrazione: nuovo utente registrato - eeeeeeeee
+2026-06-14 15:53:51 [info] registrazione: nuovo utente registrato - ssssss
+2026-06-14 15:54:07 [info] login: accesso riuscito - anna_admin
+2026-06-14 15:54:23 [info] inserisci_gatto: nuovo gatto inserito - w
+2026-06-14 15:54:36 [info] turni POST: 1 turno/i prenotati da utente 1
+2026-06-14 15:54:51 [info] login: accesso riuscito - gabricanci
+2026-06-14 15:55:04 [info] prenota_visita: visita 16 prenotata da utente 7

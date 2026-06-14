@@ -1,7 +1,10 @@
 <?php
 // Piè di pagina comune
 
-$pagina_corrente = basename($_SERVER['PHP_SELF']);
+// Nome del file corrente (ultima parte del percorso).
+$percorso_corrente = $_SERVER['PHP_SELF'] ?? '';
+$parti_percorso = explode('/', $percorso_corrente);
+$pagina_corrente = $parti_percorso[count($parti_percorso) - 1];
 $anno = date('Y');
 
 $voci_nav = [

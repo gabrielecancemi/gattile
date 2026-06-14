@@ -21,13 +21,14 @@
 
     const textarea = campi.descrizione.el;
     const contatore = document.getElementById('contatore-desc');
-    const max_descrizione = textarea ? parseInt(textarea.getAttribute('maxlength') || '2000', 10) : 2000;
+    // maxLength è la proprietà DOM corrispondente all'attributo maxlength.
+    const max_descrizione = textarea && textarea.maxLength > 0 ? textarea.maxLength : 2000;
 
     if (textarea && contatore) {
         textarea.addEventListener('input', function () {
             const rimanenti = max_descrizione - this.value.length;
             contatore.textContent = String(rimanenti);
-            contatore.classList.toggle('contatore-basso', rimanenti < 50);
+            contatore.className = rimanenti < 50 ? 'contatore-basso' : '';
         });
     }
 
@@ -230,7 +231,7 @@
 
         const dt = new Date(v);
 
-        if (isNaN(dt.getTime())) {
+        if (isNaN(dt.getFullYear())) {
             mostraErrore(
                 campi.data_arrivo,
                 'Formato data non valido.'

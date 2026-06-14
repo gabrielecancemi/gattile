@@ -2,16 +2,20 @@
 // Sessione, accesso e cookie "ricordami"
 
 require_once 'connessione_db.php';
+require_once 'log.php';
 
 function connessioneSicura(): bool
 {
-    if (!empty($_SERVER['HTTPS']) && strtolower((string) $_SERVER['HTTPS']) !== 'off') {
+    // HTTPS
+    $https = (string) ($_SERVER['HTTPS'] ?? '');
+    if (!empty($https) && $https !== 'off' && $https !== 'OFF' && $https !== 'Off') {
         return true;
     }
     if (($_SERVER['SERVER_PORT'] ?? '') === '443') {
         return true;
     }
-    if (strtolower((string) ($_SERVER['HTTP_X_FORWARDED_PROTO'] ?? '')) === 'https') {
+    $proto = (string) ($_SERVER['HTTP_X_FORWARDED_PROTO'] ?? '');
+    if ($proto === 'https' || $proto === 'HTTPS') {
         return true;
     }
     return false;
@@ -36,14 +40,25 @@ function scriviToken(): array
         return [];
     }
     $grezzo = file_get_contents($file);
+    // Rilegge i token dal file JSON come array associativo.
     $dati = json_decode($grezzo, true);
-    if (!is_array($dati)) {
+    // File vuoto o corrotto: si riparte da un elenco vuoto.
+    if ($dati === null) {
         return [];
     }
-    // Alla prima lettura scarto i token scaduti
+
+    // Tiene solo i token non ancora scaduti.
     $adesso = time();
-    $validi = array_filter($dati, fn($v) => isset($v['scadenza']) && $v['scadenza'] > $adesso);
-    if (count($validi) !== count($dati)) {
+    $validi = [];
+    $cambiato = false;
+    foreach ($dati as $chiave => $valore) {
+        if (isset($valore['scadenza']) && $valore['scadenza'] > $adesso) {
+            $validi[$chiave] = $valore;
+        } else {
+            $cambiato = true;
+        }
+    }
+    if ($cambiato) {
         salvaToken($validi);
     }
     return $validi;
@@ -51,6 +66,7 @@ function scriviToken(): array
 
 function salvaToken(array $gettoni): void
 {
+    // Salva l'elenco dei token su file in formato JSON.
     file_put_contents(percorsoToken(), json_encode($gettoni), LOCK_EX);
 }
 
@@ -82,29 +98,31 @@ function haRuoloAdmin(): bool
     return $profilo !== null && (bool) $profilo['is_admin'];
 }
 
-function richiedeAccesso(string $destinazione = 'login.php'): void
+// Se non autenticato imposta il redirect e torna false, altrimenti true.
+function richiedeAccesso(string $destinazione = 'login.php'): bool
 {
     if (!profiloAttivo()) {
         header('Location: ' . $destinazione);
-        exit;
+        return false;
     }
+    return true;
 }
 
-function esigeAdmin(): void
+// Torna true se l'utente è admin, altrimenti imposta il redirect e torna false.
+function esigeAdmin(): bool
 {
-    richiedeAccesso();
+    if (!richiedeAccesso()) {
+        return false;
+    }
     if (!haRuoloAdmin()) {
         header('Location: index.php');
-        exit;
+        return false;
     }
+    return true;
 }
 
 // Accesso
 
-const ESITO_OK = 'ok';
-const ESITO_UTENTE_ASSENTE = 'utente_assente';
-const ESITO_PASSWORD_ERRATA = 'password_errata';
-const ESITO_ERRORE_DB = 'errore_db';
 
 // Memorizzazione password IN CHIARO
 function preparaPasswordSalvataggio(string $password): string
@@ -112,23 +130,23 @@ function preparaPasswordSalvataggio(string $password): string
     return $password;
 }
 
-// Confronto a tempo costante (evita timing attack), pur restando in chiaro.
+// Password in chiaro nel DB - NON OPZIONE CONSIGLIATA
 function confrontaPassword(string $password, string $salvata): bool
 {
-    return hash_equals($salvata, $password);
+    return $salvata === $password;
 }
 
 // Controlla le credenziali con prepared statement
 function verificaCredenziali(string $username, string $password): array
 {
     if ($username === '' || $password === '') {
-        return ['stato' => ESITO_UTENTE_ASSENTE, 'utente' => null];
+        return ['stato' => 'utente_assente', 'utente' => null];
     }
 
     $conn = connessioneDb('reader');
     if (!$conn) {
-        error_log('[accesso] DB non disponibile');
-        return ['stato' => ESITO_ERRORE_DB, 'utente' => null];
+        scriviLog('errore', 'verificaCredenziali: connessione al database non riuscita');
+        return ['stato' => 'errore_db', 'utente' => null];
     }
 
     $stm = mysqli_prepare(
@@ -138,40 +156,46 @@ function verificaCredenziali(string $username, string $password): array
     );
 
     if (!$stm) {
-        error_log('[accesso] prepare fallita: ' . mysqli_error($conn));
+        scriviLog('errore', 'verificaCredenziali: prepare fallita - ' . mysqli_error($conn));
         mysqli_close($conn);
-        return ['stato' => ESITO_ERRORE_DB, 'utente' => null];
+        return ['stato' => 'errore_db', 'utente' => null];
     }
 
     mysqli_stmt_bind_param($stm, 's', $username);
 
     if (!mysqli_stmt_execute($stm)) {
-        error_log('[accesso] execute fallita: ' . mysqli_stmt_error($stm));
+        scriviLog('errore', 'verificaCredenziali: execute fallita - ' . mysqli_stmt_error($stm));
         mysqli_stmt_close($stm);
         mysqli_close($conn);
-        return ['stato' => ESITO_ERRORE_DB, 'utente' => null];
+        return ['stato' => 'errore_db', 'utente' => null];
     }
 
-    $risultato = mysqli_stmt_get_result($stm);
-    $utente = mysqli_fetch_assoc($risultato);
+    // Associa le colonne a variabili.
+    mysqli_stmt_bind_result($stm, $id, $nome, $cognome, $uname, $password_salvata, $is_admin);
+    $trovato = mysqli_stmt_fetch($stm);
     mysqli_stmt_close($stm);
 
-    if (!$utente) {
+    if (!$trovato) {
         mysqli_close($conn);
-        return ['stato' => ESITO_UTENTE_ASSENTE, 'utente' => null];
+        return ['stato' => 'utente_assente', 'utente' => null];
     }
 
-    $password_salvata = $utente['password'];
-    $combacia = confrontaPassword($password, $password_salvata);
+    $combacia = confrontaPassword($password, (string) $password_salvata);
     mysqli_close($conn);
 
     if ($combacia) {
-        // non finisce mai in sessione
-        unset($utente['password']);
-        return ['stato' => ESITO_OK, 'utente' => $utente];
+        // La password non viene mai inserita in sessione.
+        $utente = [
+            'id' => $id,
+            'nome' => $nome,
+            'cognome' => $cognome,
+            'username' => $uname,
+            'is_admin' => $is_admin,
+        ];
+        return ['stato' => 'ok', 'utente' => $utente];
     }
 
-    return ['stato' => ESITO_PASSWORD_ERRATA, 'utente' => null];
+    return ['stato' => 'password_errata', 'utente' => null];
 }
 
 function registraProfiloInSessione(array $utente): void
@@ -184,20 +208,19 @@ function registraProfiloInSessione(array $utente): void
 
 // Cookie "ricordami"
 
-const NOME_COOKIE_PROMEMORIA = 'ricorda_username';
-const DURATA_PROMEMORIA = 72 * 3600;
 
 function attivaPromemoria(string $username): void
 {
-    $gettone = bin2hex(random_bytes(32));
+    // Token opaco (SHA-256 su sessione, ora e valore casuale)
+    $gettone = hash('sha256', session_id() . time() . rand() . $username);
     $gettoni = scriviToken();
     $gettoni[$gettone] = [
         'username' => $username,
-        'scadenza' => time() + DURATA_PROMEMORIA,
+        'scadenza' => time() + (72 * 3600),
     ];
     salvaToken($gettoni);
-    setcookie(NOME_COOKIE_PROMEMORIA, $gettone, [
-        'expires' => time() + DURATA_PROMEMORIA,
+    setcookie('ricorda_username', $gettone, [
+        'expires' => time() + (72 * 3600),
         'path' => '/',
         'secure' => connessioneSicura(),
         'httponly' => true,
@@ -207,7 +230,7 @@ function attivaPromemoria(string $username): void
 
 function recuperaPromemoria(): ?string
 {
-    $gettone = $_COOKIE[NOME_COOKIE_PROMEMORIA] ?? null;
+    $gettone = $_COOKIE['ricorda_username'] ?? null;
     if (!$gettone) {
         return null;
     }
@@ -222,7 +245,7 @@ function recuperaPromemoria(): ?string
 
 function cancellaPromemoria(): void
 {
-    $gettone = $_COOKIE[NOME_COOKIE_PROMEMORIA] ?? null;
+    $gettone = $_COOKIE['ricorda_username'] ?? null;
     if ($gettone !== null) {
         $gettoni = scriviToken();
         if (isset($gettoni[$gettone])) {
@@ -230,14 +253,14 @@ function cancellaPromemoria(): void
             salvaToken($gettoni);
         }
     }
-    setcookie(NOME_COOKIE_PROMEMORIA, '', [
+    setcookie('ricorda_username', '', [
         'expires' => time() - 3600,
         'path' => '/',
         'secure' => connessioneSicura(),
         'httponly' => true,
         'samesite' => 'Strict',
     ]);
-    unset($_COOKIE[NOME_COOKIE_PROMEMORIA]);
+    unset($_COOKIE['ricorda_username']);
 }
 
 function chiudiProfilo(): void

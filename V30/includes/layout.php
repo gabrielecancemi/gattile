@@ -38,5 +38,9 @@ function leggiMessaggioFlash(): ?array
     }
     $flash = $_SESSION['messaggio_flash'];
     unset($_SESSION['messaggio_flash']);
-    return is_array($flash) ? $flash : null;
+    // Il flash è un array con chiavi 'tipo' e 'testo'.
+    if (isset($flash['tipo'], $flash['testo'])) {
+        return $flash;
+    }
+    return null;
 }

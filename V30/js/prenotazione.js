@@ -29,7 +29,7 @@
         }
 
         const scelta = new Date(v + 'T00:00');
-        if (isNaN(scelta.getTime())) {
+        if (isNaN(scelta.getFullYear())) {
             if (mostra) mostraErroreCampo(input_data, errore_giorno, 'Formato data non valido.');
             return false;
         }
@@ -75,15 +75,10 @@
 
         input_gatti_ids.value = gatti.map(g => g.id).join(',');
 
-        let nodo = riepilogo.firstChild;
-        while (nodo) {
-            const successivo = nodo.nextSibling;
-            if (nodo !== errore_gatti) riepilogo.removeChild(nodo);
-            nodo = successivo;
-        }
-
         if (gatti.length === 0) {
-            riepilogo.insertAdjacentHTML('afterbegin', '<p class="messaggio messaggio-avviso">Nessun gatto selezionato. Clicca sulle card per sceglierli.</p>');
+            // nodo di errore.
+            riepilogo.innerHTML = '<p class="messaggio messaggio-avviso">Nessun gatto selezionato. Clicca sulle card per sceglierli.</p>';
+            if (errore_gatti) riepilogo.appendChild(errore_gatti);
         } else {
             let html = '<p><strong>Gatti selezionati (' + gatti.length + '):</strong></p><ul>';
             for (let i = 0; i < gatti.length; i++) {
@@ -95,7 +90,8 @@
                     '</li>';
             }
             html += '</ul>';
-            riepilogo.insertAdjacentHTML('afterbegin', html); 
+            riepilogo.innerHTML = html;
+            if (errore_gatti) riepilogo.appendChild(errore_gatti);
             mostraErroreCampo(null, errore_gatti, '');
         }
     }
@@ -128,9 +124,14 @@
     });
 
     if (input_data) {
+        // Data minima
         const oggi = new Date();
-        oggi.setMinutes(oggi.getMinutes() - oggi.getTimezoneOffset());
-        input_data.min = oggi.toISOString().slice(0, 10);
+        const anno = oggi.getFullYear();
+        let mese = (oggi.getMonth() + 1) + '';  
+        let giorno = oggi.getDate() + '';
+        if (mese.length < 2) mese = '0' + mese;
+        if (giorno.length < 2) giorno = '0' + giorno;
+        input_data.min = anno + '-' + mese + '-' + giorno;
         input_data.addEventListener('change', function () { validaGiorno(); validaQuando(); });
         input_data.addEventListener('blur', function () { validaGiorno(); });
     }

@@ -1,104 +1,305 @@
-Politecnico di Torino
-Corso di Progettazione di Applicazioni Internet — A.A. 2025/2026
+GATTILE SAN PAOLO - RELAZIONE SULLE SCELTE PROGETTUALI
 
-Gattile San Paolo — Documentazione delle scelte progettuali
-Homework di programmazione — Tecnologie web lato server e client
 
-1. Descrizione generale del progetto
-Il progetto consiste in un sito web per la gestione delle adozioni e del volontariato di un gattile situato a Torino. L'obiettivo principale è offrire un punto di incontro tra chi desidera adottare un gatto e la struttura che li ospita, semplificando sia la fase di scoperta degli animali disponibili sia quella di prenotazione delle visite conoscitive. Un secondo filone riguarda il volontariato: i cittadini che vogliono prestare servizio al gattile possono iscriversi direttamente dal sito scegliendo le fasce orarie che preferiscono.
-Lo stack tecnologico richiesto dalla specifica è PHP 8 lato server, React per il modulo di visualizzazione dei gatti e Vanilla JavaScript per tutti gli altri form. Questa combinazione ha guidato molte scelte architetturali descritte nelle sezioni seguenti.
-2. Struttura dei file e organizzazione del progetto
-I file sono organizzati secondo una logica di separazione delle responsabilità. Le pagine PHP si trovano alla radice del progetto; le componenti condivise (connessione al database, gestione della sessione, renderer delle card, head e footer comuni) sono isolate nella directory includes/. Gli endpoint JSON stanno in api/, separati dalle pagine navigabili. I fogli di stile sono in css/ e gli script in js/.
-Questa scelta non è arbitraria: tenere gli endpoint in una sottodirectory dedicata rende immediatamente evidente, anche solo leggendo l'albero dei file, quali URL espongono dati grezzi e quali restituiscono HTML. In produzione si potrebbero proteggere ulteriormente con regole sul server web, ma già a livello di progetto la distinzione aiuta la manutenibilità.
-2.1 Rendering delle card: due modalità, un solo CSS
-La specifica richiede due meccanismi distinti per visualizzare le schede dei gatti. Nella home page gli ultimi due arrivati vengono estratti dal database lato server e renderizzati da PHP tramite la funzione costruisciSchedaGatto() in includes/card_gatto.php. Nella pagina gatti.php, invece, tutta la sezione di visualizzazione, ordinamento e selezione è affidata al componente React, come imposto dalla traccia.
-I due runtime non possono condividere codice direttamente — PHP gira sul server, React nel browser — ma condividono la stessa struttura HTML e le stesse classi CSS (.card-gatto, .card-gatto-corpo, .tag e così via). Questo significa che il foglio di stile non è mai duplicato: un unico blocco CSS vale per entrambe le modalità di rendering.
-Il badge "Nuovo" segue la stessa logica: in home lo applica il renderer PHP passando l'opzione ['nuovo' => true] agli ultimi due inserimenti; in gatti.php lo applica React ai due gatti con la data di arrivo più recente, calcolati sull'intera lista. In questo modo il badge è sempre sugli stessi due animali, indipendentemente dall'ordinamento o dal filtro attivo nell'interfaccia React.
-C'è una ridondanza residua che vale la pena dichiarare: piccole funzioni di formattazione come il calcolo dell'età in parole (mesi → "1 anno e 3 mesi"), l'etichetta del sesso e il formato della data esistono sia in PHP sia in JavaScript. Non sono unificabili in un'unica copia senza spostare il calcolo tutto sul backend e modificare il contratto JSON dell'endpoint, cosa che va oltre lo scopo del progetto. Sul solo versante JavaScript, invece, le funzioni che prima erano copiate in più file (la sanitizzazione dell'HTML, la visualizzazione degli errori inline, il calcolo dell'età in parole e i messaggi all'utente) sono ora centralizzate in un unico file js/comuni.js, che le dichiara come funzioni globali (ripuliscihtml, mostraErroreCampo, etaInParole, messaggioErrore, mostraMessaggioComune, bottoniConferma) ed è incluso una sola volta in includes/head.php prima degli altri script: gli script di pagina (home.js, prenotazione.js, volontariato.js e il componente React) le richiamano per nome senza ridefinirle. La ridondanza è pertanto ridotta al minimo strutturale: una funzione per runtime, stesso markup, stesso CSS, stesso badge.
-3. Comunicazione tra il modulo React e il form Vanilla JavaScript
-La pagina gatti.php ospita contemporaneamente due tecnologie con responsabilità distinte: il componente React gestisce la lista dei gatti, i filtri, l'ordinamento e la selezione; il form di prenotazione visita è sviluppato in Vanilla JavaScript. Il problema da risolvere è come trasmettere l'elenco dei gatti selezionati dall'uno all'altro senza creare un accoppiamento rigido.
-La soluzione adottata è un CustomEvent del DOM, inviato sul document ogni volta che la selezione cambia:
-document.dispatchEvent(new CustomEvent('gattiSelezionatiAggiornati', {
-    detail: { gatti: [...gatti selezionati] },
-    bubbles: true,
-}));
-Il form Vanilla JS si iscrive a questo evento tramite addEventListener e aggiorna dinamicamente la propria lista interna di gatti da associare alla prenotazione.
-3.1 Motivazione della scelta
-Il CustomEvent è uno standard W3C nativo, supportato da tutti i browser moderni senza dipendenze aggiuntive. Rispetto alle alternative valutate, presenta diversi vantaggi concreti. La comunicazione è unidirezionale (React pubblica, Vanilla JS ascolta) e questo riflette esattamente la direzione del flusso informativo: la selezione nasce nell'interfaccia React e deve raggiungere il form. I due moduli restano completamente indipendenti: React non conosce l'esistenza del form, e il form non sa nulla di come è strutturato il componente. Ciascuno è testabile da solo. Se in futuro si aggiungesse un terzo componente interessato alla selezione, basterebbe iscriversi allo stesso evento senza toccare il codice esistente.
-Le alternative scartate e le relative motivazioni sono le seguenti. Una variabile globale (window.gattiSelezionati) avrebbe funzionato, ma introduce un accoppiamento implicito e difficile da tracciare: chiunque potrebbe modificarla, e non c'è modo di reagire in tempo reale ai cambiamenti. Una callback diretta avrebbe costretto React a conoscere l'esistenza del form e a mantenerne un riferimento, violando il principio di separazione dei moduli. Redux o un altro store condiviso sarebbe eccessivo per una comunicazione così semplice, e introdurrebbe una dipendenza esterna non giustificata.
-4. Separazione dei privilegi sul database
-L'accesso al database avviene tramite tre utenti MySQL distinti, ciascuno con i soli permessi strettamente necessari alle operazioni che deve compiere. Questa scelta segue il principio del minimo privilegio: se una componente viene compromessa, l'attaccante ottiene solo le capacità di quell'utente, non l'accesso illimitato all'intero database.
-4.1 I tre ruoli
-Il primo utente è reader (password "lecture"), che dispone del solo privilegio SELECT. Viene utilizzato da tutte le pagine e gli endpoint che leggono dati senza modificarli: la home page per i nuovi arrivi, l'endpoint api/recupera_gatti.php, le parti di sessione.php che verificano le credenziali, turni.php per i conteggi dei volontari e il controllo di unicità dello username prima della registrazione.
-Il secondo utente è modifier (password "modifier"), che dispone di SELECT, INSERT e UPDATE, ma mai di DELETE o DROP. Viene utilizzato dove è necessario scrivere dati: la pagina inserisci_gatto.php, l'endpoint api/prenota_visita.php e api/turni.php quando gestisce le richieste POST di iscrizione ai turni.
-Il terzo utente è registrator (password "registrator"), che dispone del solo privilegio INSERT sulla tabella degli utenti. Viene usato esclusivamente dalla pagina di registrazione. Non può leggere i dati degli altri utenti né modificare nulla: il suo perimetro è limitato alla sola operazione che gli compete.
-In nessun caso viene usato l'utente root o un account con privilegi GRANT, DROP o DELETE. La selezione del ruolo avviene dentro la funzione connessioneDb($ruolo) in includes/connessione_db.php: ogni pagina e ogni endpoint richiedono esplicitamente il ruolo minimo necessario.
-5. Autenticazione e funzionalità "ricordami"
-L'accesso è sempre subordinato alla verifica della password tramite sessione PHP, indipendentemente da qualsiasi altro meccanismo. La sessione viene gestita con session_regenerate_id(true) dopo ogni login riuscito, per prevenire attacchi di session fixation.
-La funzionalità "ricordami" non memorizza le credenziali nel cookie. Il cookie contiene esclusivamente un gettone opaco di 64 caratteri esadecimali, generato con random_bytes(32) — quindi con entropia crittograficamente sicura. L'associazione gettone → username è conservata lato server in un file JSON all'interno della directory includes/gattile_tokens/, con una scadenza di 72 ore e una procedura automatica di pulizia dei gettoni scaduti.
-Il cookie viene configurato con gli attributi HttpOnly (non accessibile via JavaScript), SameSite=Strict (protezione contro CSRF), Secure quando la connessione è in HTTPS. Il suo scopo è limitato alla precompilazione del campo username nel form di login: l'utente deve comunque inserire la password per accedere.
-In un'implementazione di produzione l'archivio dei gettoni andrebbe spostato in una tabella dedicata del database, con i campi hash del gettone, id utente e scadenza. Il file JSON è sufficiente per questo progetto ma non scala bene in un ambiente multi-processo o con molti utenti.
-6. Validazione degli input e misure di sicurezza
-6.1 Input e output
-Tutti i dati ricevuti via POST passano da filter_input() con il filtro appropriato e poi da validazioni specifiche su lunghezze, pattern e range di valori ammessi. Non ci si affida mai ai dati grezzi di $_POST. Ogni valore proveniente dall'utente che viene incluso nell'HTML passa da ripulisci(), una funzione wrapper attorno a htmlspecialchars() con le opzioni ENT_QUOTES | ENT_SUBSTITUTE, che neutralizza i caratteri speciali HTML prima che raggiungano il browser.
+1. Cosa fa il sito
+
+Il sito serve a mettere in contatto chi vuole adottare un gatto con il gattile, e
+a far organizzare i turni dei volontari. La home presenta la struttura e mostra
+gli ultimi due gatti arrivati, letti direttamente dal database cosi' che la
+sezione si aggiorni da sola man mano che si inseriscono nuovi animali. Gli utenti
+sono di due tipi: gli amministratori, che inseriscono i gatti, e gli utenti
+normali, che prenotano le visite e si propongono come volontari. La distinzione e'
+tenuta con un campo booleano is_admin sulla tabella degli utenti.
+
+Lo stack e' quello richiesto: PHP lato server, un componente React per la pagina
+di visualizzazione dei gatti e Vanilla JavaScript per tutti gli altri form.
+
+
+2. Come ho organizzato i file
+
+Le pagine vere e proprie stanno nella cartella principale (index.php, gatti.php,
+login.php, registrazione.php, volontariato.php, inserisci_gatto.php, faq.php,
+privacy.php, logout.php). Ho messo in una cartella api/ separata gli script che
+non restituiscono una pagina ma solo dati JSON, perche' cosi' guardando l'albero
+dei file si capisce subito quali URL servono dati grezzi e quali servono HTML. In
+includes/ c'e' tutto il codice condiviso (connessione al database, gestione della
+sessione, intestazione e pie' di pagina comuni, registro degli eventi, scheda
+gatto). I fogli di stile sono in css/, gli script in js/, le immagini in img/.
+
+Header e footer sono in due file inclusi da ogni pagina, cosi' non vanno riscritti
+ogni volta e restano identici dappertutto. Dove possibile si calcolano da soli:
+l'anno nel footer e la voce di menu attiva, per esempio.
+
+
+2.1 Le card dei gatti: due modi diversi, lo stesso aspetto
+
+Qui la traccia chiede due cose distinte. In home gli ultimi due arrivati li
+restituisce in JSON l'endpoint recupera_home.php e li disegna home.js nel browser.
+Nella pagina gatti.php invece tutta la parte di lista, ordinamento, ricerca e
+selezione e' un componente React, come imposto dalla traccia, che prende i dati da
+recupera_gatti.php.
+
+Sono due tecnologie diverse e non condividono il codice di disegno, pero' usano la
+stessa identica struttura HTML e le stesse classi CSS. In questo modo il foglio di
+stile non e' duplicato: scrivo le regole .card-gatto una volta sola e valgono per
+entrambe. Il badge "Nuovo" segue la stessa logica nei due casi: lo prendono i due
+gatti con la data di arrivo piu' recente. In home sono esattamente i due record che
+arrivano dall'endpoint; in gatti.php li calcola React sull'intera lista, cosi' il
+badge resta sugli stessi due gatti anche se cambio ordinamento o filtro.
+
+Le funzioncine di servizio che servirebbero in piu' file (pulizia dell'HTML contro
+l'XSS, messaggi di errore, eta' scritta a parole) le ho raccolte in un unico file
+comuni.js, incluso una volta sola prima degli altri script. Cosi' non le ricopio.
+In includes/card_gatto.php c'e' anche una versione PHP della scheda: in questa
+release non e' usata perche' le card le fa il client, ma l'ho lasciata come base se
+in futuro si volesse passare al disegno lato server.
+
+
+3. Come parlano tra loro React e il form Vanilla JavaScript
+
+Questo e' il punto piu' delicato della pagina gatti.php. Nello stesso schermo
+convivono due cose fatte con tecnologie diverse: il componente React che gestisce
+la lista e la selezione dei gatti, e il form di prenotazione visita scritto in
+Vanilla JavaScript. Quando l'utente clicca sulle card per scegliere i gatti, quella
+selezione deve arrivare al form, che non e' React.
+
+Ho risolto con un evento personalizzato del DOM (CustomEvent), inviato sul document
+ogni volta che la selezione cambia:
+
+    document.dispatchEvent(new CustomEvent('gattiSelezionatiAggiornati', {
+        detail: { gatti: [...gatti selezionati] }
+    }));
+
+Il form si iscrive all'evento e legge l'elenco dei gatti dal campo detail. Nell'altro
+verso, quando la prenotazione va a buon fine, il form manda un evento
+'gattiDeselezionaTutti' e React lo ascolta per svuotare la selezione.
+
+
+3.1 Perche' il CustomEvent e non altro
+
+Ho scelto il CustomEvent perche' e' uno standard del DOM, non serve installare
+niente e funziona su tutti i browser. La cosa che mi convince di piu' e' che tiene
+i due moduli separati: React pubblica l'evento e non sa neanche che esiste un form;
+il form ascolta e non sa com'e' fatto React dentro. Se domani aggiungessi un terzo
+pezzo interessato alla selezione, gli basterebbe ascoltare lo stesso evento senza
+toccare niente del resto.
+
+Avevo considerato altre strade e le ho scartate. Una variabile globale tipo
+window.gattiSelezionati avrebbe funzionato, ma chiunque potrebbe sovrascriverla e
+soprattutto non c'e' modo di accorgersi quando cambia. Una callback passata da React
+al form avrebbe costretto React a conoscere il form e a tenerne un riferimento, ed e'
+proprio l'accoppiamento che volevo evitare. Uno store tipo Redux sarebbe stato
+sproporzionato a un'app molto piu' grande, non a un passaggio di dati cosi' semplice,
+e avrebbe aggiunto una dipendenza esterna senza un vero motivo.
+
+
+4. Privilegi separati sul database
+
+La traccia chiede di non usare un solo utente potente ma di dare a ogni pagina solo
+i permessi che le servono. Ho definito tre utenti di database.
+
+reader ha solo il permesso di SELECT. Lo usano tutte le pagine che leggono e basta:
+recupera_gatti.php, recupera_home.php, la fase di lettura di turni.php, il controllo
+delle credenziali al login e il controllo se uno username e' gia' preso.
+
+modifier ha SELECT, INSERT e UPDATE, ma non DELETE ne' DROP. Lo usano le pagine che
+scrivono dati: l'inserimento di un gatto, la prenotazione di una visita e
+l'iscrizione ai turni.
+
+registrator puo' solo fare INSERT sulla tabella degli utenti, nient'altro. Lo uso
+soltanto nella pagina di registrazione, ed e' la scelta che mi sembra piu' sensata:
+quella pagina deve poter creare un nuovo utente e nulla di piu', quindi gli do
+esattamente quel permesso e niente altro.
+
+In nessun punto uso root o un account con permessi di GRANT, DROP o DELETE. Il
+ruolo si sceglie passando un parametro alla funzione connessioneDb($ruolo) in
+includes/connessione_db.php, cosi' la scelta e' esplicita pagina per pagina.
+
+
+5. Login e funzione "ricordami"
+
+L'accesso passa sempre dalla verifica della password con la sessione PHP: anche se
+c'e' il cookie del "ricordami", senza password giusta non si entra. Dopo ogni login
+riuscito chiamo session_regenerate_id(true), che cambia l'identificativo di sessione
+e mette al riparo dagli attacchi di session fixation.
+
+Il "ricordami" non salva mai le credenziali nel cookie, sarebbe pericoloso. Nel
+cookie ci metto solo un gettone opaco di 64 caratteri, calcolato con un hash SHA-256
+a partire da valori difficili da indovinare (l'id di sessione, l'ora e un numero
+casuale). Il gettone da solo non dice niente: il collegamento tra gettone e username
+lo tengo io sul server, in un file, con scadenza di 72 ore e una pulizia automatica
+dei gettoni scaduti. Quando si torna sulla pagina di login entro le 72 ore e il
+cookie e' valido, lo username compare gia' scritto, mentre la password resta sempre
+vuota e va reinserita.
+
+
+6. Controllo degli input e sicurezza
+
+6.1 Ingresso e uscita dei dati
+
+Tutto quello che arriva via POST passa prima da filter_input() e poi da controlli
+miei su lunghezze, formati e valori ammessi: non mi fido mai dei dati grezzi. Quando
+un dato dell'utente viene rimesso nell'HTML lo faccio passare da ripulisci(), che e'
+un piccolo wrapper attorno a htmlspecialchars() con ENT_QUOTES, cosi' i caratteri
+speciali non possono trasformarsi in codice. La stessa cosa la faccio lato client
+con ripuliscihtml() prima di inserire testo nelle pagine.
+
 6.2 SQL injection
-Non viene mai usata la concatenazione di stringhe nelle query. Tutte le istruzioni SQL sono prepared statement MySQLi con parametri bindati. Questo è il modo corretto di gestire gli input nei database relazionali: la struttura della query è fissata dal codice, e i parametri non possono in alcun modo alterare la logica SQL, anche se contengono caratteri speciali o sequenze di escape.
-6.3 CSRF e header di sicurezza
-La protezione principale contro gli attacchi CSRF è l'attributo SameSite=Strict sui cookie: i browser non inviano il cookie nelle richieste cross-site, rendendo inutile un eventuale attacco che tenti di far eseguire operazioni all'utente da un sito terzo. In produzione si aggiungerebbe un token CSRF esplicito nei form.
-Ogni risposta include un insieme di header di sicurezza HTTP emessi prima di qualsiasi output: X-Content-Type-Options: nosniff (anti MIME-sniffing), X-Frame-Options: DENY e la direttiva CSP frame-ancestors 'none' (anti-clickjacking), Referrer-Policy: strict-origin-when-cross-origin, Permissions-Policy che disabilita geolocation, microfono e camera (non utilizzati dal sito). La Content-Security-Policy è impostata in modo restrittivo con default-src 'self': gli unici script esterni ammessi sono React e ReactDOM caricati da unpkg. Poiché non esiste alcuno script o stile inline nel progetto, la CSP non richiede 'unsafe-inline', offrendo una difesa concreta contro l'iniezione di script.
-6.4 La questione delle password in chiaro
-In questa release le password sono salvate nel database in chiaro, per scelta concordata con la specifica del progetto. Questa soluzione non è sicura e non rispetta le linee guida consolidate in materia di sicurezza delle credenziali. Chiunque abbia accesso in lettura alla tabella degli utenti — un amministratore del database, un attaccante che riesca a leggere i dati, un backup non cifrato — vede direttamente tutte le password.
-In un contesto reale è obbligatorio usare una funzione di hashing robusta e specifica per le password, come password_hash() con l'algoritmo bcrypt o Argon2, eventualmente integrata con un pepper applicativo. La password non deve mai essere leggibile, né dal codice dell'applicazione né dagli amministratori del sistema. Restano comunque attivi i vincoli di complessità imposti in fase di registrazione (da 8 a 16 caratteri, con almeno una lettera maiuscola, una minuscola, un numero e un carattere speciale) e la password non viene mai inserita in sessione. Il confronto usa hash_equals() a tempo costante, che previene attacchi di tipo timing.
-7. OWASP Top 10 (2025): analisi e contromisure
-Di seguito si analizza come il progetto affronta ciascuna delle vulnerabilità elencate nell'OWASP Top 10 nella versione 2025.
-A1 – Broken Access Control. Le funzioni richiedeAccesso() ed esigeAdmin() vengono invocate all'inizio di ogni pagina e endpoint che richiedono autenticazione o privilegi di amministratore. Le API rispondono con 401 in assenza di sessione valida e con 403 in caso di ruolo non sufficiente, prima di eseguire qualsiasi operazione.
-A2 – Security Misconfiguration. Gli header di sicurezza sono emessi su ogni pagina. La CSP è restrittiva. Il charset è dichiarato esplicitamente come utf8mb4 sia nella connessione MySQL sia nel meta dell'HTML. I dettagli degli errori non raggiungono mai il browser.
-A3 – Software and Data Integrity Failures / Supply Chain. React e ReactDOM sono caricati da CDN con versione pinnata esatta (18.3.1): non ci sono aggiornamenti automatici che potrebbero introdurre codice malevolo. Per una sicurezza ulteriore si potrebbe aggiungere l'attributo integrity con l'hash SRI, oppure ospitare i file localmente.
-A4 – Cryptographic Failures. L'unica eccezione concordata riguarda le password in chiaro (descritta nella sezione 6.4). Per il resto: il gettone "ricordami" usa random_bytes() con entropia crittograficamente sicura, i cookie sono impostati con Secure in HTTPS, il confronto della password usa hash_equals() a tempo costante.
-A5 – Injection. Tutti i parametri nelle query SQL passano attraverso prepared statement con binding esplicito. Gli input sono filtrati con filter_input() prima dell'uso, e ogni output destinato all'HTML passa da ripulisci().
-A6 – Insecure Design. Il database è accessibile tramite tre utenti con privilegi minimi. I gettoni "ricordami" sono opachi e non contengono informazioni sull'utente. I moduli del progetto sono separati in modo che un guasto in uno non comprometta gli altri.
-A7 – Identification and Authentication Failures. Dopo ogni login riuscito viene invocato session_regenerate_id(true) per prevenire la session fixation. I messaggi di errore di login sono generici e non distinguono tra username inesistente e password errata. La password non è mai inserita in sessione.
-A8 – Software and Data Integrity. Le versioni delle dipendenze esterne sono pinnate; l'integrità SRI è predisponibile con l'aggiunta dell'attributo integrity.
-A9 – Security Logging and Monitoring Failures. Ogni errore tecnico viene scritto in error_log lato server. Le API restituiscono codici HTTP appropriati (200, 400, 401, 403, 405, 409, 500) che documentano lo stato delle operazioni.
-A10 – Server-Side Request Forgery. Non applicabile: il sito non effettua richieste HTTP verso URL forniti dall'utente.
-8. Separazione tra HTML, CSS e JavaScript
-Il principio di separazione dei livelli (struttura, presentazione, comportamento) è rispettato in modo sistematico. Non esistono attributi style="" nelle pagine PHP, né event handler inline come onclick o onchange: tutto il comportamento è gestito tramite addEventListener da file JavaScript esterni. Lo stato visivo dei componenti si commuta aggiungendo o rimuovendo classi CSS, non manipolando direttamente le proprietà di stile.
-L'unica eccezione apparente è lo script tema-iniziale.js, incluso nell'<head> senza l'attributo defer. Questa è una scelta deliberata: deve essere eseguito prima del rendering del body per applicare immediatamente il tema salvato dall'utente ed evitare il flash di contenuto non stilizzato (FOUC). Il file resta comunque esterno e separato dal markup HTML.
-8.1 Fogli di stile e media query
-I fogli di stile condizionati a una media feature sono collegati nell'head tramite l'attributo media del tag <link>, non tramite @import nel foglio principale. movimento-ridotto.css è collegato con media="(prefers-reduced-motion: reduce)" e stampa.css con media="print". Questo approccio permette al browser di scaricare e applicare solo le regole pertinenti al contesto di visualizzazione.
-Il foglio tema-scuro.css non usa l'attributo media perché contiene sia la media query automatica (@media prefers-color-scheme: dark) per il rilevamento della preferenza di sistema, sia le regole attivate dall'attributo data-tema per la scelta manuale. Applicare un filtro media esterno avrebbe impedito il funzionamento del tema manuale su sistemi con tema chiaro.
+
+Non costruisco mai le query incollando stringhe. Sono tutti prepared statement con
+i parametri legati a parte: la struttura della query la decide il codice e i valori
+dell'utente non possono cambiarla, neanche se contengono apici o parole strane. E'
+il motivo per cui ho preferito i prepared statement alla concatenazione: tolgono in
+radice il problema dell'iniezione.
+
+6.3 CSRF
+
+I cookie li imposto con SameSite a Strict, con HttpOnly e con Secure quando si e' in
+HTTPS. SameSite Strict fa si' che il cookie non parta su richieste che arrivano da
+altri siti, e questo e' la difesa principale contro il CSRF.
+
+6.4 Le password in chiaro
+
+In questa versione le password stanno in chiaro nel database e il confronto al login
+lo faccio con l'operatore ===. E' una scelta che dichiaro apertamente: in un sito
+vero sarebbe da evitare e si dovrebbe usare una funzione di hashing dedicata. Restano
+comunque i vincoli forti sulla password in fase di registrazione (da 8 a 16
+caratteri, con almeno una maiuscola, una minuscola, un numero e un carattere
+speciale) e la password non finisce mai dentro la sessione.
+
+
+7. Chi puo' fare cosa
+
+I controlli sui permessi li faccio sul server, non mi limito a nascondere i link.
+La pagina di inserimento gatto richiede di essere amministratori: se chi arriva non
+e' loggato o non e' admin, la pagina fa un redirect e non stampa niente. Gli
+endpoint di prenotazione e turni controllano che l'utente sia autenticato e, in caso
+contrario, rispondono con un codice 401 o 403 e un messaggio in JSON prima di fare
+qualsiasi cosa. Se un visitatore non loggato apre la pagina delle visite o quella
+dei turni, un avviso lo invita ad accedere o registrarsi prima.
+
+
+8. HTML, CSS e JavaScript separati
+
+Nelle pagine non ho messo stili scritti dentro i tag, ne' onclick e simili dentro
+l'HTML, ne' blocchi di script in mezzo alla pagina. Tutto il comportamento sta in
+file .js esterni collegati con addEventListener, e tutta la grafica sta nei fogli di
+stile. Questa separazione e' una delle cose a cui ho fatto piu' attenzione, perche'
+rende il codice piu' ordinato e piu' facile da modificare.
+
+8.1 Fogli di stile
+
+Il foglio principale e' stile.css. Poi ho tema-scuro.css per la modalita' scura,
+movimento-ridotto.css collegato con la media query prefers-reduced-motion per chi
+preferisce niente animazioni, e stampa.css collegato con media print per la stampa.
+
 8.2 Tema chiaro/scuro
-La preferenza dell'utente (chiaro, scuro, sistema) è salvata nel localStorage del browser con la chiave "tema". La scelta di localStorage rispetto ai cookie è motivata dalla natura dell'informazione: si tratta di una semplice impostazione di interfaccia, senza dati personali e senza necessità di essere trasmessa al server. Non rientra quindi tra i cookie soggetti al banner del consenso, e persiste tra le visite anche per chi non ha accettato i cookie.
-Il server PHP non può leggere il localStorage, quindi non è in grado di emettere l'attributo data-tema sull'elemento html prima della risposta. L'anti-FOUC è gestito interamente lato client da tema-iniziale.js, incluso nell'head.
-8.3 Tipografia: schermo e stampa
-La scelta dei caratteri distingue nettamente il contesto a video da quello su carta. A schermo tutto il testo — corpo, titoli, legende, didascalie, intestazioni di tabella e ogni altro elemento — usa un unico stack senza grazie (sans-serif: 'Segoe UI', 'Tahoma', 'Geneva', 'Verdana', sans-serif), perché sui display i caratteri lineari risultano più nitidi e leggibili e danno al sito un aspetto coerente e uniforme. I caratteri con grazie (serif) sono riservati esclusivamente al foglio di stampa: stampa.css, collegato con media="print", imposta sull'intero documento Georgia, 'Times New Roman', serif. Questa separazione segue le regole per le pagine printer-friendly viste a lezione, secondo cui sulla carta i caratteri con grazie migliorano la leggibilità del testo continuo. Sempre nel foglio di stampa la dimensione del corpo è fissata a 12pt, valore indicato come minimo consigliato per la stampa; i titoli scalano in modo proporzionato (h1 18pt, h2 14pt, h3 12pt) restando comunque non inferiori a 12pt. Lo stesso foglio garantisce testo nero su sfondo bianco, sottolinea i link ed esplicita l'URL tra parentesi tramite a[href]::after, nasconde gli elementi non necessari (navigazione, form, pulsanti) e conserva solo le immagini essenziali e il logo.
-8.4 Conferma uniforme dei form e segnalazione degli errori
-Tutti i form del sito condividono la stessa modalità di conferma dopo un invio andato a buon fine, in modo che l'esperienza sia identica indipendentemente dalla pagina. Al posto di un semplice avviso testuale, al completamento corretto compare dentro la pagina un riquadro di successo (lo stesso markup <output class="messaggio messaggio-successo"> usato ovunque) seguito da due pulsanti coerenti con l'operazione svolta: tipicamente uno per ripetere l'azione e uno per spostarsi su una pagina correlata. I form serviti da una pagina PHP completa (registrazione e inserimento gatto) ottengono questo risultato lato server: dopo l'inserimento si memorizza un messaggio flash in sessione, si reindirizza (pattern Post/Redirect/Get, che evita il reinvio del form al refresh) e la pagina ricaricata mostra il riquadro tramite la funzione avvisoUtente() nascondendo il form. I form gestiti in modo asincrono (prenotazione visita e turni di volontariato), che devono restare AJAX perché il backend risponde con un JSON strutturato contenente eventuali codici di errore, ottengono lo stesso identico risultato lato client: alla risposta positiva, il JavaScript inietta nel medesimo punto della pagina lo stesso riquadro di successo e i due pulsanti (generati dalla funzione condivisa bottoniConferma) e nasconde il form. Il risultato visibile è dunque uniforme — riquadro di conferma con due pulsanti, all'interno della pagina — pur partendo da due meccanismi diversi imposti dalla natura dei due flussi.
-Anche la segnalazione degli errori di compilazione è omogenea: ogni campo dispone di un proprio <output class="errore-campo"> con role="alert" e aria-live, popolato dalla funzione condivisa mostraErroreCampo(); premendo invio a vuoto parte la validazione completa, che evidenzia in rosso tutti i campi mancanti e porta il focus al primo. In sede di pulizia del codice sono state rimosse le funzioni rimaste prive di effetto (in particolare un aggiornaStatoPulsante() che non commutava più alcuno stato): il pulsante di invio non viene più disabilitato in attesa che i campi siano compilati, coerentemente con gli altri form, mentre il controllo di integrità lato server resta in ogni caso attivo e indipendente.
-9. Gestione dei turni di volontariato
-I turni di volontariato hanno una durata fissa di un'ora e si svolgono nell'orario di apertura del gattile, dalle 9 alle 18. La pagina presenta all'utente tutte le fasce disponibili nei prossimi tre mesi, con indicazione del numero di iscritti e della disponibilità residua.
-Il limite di due volontari contemporanei per fascia è verificato su due livelli indipendenti. Lato client, volontariato.js interroga l'endpoint api/turni.php con una richiesta GET per ottenere lo stato attuale di tutte le fasce: quelle che hanno già raggiunto il limite vengono rese visivamente non selezionabili e viene impedita la loro sottomissione. Lato server, ogni richiesta POST ricontrolla il limite in modo indipendente: se nel frattempo un altro utente ha occupato l'ultimo posto, il backend restituisce una risposta JSON strutturata con un codice di errore che il JavaScript intercetta e visualizza come messaggio esplicito.
-La doppia verifica è necessaria per due ragioni distinte. Quella lato client garantisce un'esperienza d'uso fluida: l'utente non può nemmeno selezionare fasce esaurite, quindi il feedback è immediato. Quella lato server è invece indispensabile per la correttezza del sistema: il client non è un ambiente fidato, e un utente malintenzionato potrebbe inviare richieste POST aggirando completamente l'interfaccia.
-9.1 Due metodi HTTP sullo stesso endpoint
-L'endpoint api/turni.php gestisce sia richieste GET sia richieste POST. Questa non è una violazione del principio di responsabilità unica: i due metodi corrispondono a due operazioni concettualmente diverse. Il GET è una lettura: calcola per ogni fascia il numero di iscritti e se l'utente è già registrato, senza modificare nulla, usando l'utente DB reader. Il POST è una scrittura: inserisce le iscrizioni scelte, verifica i vincoli di integrità e usa l'utente DB modifier. Ridurre i due a un solo metodo avrebbe richiesto di rinunciare a una delle due funzionalità o di mescolare letture e scritture con gli stessi privilegi, violando il principio del minimo privilegio.
-10. Accessibilità
-L'accessibilità è stata considerata a partire dalla struttura semantica dell'HTML. Ogni pagina ha una sola <h1> e la gerarchia dei titoli è rispettata. I tag semantici sono usati in modo appropriato: header, nav, main, section, article, aside, footer, figure, figcaption, time, data, meter, progress, details, summary, abbr, strong, em. Il main ha tabindex="-1" per ricevere il focus dallo skip-link.
-Il contrasto dei colori supera il rapporto 4,5:1 per il testo normale e 3:1 per il testo grande, come richiesto dal livello AA delle WCAG. Nella modalità scura le coppie testo/sfondo sono state verificate esplicitamente: il testo base raggiunge un rapporto di circa 15:1, il colore di accento su sfondo scuro circa 7,6:1.
-Tutti i form hanno le etichette <label> associate tramite l'attributo for. Gli errori inline usano role="alert" e aria-live per essere annunciati dagli screen reader. Le immagini hanno testo alternativo descrittivo e contestualizzato al nome del gatto. Gli elementi interattivi del componente React sono dotati di role, aria-checked, tabIndex e gestione della tastiera.
-Per gli utenti che hanno attivato la preferenza prefers-reduced-motion, il file movimento-ridotto.css annulla non solo animazioni e transizioni, ma anche gli spostamenti fisici su hover e active (transform: none sulle card, sui pulsanti FAQ e sui bottoni). In questo modo nessun elemento si muove, ingrandisce o trasla per chi ha richiesto esplicitamente meno movimento.
-Le icone di menu sono SVG inline monocromatici che usano fill="currentColor": ereditano il colore del testo del link e restano coerenti in qualsiasi stato e in entrambi i temi. Sono marcate come decorative (aria-hidden="true") perché accanto a ciascuna è sempre presente l'etichetta testuale visibile.
-11. Performance, SEO e note implementative
-11.1 Performance
-Le immagini sono caricate con loading="lazy" e decoding="async" per non bloccare il rendering iniziale della pagina. Il placeholder dei gatti è un file SVG: leggero, scalabile e senza dipendenze esterne. React è caricato da CDN con l'attributo crossorigin; in produzione si aggiungerebbe l'hash di integrità SRI o si ospiterebbe localmente.
-Le immagini delle card non usano il tag <picture> con formati alternativi perché è previsto un aggiornamento futuro in cui le foto reali saranno gestite dal database: in quel momento avrebbe senso introdurre il tag <picture> con formati moderni come WebP, ma farlo ora sul placeholder SVG non porterebbe benefici.
+
+La preferenza del tema (chiaro, scuro o "come il sistema") la salvo nel localStorage
+con la chiave "tema". Ho preferito localStorage al cookie perche' e' solo
+un'impostazione grafica: non sono dati personali, non serve mandarla al server e
+quindi non rientra tra i cookie del banner del consenso. Uno script piccolissimo,
+caricato nell'head prima del resto, applica subito il tema salvato cosi' non si vede
+il classico lampo bianco prima che la pagina si colori.
+
+8.3 Caratteri: schermo e stampa
+
+A schermo uso un font senza grazie (Segoe UI e simili), che sui monitor si legge
+meglio. Per la stampa invece passo a un font con grazie (Georgia, Times New Roman),
+che sulla carta rende il testo lungo piu' leggibile. Sempre nel foglio di stampa
+fisso il corpo a 12pt, scalo i titoli in proporzione, metto testo nero su bianco,
+sottolineo i link e faccio comparire il loro indirizzo tra parentesi, e nascondo le
+parti inutili su carta come il menu e i pulsanti.
+
+8.4 Conferma dei form sempre uguale
+
+Volevo che tutti i form, dopo un invio andato bene, dessero la stessa sensazione.
+Cosi' al posto di un semplice messaggio compare un riquadro di conferma con due
+pulsanti, sempre con lo stesso aspetto. I form serviti da una pagina PHP completa
+(registrazione e inserimento gatto) lo ottengono sul server con lo schema
+Post/Redirect/Get: salvo un messaggio in sessione, faccio il redirect (cosi' un
+refresh non rimanda i dati) e la pagina ricaricata mostra il riquadro. I form che
+invece lavorano in modo asincrono (prenotazione e turni), che devono restare cosi'
+perche' il server risponde in JSON con eventuali codici di errore, ottengono lo
+stesso identico riquadro ma dal lato client. Il risultato visto dall'utente e'
+uguale, anche se sotto i due meccanismi sono diversi.
+
+
+9. I turni di volontariato
+
+Ogni utente puo' prenotare quanti turni vuole, ma ogni fascia oraria accetta al
+massimo due volontari. Il controllo lo faccio in due punti. Lato client il
+JavaScript chiede al server quanti iscritti ci sono e disabilita le fasce gia'
+piene, cosi' non si possono nemmeno selezionare. Lato server il controllo lo rifaccio
+da capo, perche' il controllo del client non basta mai a garantire l'integrita': se
+una fascia ha gia' due iscritti, il backend rifiuta l'inserimento e risponde con un
+JSON che contiene un codice di errore, che il JavaScript intercetta e mostra
+all'utente.
+
+9.1 Un solo endpoint, due metodi
+
+turni.php risponde sia a GET sia a POST: con GET restituisce l'elenco delle fasce
+con il numero di iscritti, con POST registra le prenotazioni. Distinguo i due casi
+guardando il metodo della richiesta. Mi e' sembrato piu' pulito che avere due file
+separati per una cosa cosi' legata.
+
+
+10. Accessibilita'
+
+Sono partito dalla struttura: ogni pagina ha una sola h1 e i titoli scendono in
+ordine, senza salti. Uso i tag al posto giusto (header, nav, main, section, article,
+aside, footer, figure, time, details, e cosi' via) invece di riempire tutto di div.
+Ogni campo dei form ha la sua label collegata. I messaggi che compaiono in modo
+dinamico usano aria-live, e gli errori usano role="alert" cosi' uno screen reader li
+annuncia. Nel componente React le card che si possono selezionare hanno
+role="checkbox" e aria-checked, e si possono usare anche da tastiera con Tab e poi
+Invio o Spazio. I colori li ho scelti rispettando il contrasto richiesto dal livello
+AA delle WCAG, e ho controllato che valga anche in modalita' scura.
+
+
+11. Prestazioni, SEO e note varie
+
+11.1 Prestazioni
+
+Le immagini hanno loading="lazy" e decoding="async" cosi' non rallentano il primo
+caricamento, e il loro contenitore ha gia' una dimensione fissa per non far
+"saltare" il layout quando arrivano. Gli script li carico con defer.
+
 11.2 SEO
-Ogni pagina ha un titolo <title> descrittivo e univoco e una meta description dedicata. La struttura dei titoli è logica (una sola h1, poi h2 e h3). Il sito è responsive e mobile-first, con media query verso schermi più grandi a partire da 640 px e 900 px. Tutte le immagini hanno testo alternativo significativo.
-11.3 Gestione degli errori senza try/catch/finally
-La specifica del corso richiede di non usare blocchi try/catch/finally. In PHP, ogni operazione critica — connessione al database, prepare ed execute degli statement, lettura dei risultati — è verificata sul valore di ritorno con if/else. mysqli_report(OFF) impedisce a MySQLi di lanciare eccezioni automaticamente. I dettagli tecnici degli errori vengono scritti in error_log(), mentre all'utente vengono mostrati solo messaggi generici.
-In JavaScript, le richieste fetch usano i due handler di then() (onFulfilled e onRejected) invece della coppia .catch()/.finally(). Si controlla sempre res.ok, perché fetch non considera errore i codici HTTP 4xx/5xx. In caso di risposta non valida si instrada l'errore con Promise.reject() senza usare throw. Il codice di ripristino dell'interfaccia, che in una versione precedente stava in .finally(), è raccolto in una funzione locale richiamata in entrambi i rami.
-11.4 Dipendenze esterne e supply chain
-React e ReactDOM sono caricati da unpkg con versione pinnata esatta (18.3.1, l'ultima con build UMD disponibile). Questo evita aggiornamenti automatici imprevisti che potrebbero introdurre regressioni o, in uno scenario di attacco alla supply chain, codice malevolo. La soluzione preferibile in produzione sarebbe ospitare i due file sullo stesso server del sito, eliminando la dipendenza dalla CDN.
-Il sorgente React è scritto in JSX (js/GattiComponent.jsx) e compilato con Babel in js/GattiComponent.js, che è il file effettivamente incluso nelle pagine. La directory build/ contiene solo i file necessari alla compilazione e non è necessaria a runtime: l'applicazione funziona con i soli file della directory principale e di js/, css/, img/ e api/.
-12. Considerazioni conclusive
-Le scelte progettuali descritte in questo documento cercano di bilanciare i requisiti funzionali della specifica con i principi di buona programmazione studiati durante il corso. La separazione dei privilegi sul database, la gestione dei cookie tramite gettoni opachi, la Content Security Policy restrittiva e la separazione netta tra HTML, CSS e JavaScript sono interventi che non cambiano l'esperienza dell'utente finale ma rendono il sistema significativamente più robusto davanti a scenari di attacco reali.
-Le limitazioni dichiarate — in particolare il salvataggio delle password in chiaro, la ridondanza delle funzioni di formattazione tra PHP e JavaScript e l'uso di un file JSON al posto di una tabella per i gettoni — non sono dimenticanze, ma compromessi consapevoli derivanti dai vincoli della specifica o dalla complessità che avrebbe richiesto la soluzione ideale. Documentarle esplicitamente fa parte di un approccio di sviluppo responsabile.
+
+Ogni pagina ha il suo titolo e la sua descrizione, impostati con due variabili lette
+dall'intestazione comune, piu' i meta di base.
+
+11.3 Errori e registro eventi
+
+Lato PHP non uso try/catch: controllo invece il valore di ritorno di ogni operazione
+delicata (connessione, prepare, execute, lettura dei risultati) con dei semplici
+if/else. Se qualcosa va storto chiudo la connessione, imposto il codice HTTP giusto
+con header() e mostro all'utente solo un messaggio generico, senza far trapelare
+dettagli interni. In piu' scrivo gli errori in un registro sul server, con la
+funzione scriviLog() in includes/log.php: ogni riga ha data, ora, gravita' e
+messaggio. Registro anche gli eventi importanti come gli accessi riusciti, i
+tentativi falliti, le registrazioni e le prenotazioni, cosi' resta una traccia di
+cosa e' successo.
+
+Lato JavaScript, per le chiamate al server uso fetch con async/await. Siccome non
+uso try/catch, gestisco i due esiti della richiesta con i due gestori di then(): il
+primo elabora la risposta (controllando sempre res.ok, perche' fetch non considera
+errore i codici 4xx e 5xx, e leggendo il corpo con res.json()), il secondo si occupa
+dell'errore di rete. Il codice che rimette a posto l'interfaccia lo metto in una
+funzioncina richiamata in tutti e due i casi, cosi' non lo ripeto.
+
+11.4 Dipendenze esterne
+
+React e ReactDOM li carico da unpkg con la versione bloccata a una precisa (18.3.1),
+cosi' un aggiornamento automatico non mi puo' cambiare il comportamento sotto i
+piedi. Il sorgente del componente e' GattiComponent.jsx, che viene compilato in
+GattiComponent.js: quello caricato dalla pagina e' il file gia' compilato.
+
+
+12. In conclusione
+
+Il sito fa tutto quello che chiede la traccia, e ho cercato di farlo tenendo separate
+le tre cose (struttura, grafica e comportamento), dando al database solo i permessi
+minimi pagina per pagina, controllando i dati sia sul client sia sul server e
+curando accessibilita' e leggibilita' allo stesso modo su tutte le pagine.

@@ -1,6 +1,5 @@
 <?php
 // Home: ultimi 2 gatti dal DB, sezioni informative, accordion FAQ.
-declare(strict_types=1);
 
 require_once 'includes/layout.php';
 
@@ -10,26 +9,6 @@ aprireSessione();
 $titolo_pagina = 'Home';
 $descrizione_pagina = 'Gattile San Paolo: adotta un gatto o diventa volontario a Torino. Scopri i nostri ospiti felini.';
 
-// Sicurezza
-if (!headers_sent()) {
-    header('X-Content-Type-Options: nosniff');
-    header('X-Frame-Options: DENY');
-    header('Referrer-Policy: strict-origin-when-cross-origin');
-    header('Permissions-Policy: geolocation=(), microphone=(), camera=()');
-    header(
-        "Content-Security-Policy: "
-        . "default-src 'self'; "
-        . "script-src 'self' https://unpkg.com; "
-        . "style-src 'self'; "
-        . "img-src 'self' data:; "
-        . "connect-src 'self'; "
-        . "base-uri 'self'; "
-        . "form-action 'self'; "
-        . "frame-ancestors 'none'; "
-        . "object-src 'none'; "
-        . "upgrade-insecure-requests"
-    );
-}
 
 ?>
 

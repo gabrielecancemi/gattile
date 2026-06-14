@@ -1,7 +1,6 @@
 <?php
 // Pagina adozioni
 
-declare(strict_types=1);
 
 require_once 'includes/layout.php';
 
@@ -14,26 +13,6 @@ $is_admin = $loggato && (bool) $profilo['is_admin'];
 $titolo_pagina = 'Adozioni';
 $descrizione_pagina = 'Sfoglia i gatti disponibili per l\'adozione al Gattile San Paolo di Torino. Filtra per età, colore o nome.';
 
-// Sicurezza
-if (!headers_sent()) {
-    header('X-Content-Type-Options: nosniff');
-    header('X-Frame-Options: DENY');
-    header('Referrer-Policy: strict-origin-when-cross-origin');
-    header('Permissions-Policy: geolocation=(), microphone=(), camera=()');
-    header(
-        "Content-Security-Policy: "
-        . "default-src 'self'; "
-        . "script-src 'self' https://unpkg.com; "
-        . "style-src 'self'; "
-        . "img-src 'self' data:; "
-        . "connect-src 'self'; "
-        . "base-uri 'self'; "
-        . "form-action 'self'; "
-        . "frame-ancestors 'none'; "
-        . "object-src 'none'; "
-        . "upgrade-insecure-requests"
-    );
-}
 
 ?>
 <!DOCTYPE html>

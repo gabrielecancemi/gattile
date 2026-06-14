@@ -38,8 +38,8 @@ function messaggioErrore(testo) {
 function mostraMessaggioComune(elemento, testo, tipo) {
     if (!elemento) return;
     elemento.textContent = testo;
+    // Riassegna className: 'sr-solo' sparisce e l'elemento torna visibile.
     elemento.className = 'messaggio messaggio-' + tipo;
-    elemento.classList.remove('sr-solo');
 }
 
 function bottoniConferma(elemento, bottoni) {

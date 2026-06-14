@@ -2,15 +2,15 @@
  * stampa.css — Stile per la stampa
  * Nasconde navigazione, form, immagini decorative.
  * Mostra URL dei link tra parentesi, sottolinea i link.
- * Tipografia serif per leggibilità su carta.
+ * Tipografia serif per leggibilita' su carta.
  */
 
 @media print {
 
-    * {
-        background: white !important;
-        color: black !important;
-        box-shadow: none !important;
+    html * {
+        background: white;
+        color: black;
+        box-shadow: none;
     }
 
     @page {
@@ -19,109 +19,108 @@
     }
 
     /* Corpo del testo: font con grazie (serif) e dimensione 12pt, valore
-       consigliato come minimo assoluto per la leggibilita' su carta. */
-    body {
+       consigliato come minimo per la leggibilita' su carta. */
+    html body {
         font-family: Georgia, 'Times New Roman', serif;
         font-size: 12pt;
         line-height: 1.5;
     }
 
-    h1 {
+    html h1 {
         font-size: 18pt;
         border-bottom: 2pt solid black;
         padding-bottom: 6pt;
     }
 
-    h2 {
+    html h2 {
         font-size: 14pt;
     }
 
-    h3 {
+    html h3 {
         font-size: 12pt;
     }
 
-    h1,
-    h2,
-    h3 {
+    html h1,
+    html h2,
+    html h3 {
         page-break-after: avoid;
-        color: black !important;
+        color: black;
     }
 
-    p,
-    li {
+    html p,
+    html li {
         orphans: 3;
         widows: 3;
     }
 
-    /* Nascondi elementi inutili su carta */
-    .header nav,
-    .menu-toggle,
-    .stato-autenticazione,
-    .skip-link,
-    .banner-cookie,
-    .faq-button,
-    .btn,
-    .barra-controlli,
-    #btn-elimina-cookie,
-    #btn-elimina-cookie-privacy,
-    .azioni-account-nav,
-    .azioni-principali,
-    form {
-        display: none !important;
+    /* Nasconde elementi inutili su carta */
+    html .header nav,
+    html .menu-toggle,
+    html .stato-autenticazione,
+    html .banner-cookie,
+    html .faq-button,
+    html .btn,
+    html .barra-controlli,
+    html #btn-elimina-cookie,
+    html #btn-elimina-cookie-privacy,
+    html .azioni-account-nav,
+    html .azioni-principali,
+    html form {
+        display: none;
     }
 
     /* Header: solo logo */
-    .header {
-        display: block !important;
+    html .header {
+        display: block;
         border-bottom: 2pt solid black;
         padding: .4cm 0;
-        background: white !important;
+        background: white;
     }
 
-    .brand-logo {
+    html .brand-logo {
         display: flex;
         align-items: center;
         gap: 6pt;
         text-decoration: none;
-        color: black !important;
+        color: black;
     }
 
-    .logo-img {
+    html .logo-img {
         width: 32px;
         height: 32px;
     }
 
     /* Footer */
-    .footer {
-        display: block !important;
-        background: white !important;
+    html .footer {
+        display: block;
+        background: white;
         border-top: 2pt solid black;
         padding-top: .5cm;
         margin-top: 1cm;
         font-size: 9pt;
     }
 
-    .footer .brand-logo,
-    .footer nav {
-        display: none !important;
+    html .footer .brand-logo,
+    html .footer nav {
+        display: none;
     }
 
-    .footer-info {
+    html .footer-info {
         display: block;
     }
 
-    .footer-copy {
+    html .footer-copy {
         font-size: 8pt;
         margin-top: .3cm;
     }
 
-    .footer-url {
-        display: block !important;
+    html .footer-url {
+        display: block;
         font-size: 8pt;
     }
 
     /* URL della pagina corrente in fondo */
-    .footer::after {
+    html .footer::after {
         content: "Pagina: " attr(data-url);
         display: block;
         font-size: 8pt;
@@ -130,90 +129,81 @@
     }
 
     /* Link con URL tra parentesi */
-    a {
-        text-decoration: underline !important;
-        color: black !important;
+    html a {
+        text-decoration: underline;
+        color: black;
     }
 
-    a[href]:not([href^="#"]):not([href^="javascript"])::after {
+    html a[href]:not([href^="#"]):not([href^="javascript"])::after {
         content: " (" attr(href) ")";
         font-size: 9pt;
         font-style: italic;
     }
 
-    /* Icone SVG: ne garantisce la stampa su tutti i browser. I fill SVG
-       non sono sfondi, ma print-color-adjust: exact assicura la resa
-       anche dove il browser tende a rimuovere i colori. */
-    .icona-tema,
-    .icona-utente,
-    .card-badge-selezione {
-        print-color-adjust: exact !important;
-    }
-
     /* Card gatti */
-    .griglia-gatti {
+    html .griglia-gatti {
         display: block;
     }
 
-    .card-gatto {
+    html .card-gatto {
         page-break-inside: avoid;
-        border: 1pt solid #999;
+        border: 1pt solid gray;
         margin-bottom: 1cm;
         padding: .5cm;
     }
 
-    .card-gatto figure img {
+    html .card-gatto picture img {
         display: block;
         max-width: 8cm;
         height: auto;
     }
 
     /* Tabelle */
-    table {
+    html table {
         border-collapse: collapse;
         width: 100%;
         page-break-inside: auto;
     }
 
-    tr {
+    html tr {
         page-break-inside: avoid;
     }
 
-    th,
-    td {
-        border: 1pt solid black !important;
-        padding: 4pt 6pt !important;
-        background: white !important;
-        color: black !important;
+    html th,
+    html td {
+        border: 1pt solid black;
+        padding: 4pt 6pt;
+        background: white;
+        color: black;
     }
 
-    th {
-        background: #eee !important;
+    html th {
+        background: gainsboro;
         font-weight: bold;
     }
 
     /* Details: apre tutto */
-    details {
+    html details {
         display: block;
-        border: 1pt solid #999;
+        border: 1pt solid gray;
         margin-bottom: .3cm;
     }
 
-    summary {
+    html summary {
         font-weight: bold;
         padding: 4pt;
     }
 
-    details>*:not(summary) {
-        display: block !important;
+    html details > *:not(summary) {
+        display: block;
         padding: 4pt 8pt;
     }
 
-    figure {
+    html figure {
         page-break-inside: avoid;
     }
 
-    figcaption {
+    html figcaption {
         font-style: italic;
         font-size: 9pt;
         margin-top: 4pt;

@@ -3,13 +3,21 @@
 'use strict';
 
 (function () {
-    const { useState, useEffect, useCallback } = React;
+    const { useState, useEffect } = React;
 
     function emettiSelezione(gatti) {
         document.dispatchEvent(new CustomEvent('gattiSelezionatiAggiornati', {
             detail: { gatti },
             bubbles: true,
         }));
+    }
+
+    // Converte una data ISO nel formato GG/MM/AAAA.
+    function dataItaliana(iso) {
+        if (!iso) return '';
+        const parti = String(iso).slice(0, 10).split('-');
+        if (parti.length !== 3) return '';
+        return parti[2] + '/' + parti[1] + '/' + parti[0];
     }
 
     // Card singola
@@ -47,8 +55,14 @@
                         <path d="M9 16.5l4.5 4.5L23 11" fill="none" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
                     <picture>
-                        <source srcset={gatto.foto} />
-                        <img src='img/placeholder-gatto.svg' alt={'Placeholder di ' + gatto.nome} loading='lazy' decoding='async' class='foto-gatto' />
+                        <source srcSet={gatto.foto} />
+                        <img
+                            src={gatto.foto}
+                            alt={'Placeholder di ' + gatto.nome}
+                            loading="lazy"
+                            decoding="async"
+                            className="foto-gatto"
+                        />
                     </picture>
 
                     <section className="card-gatto-corpo">
@@ -75,7 +89,7 @@
                             <dt>Arrivato il</dt>
                             <dd>
                                 <time dateTime={gatto.data_arrivo}>
-                                    {new Date(gatto.data_arrivo).toLocaleDateString('it-IT')}
+                                    {dataItaliana(gatto.data_arrivo)}
                                 </time>
                             </dd>
                         </dl>
@@ -93,7 +107,8 @@
         const [errore, setErrore] = useState('');
         const [ricerca, setRicerca] = useState('');
         const [ordinamento, setOrdinamento] = useState('data_arrivo_desc');
-        const [selezionati, setSelezionati] = useState(new Set());
+        // Gli ID dei gatti selezionati sono tenuti in un semplice array.
+        const [selezionati, setSelezionati] = useState([]);
 
         // Recupera i gatti dal backend al primo render.
         useEffect(function () {
@@ -124,42 +139,61 @@
 
         // A ogni cambio di selezione notifica il form Vanilla JS.
         useEffect(function () {
-            emettiSelezione(gatti.filter(function (g) { return selezionati.has(g.id); }));
+            // Elenco dei gatti selezionati.
+            const selezionatiOggetti = [];
+            for (let i = 0; i < gatti.length; i++) {
+                if (selezionati.indexOf(gatti[i].id) !== -1) {
+                    selezionatiOggetti.push(gatti[i]);
+                }
+            }
+            emettiSelezione(selezionatiOggetti);
         }, [selezionati, gatti]);
 
         // Azzeramento selezione dopo prenotazione
         useEffect(function () {
-            function azzera() { setSelezionati(new Set()); }
+            function azzera() { setSelezionati([]); }
             document.addEventListener('gattiDeselezionaTutti', azzera);
             return function () { document.removeEventListener('gattiDeselezionaTutti', azzera); };
         }, []);
 
         const cambiaSelezione = function (gatto) {
             setSelezionati(function (precedenti) {
-                const nuovi = new Set(precedenti);
-
-                if (nuovi.has(gatto.id)) {
-                    nuovi.delete(gatto.id);
-                } else {
-                    nuovi.add(gatto.id);
+                if (precedenti.indexOf(gatto.id) !== -1) {
+                    // Già presente: lo rimuove.
+                    const ridotti = [];
+                    for (let i = 0; i < precedenti.length; i++) {
+                        if (precedenti[i] !== gatto.id) {
+                            ridotti.push(precedenti[i]);
+                        }
+                    }
+                    return ridotti;
                 }
-
-                return nuovi;
+                // Non presente: aggiunge l'id in coda.
+                return precedenti.concat([gatto.id]);
             });
         };
 
-        // Filtro per testo e ordinamento.
-        const gatti_visibili = gatti
-            .filter(function (g) {
-                if (!ricerca.trim()) return true;
-                const termine = ricerca.trim().toLowerCase();
-                return g.nome.toLowerCase().includes(termine) || g.descrizione.toLowerCase().includes(termine);
-            })
+        // Filtro per testo
+        const termine = ricerca.trim().toLowerCase();
+        const gatti_filtrati = [];
+        for (let i = 0; i < gatti.length; i++) {
+            const g = gatti[i];
+            if (termine === '' ||
+                g.nome.toLowerCase().includes(termine) ||
+                g.descrizione.toLowerCase().includes(termine)) {
+                gatti_filtrati.push(g);
+            }
+        }
+        const gatti_visibili = gatti_filtrati
             .sort(function (a, b) {
                 switch (ordinamento) {
                     case 'eta_asc': return a.eta - b.eta;
                     case 'eta_desc': return b.eta - a.eta;
-                    case 'colore_asc': return a.colore_mantello.localeCompare(b.colore_mantello);
+                    case 'colore_asc':
+                        // Confronto alfabetico.
+                        if (a.colore_mantello < b.colore_mantello) return -1;
+                        if (a.colore_mantello > b.colore_mantello) return 1;
+                        return 0;
                     case 'data_arrivo_asc': return new Date(a.data_arrivo) - new Date(b.data_arrivo);
                     default: return new Date(b.data_arrivo) - new Date(a.data_arrivo);
                 }
@@ -203,6 +237,7 @@
 
                 {/* Barra ricerca e ordinamento*/}
                 <form
+                    id="form-ricerca-gatti"
                     className="barra-controlli"
                     role="search"
                     aria-label="Filtra e ordina i gatti"
@@ -240,15 +275,15 @@
                     {gatti_visibili.length === gatti.length
                         ? gatti.length + ' gatti disponibili.'
                         : gatti_visibili.length + ' gatti trovati su ' + gatti.length + '.'}
-                    {selezionati.size > 0 ? ' ' + selezionati.size + ' selezionati.' : ''}
+                    {selezionati.length > 0 ? ' ' + selezionati.length + ' selezionati.' : ''}
                 </p>
 
                 {/* Istruzione selezione */}
                 {utenteLoggato && !isAdmin && (
                     <p aria-live="polite">
                         Clicca su una card per selezionare il gatto.
-                        {selezionati.size > 0 && (
-                            <strong> {selezionati.size} {selezionati.size === 1 ? 'gatto selezionato' : 'gatti selezionati'}.</strong>
+                        {selezionati.length > 0 && (
+                            <strong> {selezionati.length} {selezionati.length === 1 ? 'gatto selezionato' : 'gatti selezionati'}.</strong>
                         )}
                     </p>
                 )}
@@ -275,7 +310,7 @@
                                             key={gatto.id}
                                             gatto={gatto}
                                             selezionabile={utenteLoggato && !isAdmin}
-                                            selezionata={selezionati.has(gatto.id)}
+                                            selezionata={selezionati.indexOf(gatto.id) !== -1}
                                             onToggle={cambiaSelezione}
                                             nuovo={id_nuovi.indexOf(gatto.id) !== -1}
                                         />

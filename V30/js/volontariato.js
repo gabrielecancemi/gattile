@@ -26,7 +26,7 @@
         }
 
         const scelta = new Date(v + 'T00:00');
-        if (isNaN(scelta.getTime())) {
+        if (isNaN(scelta.getFullYear())) {
             if (mostra) mostraErroreCampo(input_data, errore_data, 'Formato data non valido.');
             return false;
         }
@@ -66,6 +66,7 @@
             contenitore.removeAttribute('aria-busy');
         }
 
+        // Elabora la risposta del server
         fetch('api/turni.php', { credentials: 'same-origin' })
             .then(function (r) {
 
@@ -205,10 +206,16 @@
 
                 } else {
 
-                    let indice = fasce_selezionate.indexOf(this.value);
-
-                    if (indice !== -1) {
-                        fasce_selezionate.splice(indice, 1);
+                    // Rimuove il valore deselezionato ricostruendo l'array.
+                    const rimasti = [];
+                    for (let i = 0; i < fasce_selezionate.length; i++) {
+                        if (fasce_selezionate[i] !== this.value) {
+                            rimasti.push(fasce_selezionate[i]);
+                        }
+                    }
+                    fasce_selezionate.length = 0;
+                    for (let i = 0; i < rimasti.length; i++) {
+                        fasce_selezionate.push(rimasti[i]);
                     }
                 }
 
@@ -256,6 +263,7 @@
             bottone_volontariato.textContent = 'Conferma turni selezionati';
         }
 
+        // Elabora la risposta del server
         fetch('api/turni.php', { method: 'POST', body: corpo, credentials: 'same-origin' })
             .then(function (r) { return r.json(); })
             .then(function (dati) {
