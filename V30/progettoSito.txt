@@ -1,305 +1,339 @@
 GATTILE SAN PAOLO - RELAZIONE SULLE SCELTE PROGETTUALI
 
 
-1. Cosa fa il sito
+1. A COSA SERVE IL SITO E COME E' ORGANIZZATO
 
-Il sito serve a mettere in contatto chi vuole adottare un gatto con il gattile, e
-a far organizzare i turni dei volontari. La home presenta la struttura e mostra
-gli ultimi due gatti arrivati, letti direttamente dal database cosi' che la
-sezione si aggiorni da sola man mano che si inseriscono nuovi animali. Gli utenti
-sono di due tipi: gli amministratori, che inseriscono i gatti, e gli utenti
-normali, che prenotano le visite e si propongono come volontari. La distinzione e'
-tenuta con un campo booleano is_admin sulla tabella degli utenti.
+Il sito mette in contatto chi vuole adottare un gatto con la struttura che lo
+ospita e, allo stesso tempo, permette di organizzare il lavoro dei volontari. La
+pagina iniziale presenta il gattile e le sue funzionalita' e, in una sezione
+apposita chiamata "Nuovi arrivi", mostra gli ultimi due gatti entrati in struttura.
+Quei due gatti non sono scritti a mano nella pagina: vengono letti ogni volta dal
+database, ordinati per data di arrivo decrescente e limitati ai primi due record,
+cosi' la sezione si aggiorna da sola ogni volta che un amministratore inserisce un
+nuovo animale.
 
-Lo stack e' quello richiesto: PHP lato server, un componente React per la pagina
-di visualizzazione dei gatti e Vanilla JavaScript per tutti gli altri form.
+Le persone che usano il sito sono di due tipi. Gli amministratori sono coloro che
+gestiscono l'inserimento dei gatti; gli utenti normali sono le persone che vogliono
+adottare o fare volontariato. La differenza tra i due e' tenuta da un semplice campo
+booleano (is_admin) nella tabella degli utenti: vale true per gli amministratori e
+false per tutti gli altri. Questo campo viene controllato lato server prima di
+mostrare le funzioni riservate e prima di eseguirle, non solo per nascondere un
+collegamento.
 
+Le tecnologie sono quelle imposte dalla traccia: PHP lato server, un componente
+React per la pagina di visualizzazione dei gatti e Vanilla JavaScript per tutti gli
+altri form. Ho diviso i file in cartelle con un criterio chiaro: nella cartella
+principale stanno le pagine vere e proprie (index.php, gatti.php, login.php,
+registrazione.php, volontariato.php, inserisci_gatto.php, faq.php, privacy.php,
+logout.php); nella cartella api/ stanno gli script che non restituiscono una pagina
+HTML ma solo dati in formato JSON; in includes/ c'e' tutto il codice condiviso
+(connessione al database, gestione della sessione, intestazione e pie' di pagina,
+registro degli eventi, costruzione della scheda gatto); poi css/ per i fogli di
+stile, js/ per gli script e img/ per le immagini. Guardando l'albero dei file si
+capisce subito quali indirizzi servono pagine e quali servono dati grezzi, e questo
+mi e' sembrato il modo piu' ordinato di tenere separate le due cose.
 
-2. Come ho organizzato i file
-
-Le pagine vere e proprie stanno nella cartella principale (index.php, gatti.php,
-login.php, registrazione.php, volontariato.php, inserisci_gatto.php, faq.php,
-privacy.php, logout.php). Ho messo in una cartella api/ separata gli script che
-non restituiscono una pagina ma solo dati JSON, perche' cosi' guardando l'albero
-dei file si capisce subito quali URL servono dati grezzi e quali servono HTML. In
-includes/ c'e' tutto il codice condiviso (connessione al database, gestione della
-sessione, intestazione e pie' di pagina comuni, registro degli eventi, scheda
-gatto). I fogli di stile sono in css/, gli script in js/, le immagini in img/.
-
-Header e footer sono in due file inclusi da ogni pagina, cosi' non vanno riscritti
-ogni volta e restano identici dappertutto. Dove possibile si calcolano da soli:
-l'anno nel footer e la voce di menu attiva, per esempio.
-
-
-2.1 Le card dei gatti: due modi diversi, lo stesso aspetto
-
-Qui la traccia chiede due cose distinte. In home gli ultimi due arrivati li
-restituisce in JSON l'endpoint recupera_home.php e li disegna home.js nel browser.
-Nella pagina gatti.php invece tutta la parte di lista, ordinamento, ricerca e
-selezione e' un componente React, come imposto dalla traccia, che prende i dati da
-recupera_gatti.php.
-
-Sono due tecnologie diverse e non condividono il codice di disegno, pero' usano la
-stessa identica struttura HTML e le stesse classi CSS. In questo modo il foglio di
-stile non e' duplicato: scrivo le regole .card-gatto una volta sola e valgono per
-entrambe. Il badge "Nuovo" segue la stessa logica nei due casi: lo prendono i due
-gatti con la data di arrivo piu' recente. In home sono esattamente i due record che
-arrivano dall'endpoint; in gatti.php li calcola React sull'intera lista, cosi' il
-badge resta sugli stessi due gatti anche se cambio ordinamento o filtro.
-
-Le funzioncine di servizio che servirebbero in piu' file (pulizia dell'HTML contro
-l'XSS, messaggi di errore, eta' scritta a parole) le ho raccolte in un unico file
-comuni.js, incluso una volta sola prima degli altri script. Cosi' non le ricopio.
-In includes/card_gatto.php c'e' anche una versione PHP della scheda: in questa
-release non e' usata perche' le card le fa il client, ma l'ho lasciata come base se
-in futuro si volesse passare al disegno lato server.
+Header e footer sono scritti una volta sola in due file dentro includes/ e vengono
+inclusi da ogni pagina, cosi' restano identici dappertutto e non vanno riscritti.
+Dove e' possibile si calcolano da soli: l'anno nel footer, la voce di menu attiva e
+l'indicazione dell'utente in alto a destra dipendono dallo stato corrente e non da
+valori fissi.
 
 
-3. Come parlano tra loro React e il form Vanilla JavaScript
+2. L'INDICAZIONE DELL'UTENTE IN ALTO A DESTRA
 
-Questo e' il punto piu' delicato della pagina gatti.php. Nello stesso schermo
-convivono due cose fatte con tecnologie diverse: il componente React che gestisce
-la lista e la selezione dei gatti, e il form di prenotazione visita scritto in
-Vanilla JavaScript. Quando l'utente clicca sulle card per scegliere i gatti, quella
-selezione deve arrivare al form, che non e' React.
-
-Ho risolto con un evento personalizzato del DOM (CustomEvent), inviato sul document
-ogni volta che la selezione cambia:
-
-    document.dispatchEvent(new CustomEvent('gattiSelezionatiAggiornati', {
-        detail: { gatti: [...gatti selezionati] }
-    }));
-
-Il form si iscrive all'evento e legge l'elenco dei gatti dal campo detail. Nell'altro
-verso, quando la prenotazione va a buon fine, il form manda un evento
-'gattiDeselezionaTutti' e React lo ascolta per svuotare la selezione.
+La traccia chiede che, una volta autenticati, in alto a destra di ogni pagina e fino
+al logout compaia lo username, e che compaia "non loggato" se l'autenticazione non e'
+ancora avvenuta. Siccome l'header e' un file unico incluso ovunque, questo controllo
+si trova in un solo punto: legge la sessione e, se trova un utente, scrive il suo
+username (e un'etichetta che dice se e' amministratore o utente normale); altrimenti
+scrive "non loggato". In questo modo il comportamento e' garantito su tutte le pagine
+senza doverlo ripetere.
 
 
-3.1 Perche' il CustomEvent e non altro
+3. COME PARLANO TRA LORO REACT, VANILLA JAVASCRIPT E IL BACKEND PHP
 
-Ho scelto il CustomEvent perche' e' uno standard del DOM, non serve installare
-niente e funziona su tutti i browser. La cosa che mi convince di piu' e' che tiene
-i due moduli separati: React pubblica l'evento e non sa neanche che esiste un form;
-il form ascolta e non sa com'e' fatto React dentro. Se domani aggiungessi un terzo
-pezzo interessato alla selezione, gli basterebbe ascoltare lo stesso evento senza
-toccare niente del resto.
+Questo e' il punto centrale della pagina gatti.php ed e' anche quello su cui la
+traccia chiede piu' attenzione, quindi lo spiego con calma.
 
-Avevo considerato altre strade e le ho scartate. Una variabile globale tipo
-window.gattiSelezionati avrebbe funzionato, ma chiunque potrebbe sovrascriverla e
-soprattutto non c'e' modo di accorgersi quando cambia. Una callback passata da React
-al form avrebbe costretto React a conoscere il form e a tenerne un riferimento, ed e'
-proprio l'accoppiamento che volevo evitare. Uno store tipo Redux sarebbe stato
-sproporzionato a un'app molto piu' grande, non a un passaggio di dati cosi' semplice,
-e avrebbe aggiunto una dipendenza esterna senza un vero motivo.
+Nella pagina convivono tre attori. Il primo e' il backend PHP, che vive nella
+cartella api/ e non disegna nulla: risponde alle richieste asincrone restituendo
+dati in JSON. Il secondo e' il componente React, che si occupa di tutta la parte di
+visualizzazione, ordinamento, ricerca e selezione dei gatti, come imposto dalla
+traccia. Il terzo e' il form di prenotazione della visita, che NON fa parte di React
+ed e' scritto in Vanilla JavaScript, anch'esso come imposto dalla traccia.
 
+Il flusso e' questo. Quando la pagina si carica, il componente React chiede i gatti
+all'endpoint api/recupera_gatti.php con una fetch asincrona; il PHP esegue la query,
+costruisce un array di gatti e lo restituisce in JSON; React riceve quel JSON e
+disegna le card. Da quel momento l'utente puo' ordinare la lista (per eta', per
+colore del mantello o per data di arrivo), filtrarla scrivendo nel campo di ricerca
+(che cerca nel nome e nella descrizione) e, se e' autenticato come utente normale,
+selezionare uno o piu' gatti cliccando sulle card. Tutta questa logica e' interna a
+React e non tocca il resto della pagina.
 
-4. Privilegi separati sul database
+Il problema da risolvere e' che il form di prenotazione, che e' fuori da React, deve
+sapere quali gatti sono stati selezionati nelle card. I due moduli devono comunicare,
+ma sono scritti con tecnologie diverse e non condividono ne' variabili ne' funzioni.
 
-La traccia chiede di non usare un solo utente potente ma di dare a ogni pagina solo
-i permessi che le servono. Ho definito tre utenti di database.
+Ho risolto con un evento personalizzato del DOM (CustomEvent). Ogni volta che la
+selezione cambia, il componente React crea un CustomEvent chiamato
+"gattiSelezionatiAggiornati" e lo invia sul document; dentro il campo "detail"
+dell'evento c'e' l'elenco completo dei gatti selezionati. Il form Vanilla JavaScript,
+dal canto suo, si e' iscritto a quell'evento sul document con addEventListener:
+quando l'evento arriva, legge l'elenco dei gatti dal detail, aggiorna il riepilogo a
+schermo e scrive gli identificativi in un campo nascosto, pronto per l'invio. C'e'
+anche il verso opposto: quando la prenotazione va a buon fine, il form invia un altro
+evento ("gattiDeselezionaTutti") e React, che lo ascolta, svuota la selezione e
+toglie l'evidenziazione dalle card.
 
-reader ha solo il permesso di SELECT. Lo usano tutte le pagine che leggono e basta:
-recupera_gatti.php, recupera_home.php, la fase di lettura di turni.php, il controllo
-delle credenziali al login e il controllo se uno username e' gia' preso.
+Perche' ho scelto proprio il CustomEvent? Per quattro motivi.
 
-modifier ha SELECT, INSERT e UPDATE, ma non DELETE ne' DROP. Lo usano le pagine che
-scrivono dati: l'inserimento di un gatto, la prenotazione di una visita e
-l'iscrizione ai turni.
+Primo, e' uno standard del DOM: non serve installare nessuna libreria e funziona su
+tutti i browser moderni.
 
-registrator puo' solo fare INSERT sulla tabella degli utenti, nient'altro. Lo uso
-soltanto nella pagina di registrazione, ed e' la scelta che mi sembra piu' sensata:
-quella pagina deve poter creare un nuovo utente e nulla di piu', quindi gli do
-esattamente quel permesso e niente altro.
+Secondo, e questa e' la ragione che mi convince di piu', tiene i due moduli
+completamente separati (debolmente accoppiati). React si limita a pubblicare un
+evento e non sa neppure che da qualche parte esiste un form; il form ascolta un
+evento e non sa nulla di come React e' fatto dentro. Nessuno dei due ha un
+riferimento all'altro. Se domani aggiungessi un terzo pezzo interessato alla
+selezione, gli basterebbe iscriversi allo stesso evento senza toccare nulla del
+codice esistente.
 
-In nessun punto uso root o un account con permessi di GRANT, DROP o DELETE. Il
-ruolo si sceglie passando un parametro alla funzione connessioneDb($ruolo) in
-includes/connessione_db.php, cosi' la scelta e' esplicita pagina per pagina.
+Terzo, il document e' un punto d'incontro che entrambi i moduli conoscono gia', quindi
+e' il canale naturale per far passare un'informazione tra due script che altrimenti
+non si conoscono.
 
+Quarto, avevo valutato le alternative e mi sembravano tutte peggiori per questo caso.
+Una variabile globale (per esempio window.gattiSelezionati) avrebbe funzionato, ma
+chiunque potrebbe sovrascriverla e, soprattutto, non c'e' modo di accorgersi quando
+cambia: avrei dovuto controllarla a intervalli, che e' una soluzione sporca. Una
+funzione di callback passata da React al form avrebbe costretto React a conoscere il
+form e a tenerne un riferimento, cioe' proprio l'accoppiamento che volevo evitare.
+Uno store esterno tipo Redux sarebbe stato del tutto sproporzionato per un passaggio
+di dati cosi' semplice e avrebbe aggiunto una dipendenza senza un vero motivo. Il
+CustomEvent dava il giusto disaccoppiamento con il minimo di codice.
 
-5. Login e funzione "ricordami"
-
-L'accesso passa sempre dalla verifica della password con la sessione PHP: anche se
-c'e' il cookie del "ricordami", senza password giusta non si entra. Dopo ogni login
-riuscito chiamo session_regenerate_id(true), che cambia l'identificativo di sessione
-e mette al riparo dagli attacchi di session fixation.
-
-Il "ricordami" non salva mai le credenziali nel cookie, sarebbe pericoloso. Nel
-cookie ci metto solo un gettone opaco di 64 caratteri, calcolato con un hash SHA-256
-a partire da valori difficili da indovinare (l'id di sessione, l'ora e un numero
-casuale). Il gettone da solo non dice niente: il collegamento tra gettone e username
-lo tengo io sul server, in un file, con scadenza di 72 ore e una pulizia automatica
-dei gettoni scaduti. Quando si torna sulla pagina di login entro le 72 ore e il
-cookie e' valido, lo username compare gia' scritto, mentre la password resta sempre
-vuota e va reinserita.
-
-
-6. Controllo degli input e sicurezza
-
-6.1 Ingresso e uscita dei dati
-
-Tutto quello che arriva via POST passa prima da filter_input() e poi da controlli
-miei su lunghezze, formati e valori ammessi: non mi fido mai dei dati grezzi. Quando
-un dato dell'utente viene rimesso nell'HTML lo faccio passare da ripulisci(), che e'
-un piccolo wrapper attorno a htmlspecialchars() con ENT_QUOTES, cosi' i caratteri
-speciali non possono trasformarsi in codice. La stessa cosa la faccio lato client
-con ripuliscihtml() prima di inserire testo nelle pagine.
-
-6.2 SQL injection
-
-Non costruisco mai le query incollando stringhe. Sono tutti prepared statement con
-i parametri legati a parte: la struttura della query la decide il codice e i valori
-dell'utente non possono cambiarla, neanche se contengono apici o parole strane. E'
-il motivo per cui ho preferito i prepared statement alla concatenazione: tolgono in
-radice il problema dell'iniezione.
-
-6.3 CSRF
-
-I cookie li imposto con SameSite a Strict, con HttpOnly e con Secure quando si e' in
-HTTPS. SameSite Strict fa si' che il cookie non parta su richieste che arrivano da
-altri siti, e questo e' la difesa principale contro il CSRF.
-
-6.4 Le password in chiaro
-
-In questa versione le password stanno in chiaro nel database e il confronto al login
-lo faccio con l'operatore ===. E' una scelta che dichiaro apertamente: in un sito
-vero sarebbe da evitare e si dovrebbe usare una funzione di hashing dedicata. Restano
-comunque i vincoli forti sulla password in fase di registrazione (da 8 a 16
-caratteri, con almeno una maiuscola, una minuscola, un numero e un carattere
-speciale) e la password non finisce mai dentro la sessione.
+Una nota sulla coerenza visiva. Gli ultimi due arrivati compaiono anche in home, ma
+li' non c'e' React: e' un piccolo script (home.js) che chiede i dati a
+api/recupera_home.php e disegna le card. React e home.js sono quindi due modi diversi
+di costruire le stesse card, pero' producono esattamente la stessa struttura HTML e
+usano le stesse classi CSS. Cosi' il foglio di stile descrive la scheda gatto una
+volta sola e vale per entrambe le pagine, senza duplicazioni. Il badge "Nuovo" segue
+la stessa logica nei due posti: lo ricevono i due gatti con la data di arrivo piu'
+recente, e in gatti.php React tiene il badge sui due piu' recenti dell'intera lista
+anche quando cambio ordinamento o applico un filtro.
 
 
-7. Chi puo' fare cosa
+4. LA SEPARAZIONE DEI PRIVILEGI SUL DATABASE
 
-I controlli sui permessi li faccio sul server, non mi limito a nascondere i link.
-La pagina di inserimento gatto richiede di essere amministratori: se chi arriva non
-e' loggato o non e' admin, la pagina fa un redirect e non stampa niente. Gli
-endpoint di prenotazione e turni controllano che l'utente sia autenticato e, in caso
-contrario, rispondono con un codice 401 o 403 e un messaggio in JSON prima di fare
-qualsiasi cosa. Se un visitatore non loggato apre la pagina delle visite o quella
-dei turni, un avviso lo invita ad accedere o registrarsi prima.
+La traccia chiede di non usare un unico utente potente, ma di dare a ogni pagina solo
+i permessi che le servono davvero, con almeno tre utenti predefiniti, e di non usare
+mai l'utente admin di sistema. Ho seguito esattamente questa indicazione definendo
+tre utenti di database, ciascuno con un ruolo preciso.
+
+Il primo e' il "lettore", che ha il solo permesso di SELECT. Lo usano tutte le
+operazioni che si limitano a leggere: il recupero dei gatti per la pagina adozioni,
+il recupero dei nuovi arrivi e delle statistiche in home, la lettura delle fasce di
+volontariato disponibili, la verifica delle credenziali al login e il controllo se
+uno username e' gia' stato preso in fase di registrazione.
+
+Il secondo e' il "modificatore", che ha SELECT, INSERT e UPDATE, ma non DELETE ne'
+operazioni di struttura. Lo usano le pagine che scrivono dati: l'inserimento di un
+nuovo gatto, la registrazione di una prenotazione di visita e l'iscrizione ai turni
+di volontariato.
+
+Il terzo e' il "registratore", e questa e' la separazione piu' fine: puo' fare
+soltanto INSERT, e solo sulla tabella degli utenti. Lo uso esclusivamente nella
+pagina di registrazione. Il ragionamento e' semplice: quella pagina deve poter creare
+un nuovo utente e nient'altro, quindi le do esattamente quel permesso e niente di
+piu'. Anche se quella pagina venisse compromessa, il danno possibile sarebbe ridotto
+al minimo, perche' con quelle credenziali non si puo' ne' leggere ne' cancellare
+nulla.
+
+In nessun punto del sito uso root o un account con permessi di GRANT, DROP o DELETE.
+La scelta del ruolo e' esplicita pagina per pagina: si fa passando un parametro alla
+funzione di connessione, quindi leggendo l'inizio di ogni script si capisce subito
+con quali privilegi sta lavorando. La motivazione di fondo e' il principio del
+privilegio minimo: piu' i permessi sono ristretti, piu' piccola e' la superficie di
+attacco e meno gravi sono le conseguenze di un eventuale errore o di una compromissione.
 
 
-8. HTML, CSS e JavaScript separati
+5. ACCESSO E FUNZIONE "RICORDAMI"
 
-Nelle pagine non ho messo stili scritti dentro i tag, ne' onclick e simili dentro
-l'HTML, ne' blocchi di script in mezzo alla pagina. Tutto il comportamento sta in
+L'accesso passa sempre dalla verifica della password tramite la sessione PHP. Questo
+vale anche quando e' presente il cookie del "ricordami": il cookie serve solo a
+precompilare lo username, ma senza la password giusta non si entra. Dopo ogni accesso
+riuscito rigenero l'identificativo di sessione, cosi' da proteggere dagli attacchi di
+tipo session fixation. La password non viene mai messa in sessione.
+
+Il "ricordami" e' richiesto in modo esplicito: nel form di login c'e' una casella che
+l'utente puo' spuntare o meno. Se la spunta, il sito non salva mai le credenziali nel
+cookie, perche' sarebbe pericoloso. Nel cookie metto soltanto un token opaco, cioe'
+una stringa lunga calcolata con un hash a partire da valori difficili da indovinare;
+da sola quella stringa non significa nulla. Il legame tra il token e lo username lo
+conservo io sul server, in un file, con una scadenza di 72 ore e una pulizia
+automatica dei token gia' scaduti. Quando l'utente torna alla pagina di login dallo
+stesso browser entro le 72 ore e il token e' ancora valido, lo username compare gia'
+scritto nel campo, mentre la password resta sempre vuota e va reinserita. I cookie
+sono impostati con HttpOnly, con SameSite a Strict e con il flag Secure quando la
+connessione e' in HTTPS.
+
+
+6. VALIDAZIONE DEI FORM E CONTROLLI DI SICUREZZA
+
+Tutti i form del sito hanno la validazione lato client scritta in Vanilla JavaScript,
+come richiesto, anche quelli serviti da pagine PHP. La validazione segnala gli errori
+campo per campo, con messaggi che uno screen reader puo' annunciare, e blocca l'invio
+finche' i dati non sono corretti.
+
+Sul form di registrazione i vincoli richiesti dalla traccia sono rispettati: lo
+username deve cominciare con un carattere alfabetico, la password deve essere lunga
+da 8 a 16 caratteri e contenere almeno una lettera maiuscola, una minuscola, un
+numero e un carattere speciale, e c'e' un campo di conferma che deve coincidere con la
+password prima che il JavaScript permetta l'invio.
+
+La regola fondamentale che ho seguito e' che nessuna validazione lato client basta a
+garantire la sicurezza: il client si puo' aggirare, quindi ogni controllo importante
+viene rifatto da capo sul server. Il PHP ricontrolla i formati, le lunghezze e i
+valori ammessi, e se qualcosa non va rifiuta l'operazione. Per le pagine che
+rispondono in modo asincrono, il rifiuto arriva come risposta JSON con un codice di
+errore esplicito, che il JavaScript intercetta e mostra all'utente con un messaggio
+chiaro.
+
+Contro l'SQL injection non costruisco mai le query incollando insieme stringhe: uso
+sempre prepared statement con i parametri legati separatamente. In questo modo la
+struttura della query la decide il codice e i valori inseriti dall'utente non possono
+cambiarla, neanche se contengono apici o parole sospette. E' la ragione per cui ho
+preferito i prepared statement alla concatenazione: tolgono il problema alla radice.
+
+Contro l'XSS, ogni dato dell'utente che viene rimesso in una pagina passa prima da una
+funzione di pulizia. Lato PHP e' un wrapper attorno a htmlspecialchars con la modalita'
+che neutralizza anche le virgolette; lato JavaScript c'e' una funzione analoga, usata
+prima di inserire qualunque testo dentro la pagina. Cosi' i caratteri speciali non
+possono trasformarsi in codice eseguibile.
+
+Contro il CSRF, la difesa principale e' l'impostazione SameSite a Strict sui cookie,
+che impedisce al cookie di partire quando la richiesta arriva da un altro sito.
+
+Sulle password sono trasparente: in questa versione sono salvate in chiaro nel
+database e il confronto al login si fa con un'uguaglianza diretta. E' una scelta che
+dichiaro apertamente; in un sito reale andrebbe evitata e si dovrebbe usare una
+funzione di hashing dedicata con salt. Restano comunque i vincoli forti sulla password
+in fase di registrazione, e la password non finisce mai nella sessione.
+
+
+7. CHI PUO' FARE COSA, E GLI AVVISI PER I NON AUTENTICATI
+
+I controlli sui permessi si fanno sul server, non mi limito a nascondere i link. La
+pagina di inserimento gatto e' riservata agli amministratori: se chi arriva non e'
+loggato o non e' amministratore, la pagina fa un redirect e non stampa nulla. Gli
+endpoint di prenotazione visita e di iscrizione ai turni controllano l'autenticazione
+e, se manca, rispondono con un codice HTTP 401 o 403 e un messaggio in JSON prima di
+fare qualsiasi altra cosa.
+
+Come chiede la traccia, se un visitatore non autenticato apre la pagina delle visite o
+quella dei turni, un avviso lo invita ad accedere o a registrarsi prima. Il navigatore
+non autenticato puo' comunque sfogliare, ordinare e filtrare tutti i gatti: sono solo
+la selezione e la prenotazione a richiedere l'accesso.
+
+
+8. STRUTTURA, GRAFICA E COMPORTAMENTO TENUTI SEPARATI
+
+Una delle cose a cui ho fatto piu' attenzione e' tenere distinte le tre cose: la
+struttura (HTML), la grafica (CSS) e il comportamento (JavaScript). Nelle pagine non
+ci sono stili scritti dentro i tag, ne' gestori di eventi come onclick infilati
+nell'HTML, ne' blocchi di script in mezzo alla pagina. Tutto il comportamento sta in
 file .js esterni collegati con addEventListener, e tutta la grafica sta nei fogli di
-stile. Questa separazione e' una delle cose a cui ho fatto piu' attenzione, perche'
-rende il codice piu' ordinato e piu' facile da modificare.
+stile. Questo rende il codice piu' ordinato, piu' facile da leggere e piu' semplice da
+modificare, perche' so sempre dove andare a cercare una certa cosa.
 
-8.1 Fogli di stile
+L'impaginazione e' controllata da un foglio di stile principale, valido su tutte le
+pagine, a cui se ne affiancano altri per esigenze specifiche: uno per il tema scuro,
+uno collegato alla preferenza di sistema "movimento ridotto" per chi non vuole
+animazioni, e uno per la stampa, che cambia i caratteri, porta il testo in nero su
+bianco e nasconde le parti inutili su carta come il menu e i pulsanti.
 
-Il foglio principale e' stile.css. Poi ho tema-scuro.css per la modalita' scura,
-movimento-ridotto.css collegato con la media query prefers-reduced-motion per chi
-preferisce niente animazioni, e stampa.css collegato con media print per la stampa.
-
-8.2 Tema chiaro/scuro
-
-La preferenza del tema (chiaro, scuro o "come il sistema") la salvo nel localStorage
-con la chiave "tema". Ho preferito localStorage al cookie perche' e' solo
-un'impostazione grafica: non sono dati personali, non serve mandarla al server e
-quindi non rientra tra i cookie del banner del consenso. Uno script piccolissimo,
-caricato nell'head prima del resto, applica subito il tema salvato cosi' non si vede
-il classico lampo bianco prima che la pagina si colori.
-
-8.3 Caratteri: schermo e stampa
-
-A schermo uso un font senza grazie (Segoe UI e simili), che sui monitor si legge
-meglio. Per la stampa invece passo a un font con grazie (Georgia, Times New Roman),
-che sulla carta rende il testo lungo piu' leggibile. Sempre nel foglio di stampa
-fisso il corpo a 12pt, scalo i titoli in proporzione, metto testo nero su bianco,
-sottolineo i link e faccio comparire il loro indirizzo tra parentesi, e nascondo le
-parti inutili su carta come il menu e i pulsanti.
-
-8.4 Conferma dei form sempre uguale
-
-Volevo che tutti i form, dopo un invio andato bene, dessero la stessa sensazione.
-Cosi' al posto di un semplice messaggio compare un riquadro di conferma con due
-pulsanti, sempre con lo stesso aspetto. I form serviti da una pagina PHP completa
-(registrazione e inserimento gatto) lo ottengono sul server con lo schema
-Post/Redirect/Get: salvo un messaggio in sessione, faccio il redirect (cosi' un
-refresh non rimanda i dati) e la pagina ricaricata mostra il riquadro. I form che
-invece lavorano in modo asincrono (prenotazione e turni), che devono restare cosi'
-perche' il server risponde in JSON con eventuali codici di errore, ottengono lo
-stesso identico riquadro ma dal lato client. Il risultato visto dall'utente e'
-uguale, anche se sotto i due meccanismi sono diversi.
+La preferenza del tema (chiaro, scuro o "come il sistema") la salvo nel localStorage e
+non in un cookie. La ragione e' che si tratta solo di un'impostazione grafica: non
+sono dati personali, non serve mandarla al server e quindi non rientra tra i cookie
+soggetti al consenso. Uno script piccolissimo, caricato per primo, applica subito il
+tema salvato cosi' non si vede il classico lampo bianco prima che la pagina prenda
+colore.
 
 
-9. I turni di volontariato
+9. I TURNI DI VOLONTARIATO
 
-Ogni utente puo' prenotare quanti turni vuole, ma ogni fascia oraria accetta al
-massimo due volontari. Il controllo lo faccio in due punti. Lato client il
-JavaScript chiede al server quanti iscritti ci sono e disabilita le fasce gia'
-piene, cosi' non si possono nemmeno selezionare. Lato server il controllo lo rifaccio
-da capo, perche' il controllo del client non basta mai a garantire l'integrita': se
-una fascia ha gia' due iscritti, il backend rifiuta l'inserimento e risponde con un
-JSON che contiene un codice di errore, che il JavaScript intercetta e mostra
-all'utente.
+Ogni utente puo' prenotare quante fasce orarie vuole, ma ogni singola fascia accetta
+al massimo due volontari. Il controllo del limite avviene in due punti, e questo e'
+voluto. Lato client il JavaScript chiede al server quanti iscritti ci sono in ogni
+fascia e disabilita visivamente, rendendole non cliccabili, le fasce che hanno gia'
+raggiunto i due volontari, cosi' l'utente non puo' neppure selezionarle. Lato server
+il controllo viene rifatto da zero in modo indipendente, perche' il controllo del
+client non basta mai a garantire l'integrita': se nel frattempo una fascia si e'
+riempita, il backend rifiuta l'inserimento e risponde con un JSON che contiene un
+codice di errore, che il JavaScript intercetta e mostra come messaggio esplicito.
 
-9.1 Un solo endpoint, due metodi
-
-turni.php risponde sia a GET sia a POST: con GET restituisce l'elenco delle fasce
-con il numero di iscritti, con POST registra le prenotazioni. Distinguo i due casi
-guardando il metodo della richiesta. Mi e' sembrato piu' pulito che avere due file
-separati per una cosa cosi' legata.
-
-
-10. Accessibilita'
-
-Sono partito dalla struttura: ogni pagina ha una sola h1 e i titoli scendono in
-ordine, senza salti. Uso i tag al posto giusto (header, nav, main, section, article,
-aside, footer, figure, time, details, e cosi' via) invece di riempire tutto di div.
-Ogni campo dei form ha la sua label collegata. I messaggi che compaiono in modo
-dinamico usano aria-live, e gli errori usano role="alert" cosi' uno screen reader li
-annuncia. Nel componente React le card che si possono selezionare hanno
-role="checkbox" e aria-checked, e si possono usare anche da tastiera con Tab e poi
-Invio o Spazio. I colori li ho scelti rispettando il contrasto richiesto dal livello
-AA delle WCAG, e ho controllato che valga anche in modalita' scura.
+L'endpoint dei turni risponde sia alle richieste GET sia a quelle POST: con GET
+restituisce l'elenco delle fasce con il numero di iscritti, con POST registra le
+prenotazioni. Distinguo i due casi guardando il metodo della richiesta. Mi e' sembrato
+piu' pulito di avere due file separati per una funzione cosi' strettamente legata.
 
 
-11. Prestazioni, SEO e note varie
+10. ACCESSIBILITA' E ADERENZA AGLI STANDARD W3C
 
-11.1 Prestazioni
-
-Le immagini hanno loading="lazy" e decoding="async" cosi' non rallentano il primo
-caricamento, e il loro contenitore ha gia' una dimensione fissa per non far
-"saltare" il layout quando arrivano. Gli script li carico con defer.
-
-11.2 SEO
-
-Ogni pagina ha il suo titolo e la sua descrizione, impostati con due variabili lette
-dall'intestazione comune, piu' i meta di base.
-
-11.3 Errori e registro eventi
-
-Lato PHP non uso try/catch: controllo invece il valore di ritorno di ogni operazione
-delicata (connessione, prepare, execute, lettura dei risultati) con dei semplici
-if/else. Se qualcosa va storto chiudo la connessione, imposto il codice HTTP giusto
-con header() e mostro all'utente solo un messaggio generico, senza far trapelare
-dettagli interni. In piu' scrivo gli errori in un registro sul server, con la
-funzione scriviLog() in includes/log.php: ogni riga ha data, ora, gravita' e
-messaggio. Registro anche gli eventi importanti come gli accessi riusciti, i
-tentativi falliti, le registrazioni e le prenotazioni, cosi' resta una traccia di
-cosa e' successo.
-
-Lato JavaScript, per le chiamate al server uso fetch con async/await. Siccome non
-uso try/catch, gestisco i due esiti della richiesta con i due gestori di then(): il
-primo elabora la risposta (controllando sempre res.ok, perche' fetch non considera
-errore i codici 4xx e 5xx, e leggendo il corpo con res.json()), il secondo si occupa
-dell'errore di rete. Il codice che rimette a posto l'interfaccia lo metto in una
-funzioncina richiamata in tutti e due i casi, cosi' non lo ripeto.
-
-11.4 Dipendenze esterne
-
-React e ReactDOM li carico da unpkg con la versione bloccata a una precisa (18.3.1),
-cosi' un aggiornamento automatico non mi puo' cambiare il comportamento sotto i
-piedi. Il sorgente del componente e' GattiComponent.jsx, che viene compilato in
-GattiComponent.js: quello caricato dalla pagina e' il file gia' compilato.
+I contenuti sono pensati per essere aderenti agli standard W3C e accessibili. Sono
+partito dalla struttura: ogni pagina dichiara la lingua, ha una sola intestazione di
+primo livello e i titoli scendono in ordine senza salti. Uso i tag semantici al posto
+giusto (header, nav, main, section, article, aside, footer, figure, time, details e
+cosi' via) invece di riempire tutto di contenitori generici. Ogni campo dei form ha la
+sua etichetta collegata. I messaggi che compaiono in modo dinamico sono annunciati
+agli screen reader, e gli errori sono marcati in modo da essere letti subito. Nel
+componente React le card che si possono selezionare sono raggiungibili e azionabili
+anche da tastiera. I colori rispettano il contrasto richiesto, anche in modalita'
+scura.
 
 
-12. In conclusione
+11. GESTIONE DEGLI ERRORI E REGISTRO DEGLI EVENTI
 
-Il sito fa tutto quello che chiede la traccia, e ho cercato di farlo tenendo separate
-le tre cose (struttura, grafica e comportamento), dando al database solo i permessi
-minimi pagina per pagina, controllando i dati sia sul client sia sul server e
-curando accessibilita' e leggibilita' allo stesso modo su tutte le pagine.
+Lato PHP non uso eccezioni con try/catch: controllo invece il valore di ritorno di
+ogni operazione delicata (connessione, preparazione della query, esecuzione, lettura
+dei risultati) con dei semplici controlli if/else. Se qualcosa va storto, chiudo la
+connessione, imposto il codice HTTP corretto e mostro all'utente solo un messaggio
+generico, senza far trapelare dettagli interni che potrebbero essere utili a un
+attaccante. In parallelo scrivo l'errore in un registro sul server, con data, ora,
+gravita' e descrizione. Registro anche gli eventi importanti, come gli accessi
+riusciti, i tentativi falliti, le registrazioni e le prenotazioni, cosi' resta una
+traccia di cosa e' successo.
+
+Lato JavaScript, per le chiamate al server uso fetch e gestisco separatamente i due
+esiti: il primo elabora la risposta, controllando sempre che la richiesta sia andata a
+buon fine, perche' fetch non considera errore i codici 4xx e 5xx, e leggendo il corpo
+in JSON; il secondo si occupa dell'errore di rete. Il codice che rimette a posto
+l'interfaccia (per esempio riabilitare il pulsante di invio) lo raccolgo in una
+funzione richiamata in entrambi i casi, cosi' non lo ripeto.
+
+
+12. DIPENDENZE ESTERNE E COMPILAZIONE DI REACT
+
+React e ReactDOM sono caricati da una CDN con la versione bloccata a un numero preciso,
+cosi' un aggiornamento automatico non puo' cambiarmi il comportamento sotto i piedi. Il
+sorgente del componente e' scritto in JSX (GattiComponent.jsx) e viene compilato in
+JavaScript puro (GattiComponent.js) con Babel; la pagina carica il file gia' compilato.
+Nella cartella build/ ci sono la configurazione e lo script che fanno la compilazione.
+
+
+13. IN CONCLUSIONE
+
+Il sito realizza tutto quello che chiede la traccia: la home con i nuovi arrivi letti
+dal database, la distinzione tra amministratori e utenti, l'indicazione dell'utente in
+alto a destra, il "ricordami" con token opaco e scadenza a 72 ore, l'inserimento dei
+gatti riservato agli amministratori, la pagina adozioni con il componente React per
+visualizzazione, ordinamento, ricerca e selezione, il form di prenotazione in Vanilla
+JavaScript che comunica con React tramite CustomEvent, i turni di volontariato con il
+doppio controllo del limite di due persone per fascia, la registrazione con i vincoli
+richiesti su username e password, e la separazione dei privilegi sul database con tre
+utenti distinti. Ho cercato di farlo tenendo separate struttura, grafica e
+comportamento, dando al database solo i permessi minimi pagina per pagina, validando i
+dati sia sul client sia sul server, e curando l'accessibilita' e la leggibilita' allo
+stesso modo su tutte le pagine.
