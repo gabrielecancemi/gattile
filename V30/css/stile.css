@@ -144,14 +144,7 @@ summary:focus-visible {
 }
 
 
-@media (max-width: 1300px) {
-    .header {
-        grid-template-columns: 1fr auto auto;
-        grid-template-areas: "logo tema account"
-            "nav nav nav";
 
-    }
-}
 
 
 /* logo */
@@ -185,12 +178,8 @@ summary:focus-visible {
 }
 
 
-/* ── 6b. Hamburger ────────────────────────────────────────── */
-/*
-* Su desktop è rimosso dal flusso (position: absolute) così non
-* occupa nessuna cella della grid.
-* Su mobile torna in posizione statica (vedi §25).
-*/
+/* Menu  */
+
 .menu-toggle {
     display: none;
     position: absolute;
@@ -213,7 +202,7 @@ summary:focus-visible {
     background: #3e5022;
 }
 
-/* Icona "hamburger" disegnata via CSS (niente emoji): tre barre. */
+/* Icona menu */
 .menu-toggle-icona {
     display: inline-block;
     width: 1.1rem;
@@ -240,19 +229,8 @@ summary:focus-visible {
     top: 5px;
 }
 
-/* Stato aperto: le barre diventano una "X". */
 .menu-toggle.aperto .menu-toggle-icona {
     background: transparent;
-}
-
-.menu-toggle.aperto .menu-toggle-icona::before {
-    top: 0;
-    transform: rotate(45deg);
-}
-
-.menu-toggle.aperto .menu-toggle-icona::after {
-    top: 0;
-    transform: rotate(-45deg);
 }
 
 .menu-toggle:hover {
@@ -260,7 +238,7 @@ summary:focus-visible {
 }
 
 
-/* ── 6c. Nav principale ───────────────────────────────────── */
+/* Nav principale */
 .header>nav {
     grid-area: nav;
     display: flex;
@@ -281,15 +259,14 @@ summary:focus-visible {
 .header>nav a {
     background-color: darkolivegreen;
     color: white;
-    border-color: darkolivegreen;
+    border-color: #3e5022;
     font-size: inherit;
     display: inline-flex;
     align-items: center;
     gap: .4rem;
 }
 
-/* Icona monocromatica della voce di menu: eredita il colore del testo del
-link (currentColor), così resta coerente in ogni stato e tema. */
+/* Icona della voce di menu */
 .icona-menu {
     width: 1rem;
     height: 1rem;
@@ -308,13 +285,8 @@ link (currentColor), così resta coerente in ogni stato e tema. */
     color: white;
 }
 
-/* Link account nella nav: nascosti su desktop, visibili su mobile */
-.nav-conto {
-    display: none;
-}
 
-
-/* Selettore tema (3 stati). Icona disegnata via CSS: cerchio metà pieno. */
+/* Selettore tema (3 stati)*/
 .toggle-tema {
     display: inline-flex;
     align-items: center;
@@ -337,10 +309,7 @@ link (currentColor), così resta coerente in ogni stato e tema. */
     color: white;
 }
 
-/* Icona tema in SVG (stampabile su tutti i browser): un cerchio con la metà
-destra piena. Lo stato cambia quanta parte del disco è riempita.
-Due forme sovrapposte (metà / pieno) commutate via opacity: nessuna
-dipendenza dalla proprietà CSS "d:", supportata ovunque e in stampa. */
+/* Icona tema */
 .toggle-tema .icona-tema {
     width: 1rem;
     height: 1rem;
@@ -348,7 +317,6 @@ dipendenza dalla proprietà CSS "d:", supportata ovunque e in stampa. */
     flex-shrink: 0;
 }
 
-/* "sistema" (default): metà disco pieno. */
 .toggle-tema .icona-tema-meta {
     opacity: 1;
 }
@@ -357,13 +325,13 @@ dipendenza dalla proprietà CSS "d:", supportata ovunque e in stampa. */
     opacity: 0;
 }
 
-/* "chiaro": disco vuoto (solo contorno). */
+/* disco vuoto */
 .toggle-tema[data-stato="chiaro"] .icona-tema-meta,
 .toggle-tema[data-stato="chiaro"] .icona-tema-pieno {
     opacity: 0;
 }
 
-/* "scuro": disco interamente pieno. */
+/* disco pieno */
 .toggle-tema[data-stato="scuro"] .icona-tema-meta {
     opacity: 0;
 }
@@ -372,17 +340,7 @@ dipendenza dalla proprietà CSS "d:", supportata ovunque e in stampa. */
     opacity: 1;
 }
 
-/* Contenitore bianco compatto: [ icona + nome + badge | pulsante ] */
-/*.stato-autenticazione {
-display: flex;
-flex-direction: row;
-align-items: center;
-row-gap: .6rem;
-padding: .6rem;
-background: white;
-color: black;
-border-radius: .5rem;
-}*/
+/* autenticazione */
 
 .stato-autenticazione {
     grid-area: account;
@@ -417,8 +375,8 @@ border-radius: .5rem;
     max-width: 100px;
 }
 
-/* Icona utente disegnata in SVG (testa + spalle): stampabile su tutti i
-browser, nessuna emoji, nessuno pseudo-elemento. */
+
+/* Icona utente disegnata */
 .icona-utente {
     display: inline-block;
     width: 1.1rem;
@@ -439,7 +397,6 @@ browser, nessuna emoji, nessuno pseudo-elemento. */
     flex-shrink: 0;
 }
 
-/* Separatore verticale tra info utente e pulsante azione */
 .account-azioni {
     border-left: 1px solid black;
     padding-left: .8rem;
@@ -497,14 +454,7 @@ browser, nessuna emoji, nessuno pseudo-elemento. */
 }
 
 
-/* ============================================================
-7. LAYOUT: FOOTER
-============================================================
-Desktop — tre colonne:
-    [ logo ]  [ nav principale + nav privacy ]  [ contatti ]
-    [ copyright — larghezza piena ]
-Mobile  — singola colonna (vedi §25)
-============================================================ */
+/* FOOTER */
 .footer {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
@@ -541,19 +491,17 @@ Mobile  — singola colonna (vedi §25)
 }
 
 
-/* ── 7a. Logo footer ──────────────────────────────────────── */
+/* Logo footer */
 .footer .brand-logo {
     color: white;
 }
 
 .footer .brand-logo:hover,
 .footer .brand-logo:focus {
-    opacity: .88;
-    color: white;
+    color: cornsilk;
 }
 
-
-/* ── 7b. Sezione centrale (nav principale + nav privacy) ──── */
+/* Sezione centrale (nav principale + nav privacy) */
 .footer-navigazione {
     display: flex;
     flex-direction: column;
@@ -594,7 +542,7 @@ Mobile  — singola colonna (vedi §25)
     border-color: black;
 }
 
-/* Nav privacy (sotto la nav principale) */
+/* Nav privacy */
 .footer-privacy ul {
     display: flex;
     gap: 1rem;
@@ -609,7 +557,7 @@ Mobile  — singola colonna (vedi §25)
 .footer-privacy a,
 .footer-privacy .link-button {
     font-size: .82rem;
-    color: rgba(255, 255, 255, .75);
+    color: cornsilk;
 }
 
 .footer-privacy a:hover,
@@ -621,14 +569,13 @@ Mobile  — singola colonna (vedi §25)
 }
 
 
-/* ── 7c. Contatti ─────────────────────────────────────────── */
+/* Contatti  */
 .footer-contatti {
     font-style: normal;
     line-height: 1.6;
     font-size: .88rem;
 }
 
-/* I paragrafi degli indirizzi restano compatti */
 .footer-contatti p,
 address p {
     margin: 0;
@@ -636,7 +583,7 @@ address p {
 }
 
 .footer-contatti a {
-    color: rgba(255, 255, 255, .85);
+    color: cornsilk;
 }
 
 .footer-contatti a:hover {
@@ -644,11 +591,10 @@ address p {
     text-decoration: underline;
 }
 
-/* Pulsante testuale generico (usato nel footer privacy) */
 .link-button {
     background: none;
     border: none;
-    color: rgba(255, 255, 255, .85);
+    color: cornsilk;
     text-decoration: underline;
     cursor: pointer;
     font: inherit;
@@ -666,19 +612,17 @@ address p {
 }
 
 
-/* ── 7d. Copyright ────────────────────────────────────────── */
+/* Copyright */
 .footer-copy {
-    border-top: 1px solid rgba(255, 255, 255, .2);
+    border-top: 1px solid tan;
     padding-top: 1rem;
     text-align: center;
     font-size: .82rem;
-    color: rgba(255, 255, 255, .75);
+    color: white;
 }
 
 
-/* ============================================================
-8. PULSANTE FAQ FISSO
-============================================================ */
+/* PULSANTE FAQ */
 .faq-button {
     position: fixed;
     right: max(1rem, env(safe-area-inset-right));
@@ -698,8 +642,7 @@ address p {
     z-index: 999;
 }
 
-/* Quando il banner cookie è visibile, il pulsante FAQ si solleva
-(commutato via classList da footer.js, non con stile in-line). */
+/* Quando il banner cookie è visibile, il pulsante FAQ si solleva */
 .faq-button--alzato {
     bottom: max(5rem, env(safe-area-inset-bottom));
 }
@@ -717,9 +660,8 @@ address p {
 }
 
 
-/* ============================================================
-9. BANNER COOKIE
-============================================================ */
+/* BANNER COOKIE */
+
 .banner-cookie {
     position: sticky;
     bottom: 0;
@@ -756,9 +698,8 @@ address p {
 }
 
 
-/* ============================================================
-10. MAIN / CONTENUTO
-============================================================ */
+/*  MAIN */
+
 main {
     flex: 1;
     width: 100%;
@@ -766,12 +707,6 @@ main {
     color-scheme: light;
 }
 
-/*
-* Container interno a ogni section/aside del main:
-* centra e limita la larghezza senza toccare il markup PHP.
-* Usiamo un selettore diretto sui figli di <main>.
-* (Escluso il main della home, che usa una griglia a aree dedicata.)
-*/
 main:not(.main-home)>section,
 main:not(.main-home)>aside,
 main:not(.main-home)>article {
@@ -781,20 +716,7 @@ main:not(.main-home)>article {
     padding: clamp(1.5rem, 4vw, 3rem) clamp(1rem, 5vw, 3rem);
 }
 
-/* ============================================================
-10b. HOME — LAYOUT A GRIGLIA CON AREE NOMINATE (grid-template-areas)
-============================================================
-DESKTOP (≥ 901px): impaginazione "a rivista" su due colonne.
-    hero      → larghezza piena
-    perche / impatto    → affiancate
-    come  / storia      → affiancate
-    arrivi              → larghezza piena (vetrina)
-    aiuta / faq         → affiancate
-MOBILE / TABLET (≤ 900px): le aree collassano in colonna unica
-con un ordine di lettura naturale (vedi §25). La differenza fra
-desktop e mobile è quindi marcata: due colonne ricche vs flusso
-verticale lineare.
-============================================================ */
+/* HOME */
 .main-home {
     display: grid;
     width: 100%;
@@ -815,7 +737,6 @@ verticale lineare.
 .main-home>aside {
     padding: clamp(1.5rem, 4vw, 3rem) clamp(1rem, 5vw, 3rem);
     min-width: 0;
-    /* evita overflow dei contenuti nella cella */
 }
 
 .main-home .zona-hero {
@@ -850,13 +771,12 @@ verticale lineare.
     grid-area: faq;
 }
 
-/*
-* (#2) Nessun bordo di separazione tra le sezioni del main.
-* L'unico bordo previsto è quello inferiore della PRIMA section
-* di ogni main (quella che contiene l'h1), definito più sotto.
-*/
+.come-funziona ol:not([class]) li .btn {
+    display: block;
+    margin-top: .5rem;
+    width: fit-content;
+}
 
-/* (#2) Prima sezione (hero, con h1): unico bordo è quello inferiore. */
 main>section:first-child {
     background: white;
     padding-block: clamp(2rem, 6vw, 4rem);
@@ -864,7 +784,7 @@ main>section:first-child {
     border-radius: .5rem;
 }
 
-/* ── Hero: titolo H1 centrato, paragrafi centrati ── */
+/* intestazione */
 main>section:first-child h1 {
     margin-inline: auto;
 }
@@ -877,7 +797,7 @@ main>section:first-child>p {
     color: dimgray;
 }
 
-/* ── Liste punti (ul/ol nelle sezioni informative) ── */
+/* ul - ol */
 main>section ul:not([class]),
 main>section ol:not([class]) {
     display: flex;
@@ -938,7 +858,37 @@ main>section ul:not([class]) li::before {
     background: saddlebrown;
 }
 
-/* ── Blockquote stile testimonianza ── */
+/* BLOCCO "RICORDAMI" (login) */
+.blocco-ricordami {
+    margin-top: 1.5rem;
+    background: cornsilk;
+    border: 1px solid tan;
+    border-left: 4px solid darkolivegreen;
+    border-radius: .5rem;
+    padding: 1rem 1.25rem;
+}
+
+.blocco-ricordami legend {
+    color: darkolivegreen;
+}
+
+.blocco-ricordami .campo-checkbox {
+    margin-top: .25rem;
+    font-weight: 600;
+}
+
+.blocco-ricordami .messaggio {
+    margin-bottom: 1rem;
+}
+
+.nota-obbligatori {
+    margin: 1rem 0 .5rem;
+    font-size: .85rem;
+    color: dimgray;
+}
+
+
+/* Blockquote */
 blockquote {
     position: relative;
     background: white;
@@ -971,7 +921,7 @@ main>aside>p:last-child {
     margin-top: -0.5rem;
 }
 
-/* ── Statistiche (dl.statistiche) ── */
+/* Statistiche */
 .statistiche {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
@@ -1000,7 +950,7 @@ main>aside>p:last-child {
 
 .statistiche dd {
     font-family: 'Segoe UI', 'Tahoma', 'Geneva', 'Verdana', sans-serif;
-    font-size: clamp(2rem, 4vw, 3rem);
+    font-size: clamp(1.5rem, 3vw, 2.3rem);
     font-weight: 700;
     color: darkolivegreen;
     margin: 0;
@@ -1015,9 +965,7 @@ main>aside>p:last-child {
 
 
 
-/* ============================================================
-11. PULSANTI GENERALI
-============================================================ */
+/* PULSANTI GENERALI */
 .btn {
     display: inline-flex;
     align-items: center;
@@ -1032,10 +980,6 @@ main>aside>p:last-child {
     border-width: 2px;
     border-style: solid;
     white-space: nowrap;
-}
-
-.btn:active {
-    transform: translateY(0);
 }
 
 .btn-primario {
@@ -1075,9 +1019,8 @@ form .btn-secondario:focus {
 }
 
 
-/* ============================================================
-12. MESSAGGI DI FEEDBACK
-============================================================ */
+/* MESSAGGI DI FEEDBACK */
+
 .messaggio {
     display: block;
     padding: 1rem 1.5rem;
@@ -1106,9 +1049,6 @@ form .btn-secondario:focus {
     border-color: saddlebrown;
 }
 
-/* Etichetta testuale (al posto delle emoji): pillola colorata mostrata davanti
-a ogni messaggio tramite ::before, in modo coerente anche per i messaggi
-generati via JavaScript. */
 .messaggio::before {
     content: 'Nota';
     display: inline-block;
@@ -1139,8 +1079,7 @@ generati via JavaScript. */
     background: saddlebrown;
 }
 
-/* Manteniamo le vecchie regole .messaggio-tag per i pochi punti che ancora
-inseriscono l'elemento (es. componente React), evitando una doppia pillola. */
+
 .messaggio-tag {
     display: inline-block;
     margin-right: .5rem;
@@ -1166,10 +1105,8 @@ inseriscono l'elemento (es. componente React), evitando una doppia pillola. */
     background: saddlebrown;
 }
 
-
-/* ============================================================
-13. AZIONI PRINCIPALI (home)
-============================================================ */
+/* HOME */ 
+/* Azioni principali */
 .azioni-principali ul {
     display: flex;
     flex-wrap: wrap;
@@ -1181,7 +1118,64 @@ inseriscono l'elemento (es. componente React), evitando una doppia pillola. */
     margin-top: 1.5rem;
 }
 
-/* Sezione "nuovi arrivi": sfondo caldo distinto */
+/* Storie di successo */
+.storia-successo {
+    margin: 0 0 1.25rem;
+    padding: 1rem 0;
+}
+
+.storia-successo:last-child {
+    margin-bottom: 0;
+}
+
+.storia-successo blockquote {
+    margin: 0;
+    font-style: italic;
+    font-size: clamp(0.9rem, 1vw + 0.5rem, 1rem);
+}
+
+.storia-successo blockquote p {
+    margin: 0;
+}
+
+.storia-successo figcaption {
+    margin-top: .6rem;
+    font-weight: 700;
+    color: saddlebrown;
+}
+
+
+/* Vantaggi */
+.griglia-vantaggi {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.box-vantaggio {
+    background: white;
+    border: 1px solid tan;
+    border-radius: .5rem;
+    padding: 1rem 1.25rem;
+}
+
+.box-vantaggio dt {
+    font-weight: 700;
+    color: saddlebrown;
+    margin-bottom: .35rem;
+}
+
+.box-vantaggio dd {
+    margin: 0;
+}
+
+.contatore-basso {
+    color: darkred;
+    font-weight: 700;
+}
+
+/* Sezione "nuovi arrivi" */
 .nuovi-arrivi {
     border-radius: .5rem;
     border: 1px solid tan;
@@ -1206,12 +1200,9 @@ inseriscono l'elemento (es. componente React), evitando una doppia pillola. */
 }
 
 
-/* ============================================================
-14. CARD GATTO
-============================================================ */
+/* CARD GATTO  */
 .griglia-gatti {
     display: grid;
-    /* Card orizzontali: una colonna larga (su schermi ampi due colonne) */
     grid-template-columns: 1fr;
     gap: 1.5rem;
     list-style: none;
@@ -1224,17 +1215,6 @@ article svg {
     height: 32px;
 }
 
-/* Su schermi molto larghi due card orizzontali affiancate */
-@media (min-width: 900px) {
-    .griglia-gatti {
-        grid-template-columns: repeat(2, 1fr);
-        text-align: center;
-    }
-}
-
-/* CARD ORIZZONTALE: immagine a sinistra, contenuti a destra.
-Le dimensioni della colonna immagine sono fisse così lo spazio è
-riservato prima del caricamento dell'immagine → niente layout shift (CLS). */
 .card-gatto {
     display: grid;
     grid-template-columns: auto 1fr;
@@ -1250,9 +1230,6 @@ riservato prima del caricamento dell'immagine → niente layout shift (CLS). */
     cursor: pointer;
 }
 
-/* (#3) All'hover si sposta SOLO l'intera card, senza ombre e
-senza ingrandire l'immagine. Effetto attivo solo sulle card cliccabili
-(quelle selezionabili per prenotare la visita, con role="checkbox"). */
 .card-gatto[role="checkbox"]:hover {
     transform: translateY(-3px);
 }
@@ -1265,7 +1242,7 @@ senza ingrandire l'immagine. Effetto attivo solo sulle card cliccabili
 
 .card-gatto picture {
     margin: 0;
-    /* Larghezza/altezza riservate: rapporto fisso, nessun salto di layout */
+    /*  rapporto fisso */
     width: 200px;
     aspect-ratio: 4 / 3;
     overflow: hidden;
@@ -1330,7 +1307,7 @@ senza ingrandire l'immagine. Effetto attivo solo sulle card cliccabili
     letter-spacing: .08em;
 }
 
-/* Definizione lista dati gatto */
+/* lista dati gatto */
 .card-gatto dl {
     display: grid;
     grid-template-columns: auto 1fr;
@@ -1360,8 +1337,7 @@ senza ingrandire l'immagine. Effetto attivo solo sulle card cliccabili
     accent-color: saddlebrown;
 }
 
-/* Badge di selezione mostrato solo quando la card è selezionata.
-Il segno di spunta è un SVG inline: stampabile su tutti i browser. */
+/* Badge di selezione */
 .card-badge-selezione {
     position: absolute;
     top: .5rem;
@@ -1377,18 +1353,11 @@ Il segno di spunta è un SVG inline: stampabile su tutti i browser. */
     display: block;
 }
 
-
-/* (#8) Spazio tra il riepilogo dei gatti selezionati e il form di
-prenotazione, nella pagina "Adozioni". */
 #gatti-selezionati-riepilogo {
     margin-bottom: 2rem;
 }
 
-/* ============================================================
-15. BARRA CONTROLLI
-============================================================ */
-/* Riserva spazio per il componente React mentre carica:
-riduce il Cumulative Layout Shift (CLS) sulla pagina "adotta". */
+/* BARRA CONTROLLI */
 #react-gatti-root {
     display: block;
     min-height: 60vh;
@@ -1424,14 +1393,11 @@ riduce il Cumulative Layout Shift (CLS) sulla pagina "adotta". */
 }
 
 
-/* ============================================================
-16. FORM & CAMPI
-============================================================ */
+/* FORM e CAMPI  */
 form {
     max-width: 600px;
 }
 
-/* Form centrato nella pagina (login, registrazione) */
 main>section>form,
 main>section>div>form {
     margin-inline: auto;
@@ -1445,7 +1411,6 @@ fieldset {
     background: white;
 }
 
-/* Contiene il float della legend dentro il fieldset. */
 fieldset::after {
     content: "";
     display: block;
@@ -1453,9 +1418,6 @@ fieldset::after {
 }
 
 legend {
-    /* Per default il browser "aggancia" la legend sul bordo superiore del
-    fieldset. Con float:left perde quel rendering speciale e si comporta
-    come un normale blocco in cima al contenuto, quindi sotto il bordo. */
     float: left;
     width: 100%;
     font-family: 'Segoe UI', 'Tahoma', 'Geneva', 'Verdana', sans-serif;
@@ -1468,7 +1430,6 @@ legend {
     border-radius: 0;
 }
 
-/* La legend è in float: questo riporta in flusso il contenuto del fieldset. */
 legend+* {
     clear: both;
 }
@@ -1511,7 +1472,7 @@ textarea:focus {
     outline: none;
 }
 
-/* Stato di errore accessibile via aria-invalid */
+/* Stato di errore */
 input[aria-invalid="true"],
 select[aria-invalid="true"],
 textarea[aria-invalid="true"] {
@@ -1530,14 +1491,11 @@ textarea {
     gap: .5rem;
 }
 
-/* (#6) Checkbox e radio: l'accent-color colora SOLO la spunta quando
-sono selezionati. Da non selezionati restano una casella chiara con
-bordo, mai con sfondo scuro (anche in tema scuro forziamo lo schema
-chiaro del controllo). */
 input[type="checkbox"],
 input[type="radio"] {
     width: 1.2rem;
     height: 1.2rem;
+    /* solo se selezionati */
     accent-color: saddlebrown;
     color-scheme: light;
     cursor: pointer;
@@ -1559,12 +1517,13 @@ input[type="radio"] {
 }
 
 
-/* Contatore caratteri "in esaurimento" (commutato via classList) */
+/* Contatore caratteri */
 .contatore-basso {
     color: darkred;
     font-weight: 700;
 }
 
+/* errori compilazione */
 .errore-campo {
     font-size: .85rem;
     color: darkred;
@@ -1575,7 +1534,6 @@ input[type="radio"] {
     margin-top: 0.2rem;
 }
 
-/* Etichetta "Errore" davanti a ogni messaggio di errore di campo. */
 .errore-campo::before {
     content: 'Errore';
     display: inline-block;
@@ -1590,14 +1548,12 @@ input[type="radio"] {
     flex-shrink: 0;
 }
 
-/* Nasconde l'etichetta quando il campo non ha errori (output svuotato). */
+/* il campo non ha errori */
 .errore-campo[hidden] {
     display: none;
 }
 
-/* ============================================================
-17. PROGRESS & METER
-============================================================ */
+/* PROGRESS & METER */
 progress,
 meter {
     width: 100%;
@@ -1610,9 +1566,7 @@ meter {
 }
 
 
-/* ============================================================
-18. CARICAMENTO
-============================================================ */
+/* CARICAMENTO */
 .caricamento {
     display: flex;
     justify-content: center;
@@ -1622,9 +1576,7 @@ meter {
 }
 
 
-/* ============================================================
-19. TURNI VOLONTARIATO
-============================================================ */
+/* TURNI VOLONTARIATO */
 .griglia-turni {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(185px, 1fr));
@@ -1651,12 +1603,11 @@ meter {
 }
 
 .turno-item.pieno {
-    opacity: .55;
     cursor: not-allowed;
     background: wheat;
 }
 
-/* Fascia a cui l'utente è già iscritto: evidenziata, non riselezionabile */
+/* Fascia a cui l'utente è già iscritto */
 .turno-item.iscritto {
     border-color: darkolivegreen;
     background: wheat;
@@ -1686,60 +1637,7 @@ meter {
 }
 
 
-/* ============================================================
-20. TABELLE
-============================================================ */
-.table-responsive {
-    overflow-x: auto;
-    border-radius: .5rem;
-    border: 1px solid tan;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 1.5rem;
-    font-size: clamp(0.82rem, 1vw + 0.4rem, 1rem);
-}
-
-caption {
-    text-align: left;
-    font-weight: 700;
-    font-family: 'Segoe UI', 'Tahoma', 'Geneva', 'Verdana', sans-serif;
-    color: saddlebrown;
-    margin-bottom: .5rem;
-    font-size: 1.05rem;
-}
-
-th,
-td {
-    padding: .5rem 1rem;
-    border: 1px solid tan;
-    text-align: left;
-    vertical-align: top;
-}
-
-th {
-    background: saddlebrown;
-    color: white;
-    font-family: 'Segoe UI', 'Tahoma', 'Geneva', 'Verdana', sans-serif;
-    font-size: 0.9rem;
-    letter-spacing: 0.03em;
-    font-weight: 700;
-}
-
-tr:nth-child(even) td {
-    background: wheat;
-}
-
-tr:hover td {
-    background: tan;
-}
-
-
-/* ============================================================
-21. DETAILS / SUMMARY (accordion)
-============================================================ */
+/* DETAILS / SUMMARY  */
 details {
     border: 1px solid tan;
     border-radius: .5rem;
@@ -1798,10 +1696,6 @@ details>p:not(summary) {
     max-width: none;
 }
 
-
-/* ============================================================
-22. SEPARATORE
-============================================================ */
 .separatore {
     border: 0;
     border-top: 1px solid tan;
@@ -1809,11 +1703,9 @@ details>p:not(summary) {
 }
 
 
-/* ============================================================
-23. UTILITY CLASSI
-============================================================ */
+/* SUPPORTO ALL'ACCESSIBILITà */
 
-/* Solo per screen reader — invisibile visivamente */
+/* Solo per screen reader */
 .sr-solo {
     position: absolute;
     width: 1px;
@@ -1839,9 +1731,7 @@ details>p:not(summary) {
 }
 
 
-/* ============================================================
-24. PAGINA FAQ
-============================================================ */
+/* FAQ */
 
 .faq-categoria p {
     margin-bottom: 0;
@@ -1863,297 +1753,8 @@ main .main-faq section {
     font-size: clamp(1.15rem, 2vw + 0.3rem, 1.6rem);
 }
 
+/* riquadri info */
 
-/* ============================================================
-25. RESPONSIVE — ≤ 900px (tablet e mobile)
-============================================================
-La grid dell'header diventa [ logo 1fr ] [ menu auto ].
-L'hamburger (menu-toggle) torna nel flusso (position: static).
-Nav e account scendono sotto, visibili solo se .aperto.
-Il footer collassa in colonna singola.
-============================================================ */
-@media (max-width: 900px) {
-
-    .header {
-        grid-template-columns: 1fr auto;
-        grid-template-areas:
-            "logo toggle"
-            "nav  nav"
-            "account account"
-            "tema tema";
-        gap: 0;
-        padding: 1rem;
-        align-items: center;
-    }
-
-    .stato-autenticazione,
-    .toggle-tema {
-        justify-self: center;
-        width: fit-content;
-    }
-
-    .toggle-tema {
-        margin-top: 1rem;
-        justify-content: center;
-    }
-
-    .menu-toggle {
-        display: flex;
-        position: static;
-        /* torna nel flusso della grid */
-        grid-area: toggle;
-    }
-
-    .header>nav {
-        padding: 1rem 0;
-        border-top: 1px solid rgba(255, 255, 255, .2);
-        margin-top: 1rem;
-    }
-
-    .stato-autenticazione {
-        justify-content: center;
-    }
-
-    /* Nav e account nascosti finché non si apre il menu */
-    .header>nav,
-    .stato-autenticazione,
-    .toggle-tema {
-        display: none;
-    }
-
-    .header>nav.aperto,
-    .stato-autenticazione.aperto,
-    .toggle-tema.aperto {
-        display: flex;
-    }
-
-    /* Voci di menu in colonna al 50% di larghezza */
-    .header>nav ul {
-        flex-direction: column;
-        gap: 1rem;
-        width: 100%;
-    }
-
-    .header>nav a {
-        display: block;
-        text-align: center;
-        padding: .5rem;
-    }
-
-    /* Footer: colonna singola centrata */
-    .footer {
-        grid-template-columns: 1fr;
-        grid-template-areas:
-            "f-logo"
-            "f-centro"
-            "f-contatti"
-            "f-copy";
-        padding: 1.5rem 1rem;
-        row-gap: 1.5rem;
-        text-align: center;
-    }
-
-    .footer .brand-logo {
-        justify-content: center;
-    }
-
-    .footer .footer-navigazione {
-        align-items: center;
-    }
-
-    .footer .footer-contatti {
-        justify-self: center;
-    }
-
-    /* Main sections: padding ridotto su tablet */
-    main>section,
-    main>aside,
-    main>article {
-        padding: clamp(1.2rem, 3vw, 2rem) clamp(0.75rem, 4vw, 2rem);
-    }
-
-    /* HOME: la griglia a aree collassa in colonna unica.
-    Ordine di lettura naturale tramite le aree impilate. */
-    .main-home {
-        grid-template-columns: 1fr;
-        grid-template-areas:
-            "hero"
-            "perche"
-            "impatto"
-            "come"
-            "storia"
-            "arrivi"
-            "aiuta"
-            "faq";
-    }
-
-    /* (#2) Nessun bordo di separazione tra le celle. */
-
-    /* Statistiche: 2 colonne su tablet */
-    .statistiche {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-
-/* ============================================================
-26. RESPONSIVE — ≤ 600px
-============================================================ */
-@media (max-width: 600px) {
-
-    .logo-img {
-        width: 36px;
-        height: 36px;
-    }
-
-    .brand-logo {
-        font-size: 1.1rem;
-    }
-
-    main>section,
-    main>aside,
-    main>article {
-        padding: 1.5rem 1rem;
-    }
-
-    main>section:first-child {
-        padding-block: 2rem;
-    }
-
-    /* Una sola colonna per le card */
-    .griglia-gatti {
-        grid-template-columns: 1fr;
-        gap: 1rem;
-    }
-
-    /* Su viewport piccola le card restano orizzontali ma COMPATTE:
-    immagine più piccola, padding/font ridotti, così occupano meno
-    spazio verticale invece di diventare molto alte. */
-    .card-gatto {
-        grid-template-columns: auto 1fr;
-        grid-template-rows: none;
-    }
-
-    .card-gatto picture {
-        width: 150px;
-    }
-
-    .card-gatto-corpo {
-        padding: .6rem .7rem;
-        gap: .4rem;
-    }
-
-    .card-gatto-corpo h3 {
-        font-size: 1rem;
-    }
-
-    .card-gatto-descr {
-        font-size: .82rem;
-    }
-
-    .card-gatto-meta {
-        gap: .2rem;
-    }
-
-    article svg {
-        width: 20px;
-        height: 20px;
-    }
-
-    .tag {
-        font-size: .68rem;
-        padding: 1px .4rem;
-    }
-
-    .card-gatto dl {
-        font-size: .78rem;
-        gap: .2rem .6rem;
-        margin-bottom: .15rem;
-    }
-
-    .card-gatto .btn {
-        padding: .3rem .7rem;
-    }
-
-    /* Statistiche: 2 colonne anche su mobile piccolo */
-    .statistiche {
-        grid-template-columns: repeat(2, 1fr);
-        gap: .5rem;
-    }
-
-    .statistiche dd {
-        font-size: clamp(1.6rem, 6vw, 2.4rem);
-    }
-
-    .faq-button {
-        width: 3.5rem;
-        height: 3.5rem;
-        font-size: 1.4rem;
-    }
-
-    /* Tabella: overflow scroll su mobile */
-    table {
-        display: block;
-        overflow-x: auto;
-    }
-
-    /* Turni: 1 colonna su mobile piccolo */
-    .griglia-turni {
-        grid-template-columns: 1fr;
-    }
-
-    /* Banner cookie padding adattivo */
-    .banner-cookie {
-        padding: 1rem 1rem;
-    }
-
-    blockquote {
-        padding-left: calc(1.5rem + 1rem);
-    }
-}
-
-/* ============================================================
-27. SKIP LINK (accessibilità — salta al contenuto)
-============================================================ */
-.salta-contenuto {
-    position: absolute;
-    top: -100%;
-    left: 0;
-    padding: .5rem 1rem;
-    background: saddlebrown;
-    color: white;
-    font-weight: 700;
-    text-decoration: none;
-    border-radius: 0 0 .5rem 0;
-    z-index: 9999;
-    transition: top 0.2s;
-}
-
-.salta-contenuto:focus {
-    top: 0;
-}
-
-
-/* ============================================================
-28. SEZIONE HERO — CTA button group
-============================================================ */
-.hero-cta {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-    justify-content: center;
-    margin-top: 2rem;
-}
-
-.hero-cta .btn {
-    padding: .6rem 1.4rem;
-    font-size: clamp(0.9rem, 1.2vw + 0.4rem, 1.05rem);
-}
-
-
-/* ============================================================
-29. MESSAGGIO AVVISO IN SEZIONE (restyle)
-============================================================ */
 main aside.messaggio,
 .messaggio[role="note"] {
     border-radius: .5rem;
@@ -2171,65 +1772,7 @@ main aside.messaggio p,
 }
 
 
-/* ============================================================
-30. MEDIA QUERY ≤ 400px (telefoni molto piccoli)
-============================================================ */
-@media (max-width: 400px) {
-    h1 {
-        font-size: clamp(1.3rem, 6vw, 1.6rem);
-    }
-
-    h2 {
-        font-size: clamp(1.1rem, 5vw, 1.3rem);
-    }
-
-    .statistiche {
-        grid-template-columns: 1fr 1fr;
-        gap: .25rem;
-    }
-
-    .statistiche dt,
-    .statistiche dd {
-        padding-left: .5rem;
-        padding-right: .5rem;
-    }
-
-    .statistiche dd {
-        font-size: clamp(1.4rem, 7vw, 2rem);
-    }
-
-    .hero-cta {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .griglia-gatti {
-        grid-template-columns: 1fr;
-    }
-
-    /* Card ancora più compatte sui telefoni piccoli */
-    .card-gatto {
-        grid-template-columns: auto 1fr;
-    }
-
-    .card-gatto picture {
-        width: 120px;
-    }
-
-    .card-gatto-corpo {
-        padding: .5rem .6rem;
-    }
-
-    /* Descrizione limitata a 2 righe per non allungare la card */
-    .card-gatto-descr {
-        overflow: hidden;
-        font-size: .78rem;
-    }
-}
-
-/* ============================================================
-31. PAGINA PRIVACY (layout dedicato a due colonne)
-============================================================ */
+/* PAGINA PRIVACY */
 .privacy-hero {
     text-align: center;
 }
@@ -2242,7 +1785,7 @@ main aside.messaggio p,
     font-size: clamp(1rem, 1.5vw + 0.4rem, 1.2rem);
 }
 
-/* Griglia: indice laterale + contenuti */
+/* Griglia e indice */
 .privacy-griglia {
     display: grid;
     grid-template-columns: auto 1fr;
@@ -2250,7 +1793,6 @@ main aside.messaggio p,
     align-items: start;
 }
 
-/* Indice "appiccicato" mentre si scorre */
 .privacy-indice {
     position: sticky;
     top: 6rem;
@@ -2320,7 +1862,7 @@ main aside.messaggio p,
     border-left: 4px solid darkred;
 }
 
-/* Cookie come schede invece che righe di tabella */
+/* cookie */
 .privacy-cookie-lista {
     list-style: none;
     padding: 0;
@@ -2364,8 +1906,148 @@ main aside.messaggio p,
     font-style: italic;
 }
 
-/* Responsive: l'indice passa sopra il contenuto e non è più sticky */
+
+
+/* MEDIA QUERY - RESPONSIVE */
+
+/* Su schermi molto larghi due card orizzontali affiancate */
+@media (min-width: 900px) {
+    .griglia-gatti {
+        grid-template-columns: repeat(2, 1fr);
+        text-align: center;
+    }
+}
+
+/* <= 1300px (tablet) */
+@media (max-width: 1300px) {
+    .header {
+        grid-template-columns: 1fr auto auto;
+        grid-template-areas: "logo tema account"
+            "nav nav nav";
+
+    }
+}
+
+/* <= 900px (tablet) */
 @media (max-width: 900px) {
+
+    .header {
+        grid-template-columns: 1fr auto;
+        grid-template-areas:
+            "logo toggle"
+            "nav  nav"
+            "account account"
+            "tema tema";
+        gap: 0;
+        padding: 1rem;
+        align-items: center;
+    }
+
+    .stato-autenticazione,
+    .toggle-tema {
+        justify-self: center;
+        width: fit-content;
+    }
+
+    .toggle-tema {
+        margin-top: 1rem;
+        justify-content: center;
+    }
+
+    .menu-toggle {
+        display: flex;
+        position: static;
+        grid-area: toggle;
+    }
+
+    .header>nav {
+        padding: 1rem 0;
+        border-top: 1px solid #3e5022;
+        margin-top: 1rem;
+    }
+
+    .stato-autenticazione {
+        justify-content: center;
+    }
+
+    /* Nav e account nascosti finché non si apre il menu */
+    .header>nav,
+    .stato-autenticazione,
+    .toggle-tema {
+        display: none;
+    }
+
+    .header>nav.aperto,
+    .stato-autenticazione.aperto,
+    .toggle-tema.aperto {
+        display: flex;
+    }
+
+    /* Voci di menu in colonna */
+    .header>nav ul {
+        flex-direction: column;
+        gap: 1rem;
+        width: 100%;
+    }
+
+    .header>nav a {
+        display: block;
+        text-align: center;
+        padding: .5rem;
+    }
+
+    /* Footer */
+    .footer {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+            "f-logo"
+            "f-centro"
+            "f-contatti"
+            "f-copy";
+        padding: 1.5rem 1rem;
+        row-gap: 1.5rem;
+        text-align: center;
+    }
+
+    .footer .brand-logo {
+        justify-content: center;
+    }
+
+    .footer .footer-navigazione {
+        align-items: center;
+    }
+
+    .footer .footer-contatti {
+        justify-self: center;
+    }
+
+    /* Main */
+    main>section,
+    main>aside,
+    main>article {
+        padding: clamp(1.2rem, 3vw, 2rem) clamp(0.75rem, 4vw, 2rem);
+    }
+
+    /* HOME */
+    .main-home {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+            "hero"
+            "perche"
+            "impatto"
+            "come"
+            "storia"
+            "arrivi"
+            "aiuta"
+            "faq";
+    }
+
+
+    /* Statistiche */
+    .statistiche {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
     .privacy-griglia {
         grid-template-columns: 1fr;
         gap: 1.5rem;
@@ -2383,110 +2065,159 @@ main aside.messaggio p,
 }
 
 
-/* ============================================================
-32. HOME — bottoni d'azione dentro "Come funziona"
-============================================================ */
-.come-funziona ol:not([class]) li .btn {
-    display: block;
-    margin-top: .5rem;
-    width: fit-content;
+/*  RESPONSIVE <= 600px (cellulare) */
+@media (max-width: 600px) {
+
+    .brand-logo {
+        font-size: 1.1rem;
+    }
+
+    .logo-img {
+        width: 36px;
+        height: 36px;
+    }
+
+    main>section,
+    main>aside,
+    main>article {
+        padding: 1.5rem 1rem;
+    }
+
+    main>section:first-child {
+        padding-block: 2rem;
+    }
+
+    /* Una sola colonna per le card */
+    .griglia-gatti {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .card-gatto {
+        grid-template-columns: auto 1fr;
+        grid-template-rows: none;
+    }
+
+    .card-gatto picture {
+        width: 150px;
+    }
+
+    .card-gatto-corpo {
+        padding: .6rem .7rem;
+        gap: .4rem;
+    }
+
+    .card-gatto-corpo h3 {
+        font-size: 1rem;
+    }
+
+    .card-gatto-descr {
+        font-size: .82rem;
+    }
+
+    .card-gatto-meta {
+        gap: .2rem;
+    }
+
+    article svg {
+        width: 20px;
+        height: 20px;
+    }
+
+    .tag {
+        font-size: .68rem;
+        padding: 1px .4rem;
+    }
+
+    .card-gatto dl {
+        font-size: .78rem;
+        gap: .2rem .6rem;
+        margin-bottom: .15rem;
+    }
+
+    .card-gatto .btn {
+        padding: .3rem .7rem;
+    }
+
+    /* Statistiche */
+    .statistiche {
+        grid-template-columns: repeat(2, 1fr);
+        gap: .5rem;
+    }
+
+    .statistiche dd {
+        font-size: clamp(1.6rem, 6vw, 2.4rem);
+    }
+
+    .faq-button {
+        width: 3.5rem;
+        height: 3.5rem;
+        font-size: 1.4rem;
+    }
+
+    /* Turni */
+    .griglia-turni {
+        grid-template-columns: 1fr;
+    }
+
+    /* Banner cookie */
+    .banner-cookie {
+        padding: 1rem 1rem;
+    }
+
+    blockquote {
+        padding-left: calc(1.5rem + 1rem);
+    }
 }
 
-/* ============================================================
-33. BLOCCO "RICORDAMI" (login) — #11
-============================================================ */
-.blocco-ricordami {
-    margin-top: 1.5rem;
-    background: cornsilk;
-    border: 1px solid tan;
-    border-left: 4px solid darkolivegreen;
-    border-radius: .5rem;
-    padding: 1rem 1.25rem;
-}
-
-.blocco-ricordami legend {
-    color: darkolivegreen;
-}
-
-.blocco-ricordami .campo-checkbox {
-    margin-top: .25rem;
-    font-weight: 600;
-}
-
-.blocco-ricordami .messaggio {
-    margin-bottom: 1rem;
-}
-
-.nota-obbligatori {
-    margin: 1rem 0 .5rem;
-    font-size: .85rem;
-    color: dimgray;
-}
 
 
-/* ============================================================
-34. STORIE DI SUCCESSO (home) — #12
-============================================================ */
-.storia-successo {
-    margin: 0 0 1.25rem;
-    padding: 1rem 0;
-}
 
-.storia-successo:last-child {
-    margin-bottom: 0;
-}
+/* MEDIA QUERY <= 400px  */
+@media (max-width: 400px) {
+    h1 {
+        font-size: clamp(1.3rem, 6vw, 1.6rem);
+    }
 
-.storia-successo blockquote {
-    margin: 0;
-    font-style: italic;
-    font-size: clamp(0.9rem, 1vw + 0.5rem, 1rem);
-}
+    h2 {
+        font-size: clamp(1.1rem, 5vw, 1.3rem);
+    }
 
-.storia-successo blockquote p {
-    margin: 0;
-}
+    .statistiche {
+        grid-template-columns: 1fr 1fr;
+        gap: .25rem;
+    }
 
-.storia-successo figcaption {
-    margin-top: .6rem;
-    font-weight: 700;
-    color: saddlebrown;
-}
+    .statistiche dt,
+    .statistiche dd {
+        padding-left: .5rem;
+        padding-right: .5rem;
+    }
 
+    .statistiche dd {
+        font-size: clamp(1.4rem, 7vw, 2rem);
+    }
 
-/* ============================================================
-35. VANTAGGI (home) — box come le altre sezioni
-============================================================ */
-.griglia-vantaggi {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 1rem;
-    margin-top: 1rem;
-}
+    .griglia-gatti {
+        grid-template-columns: 1fr;
+    }
 
+    /* Card ancora più compatte sui telefoni piccoli */
+    .card-gatto {
+        grid-template-columns: auto 1fr;
+    }
 
-/* ============================================================
-36. ELEMENTI AGGIUNTIVI
-============================================================ */
+    .card-gatto picture {
+        width: 120px;
+    }
 
-.box-vantaggio {
-    background: white;
-    border: 1px solid tan;
-    border-radius: .5rem;
-    padding: 1rem 1.25rem;
-}
+    .card-gatto-corpo {
+        padding: .5rem .6rem;
+    }
 
-.box-vantaggio dt {
-    font-weight: 700;
-    color: saddlebrown;
-    margin-bottom: .35rem;
-}
-
-.box-vantaggio dd {
-    margin: 0;
-}
-
-/* Contatore basso — colore errore */
-.contatore-basso {
-    color: darkred;
-    font-weight: 700;
+    /* Descrizione limitata a 2 righe per non allungare la card */
+    .card-gatto-descr {
+        overflow: hidden;
+        font-size: .78rem;
+    }
 }
