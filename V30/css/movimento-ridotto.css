@@ -1,23 +1,7 @@
-/* ============================================================
-   MOVIMENTO RIDOTTO
-   ------------------------------------------------------------
-   Foglio collegato nell'head con media="(prefers-reduced-motion:
-   reduce)": viene applicato solo se l'utente ha chiesto meno
-   movimento nelle impostazioni del sistema.
-   Annulla animazioni e transizioni e azzera gli spostamenti su
-   hover/active (transform: none), cosi' nessun elemento si muove,
-   si ingrandisce o trasla.
-   ============================================================ */
+/* MOVIMENTO RIDOTTO */
 
 
-* {
-    animation-duration: 0.01ms;
-    animation-iteration-count: 1;
-    transition-duration: 0.01ms;
-    scroll-behavior: auto;
-}
-
-/* Annulla gli spostamenti su hover/active */
+/* Annulla gli spostamenti */
 .card-gatto[role="checkbox"]:hover {
     transform: none;
 }

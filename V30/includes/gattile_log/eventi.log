@@ -30,3 +30,9 @@
 2026-06-14 15:54:36 [info] turni POST: 1 turno/i prenotati da utente 1
 2026-06-14 15:54:51 [info] login: accesso riuscito - gabricanci
 2026-06-14 15:55:04 [info] prenota_visita: visita 16 prenotata da utente 7
+2026-06-14 17:12:45 [info] login: accesso riuscito - gabricanci
+2026-06-14 17:12:55 [info] prenota_visita: visita 17 prenotata da utente 7
+2026-06-14 17:13:04 [info] turni POST: 1 turno/i prenotati da utente 7
+2026-06-14 17:13:33 [avviso] login: username inesistente - admin
+2026-06-14 17:13:44 [info] login: accesso riuscito - anna_admin
+2026-06-14 17:14:04 [info] inserisci_gatto: nuovo gatto inserito - ddd

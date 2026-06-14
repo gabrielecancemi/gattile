@@ -1,9 +1,4 @@
-/*
- * stampa.css — Stile per la stampa
- * Nasconde navigazione, form, immagini decorative.
- * Mostra URL dei link tra parentesi, sottolinea i link.
- * Tipografia serif per leggibilita' su carta.
- */
+/* Stile per la stampa */
 
 @media print {
 
@@ -13,13 +8,7 @@
         box-shadow: none;
     }
 
-    @page {
-        size: A4;
-        margin: 2cm 2.5cm;
-    }
-
-    /* Corpo del testo: font con grazie (serif) e dimensione 12pt, valore
-       consigliato come minimo per la leggibilita' su carta. */
+    /* Corpo del testo */
     html body {
         font-family: Georgia, 'Times New Roman', serif;
         font-size: 12pt;
@@ -43,15 +32,9 @@
     html h1,
     html h2,
     html h3 {
-        page-break-after: avoid;
         color: black;
     }
 
-    html p,
-    html li {
-        orphans: 3;
-        widows: 3;
-    }
 
     /* Nasconde elementi inutili su carta */
     html .header nav,
@@ -158,30 +141,6 @@
         height: auto;
     }
 
-    /* Tabelle */
-    html table {
-        border-collapse: collapse;
-        width: 100%;
-        page-break-inside: auto;
-    }
-
-    html tr {
-        page-break-inside: avoid;
-    }
-
-    html th,
-    html td {
-        border: 1pt solid black;
-        padding: 4pt 6pt;
-        background: white;
-        color: black;
-    }
-
-    html th {
-        background: gainsboro;
-        font-weight: bold;
-    }
-
     /* Details: apre tutto */
     html details {
         display: block;
@@ -199,13 +158,15 @@
         padding: 4pt 8pt;
     }
 
-    html figure {
-        page-break-inside: avoid;
-    }
-
     html figcaption {
         font-style: italic;
         font-size: 9pt;
         margin-top: 4pt;
+    }
+
+    /* imposta le dimensioni della pagina */
+    @page {
+        size: A4;
+        margin: 2cm 2.5cm;
     }
 }

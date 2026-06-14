@@ -1,35 +1,6 @@
-/* ============================================================
-   TEMA SCURO
-   ------------------------------------------------------------
-   Tutte le regole cromatiche del tema scuro stanno in questo
-   unico file, collegato nell'head con <link> SENZA attributo
-   media (deve poter valere sempre, anche con OS in chiaro).
-
-   Il file ha DUE attivatori, con regole identiche:
-     1) @media (prefers-color-scheme: dark) su html:not([data-tema])
-        tema automatico quando l'utente NON ha scelto a mano e
-        il sistema operativo e' in modalita' scura;
-     2) html[data-tema="scuro"]
-        scelta manuale dal selettore tema (vince sul sistema).
-
-   I due blocchi restano separati perche', senza custom
-   properties, non e' possibile
-   scrivere ogni colore una sola volta: i valori sono pero'
-   identici al 100% tra i due attivatori.
-
-   PALETTE (derivata dai colori del tema chiaro, stesso ruolo):
-     accento brand   saddlebrown    -> #ffb36b
-     secondario      darkolivegreen -> #b9e07a
-     fondo pagina    cornsilk       -> #1b1712
-     testo base      black          -> #f3ece1
-     pannelli        white          -> #262019
-     bordi           tan            -> #8c7656
-   ============================================================ */
+/* TEMA SCURO - vengono considerate le situazioni di preferenza default del browser o scelta manuale (stile uguale) */
 
 @media (prefers-color-scheme: dark) {
-    /* 1) ATTIVATORE AUTOMATICO: tema scuro di sistema, applicato solo
-       se l'utente non ha fatto una scelta manuale (html senza data-tema).
-       color-scheme: dark allinea anche i controlli nativi del browser. */
     html:not([data-tema]) {
         color-scheme: dark;
     }
@@ -74,7 +45,7 @@
         color: #b9e07a;
     }
 
-    /* Header: testata olivastra scura con accento brand */
+    /* Header */
     html:not([data-tema]) .header {
         background-color: #3a4a22;
         border-bottom: 4px solid #ffb36b;
@@ -195,7 +166,7 @@
         border-color: #f3a0a0;
     }
 
-    /* Footer: bruno scuro, stesso ruolo di saddlebrown in chiaro */
+    /* Footer */
     html:not([data-tema]) .footer {
         background: #4a2c14;
         border-top: 4px solid #b9e07a;
@@ -395,7 +366,7 @@
         color: #f3ece1;
     }
 
-    /* Card gatto: pannello scuro con bordo tenue */
+    /* Card gatto */
     html:not([data-tema]) .card-gatto {
         background: #262019;
         border: 1px solid #8c7656;
@@ -436,7 +407,7 @@
         color: #f3ece1;
     }
 
-    /* Campi del form: sfondo scuro, testo chiaro, bordo coerente */
+    /* Campi del form */
     html:not([data-tema]) input[type="text"],
     html:not([data-tema]) input[type="email"],
     html:not([data-tema]) input[type="password"],
@@ -674,13 +645,9 @@
     }
 }
 
-/* ============================================================
-   2) ATTIVATORE MANUALE: scelta esplicita "scuro" dal selettore
-   tema (data-tema="scuro" sull'elemento html). Le regole che
-   seguono sono identiche a quelle del blocco @media qui sopra,
-   cosi' il risultato visivo non dipende da come il tema e' stato
-   attivato (sistema o scelta utente).
-   ============================================================ */
+
+/* ATTIVATORE MANUALE*/
+
 html[data-tema="scuro"] {
     color-scheme: dark;
 }
@@ -725,7 +692,7 @@ html[data-tema="scuro"] a:focus {
     color: #b9e07a;
 }
 
-/* Header: testata olivastra scura con accento brand */
+/* Header */
 html[data-tema="scuro"] .header {
     background-color: #3a4a22;
     border-bottom: 4px solid #ffb36b;
@@ -846,7 +813,7 @@ html[data-tema="scuro"] .btn-logout:focus {
     border-color: #f3a0a0;
 }
 
-/* Footer: bruno scuro, stesso ruolo di saddlebrown in chiaro */
+/* Footer */
 html[data-tema="scuro"] .footer {
     background: #4a2c14;
     border-top: 4px solid #b9e07a;
@@ -1046,7 +1013,7 @@ html[data-tema="scuro"] .badge-nuovo {
     color: #f3ece1;
 }
 
-/* Card gatto: pannello scuro con bordo tenue */
+/* Card gatto */
 html[data-tema="scuro"] .card-gatto {
     background: #262019;
     border: 1px solid #8c7656;
@@ -1087,7 +1054,7 @@ html[data-tema="scuro"] label {
     color: #f3ece1;
 }
 
-/* Campi del form: sfondo scuro, testo chiaro, bordo coerente */
+/* Campi del form */
 html[data-tema="scuro"] input[type="text"],
 html[data-tema="scuro"] input[type="email"],
 html[data-tema="scuro"] input[type="password"],
