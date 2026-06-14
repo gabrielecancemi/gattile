@@ -40,8 +40,6 @@
                     onClick={gestisciClick}
                     onKeyDown={gestisciTasto}
                     tabIndex={selezionabile ? 0 : undefined}
-                    role={selezionabile ? 'checkbox' : undefined}
-                    aria-checked={selezionabile ? selezionata : undefined}
                     aria-labelledby={'gatto-' + gatto.id}
                     aria-label={
                         selezionabile
@@ -49,6 +47,7 @@
                             : undefined
                     }
                 >
+                    <h3 className="sr-solo">Informazioni sul gatto</h3>
                     {/* Badge selezione — SVG */}
                     <svg className="card-badge-selezione" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
                         <circle cx="16" cy="16" r="16" fill="saddlebrown" />
@@ -66,10 +65,10 @@
                     </picture>
 
                     <section className="card-gatto-corpo">
-                        <h3 id={'gatto-' + gatto.id}>
+                        <h4 id={'gatto-' + gatto.id}>
                             {gatto.nome}
                             {nuovo && <strong className="badge-nuovo">Nuovo</strong>}
-                        </h3>
+                        </h4>
 
                         <ul className="card-gatto-meta" aria-label="Caratteristiche principali">
                             <li className="tag">{etichetta_sesso}</li>

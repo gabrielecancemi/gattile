@@ -4,7 +4,9 @@
 
 (function () {
     const contenitore_statistiche = document.getElementById('contenitore-statistiche');
+    const caricamento_statistiche = document.getElementById('caricamento-statistiche');
     const contenitore_arrivi = document.getElementById('contenitore-arrivi');
+    const caricamento_arrivi = document.getElementById('caricamento-arrivi');
 
     if (!contenitore_statistiche && !contenitore_arrivi) return;
 
@@ -16,11 +18,12 @@
     }
 
     function mostraStatistiche(statistiche, errore) {
-        if (!contenitore_statistiche) return;
+        if (!contenitore_statistiche || !caricamento_statistiche) return;
         contenitore_statistiche.removeAttribute('aria-busy');
+        caricamento_statistiche.style.display = "none"
 
         if (errore) {
-            contenitore_statistiche.innerHTML = messaggioErrore(errore);
+            contenitore_statistiche.innerHTML += messaggioErrore(errore);
             return;
         }
 
@@ -30,7 +33,7 @@
         html += '<dt>Volontari attivi</dt><dd>' + statistiche.volontari + '</dd>';
         html += '<dt>Nuovi arrivi quest\u0027anno</dt><dd>' + statistiche.arrivi + '</dd>';
         html += '</dl>';
-        contenitore_statistiche.innerHTML = html;
+        contenitore_statistiche.innerHTML += html;
     }
 
     function schedaGatto(gatto) {
@@ -46,12 +49,13 @@
 
         let html = '<li>';
         html += '<article class="card-gatto" aria-labelledby="' + id_titolo + '">';
+        html += '<h3 class="sr-solo"> Info sul gatto </h3>';
         html += '<picture>';
         html += '<source srcset="' + ripuliscihtml(immagine) + '">';
         html += '<img src="img/placeholder-gatto.jpg" alt="Placeholder di ' + nome + '" loading="lazy" decoding="async" class="foto-gatto">';
         html += '</picture>';
         html += '<section class="card-gatto-corpo">';
-        html += '<h3 id="' + id_titolo + '">' + nome + ' <strong class="badge-nuovo">Nuovo</strong></h3>';
+        html += '<h4 id="' + id_titolo + '">' + nome + ' <strong class="badge-nuovo">Nuovo</strong></h4>';
         html += '<ul class="card-gatto-meta" aria-label="Caratteristiche principali">';
         html += '<li class="tag">' + sesso + '</li>';
         html += '<li class="tag">' + eta + '</li>';
@@ -73,16 +77,17 @@
     }
 
     function mostraArrivi(arrivi, errore) {
-        if (!contenitore_arrivi) return;
+        if (!contenitore_arrivi || !caricamento_arrivi) return;
         contenitore_arrivi.removeAttribute('aria-busy');
+        caricamento_arrivi.style.display = "none";
 
         if (errore) {
-            contenitore_arrivi.innerHTML = messaggioErrore(errore);
+            contenitore_arrivi.innerHTML += messaggioErrore(errore);
             return;
         }
 
         if (!arrivi || arrivi.length === 0) {
-            contenitore_arrivi.innerHTML = '<p>Nessun gatto registrato al momento. Torna presto!</p>';
+            contenitore_arrivi.innerHTML += '<p>Nessun gatto registrato al momento. Torna presto!</p>';
             return;
         }
 
@@ -91,7 +96,7 @@
             html += schedaGatto(gatto);
         });
         html += '</ul>';
-        contenitore_arrivi.innerHTML = html;
+        contenitore_arrivi.innerHTML += html;
     }
 
     function gestisciErroreGenerale() {

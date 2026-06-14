@@ -140,6 +140,7 @@ if (!$reindirizzato):
 
     <!-- form registrazione -->
     <section>
+        <h2 class="sr-solo">Inserisci i tuoi dati</h2>
         <?php if ($errore):
             echo avvisoUtente($errore, 'errore');
         endif; ?>

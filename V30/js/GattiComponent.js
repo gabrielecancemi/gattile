@@ -48,11 +48,11 @@
       onClick: gestisciClick,
       onKeyDown: gestisciTasto,
       tabIndex: selezionabile ? 0 : undefined,
-      role: selezionabile ? 'checkbox' : undefined,
-      "aria-checked": selezionabile ? selezionata : undefined,
       "aria-labelledby": 'gatto-' + gatto.id,
       "aria-label": selezionabile ? gatto.nome + (selezionata ? ' — selezionato' : ' — clicca per selezionare') : undefined
-    }, /*#__PURE__*/React.createElement("svg", {
+    }, /*#__PURE__*/React.createElement("h3", {
+      className: "sr-solo"
+    }, "Informazioni sul gatto"), /*#__PURE__*/React.createElement("svg", {
       className: "card-badge-selezione",
       viewBox: "0 0 32 32",
       "aria-hidden": "true",
@@ -79,7 +79,7 @@
       className: "foto-gatto"
     })), /*#__PURE__*/React.createElement("section", {
       className: "card-gatto-corpo"
-    }, /*#__PURE__*/React.createElement("h3", {
+    }, /*#__PURE__*/React.createElement("h4", {
       id: 'gatto-' + gatto.id
     }, gatto.nome, nuovo && /*#__PURE__*/React.createElement("strong", {
       className: "badge-nuovo"

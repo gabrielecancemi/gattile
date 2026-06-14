@@ -30,16 +30,17 @@ $descrizione_pagina = 'Informativa sulla privacy e gestione dei cookie del sito 
     </section>
 
     <!-- info privacy -->
-    <section class="privacy-layout" aria-label="Contenuto informativa">
+    <section aria-label="Contenuto informativa">
         <h2 class="sr-solo">Informazioni privacy</h2>
         <?php if ($eliminati): ?>
             <?= avvisoUtente('I tuoi cookie sono stati eliminati con successo.', 'successo') ?>
         <?php endif; ?>
 
-        <article class="privacy-griglia">
+        <!-- uso un div perchè il significato di questo contenitore è puramente grafico -->
+        <div class="privacy-griglia">
 
             <!-- navigazione tra paragrafi -->
-            <nav class="privacy-indice" aria-label="Indice della pagina">
+            <aside class="privacy-indice" aria-label="Indice della pagina">
                 <h2>In questa pagina</h2>
                 <ul>
                     <li><a href="#sez-titolare">Titolare</a></li>
@@ -48,7 +49,7 @@ $descrizione_pagina = 'Informativa sulla privacy e gestione dei cookie del sito 
                     <li><a href="#sez-diritti">I tuoi diritti</a></li>
                     <li><a href="#elimina">Elimina i cookie</a></li>
                 </ul>
-            </nav>
+            </aside>
 
             <!-- uso dei dati -->
             <section class="privacy-contenuto">
@@ -157,7 +158,7 @@ $descrizione_pagina = 'Informativa sulla privacy e gestione dei cookie del sito 
                 </article>
 
             </section>
-        </article>
+        </div>
     </section>
 
     <script src="js/privacy.js" defer></script>

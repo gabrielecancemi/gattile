@@ -41,29 +41,21 @@ $descrizione_pagina = 'Gattile San Paolo: adotta un gatto o diventa volontario a
     <section class="zona-perche" aria-labelledby="titolo-perche">
         <h2 id="titolo-perche">Perché adottare dal Gattile San Paolo?</h2>
 
-        <dl class="griglia-vantaggi">
-            <article class="box-vantaggio">
-                <dt>Controlli veterinari</dt>
-                <dd>Tutti i gatti vengono seguiti e monitorati prima dell'adozione.</dd>
-            </article>
-            <article class="box-vantaggio">
-                <dt>Supporto all'adozione</dt>
-                <dd>Ti aiutiamo a trovare il gatto più adatto alla tua situazione.</dd>
-            </article>
-            <article class="box-vantaggio">
-                <dt>Volontari qualificati</dt>
-                <dd>Ogni giorno persone dedicate si prendono cura dei nostri ospiti.</dd>
-            </article>
+        <dl class="griglia-vantaggi box-vantaggio">
+            <dt>Controlli veterinari</dt>
+            <dd>Tutti i gatti vengono seguiti e monitorati prima dell'adozione.</dd>
+            <dt>Supporto all'adozione</dt>
+            <dd>Ti aiutiamo a trovare il gatto più adatto alla tua situazione.</dd>
+            <dt>Volontari qualificati</dt>
+            <dd>Ogni giorno persone dedicate si prendono cura dei nostri ospiti.</dd>
         </dl>
     </section>
 
     <!-- dati numerici dal database -->
-    <section class="zona-impatto" aria-labelledby="titolo-impatto">
+    <section class="zona-impatto" id="contenitore-statistiche" aria-busy="true"
+        aria-labelledby="titolo-impatto">
         <h2 id="titolo-impatto">Il nostro impatto</h2>
-
-        <div id="contenitore-statistiche" aria-live="polite" aria-busy="true">
-            <p class="caricamento">Caricamento statistiche in corso…</p>
-        </div>
+        <p class="caricamento" id="caricamento-statistiche" aria-live="polite">Caricamento statistiche in corso…</p>
     </section>
 
     <!-- come funziona -->
@@ -123,13 +115,11 @@ $descrizione_pagina = 'Gattile San Paolo: adotta un gatto o diventa volontario a
     </aside>
 
     <!-- nuovi arrivi -->
-    <section class="nuovi-arrivi zona-arrivi" aria-labelledby="titolo-nuovi-arrivi">
+    <section class="nuovi-arrivi zona-arrivi" id="contenitore-arrivi" aria-busy="true"
+        aria-labelledby="titolo-nuovi-arrivi">
         <h2 id="titolo-nuovi-arrivi">Nuovi arrivi</h2>
         <p>Gli ultimi ospiti entrati nella struttura che aspettano una famiglia:</p>
-
-        <div id="contenitore-arrivi" aria-live="polite" aria-busy="true">
-            <p class="caricamento">Caricamento nuovi arrivi in corso…</p>
-        </div>
+        <p class="caricamento" id="caricamento-arrivi" aria-live="polite">Caricamento nuovi arrivi in corso…</p>
     </section>
 
     <!-- volontariato -->

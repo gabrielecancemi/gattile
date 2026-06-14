@@ -20,7 +20,7 @@ if (!empty($_SESSION['utente']['is_admin'])) {
 
 <!-- cookie -->
 <?php if (!isset($_COOKIE['consenso_cookie'])): ?>
-    <aside id="banner-cookie" class="banner-cookie" role="dialog" aria-live="polite" aria-label="Informativa cookie">
+    <aside id="banner-cookie" class="banner-cookie" aria-live="polite" aria-label="Informativa cookie">
         <p>
             Questo sito usa solo cookie tecnici di sessione, necessari al funzionamento.
             Nessuna profilazione di terze parti.

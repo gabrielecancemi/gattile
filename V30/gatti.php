@@ -57,12 +57,12 @@ $descrizione_pagina = 'Sfoglia i gatti disponibili per l\'adozione al Gattile Sa
 
             <h2 id="titolo-prenotazione">Prenota una visita conoscitiva</h2>
 
-            <div id="successo-prenotazione" aria-live="polite"></div>
+            <aside id="successo-prenotazione" aria-live="polite"></aside>
 
             <form id="form-prenotazione" method="post" action="api/prenota_visita.php" novalidate
                 aria-label="Modulo prenotazione visita">
 
-                <fieldset id="gatti-selezionati-riepilogo" role="status" aria-live="polite"
+                <fieldset id="gatti-selezionati-riepilogo" aria-live="polite"
                     aria-label="Gatti selezionati per la visita">
                     <p class="messaggio messaggio-avviso">Nessun gatto selezionato. Clicca sulle card per sceglierli.</p>
                     <output class="errore-campo" id="err-gatti-selezione" role="alert" aria-live="polite" hidden></output>
@@ -76,7 +76,7 @@ $descrizione_pagina = 'Sfoglia i gatti disponibili per l\'adozione al Gattile Sa
                     <label for="data-visita" class="campo-obbligatorio">
                         Giorno della visita
                     </label>
-                    <input type="date" id="data-visita" name="data_visita" required aria-required="true"
+                    <input type="date" id="data-visita" name="data_visita" required
                         aria-describedby="aiuto-data-visita" min="<?= date('Y-m-d') ?>">
                     <em id="aiuto-data-visita" class="aiuto-campo">
                         Scegli un giorno da oggi in poi.
@@ -86,7 +86,7 @@ $descrizione_pagina = 'Sfoglia i gatti disponibili per l\'adozione al Gattile Sa
                     <label for="ora-visita" class="campo-obbligatorio">
                         Orario della visita
                     </label>
-                    <select id="ora-visita" name="ora_visita" required aria-required="true"
+                    <select id="ora-visita" name="ora_visita" required
                         aria-describedby="aiuto-ora-visita">
                         <option value="" selected disabled>Seleziona un orario…</option>
                         <option value="09:00">09:00</option>
@@ -107,7 +107,7 @@ $descrizione_pagina = 'Sfoglia i gatti disponibili per l\'adozione al Gattile Sa
                     <output class="errore-campo" id="err-data-visita" role="alert" aria-live="polite" hidden></output>
                 </fieldset>
 
-                <output id="msg-prenotazione" role="status" aria-live="polite" class="sr-solo"></output>
+                <output id="msg-prenotazione" aria-live="polite" class="sr-solo"></output>
                 <button type="reset" id="btn-reset-prenota" class="btn btn-secondario">
                     Cancella
                 </button>

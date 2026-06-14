@@ -1105,7 +1105,7 @@ form .btn-secondario:focus {
     background: saddlebrown;
 }
 
-/* HOME */ 
+/* HOME */
 /* Azioni principali */
 .azioni-principali ul {
     display: flex;
@@ -1149,7 +1149,7 @@ form .btn-secondario:focus {
 .griglia-vantaggi {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 1rem;
+    gap: .3rem;
     margin-top: 1rem;
 }
 
@@ -1163,11 +1163,10 @@ form .btn-secondario:focus {
 .box-vantaggio dt {
     font-weight: 700;
     color: saddlebrown;
-    margin-bottom: .35rem;
 }
 
 .box-vantaggio dd {
-    margin: 0;
+    margin-bottom: 1.2rem;
 }
 
 .contatore-basso {
@@ -1226,11 +1225,11 @@ article svg {
     position: relative;
 }
 
-.card-gatto[role="checkbox"] {
+.card-gatto[tabindex="0"] {
     cursor: pointer;
 }
 
-.card-gatto[role="checkbox"]:hover {
+.card-gatto[tabindex="0"]:hover {
     transform: translateY(-3px);
 }
 
@@ -1278,7 +1277,8 @@ article svg {
     margin-top: auto;
 }
 
-.card-gatto-corpo h3 {
+.card-gatto-corpo h3,
+.card-gatto-corpo h4 {
     font-size: clamp(1.05rem, 1.5vw + 0.3rem, 1.25rem);
     margin-bottom: 0;
     letter-spacing: .02em;

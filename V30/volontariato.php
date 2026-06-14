@@ -51,10 +51,10 @@ $descrizione_pagina = 'Diventa volontario al Gattile San Paolo di Torino: scegli
     </section>
 
     <!-- form turni volontario -->
-    <section>
-        <?php if ($loggato): ?>
+    <?php if ($loggato): ?>
+        <section>
             <h2>Prenota i turni</h2>
-            <div id="successo-volontariato" aria-live="polite"></div>
+            <aside id="successo-volontariato" aria-live="polite"></aside>
             <form id="form-volontariato" method="post" action="api/turni.php" novalidate
                 aria-label="Modulo prenotazione turni volontariato">
                 <fieldset>
@@ -86,9 +86,8 @@ $descrizione_pagina = 'Diventa volontario al Gattile San Paolo di Torino: scegli
                     Conferma turni selezionati
                 </button>
             </form>
-
-        <?php endif; ?>
-    </section>
+        </section>
+    <?php endif; ?>
 
     <script src="js/volontariato.js" defer></script>
 
