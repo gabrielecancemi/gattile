@@ -4,8 +4,8 @@
 
 (function () {
     const form = document.getElementById('form-login');
-    const campo_username = document.getElementById('username');
-    const campo_password = document.getElementById('password');
+    const campo_username = document.getElementById('in-login-username');
+    const campo_password = document.getElementById('in-login-password');
     const errore_username = document.getElementById('err-username');
     const errore_password = document.getElementById('err-password');
 

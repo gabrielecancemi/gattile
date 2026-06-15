@@ -7,16 +7,16 @@
     if (!form) return;
 
     const campi = {
-        nome: { el: document.getElementById('gatto-nome'), err: document.getElementById('err-gatto-nome') },
-        razza: { el: document.getElementById('gatto-razza'), err: document.getElementById('err-gatto-razza') },
-        sesso: { el: document.getElementById('gatto-sesso'), err: document.getElementById('err-gatto-sesso') },
-        eta: { el: document.getElementById('gatto-eta'), err: document.getElementById('err-gatto-eta') },
-        peso: { el: document.getElementById('gatto-peso'), err: document.getElementById('err-gatto-peso') },
-        colore_mantello: { el: document.getElementById('gatto-colore-mantello'), err: document.getElementById('err-gatto-colore-mantello') },
-        lunghezza_pelo: { el: document.getElementById('gatto-lunghezza-pelo'), err: document.getElementById('err-gatto-lunghezza-pelo') },
-        colore_occhi: { el: document.getElementById('gatto-colore-occhi'), err: document.getElementById('err-gatto-colore-occhi') },
-        data_arrivo: { el: document.getElementById('gatto-data-arrivo'), err: document.getElementById('err-gatto-data-arrivo') },
-        descrizione: { el: document.getElementById('gatto-descrizione'), err: document.getElementById('err-gatto-descrizione') },
+        nome: { el: document.getElementById('in-gatto-nome'), err: document.getElementById('err-gatto-nome') },
+        razza: { el: document.getElementById('in-gatto-razza'), err: document.getElementById('err-gatto-razza') },
+        sesso: { el: document.getElementById('in-gatto-sesso'), err: document.getElementById('err-gatto-sesso') },
+        eta: { el: document.getElementById('in-gatto-eta'), err: document.getElementById('err-gatto-eta') },
+        peso: { el: document.getElementById('in-gatto-peso'), err: document.getElementById('err-gatto-peso') },
+        colore_mantello: { el: document.getElementById('in-gatto-mantello'), err: document.getElementById('err-gatto-colore-mantello') },
+        lunghezza_pelo: { el: document.getElementById('in-gatto-pelo'), err: document.getElementById('err-gatto-lunghezza-pelo') },
+        colore_occhi: { el: document.getElementById('in-gatto-occhi'), err: document.getElementById('err-gatto-colore-occhi') },
+        data_arrivo: { el: document.getElementById('in-gatto-arrivo'), err: document.getElementById('err-gatto-data-arrivo') },
+        descrizione: { el: document.getElementById('in-gatto-descrizione'), err: document.getElementById('err-gatto-descrizione') },
     };
 
     const textarea = campi.descrizione.el;
@@ -286,16 +286,16 @@
     }
 
     const validatori = {
-        'gatto-nome': validaNome,
-        'gatto-razza': validaRazza,
-        'gatto-sesso': validaSesso,
-        'gatto-eta': validaEta,
-        'gatto-peso': validaPeso,
-        'gatto-colore-mantello': validaColoreMantello,
-        'gatto-lunghezza-pelo': validaLunghezzaPelo,
-        'gatto-colore-occhi': validaColoreOcchi,
-        'gatto-data-arrivo': validaDataArrivo,
-        'gatto-descrizione': validaDescrizione,
+        'in-gatto-nome': validaNome,
+        'in-gatto-razza': validaRazza,
+        'in-gatto-sesso': validaSesso,
+        'in-gatto-eta': validaEta,
+        'in-gatto-peso': validaPeso,
+        'in-gatto-mantello': validaColoreMantello,
+        'in-gatto-pelo': validaLunghezzaPelo,
+        'in-gatto-occhi': validaColoreOcchi,
+        'in-gatto-arrivo': validaDataArrivo,
+        'in-gatto-descrizione': validaDescrizione,
     };
 
     for (const chiave in campi) {

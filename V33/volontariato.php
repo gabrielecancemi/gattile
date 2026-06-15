@@ -63,8 +63,8 @@ $descrizione_pagina = 'Diventa volontario al Gattile San Paolo di Torino: scegli
                         Le fasce con 2/2 volontari sono disabilitate automaticamente.
                     </p>
 
-                    <label for="data-turno" class="campo-obbligatorio">Giorno</label>
-                    <input type="date" id="data-turno" name="data_turno" required aria-describedby="aiuto-data-turno"
+                    <label for="in-vol-data" class="campo-obbligatorio">Giorno</label>
+                    <input type="date" id="in-vol-data" name="data_turno" required aria-describedby="aiuto-data-turno"
                         min="<?= date('Y-m-d') ?>">
                     <em id="aiuto-data-turno" class="aiuto-campo">
                         Scegli prima un giorno: verranno mostrate solo le sue fasce orarie.

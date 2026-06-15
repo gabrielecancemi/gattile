@@ -150,7 +150,7 @@ $descrizione_pagina = 'Informativa sulla privacy e gestione dei cookie del sito 
                 <article class="privacy-blocco privacy-blocco-azione" id="elimina" aria-labelledby="h-elimina">
                     <h2 id="h-elimina">Elimina i tuoi cookie</h2>
                     <p>Rimuovi tutti i cookie e la sessione impostati da questo sito. Verrai disconnesso.</p>
-                    <button type="button" id="btn-elimina-cookie-privacy" class="btn btn-logout"
+                    <button type="button" id="btn-privacy-elimina-cookie" class="btn btn-logout"
                         aria-describedby="nota-elimina">
                         Elimina tutti i miei cookie
                     </button>

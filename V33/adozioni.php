@@ -68,25 +68,25 @@ $descrizione_pagina = 'Sfoglia i gatti disponibili per l\'adozione al Gattile Sa
                     <output class="errore-campo" id="err-gatti-selezione" role="alert" aria-live="polite" hidden></output>
                 </fieldset>
 
-                <input type="hidden" id="gatti-ids" name="gatti_ids" value="">
+                <input type="hidden" id="in-prenota-ids" name="gatti_ids" value="">
 
                 <fieldset>
                     <legend>Scegli data e ora della visita</legend>
 
-                    <label for="data-visita" class="campo-obbligatorio">
+                    <label for="in-prenota-data" class="campo-obbligatorio">
                         Giorno della visita
                     </label>
-                    <input type="date" id="data-visita" name="data_visita" required
+                    <input type="date" id="in-prenota-data" name="data_visita" required
                         aria-describedby="aiuto-data-visita" min="<?= date('Y-m-d') ?>">
                     <em id="aiuto-data-visita" class="aiuto-campo">
                         Scegli un giorno da oggi in poi.
                     </em>
                     <output class="errore-campo" id="err-giorno-visita" role="alert" aria-live="polite" hidden></output>
 
-                    <label for="ora-visita" class="campo-obbligatorio">
+                    <label for="in-prenota-ora" class="campo-obbligatorio">
                         Orario della visita
                     </label>
-                    <select id="ora-visita" name="ora_visita" required
+                    <select id="in-prenota-ora" name="ora_visita" required
                         aria-describedby="aiuto-ora-visita">
                         <option value="" selected disabled>Seleziona un orario…</option>
                         <option value="09:00">09:00</option>

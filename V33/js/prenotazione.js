@@ -5,10 +5,10 @@
 (function () {
     /* componenti della pagina */
     const form = document.getElementById('form-prenotazione');
-    const input_gatti_ids = document.getElementById('gatti-ids');
+    const input_gatti_ids = document.getElementById('in-prenota-ids');
     const riepilogo = document.getElementById('gatti-selezionati-riepilogo');
-    const input_data = document.getElementById('data-visita');
-    const select_ora = document.getElementById('ora-visita');
+    const input_data = document.getElementById('in-prenota-data');
+    const select_ora = document.getElementById('in-prenota-ora');
     const bottone_prenota = document.getElementById('btn-prenota');
     const errore_data = document.getElementById('err-data-visita');
     const errore_giorno = document.getElementById('err-giorno-visita');

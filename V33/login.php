@@ -93,16 +93,16 @@ if (!$reindirizzato):
                 <fieldset>
                     <legend>Credenziali di accesso</legend>
 
-                    <label for="username" class="campo-obbligatorio">
+                    <label for="in-login-username" class="campo-obbligatorio">
                         Username</label>
-                    <input type="text" id="username" name="username" autocomplete="username"
+                    <input type="text" id="in-login-username" name="username" autocomplete="username"
                         value="<?= $username_precompilato ?>" required maxlength="50" spellcheck="false">
                     <output class="errore-campo" id="err-username" role="alert" aria-live="polite" hidden></output>
 
 
-                    <label for="password" class="campo-obbligatorio">
+                    <label for="in-login-password" class="campo-obbligatorio">
                         Password</label>
-                    <input type="password" id="password" name="password" autocomplete="off" required maxlength="16">
+                    <input type="password" id="in-login-password" name="password" autocomplete="off" required maxlength="16">
                     <output class="errore-campo" id="err-password" role="alert" aria-live="polite" hidden></output>
                 </fieldset>
 
@@ -118,8 +118,8 @@ if (!$reindirizzato):
                         </p>
                     <?php endif; ?>
 
-                    <label class="campo-checkbox" for="ricordami">
-                        <input type="checkbox" id="ricordami" name="ricordami" value="1" aria-describedby="aiuto-ricordami"
+                    <label class="campo-checkbox" for="in-login-ricordami">
+                        <input type="checkbox" id="in-login-ricordami" name="ricordami" value="1" aria-describedby="aiuto-ricordami"
                             <?= $consenso_cookie ? '' : 'disabled' ?>>
                         Ricordami su questo browser per 72 ore
                     </label>

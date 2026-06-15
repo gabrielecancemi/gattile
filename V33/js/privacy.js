@@ -2,7 +2,7 @@
 'use strict';
 
 (function () {
-    const bottone = document.getElementById('btn-elimina-cookie-privacy');
+    const bottone = document.getElementById('btn-privacy-elimina-cookie');
     if (!bottone) return;
     bottone.addEventListener('click', function () {
         // Si invia la richiesta

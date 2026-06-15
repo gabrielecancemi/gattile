@@ -7,13 +7,13 @@
     if (!form) return;
 
     let campi = {
-        nome: { input: document.getElementById('reg-nome'), errore: document.getElementById('err-nome') },
-        cognome: { input: document.getElementById('reg-cognome'), errore: document.getElementById('err-cognome') },
-        indirizzo: { input: document.getElementById('reg-indirizzo'), errore: document.getElementById('err-indirizzo') },
-        username: { input: document.getElementById('reg-username'), errore: document.getElementById('err-reg-username') },
-        password: { input: document.getElementById('reg-password'), errore: document.getElementById('err-reg-password') },
-        conferma: { input: document.getElementById('reg-conferma'), errore: document.getElementById('err-reg-conferma') },
-        gdpr: { input: document.getElementById('gdpr'), errore: document.getElementById('err-gdpr') }
+        nome: { input: document.getElementById('in-reg-nome'), errore: document.getElementById('err-nome') },
+        cognome: { input: document.getElementById('in-reg-cognome'), errore: document.getElementById('err-cognome') },
+        indirizzo: { input: document.getElementById('in-reg-indirizzo'), errore: document.getElementById('err-indirizzo') },
+        username: { input: document.getElementById('in-reg-username'), errore: document.getElementById('err-reg-username') },
+        password: { input: document.getElementById('in-reg-password'), errore: document.getElementById('err-reg-password') },
+        conferma: { input: document.getElementById('in-reg-conferma'), errore: document.getElementById('err-reg-conferma') },
+        gdpr: { input: document.getElementById('in-reg-gdpr'), errore: document.getElementById('err-gdpr') }
     };
 
     let meter_forza = document.getElementById('forza-password');

@@ -157,27 +157,27 @@ if (!$reindirizzato):
 
                     <fieldset>
                         <legend>Dati anagrafici</legend>
-                        <label for="reg-nome" class="campo-obbligatorio">
+                        <label for="in-reg-nome" class="campo-obbligatorio">
                             Nome</label>
-                        <input type="text" id="reg-nome" name="nome" value="<?= ripulisci($campi['nome']) ?>"
+                        <input type="text" id="in-reg-nome" name="nome" value="<?= ripulisci($campi['nome']) ?>"
                             autocomplete="given-name" required maxlength="50" aria-describedby="aiuto-reg-nome">
                         <em id="aiuto-reg-nome" class="aiuto-campo">
                             Solo lettere; almeno 2 caratteri.
                         </em>
                         <output class="errore-campo" id="err-nome" role="alert" aria-live="polite" hidden></output>
 
-                        <label for="reg-cognome" class="campo-obbligatorio">
+                        <label for="in-reg-cognome" class="campo-obbligatorio">
                             Cognome</label>
-                        <input type="text" id="reg-cognome" name="cognome" value="<?= ripulisci($campi['cognome']) ?>"
+                        <input type="text" id="in-reg-cognome" name="cognome" value="<?= ripulisci($campi['cognome']) ?>"
                             autocomplete="family-name" required maxlength="50" aria-describedby="aiuto-reg-cognome">
                         <em id="aiuto-reg-cognome" class="aiuto-campo">
                             Solo lettere; almeno 2 caratteri.
                         </em>
                         <output class="errore-campo" id="err-cognome" role="alert" aria-live="polite" hidden></output>
 
-                        <label for="reg-indirizzo" class="campo-obbligatorio">
+                        <label for="in-reg-indirizzo" class="campo-obbligatorio">
                             Indirizzo</label>
-                        <input type="text" id="reg-indirizzo" name="indirizzo" value="<?= ripulisci($campi['indirizzo']) ?>"
+                        <input type="text" id="in-reg-indirizzo" name="indirizzo" value="<?= ripulisci($campi['indirizzo']) ?>"
                             required maxlength="100" placeholder="Via/Corso, numero, città"
                             aria-describedby="aiuto-reg-indirizzo">
                         <em id="aiuto-reg-indirizzo" class="aiuto-campo">
@@ -189,9 +189,9 @@ if (!$reindirizzato):
 
                     <fieldset>
                         <legend>Credenziali di accesso</legend>
-                        <label for="reg-username" class="campo-obbligatorio">
+                        <label for="in-reg-username" class="campo-obbligatorio">
                             Username</label>
-                        <input type="text" id="reg-username" name="username" value="<?= ripulisci($campi['username']) ?>"
+                        <input type="text" id="in-reg-username" name="username" value="<?= ripulisci($campi['username']) ?>"
                             autocomplete="username" required aria-describedby="aiuto-reg-username" maxlength="50"
                             pattern="[a-zA-Z][a-zA-Z0-9_]{2,49}">
                         <em id="aiuto-reg-username" class="aiuto-campo">
@@ -199,9 +199,9 @@ if (!$reindirizzato):
                         </em>
                         <output class="errore-campo" id="err-reg-username" role="alert" aria-live="polite" hidden></output>
 
-                        <label for="reg-password" class="campo-obbligatorio">
+                        <label for="in-reg-password" class="campo-obbligatorio">
                             Password</label>
-                        <input type="password" id="reg-password" name="password" autocomplete="off" required
+                        <input type="password" id="in-reg-password" name="password" autocomplete="off" required
                             aria-describedby="aiuto-reg-password" minlength="8" maxlength="16"
                             pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).{8,16}$">
                         <em id="aiuto-reg-password" class="aiuto-campo">
@@ -213,9 +213,9 @@ if (!$reindirizzato):
                             aria-label="Forza della password" title="Forza password: 0 debole, 4 ottima"></meter>
                         <em id="forza-password-testo" class="aiuto-campo" aria-live="polite"></em>
 
-                        <label for="reg-conferma" class="campo-obbligatorio">
+                        <label for="in-reg-conferma" class="campo-obbligatorio">
                             Conferma password</label>
-                        <input type="password" id="reg-conferma" name="conferma_password" autocomplete="off" required
+                        <input type="password" id="in-reg-conferma" name="conferma_password" autocomplete="off" required
                             minlength="8" maxlength="16">
                         <output class="errore-campo" id="err-reg-conferma" role="alert" aria-live="polite" hidden></output>
 
@@ -223,8 +223,8 @@ if (!$reindirizzato):
 
                     <fieldset>
                         <legend>Consenso privacy</legend>
-                        <input type="checkbox" id="gdpr" name="gdpr" required aria-describedby="aiuto-gdpr">
-                        <label id="aiuto-gdpr" for="gdpr" class="campo-obbligatorio">
+                        <input type="checkbox" id="in-reg-gdpr" name="gdpr" required aria-describedby="aiuto-gdpr">
+                        <label id="aiuto-gdpr" for="in-reg-gdpr" class="campo-obbligatorio">
                             Dichiaro di aver letto l'<a href="privacy.php#sez-dati">Informativa Privacy</a> e acconsento al
                             trattamento dei miei dati personali ai sensi del Regolamento (UE) 2016/679 (GDPR)
                         </label>

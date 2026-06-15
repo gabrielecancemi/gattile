@@ -253,10 +253,10 @@
         e.preventDefault();
       }
     }, /*#__PURE__*/React.createElement("label", {
-      htmlFor: "ricerca-gatto"
+      htmlFor: "in-cerca-nome"
     }, "Cerca per nome o descrizione", /*#__PURE__*/React.createElement("input", {
       type: "search",
-      id: "ricerca-gatto",
+      id: "in-cerca-nome",
       value: ricerca,
       onChange: function (e) {
         setRicerca(e.target.value);
@@ -264,9 +264,9 @@
       placeholder: "Es. giocoso, bianco\u2026",
       "aria-controls": "lista-gatti"
     })), /*#__PURE__*/React.createElement("label", {
-      htmlFor: "ordina-gatti"
+      htmlFor: "in-cerca-ordine"
     }, "Ordina per", /*#__PURE__*/React.createElement("select", {
-      id: "ordina-gatti",
+      id: "in-cerca-ordine",
       value: ordinamento,
       onChange: function (e) {
         setOrdinamento(e.target.value);

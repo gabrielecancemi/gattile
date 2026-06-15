@@ -242,21 +242,21 @@
                     aria-label="Filtra e ordina i gatti"
                     onSubmit={function (e) { e.preventDefault(); }}
                 >
-                    <label htmlFor="ricerca-gatto">
+                    <label htmlFor="in-cerca-nome">
                         Cerca per nome o descrizione
                         <input
                             type="search"
-                            id="ricerca-gatto"
+                            id="in-cerca-nome"
                             value={ricerca}
                             onChange={function (e) { setRicerca(e.target.value); }}
                             placeholder="Es. giocoso, bianco…"
                             aria-controls="lista-gatti"
                         />
                     </label>
-                    <label htmlFor="ordina-gatti">
+                    <label htmlFor="in-cerca-ordine">
                         Ordina per
                         <select
-                            id="ordina-gatti"
+                            id="in-cerca-ordine"
                             value={ordinamento}
                             onChange={function (e) { setOrdinamento(e.target.value); }}
                         >
