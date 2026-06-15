@@ -39,10 +39,18 @@ function scriviToken(): array
     if (!file_exists($file)) {
         return [];
     }
-    $grezzo = file_get_contents($file);
-    // Rilegge i token dal file JSON come array associativo.
+
+    $fp = fopen($file, 'r');
+    if (!$fp)
+        return [];
+
+    flock($fp, LOCK_SH);
+    $grezzo = stream_get_contents($fp);
+    flock($fp, LOCK_UN);
+    fclose($fp);
+
     $dati = json_decode($grezzo, true);
-    // File vuoto o corrotto: si riparte da un elenco vuoto.
+    // File vuoto o corrotto, riparte da un elenco vuoto.
     if ($dati === null) {
         return [];
     }
