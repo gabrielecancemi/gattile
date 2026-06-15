@@ -5,16 +5,15 @@
 mysqli_report(MYSQLI_REPORT_OFF);
 function connessioneDb(string $ruolo = 'reader'): ?mysqli
 {
-    $db_host = 'localhost';
-    $db_name = 'gattile_db';
-    $db_charset = 'utf8mb4';
+    // Le credenziali sono tenute in un file separato dal codice applicativo.
+    $config = require __DIR__ . '/credenziali_db.php';
+
+    $db_host = $config['host'];
+    $db_name = $config['db'];
+    $db_charset = $config['charset'];
 
     // Elenco degli utenti DB predefiniti, uno per ruolo.
-    $elenco_utenti = [
-        'reader' => ['user' => 'lecture', 'pass' => 'P@ssw0rd!'],
-        'modifier' => ['user' => 'modifier', 'pass' => 'Str0ng#Admin9'],
-        'registrator' => ['user' => 'registrator', 'pass' => 'ToB31nsert?'],
-    ];
+    $elenco_utenti = $config['utenti'];
 
     if (!isset($elenco_utenti[$ruolo])) {
         // Ruolo non previsto: nessuna connessione.

@@ -158,6 +158,18 @@ con quali privilegi sta lavorando. La motivazione di fondo e' il principio del
 privilegio minimo: piu' i permessi sono ristretti, piu' piccola e' la superficie di
 attacco e meno gravi sono le conseguenze di un eventuale errore o di una compromissione.
 
+Le credenziali di questi tre utenti non sono piu' scritte dentro il codice che apre
+la connessione, ma sono tenute in un file separato dedicato (includes/credenziali_db.php),
+che la funzione di connessione legge a ogni richiesta. Il file restituisce semplicemente
+l'elenco di host, nome del database, codifica e, per ciascun ruolo, utente e password.
+In questo modo i segreti sono separati dalla logica applicativa: il file di connessione
+contiene solo il "come" ci si collega, mentre il "con quali credenziali" sta in un punto
+unico, facile da proteggere con permessi restrittivi (ad esempio chmod 600) e da escludere
+dalla pubblicazione o dal versionamento, senza dover toccare il codice. Resta comunque vero
+che, dovendo l'applicazione autenticarsi al database, le credenziali sono presenti in chiaro
+in quel file: lo scopo di questa scelta non e' cifrarle, ma limitarne l'esposizione tenendole
+fuori dal codice condiviso e in un solo posto controllabile.
+
 
 5. ACCESSO E FUNZIONE "RICORDAMI"
 
