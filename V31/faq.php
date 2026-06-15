@@ -72,7 +72,7 @@ $descrizione_pagina = 'Risposte alle domande più comuni su adozioni, volontaria
             <summary>Come avviene il processo di adozione?</summary>
             <ol class="faq-processo">
                 <li><a href="registrazione.php">Registrati</a> al sito (se non l'hai già fatto).</li>
-                <li>Sfoglia i gatti disponibili nella sezione <a href="gatti.php">Adozioni</a>.</li>
+                <li>Sfoglia i gatti disponibili nella sezione <a href="adozioni.php">Adozioni</a>.</li>
                 <li>Seleziona i gatti che ti interessano e prenota una visita conoscitiva.</li>
                 <li>Vieni in struttura per conoscerli di persona.</li>
                 <li>Se è amore, completeremo insieme le pratiche di affidamento.</li>

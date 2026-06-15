@@ -8,8 +8,8 @@ $pagina_corrente = $parti_percorso[count($parti_percorso) - 1];
 $anno = date('Y');
 
 $voci_nav = [
-    'index.php' => 'Home',
-    'gatti.php' => 'Adozioni',
+    'home.php' => 'Home',
+    'adozioni.php' => 'Adozioni',
     'volontariato.php' => 'Volontariato',
     'faq.php' => 'FAQ',
 ];
@@ -38,7 +38,7 @@ if (!empty($_SESSION['utente']['is_admin'])) {
 <!-- footer -->
 <footer class="footer">
 
-    <a href="index.php" class="brand-logo" aria-label="Torna alla Home Page">
+    <a href="home.php" class="brand-logo" aria-label="Torna alla Home Page">
         <picture class="logo-container">
             <source srcset="img/logo_grande.png" media="(min-width: 600px)">
             <img src="img/logo_piccolo.png" alt="Logo Gattile San Paolo" class="logo-img">

@@ -11,7 +11,7 @@ $errore = '';
 // Se già autenticato, redirect alla home.
 $reindirizzato = false;
 if (profiloAttivo()) {
-    header('Location: index.php');
+    header('Location: home.php');
     $reindirizzato = true;
 }
 
@@ -31,7 +31,7 @@ if (!$reindirizzato && $_SERVER['REQUEST_METHOD'] === 'POST') {
                     attivaPromemoria($username);
                 }
                 scriviLog('info', 'login: accesso riuscito - ' . $username);
-                header('Location: index.php');
+                header('Location: home.php');
                 $reindirizzato = true;
                 break;
 

@@ -23,7 +23,7 @@ collegamento.
 Le tecnologie sono quelle imposte dalla traccia: PHP lato server, un componente
 React per la pagina di visualizzazione dei gatti e Vanilla JavaScript per tutti gli
 altri form. Ho diviso i file in cartelle con un criterio chiaro: nella cartella
-principale stanno le pagine vere e proprie (index.php, gatti.php, login.php,
+principale stanno le pagine vere e proprie (home.php, adozioni.php, login.php,
 registrazione.php, volontariato.php, inserisci_gatto.php, faq.php, privacy.php); 
 nella cartella interfaccia/ stanno gli script che non restituiscono una pagina
 HTML ma solo dati in formato JSON; in componenti/ c'e' tutto il codice condiviso
@@ -121,7 +121,7 @@ di costruire le stesse card, pero' producono esattamente la stessa struttura HTM
 usano le stesse classi CSS. Cosi' il foglio di stile descrive la scheda gatto una
 volta sola e vale per entrambe le pagine, senza duplicazioni. Il badge "Nuovo" segue
 la stessa logica nei due posti: lo ricevono i due gatti con la data di arrivo piu'
-recente, e in gatti.php React tiene il badge sui due piu' recenti dell'intera lista
+recente, e in adozioni.php React tiene il badge sui due piu' recenti dell'intera lista
 anche quando cambio ordinamento o applico un filtro.
 
 

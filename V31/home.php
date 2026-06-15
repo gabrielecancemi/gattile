@@ -64,7 +64,7 @@ $descrizione_pagina = 'Gattile San Paolo: adotta un gatto o diventa volontario a
             <li>
                 <strong>Sfoglia i gatti</strong> disponibili nell'area adozioni:
                 puoi filtrare per nome, descrizione, età o colore del manto.
-                <a href="gatti.php" class="btn btn-primario">Sfoglia i gatti</a>
+                <a href="adozioni.php" class="btn btn-primario">Sfoglia i gatti</a>
             </li>
             <li>
                 <strong>Registrati o accedi</strong> al tuo profilo per selezionare
@@ -74,7 +74,7 @@ $descrizione_pagina = 'Gattile San Paolo: adotta un gatto o diventa volontario a
             <li>
                 <strong>Prenota una visita</strong> conoscitiva direttamente dal sito,
                 indicando la data e l'ora che preferisci.
-                <a href="gatti.php" class="btn btn-primario">Prenota una visita</a>
+                <a href="adozioni.php" class="btn btn-primario">Prenota una visita</a>
             </li>
             <li>
                 In alternativa, puoi <strong>diventare volontario</strong> e scegliere

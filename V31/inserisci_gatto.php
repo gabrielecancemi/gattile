@@ -152,7 +152,7 @@ if (!$reindirizzato):
             <?php if ($successo):
                 echo avvisoUtente($successo, 'successo'); ?>
                 <p>
-                    <a href="gatti.php" class="btn btn-primario">Vedi tutti i gatti</a>
+                    <a href="adozioni.php" class="btn btn-primario">Vedi tutti i gatti</a>
                     <a href="inserisci_gatto.php" class="btn btn-primario">Aggiungi un altro gatto</a>
                 </p>
             <?php endif; ?>

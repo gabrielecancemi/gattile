@@ -1,7 +1,7 @@
 <?php
 // Prenota un turno di volontariato, inserendolo nel db
 
-require_once '../componenti/sessione.php';
+require_once '../componenti/gestione_sessione.php';
 require_once '../componenti/connessione_db.php';
 require_once '../componenti/gestione_log.php';
 

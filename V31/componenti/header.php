@@ -1,7 +1,7 @@
 <?php
 // Header comune
 
-require_once __DIR__ . '/sessione.php';
+require_once __DIR__ . '/gestione_sessione.php';
 
 $profilo = profiloAttivo();
 // Nome del file corrente (ultima parte del percorso).
@@ -10,8 +10,8 @@ $parti_percorso = explode('/', $percorso_corrente);
 $pagina_corrente = $parti_percorso[count($parti_percorso) - 1];
 
 $voci_nav = [
-    'index.php' => 'Home',
-    'gatti.php' => 'Adozioni',
+    'home.php' => 'Home',
+    'adozioni.php' => 'Adozioni',
     'volontariato.php' => 'Volontariato',
 ];
 if ($profilo && (bool) $profilo['is_admin']) {
@@ -20,9 +20,9 @@ if ($profilo && (bool) $profilo['is_admin']) {
 
 // Icone del menu (SVG)
 $icone_nav = [
-    'index.php' =>
+    'home.php' =>
         '<path d="M8 2 2 7v7h4v-4h4v4h4V7z" fill="currentColor"/>',
-    'gatti.php' =>
+    'adozioni.php' =>
         '<ellipse cx="8" cy="11" rx="3.6" ry="3" fill="currentColor"/>'
         . '<ellipse cx="3.7" cy="6.6" rx="1.5" ry="2" fill="currentColor"/>'
         . '<ellipse cx="6.3" cy="4.2" rx="1.4" ry="1.9" fill="currentColor"/>'
@@ -40,7 +40,7 @@ $icone_nav = [
 
     <header class="header">
         <!-- logo -->
-        <a href="index.php" class="brand-logo" aria-label="Torna alla Home Page">
+        <a href="home.php" class="brand-logo" aria-label="Torna alla Home Page">
             <picture class="logo-container">
                 <source srcset="img/logo_grande.png" media="(min-width: 600px)">
                 <img src="img/logo_piccolo.png" alt="Logo Gattile San Paolo" class="logo-img">

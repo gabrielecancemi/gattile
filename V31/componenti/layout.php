@@ -1,7 +1,7 @@
 <?php
 // funzioni condivise per l'output
 
-require_once 'sessione.php';
+require_once 'gestione_sessione.php';
 
 // HTML senza simboli strani
 function ripulisci(mixed $valore): string

@@ -2,7 +2,7 @@
 // Elimina tutti i cookie del sito e distrugge la sessione.
 
 
-require_once '../componenti/sessione.php';
+require_once '../componenti/gestione_sessione.php';
 
 header('Content-Type: application/json; charset=utf-8');
 

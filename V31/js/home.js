@@ -69,7 +69,7 @@
         html += '<dt>Occhi</dt><dd>' + ripuliscihtml(gatto.colore_occhi) + '</dd>';
         html += '<dt>Arrivato il</dt><dd><time datetime="' + data_iso + '">' + data_it + '</time></dd>';
         html += '</dl>';
-        html += '<a href="gatti.php" class="btn btn-primario" aria-label="Vai alla pagina adozioni per ' + nome + '">Adotta</a>';
+        html += '<a href="adozioni.php" class="btn btn-primario" aria-label="Vai alla pagina adozioni per ' + nome + '">Adotta</a>';
         html += '</section>';
         html += '</article>';
         html += '</li>';

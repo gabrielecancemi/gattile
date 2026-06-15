@@ -15,7 +15,7 @@ $campi = ['nome' => '', 'cognome' => '', 'indirizzo' => '', 'username' => ''];
 // Se l'utente è già autenticato, si imposta il redirect alla home.
 $reindirizzato = false;
 if (profiloAttivo()) {
-    header('Location: index.php');
+    header('Location: home.php');
     $reindirizzato = true;
 }
 

@@ -188,8 +188,8 @@
                             '<output class="messaggio messaggio-successo" role="status" aria-live="assertive">' +
                             ripuliscihtml(dati.messaggio) + '</output>';
                         bottoniConferma(successo_prenotazione, [
-                            { href: 'gatti.php', testo: 'Prenota un\'altra visita' },
-                            { href: 'index.php', testo: 'Torna alla home' }
+                            { href: 'adozioni.php', testo: 'Prenota un\'altra visita' },
+                            { href: 'home.php', testo: 'Torna alla home' }
                         ]);
                     }
                     form.hidden = true;

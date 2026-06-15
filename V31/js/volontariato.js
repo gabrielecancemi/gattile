@@ -286,7 +286,7 @@
                             ripuliscihtml(testo) + '</output>';
                         bottoniConferma(successo_volontariato, [
                             { href: 'volontariato.php', testo: 'Prenota altri turni' },
-                            { href: 'index.php', testo: 'Torna alla home' }
+                            { href: 'home.php', testo: 'Torna alla home' }
                         ]);
                     }
                     form.hidden = true;

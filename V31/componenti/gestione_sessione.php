@@ -115,7 +115,7 @@ function esigeAdmin(): bool
         return false;
     }
     if (!haRuoloAdmin()) {
-        header('Location: index.php');
+        header('Location: home.php');
         return false;
     }
     return true;
