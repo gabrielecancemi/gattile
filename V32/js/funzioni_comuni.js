@@ -9,7 +9,9 @@ function ripuliscihtml(stringa) {
 }
 
 function mostraErroreCampo(campo, output, messaggio) {
-    if (!output) return;
+    if (!output) {
+        return;
+    }
     if (messaggio) {
         output.textContent = messaggio;
         output.hidden = false;
@@ -17,16 +19,22 @@ function mostraErroreCampo(campo, output, messaggio) {
     } else {
         output.textContent = '';
         output.hidden = true;
-        if (campo) campo.removeAttribute('aria-invalid');
+        if (campo) {
+            campo.removeAttribute('aria-invalid');
+        }
     }
 }
 
 function etaInParole(mesi) {
-    if (mesi < 12) return mesi + ' ' + (mesi === 1 ? 'mese' : 'mesi');
+    if (mesi < 12) {
+        return mesi + ' ' + (mesi === 1 ? 'mese' : 'mesi');
+    }
     const anni = Math.floor(mesi / 12);
     const resto = mesi % 12;
     let testo = anni + ' ' + (anni === 1 ? 'anno' : 'anni');
-    if (resto > 0) testo += ' e ' + resto + ' ' + (resto === 1 ? 'mese' : 'mesi');
+    if (resto > 0) {
+        testo += ' e ' + resto + ' ' + (resto === 1 ? 'mese' : 'mesi')
+    };
     return testo;
 }
 
@@ -36,7 +44,9 @@ function messaggioErrore(testo) {
 }
 
 function mostraMessaggioComune(elemento, testo, tipo) {
-    if (!elemento) return;
+    if (!elemento) {
+        return;
+    }
     elemento.textContent = testo;
     // Riassegna className: 'sr-solo' sparisce e l'elemento torna visibile.
     elemento.className = 'messaggio messaggio-' + tipo;
@@ -45,10 +55,10 @@ function mostraMessaggioComune(elemento, testo, tipo) {
 function bottoniConferma(elemento, bottoni) {
     if (!elemento) return;
     let html = '<p>';
-    bottoni.forEach(function (b) {
+    for (const b of bottoni) {
         html += '<a href="' + ripuliscihtml(b.href) + '" class="btn btn-primario">'
             + ripuliscihtml(b.testo) + '</a> ';
-    });
+    }
     html += '</p>';
     elemento.innerHTML += html;
 }
