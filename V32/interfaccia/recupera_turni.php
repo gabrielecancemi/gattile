@@ -183,7 +183,7 @@ if ($metodo === 'GET') {
             if (!$conn) {
                 scriviLog('errore', 'turni POST: connessione al database non riuscita');
                 header('HTTP/1.1 500 Internal Server Error');
-                echo json_encode(['errore' => 'Errore del database durante la prenotazione.', 'codice' => 'DB_ERROR']);
+                echo json_encode(['errore' => 'Errore del database durante la prenotazione. Riprova tra qualche minuto', 'codice' => 'DB_ERROR']);
             } else {
                 $utente_id = (int) $profilo['id'];
                 $avvisi_turni = [];
@@ -281,7 +281,7 @@ if ($metodo === 'GET') {
 
                 if ($errore_db) {
                     header('HTTP/1.1 500 Internal Server Error');
-                    echo json_encode(['errore' => 'Errore del database durante la prenotazione.', 'codice' => 'DB_ERROR']);
+                    echo json_encode(['errore' => 'Errore del database durante la prenotazione. Riprova tra qualche minuto.', 'codice' => 'DB_ERROR']);
                 } elseif ($inseriti === 0 && !empty($avvisi_turni)) {
                     header('HTTP/1.1 409 Conflict');
                     echo json_encode([

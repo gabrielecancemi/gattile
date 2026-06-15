@@ -163,9 +163,9 @@
 
         const data_ora = valoreDataOra();
 
-        const corpo = new FormData();
-        corpo.append('data_ora', data_ora);
-        corpo.append('gatti_ids', gatti_correnti.map(g => g.id).join(','));
+        const corpo =
+            'data_ora=' + data_ora +
+            '&gatti_ids=' + gatti_correnti.map(g => g.id).join(',');
 
         bottone_prenota.disabled = true;
         bottone_prenota.textContent = 'Invio in corso…';
@@ -176,11 +176,18 @@
             bottone_prenota.textContent = 'Conferma prenotazione';
         }
 
-        fetch('interfaccia/prenota_visita.php', { method: 'POST', body: corpo, credentials: 'same-origin' })
+        fetch('interfaccia/prenota_visita.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: corpo,
+            credentials: 'same-origin'
+        })
             .then(function (r) { return r.json(); })
             .then(function (dati) {
                 if (dati.errore) {
-                    mostraMessaggio('Errore: ' + dati.errore, 'errore');
+                    mostraMessaggio(dati.errore, 'errore');
                     console.error('[Prenotazione] errore server:', dati.errore, '— codice:', dati.codice);
                     ripristinaPulsante();
                 } else {

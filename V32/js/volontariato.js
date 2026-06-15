@@ -255,8 +255,7 @@
             return;
         }
 
-        const corpo = new FormData();
-        corpo.append('fasce', fasce_selezionate.join(','));
+        const corpo = 'fasce=' + fasce_selezionate.join(',');
 
         bottone_volontariato.disabled = true;
         bottone_volontariato.textContent = 'Invio in corso…';
@@ -268,7 +267,14 @@
         }
 
         // Elabora la risposta del server
-        fetch('interfaccia/recupera_turni.php', { method: 'POST', body: corpo, credentials: 'same-origin' })
+        fetch('interfaccia/recupera_turni.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: corpo,
+            credentials: 'same-origin'
+        })
             .then(function (r) { return r.json(); })
             .then(function (dati) {
                 if (dati.errore) {

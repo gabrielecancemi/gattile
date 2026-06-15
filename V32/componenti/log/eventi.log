@@ -117,3 +117,15 @@
 2026-06-15 18:32:41 [info] login: accesso riuscito - luca_neri
 2026-06-15 18:38:57 [info] login: accesso riuscito - luca_neri
 2026-06-15 19:01:32 [info] prenota_visita: visita 5 prenotata da utente 5
+2026-06-15 21:46:37 [info] login: accesso riuscito - luca_neri
+2026-06-15 21:46:53 [info] prenota_visita: visita 6 prenotata da utente 5
+2026-06-15 21:47:58 [errore] prenota_visita: connessione al database non riuscita
+2026-06-15 21:48:52 [errore] prenota_visita: connessione al database non riuscita
+2026-06-15 21:48:59 [errore] recupera_gatti: connessione al database non riuscita
+2026-06-15 21:49:22 [errore] prenota_visita: connessione al database non riuscita
+2026-06-15 21:49:43 [info] prenota_visita: visita 7 prenotata da utente 5
+2026-06-15 21:52:43 [info] turni POST: 1 turno/i prenotati da utente 5
+2026-06-15 21:53:22 [errore] turni POST: connessione al database non riuscita
+2026-06-15 21:53:27 [errore] turni GET: connessione al database non riuscita
+2026-06-15 21:54:45 [errore] turni POST: connessione al database non riuscita
+2026-06-15 21:54:49 [errore] turni GET: connessione al database non riuscita
