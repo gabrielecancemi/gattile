@@ -99,7 +99,7 @@ $icone_nav = [
                     <?php endif; ?>
                 </p>
                 <p class="account-azioni">
-                    <a href="logout.php" class="btn btn-logout">Esci</a>
+                    <a href="componenti/logout.php" class="btn btn-logout">Esci</a>
                 </p>
             <?php else: ?>
                 <p class="utente-info">

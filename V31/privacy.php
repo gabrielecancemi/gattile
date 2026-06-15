@@ -2,7 +2,7 @@
 // Informativa privacy e gestione cookie
 
 
-require_once 'includes/layout.php';
+require_once 'componenti/layout.php';
 
 aprireSessione();
 $eliminati = isset($_GET['eliminati']) && $_GET['eliminati'] === '1';
@@ -16,8 +16,8 @@ $descrizione_pagina = 'Informativa sulla privacy e gestione dei cookie del sito 
 <!DOCTYPE html>
 <html lang="it">
 
-<?php require 'includes/head.php'; ?>
-<?php require 'includes/header.php'; ?>
+<?php require 'componenti/head.php'; ?>
+<?php require 'componenti/header.php'; ?>
 <main id="contenuto-principale">
 
     <!-- intestazione -->
@@ -164,4 +164,4 @@ $descrizione_pagina = 'Informativa sulla privacy e gestione dei cookie del sito 
     <script src="js/privacy.js" defer></script>
 
 </main>
-<?php require 'includes/footer.php'; ?>
+<?php require 'componenti/footer.php'; ?>

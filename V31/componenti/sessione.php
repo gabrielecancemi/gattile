@@ -2,7 +2,7 @@
 // Sessione, accesso e cookie "ricordami"
 
 require_once 'connessione_db.php';
-require_once 'log.php';
+require_once 'gestione_log.php';
 
 function connessioneSicura(): bool
 {

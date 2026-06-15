@@ -1,8 +1,8 @@
 <?php
 // Prende i dati della home (nuovi arrivi e statistiche) dal db
 
-require_once '../includes/connessione_db.php';
-require_once '../includes/log.php';
+require_once '../componenti/connessione_db.php';
+require_once '../componenti/gestione_log.php';
 
 header('Content-Type: application/json; charset=utf-8');
 

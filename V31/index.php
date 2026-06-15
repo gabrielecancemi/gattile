@@ -1,7 +1,7 @@
 <?php
 // Home: ultimi 2 gatti dal DB, sezioni informative, accordion FAQ.
 
-require_once 'includes/layout.php';
+require_once 'componenti/layout.php';
 
 aprireSessione();
 
@@ -15,8 +15,8 @@ $descrizione_pagina = 'Gattile San Paolo: adotta un gatto o diventa volontario a
 <!DOCTYPE html>
 <html lang="it">
 
-<?php require 'includes/head.php'; ?>
-<?php require 'includes/header.php'; ?>
+<?php require 'componenti/head.php'; ?>
+<?php require 'componenti/header.php'; ?>
 <main id="contenuto-principale" class="main-home">
 
     <!-- intestazione -->
@@ -177,4 +177,4 @@ $descrizione_pagina = 'Gattile San Paolo: adotta un gatto o diventa volontario a
     <script src="js/home.js" defer></script>
 
 </main>
-<?php require 'includes/footer.php'; ?>
+<?php require 'componenti/footer.php'; ?>

@@ -24,16 +24,16 @@ Le tecnologie sono quelle imposte dalla traccia: PHP lato server, un componente
 React per la pagina di visualizzazione dei gatti e Vanilla JavaScript per tutti gli
 altri form. Ho diviso i file in cartelle con un criterio chiaro: nella cartella
 principale stanno le pagine vere e proprie (index.php, gatti.php, login.php,
-registrazione.php, volontariato.php, inserisci_gatto.php, faq.php, privacy.php,
-logout.php); nella cartella interfaccia/ stanno gli script che non restituiscono una pagina
-HTML ma solo dati in formato JSON; in includes/ c'e' tutto il codice condiviso
+registrazione.php, volontariato.php, inserisci_gatto.php, faq.php, privacy.php); 
+nella cartella interfaccia/ stanno gli script che non restituiscono una pagina
+HTML ma solo dati in formato JSON; in componenti/ c'e' tutto il codice condiviso
 (connessione al database, gestione della sessione, intestazione e pie' di pagina,
 registro degli eventi, costruzione della scheda gatto); poi css/ per i fogli di
 stile, js/ per gli script e img/ per le immagini. Guardando l'albero dei file si
 capisce subito quali indirizzi servono pagine e quali servono dati grezzi, e questo
 mi e' sembrato il modo piu' ordinato di tenere separate le due cose.
 
-Header e footer sono scritti una volta sola in due file dentro includes/ e vengono
+Header e footer sono scritti una volta sola in due file dentro componenti/ e vengono
 inclusi da ogni pagina, cosi' restano identici dappertutto e non vanno riscritti.
 Dove e' possibile si calcolano da soli: l'anno nel footer, la voce di menu attiva e
 l'indicazione dell'utente in alto a destra dipendono dallo stato corrente e non da
@@ -159,7 +159,7 @@ privilegio minimo: piu' i permessi sono ristretti, piu' piccola e' la superficie
 attacco e meno gravi sono le conseguenze di un eventuale errore o di una compromissione.
 
 Le credenziali di questi tre utenti non sono piu' scritte dentro il codice che apre
-la connessione, ma sono tenute in un file separato dedicato (includes/credenziali_db.php),
+la connessione, ma sono tenute in un file separato dedicato (componenti/credenziali_db.php),
 che la funzione di connessione legge a ogni richiesta. Il file restituisce semplicemente
 l'elenco di host, nome del database, codifica e, per ciascun ruolo, utente e password.
 In questo modo i segreti sono separati dalla logica applicativa: il file di connessione

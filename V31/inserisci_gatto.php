@@ -1,8 +1,8 @@
 <?php
 
-require_once 'includes/layout.php';
-require_once 'includes/connessione_db.php';
-require_once 'includes/log.php';
+require_once 'componenti/layout.php';
+require_once 'componenti/connessione_db.php';
+require_once 'componenti/gestione_log.php';
 
 aprireSessione();
 
@@ -128,8 +128,8 @@ if (!$reindirizzato):
     <!DOCTYPE html>
     <html lang="it">
 
-    <?php require 'includes/head.php'; ?>
-    <?php require 'includes/header.php'; ?>
+    <?php require 'componenti/head.php'; ?>
+    <?php require 'componenti/header.php'; ?>
     <main id="contenuto-principale">
 
         <!-- intestazione -->
@@ -255,5 +255,5 @@ if (!$reindirizzato):
 
         <script src="js/inserisci_gatto.js" defer></script>
     </main>
-    <?php require 'includes/footer.php'; ?>
+    <?php require 'componenti/footer.php'; ?>
 <?php endif; ?>

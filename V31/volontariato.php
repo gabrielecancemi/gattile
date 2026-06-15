@@ -1,7 +1,7 @@
 <?php
 // Prenotazione turni di volontariato.
 
-require_once 'includes/layout.php';
+require_once 'componenti/layout.php';
 
 aprireSessione();
 $loggato = (profiloAttivo() !== null);
@@ -15,8 +15,8 @@ $descrizione_pagina = 'Diventa volontario al Gattile San Paolo di Torino: scegli
 <!DOCTYPE html>
 <html lang="it">
 
-<?php require 'includes/head.php'; ?>
-<?php require 'includes/header.php'; ?>
+<?php require 'componenti/head.php'; ?>
+<?php require 'componenti/header.php'; ?>
 <main id="contenuto-principale" class="volontario-main">
 
     <!-- intestazione -->
@@ -92,4 +92,4 @@ $descrizione_pagina = 'Diventa volontario al Gattile San Paolo di Torino: scegli
     <script src="js/volontariato.js" defer></script>
 
 </main>
-<?php require 'includes/footer.php'; ?>
+<?php require 'componenti/footer.php'; ?>

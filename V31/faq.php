@@ -2,7 +2,7 @@
 // Domande frequenti (pulsante "?" fisso in basso a destra)
 
 
-require_once 'includes/layout.php';
+require_once 'componenti/layout.php';
 
 aprireSessione();
 
@@ -15,8 +15,8 @@ $descrizione_pagina = 'Risposte alle domande più comuni su adozioni, volontaria
 <!DOCTYPE html>
 <html lang="it">
 
-<?php require 'includes/head.php'; ?>
-<?php require 'includes/header.php'; ?>
+<?php require 'componenti/head.php'; ?>
+<?php require 'componenti/header.php'; ?>
 <main id="contenuto-principale" class="main-faq">
 
     <!-- intestazione -->
@@ -151,4 +151,4 @@ $descrizione_pagina = 'Risposte alle domande più comuni su adozioni, volontaria
     </section>
 
 </main>
-<?php require 'includes/footer.php'; ?>
+<?php require 'componenti/footer.php'; ?>

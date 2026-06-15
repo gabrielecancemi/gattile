@@ -1,10 +1,10 @@
 <?php
 // Distrugge la sessione e torna alla home.
 
-require_once 'includes/sessione.php';
+require_once 'sessione.php';
 
 aprireSessione();
 chiudiProfilo();
 
-header('Location: index.php?azione=logout');
+header('Location: ../index.php?azione=logout');
 

@@ -6,4 +6,3 @@ inserisci_gatto.php,form:form-inserisci-gatto,text:gatto-nome,text:gatto-razza,s
 volontariato.php,form:form-volontariato,date:data-turno,reset:btn-reset-volontariato,submit:btn-volontariato
 faq.php
 privacy.php,button:btn-elimina-cookie-privacy
-logout.php

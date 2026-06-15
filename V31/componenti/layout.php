@@ -3,7 +3,7 @@
 
 require_once 'sessione.php';
 
-// HTML sicuro
+// HTML senza simboli strani
 function ripulisci(mixed $valore): string
 {
     return htmlspecialchars((string) $valore, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
