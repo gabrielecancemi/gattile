@@ -332,7 +332,9 @@
                     break;
                 }
             }
-            if (primo && campi[primo].el) campi[primo].el.focus();
+            if (primo && campi[primo].el) {
+                campi[primo].el.focus();
+            }
         }
     });
 })();

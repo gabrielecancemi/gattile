@@ -48,7 +48,9 @@
             return false;
         }
 
-        if (mostra) mostraErroreCampo(input_data, errore_data, '');
+        if (mostra) {
+            mostraErroreCampo(input_data, errore_data, '');
+        }
         return true;
     }
 
@@ -106,7 +108,9 @@
         fasce_per_data = {};
         fasce.forEach(function (f) {
             const giorno = f.fascia_oraria.slice(0, 10);
-            if (!fasce_per_data[giorno]) fasce_per_data[giorno] = [];
+            if (!fasce_per_data[giorno]) {
+                fasce_per_data[giorno] = [];
+            }
             fasce_per_data[giorno].push(f);
         });
 

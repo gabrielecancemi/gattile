@@ -18,7 +18,9 @@
     function leggiPreferenza() {
         // La preferenza viene salvata nel localStorage
         const salvato = window.localStorage ? localStorage.getItem('tema') : null;
-        if (STATI.indexOf(salvato) !== -1) return salvato;
+        if (STATI.indexOf(salvato) !== -1) {
+            return salvato;
+        }
         return 'sistema';
     }
 
@@ -37,7 +39,9 @@
         } else {
             radice.setAttribute('data-tema', stato);
         }
-        if (testo) testo.textContent = ETICHETTE[stato];
+        if (testo) {
+            testo.textContent = ETICHETTE[stato];
+        }
         bottone.setAttribute('aria-label', 'Cambia tema (attuale: ' + stato + ')');
         bottone.setAttribute('data-stato', stato);
     }

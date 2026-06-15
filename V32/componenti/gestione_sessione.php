@@ -121,10 +121,7 @@ function esigeAdmin(): bool
     return true;
 }
 
-// Accesso
-
-
-// Memorizzazione password IN CHIARO
+// Memorizzazione password IN CHIARO - da modificare per più sicurezza (salt)
 function preparaPasswordSalvataggio(string $password): string
 {
     return $password;

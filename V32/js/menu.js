@@ -4,7 +4,9 @@
 
 (function () {
     const bottone = document.querySelector('.menu-toggle');
-    if (!bottone) return;
+    if (!bottone) {
+        return;
+    }
 
     //testo "Menu"
     const etichetta = bottone.lastChild;

@@ -47,7 +47,9 @@
     }
 
     function aggiornaForza(password) {
-        if (!meter_forza) return;
+        if (!meter_forza) {
+            return;
+        }
 
         let forza = calcolaForza(password);
 
@@ -100,7 +102,9 @@
             return false;
         }
 
-        if (mostra) mostraErrore(campi.nome, '');
+        if (mostra) {
+            mostraErrore(campi.nome, '');
+        }
         return true;
     }
 
@@ -122,7 +126,9 @@
             return false;
         }
 
-        if (mostra) mostraErrore(campi.cognome, '');
+        if (mostra) {
+            mostraErrore(campi.cognome, '');
+        }
         return true;
     }
 
@@ -139,7 +145,9 @@
             return false;
         }
 
-        if (mostra) mostraErrore(campi.indirizzo, '');
+        if (mostra) {
+            mostraErrore(campi.indirizzo, '');
+        }
         return true;
     }
 
@@ -171,7 +179,9 @@
             return false;
         }
 
-        if (mostra) mostraErrore(campi.username, '');
+        if (mostra) {
+            mostraErrore(campi.username, '');
+        }
         return true;
     }
 
@@ -215,7 +225,9 @@
             return false;
         }
 
-        if (mostra) mostraErrore(campi.password, '');
+        if (mostra) {
+            mostraErrore(campi.password, '');
+        }
         return true;
     }
 
@@ -233,7 +245,9 @@
             return false;
         }
 
-        if (mostra) mostraErrore(campi.conferma, '');
+        if (mostra) {
+            mostraErrore(campi.conferma, '');
+        }
         return true;
     }
 
@@ -243,7 +257,9 @@
             if (mostra) mostraErrore(campi.gdpr, '');
             return true;
         }
-        if (mostra) mostraErrore(campi.gdpr, 'Devi accettare l\'Informativa Privacy per procedere.');
+        if (mostra) {
+            mostraErrore(campi.gdpr, 'Devi accettare l\'Informativa Privacy per procedere.');
+        }
         return false;
     }
 
