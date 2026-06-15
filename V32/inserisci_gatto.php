@@ -216,8 +216,14 @@ if (!$reindirizzato):
                         <output class="errore-campo" id="err-gatto-lunghezza-pelo" role="alert" aria-live="polite"
                             hidden></output>
                         <label for="gatto-colore-occhi" class="campo-obbligatorio">Colore degli occhi </label>
-                        <input type="text" id="gatto-colore-occhi" name="colore_occhi" required maxlength="30"
+                        <input list="colori" type="text" id="gatto-colore-occhi" name="colore_occhi" required maxlength="30"
                             aria-describedby="aiuto-gatto-colore-occhi" placeholder="Es. Verdi, Azzurri">
+                        <datalist id="colori">
+                            <option value="Marroni"></option>
+                            <option value="Verdi"></option>
+                            <option value="Azzurri"></option>
+                            <option value="Rossi"></option>
+                        </datalist>
                         <em id="aiuto-gatto-colore-occhi" class="aiuto-campo">Max 30 caratteri.</em>
                         <output class="errore-campo" id="err-gatto-colore-occhi" role="alert" aria-live="polite"
                             hidden></output>
