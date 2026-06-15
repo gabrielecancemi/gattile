@@ -81,6 +81,8 @@ $descrizione_pagina = 'Informativa sulla privacy e gestione dei cookie del sito 
                                 <dd>Chiusura del browser</dd>
                                 <dt>Finalità</dt>
                                 <dd>Gestione della sessione autenticata</dd>
+                                <dt>Info</dt>
+                                <dd>Salvato automaticamente, senza richiesta di consenso</dd>
                             </dl>
                         </li>
                         <li class="privacy-cookie-card">

@@ -39,74 +39,61 @@ if ($metodo === 'GET') {
         $profilo = profiloAttivo();
         $utente_id = $profilo ? (int) $profilo['id'] : 0;
 
-        $fasce = [];
-        $errore_db = false;
-
         $adesso_ts = time();
         // Inizio: oggi alle 09:00.
         $inizio_ts = mktime(9, 0, 0, (int) date('n'), (int) date('j'), (int) date('Y'));
         // Fine: tra 3 mesi alle 17:00 (mktime normalizza eventuali sconfini).
         $fine_ts = mktime(17, 0, 0, (int) date('n') + 3, (int) date('j'), (int) date('Y'));
+        $inizio_iso = date('Y-m-d H:i:s', $inizio_ts);
+        $fine_iso = date('Y-m-d H:i:s', $fine_ts);
 
-        while ($inizio_ts <= $fine_ts && !$errore_db) {
-            // Salta domeniche (w=0) e fasce già passate.
-            if ((int) date('w', $inizio_ts) !== 0 && $inizio_ts > $adesso_ts) {
-                $iso = date('Y-m-d H:i:s', $inizio_ts);
+        $errore_db = false;
 
-                $stm = mysqli_prepare(
-                    $conn,
-                    'SELECT COUNT(*) AS conteggio FROM turni_volontariato WHERE fascia_oraria = ?'
-                );
-
-                if (!$stm) {
-                    scriviLog('errore', 'turni GET: prepare conteggio fallita - ' . mysqli_error($conn));
-                    $errore_db = true;
-                } else {
-                    mysqli_stmt_bind_param($stm, 's', $iso);
-                    mysqli_stmt_execute($stm);
-                    mysqli_stmt_bind_result($stm, $conteggio_letto);
-                    $conteggio = mysqli_stmt_fetch($stm) ? (int) $conteggio_letto : 0;
-                    mysqli_stmt_close($stm);
-
-                    // L'utente è già iscritto a questa fascia?
-                    $gia_iscritto = false;
-                    if ($utente_id > 0) {
-                        $controllo = mysqli_prepare(
-                            $conn,
-                            'SELECT 1 FROM turni_volontariato WHERE utente_id = ? AND fascia_oraria = ? LIMIT 1'
-                        );
-                        if ($controllo) {
-                            mysqli_stmt_bind_param($controllo, 'is', $utente_id, $iso);
-                            mysqli_stmt_execute($controllo);
-                            mysqli_stmt_bind_result($controllo, $uno);
-                            $gia_iscritto = (mysqli_stmt_fetch($controllo) === true);
-                            mysqli_stmt_close($controllo);
-                        }
-                    }
-
-                    $fasce[] = [
-                        'fascia_oraria' => $iso,
-                        'etichetta' => date('D d/m/Y H:i', $inizio_ts),
-                        'iscritti' => $conteggio,
-                        'max' => 2,
-                        'piena' => ($conteggio >= 2),
-                        'gia_iscritto' => $gia_iscritto,
-                    ];
-                }
+        // conteggi per fascia nel range
+        $conteggi = [];
+        $stm = mysqli_prepare(
+            $conn,
+            'SELECT fascia_oraria, COUNT(*) AS iscritti
+             FROM turni_volontariato
+             WHERE fascia_oraria BETWEEN ? AND ?
+             GROUP BY fascia_oraria'
+        );
+        if (!$stm) {
+            scriviLog('errore', 'turni GET: prepare conteggi fallita - ' . mysqli_error($conn));
+            $errore_db = true;
+        } else {
+            mysqli_stmt_bind_param($stm, 'ss', $inizio_iso, $fine_iso);
+            mysqli_stmt_execute($stm);
+            $col_fascia = '';
+            $col_iscritti = 0;
+            mysqli_stmt_bind_result($stm, $col_fascia, $col_iscritti);
+            while (mysqli_stmt_fetch($stm)) {
+                $conteggi[$col_fascia] = (int) $col_iscritti;
             }
+            mysqli_stmt_close($stm);
+        }
 
-            // Passo di un'ora: 3600 secondi.
-            $inizio_ts += 3600;
-            // Oltre le 18:00 si salta al giorno successivo alle 09:00.
-            if ((int) date('H', $inizio_ts) >= 18) {
-                $inizio_ts = mktime(
-                    9,
-                    0,
-                    0,
-                    (int) date('n', $inizio_ts),
-                    (int) date('j', $inizio_ts) + 1,
-                    (int) date('Y', $inizio_ts)
-                );
+        // fasce già prenotate dall'utente nel range
+        $iscrizioni = [];
+        if (!$errore_db && $utente_id > 0) {
+            $stm2 = mysqli_prepare(
+                $conn,
+                'SELECT fascia_oraria
+                 FROM turni_volontariato
+                 WHERE utente_id = ? AND fascia_oraria BETWEEN ? AND ?'
+            );
+            if (!$stm2) {
+                scriviLog('errore', 'turni GET: prepare iscrizioni fallita - ' . mysqli_error($conn));
+                $errore_db = true;
+            } else {
+                mysqli_stmt_bind_param($stm2, 'iss', $utente_id, $inizio_iso, $fine_iso);
+                mysqli_stmt_execute($stm2);
+                $col_fascia2 = '';
+                mysqli_stmt_bind_result($stm2, $col_fascia2);
+                while (mysqli_stmt_fetch($stm2)) {
+                    $iscrizioni[$col_fascia2] = true;
+                }
+                mysqli_stmt_close($stm2);
             }
         }
 
@@ -116,11 +103,45 @@ if ($metodo === 'GET') {
             header('HTTP/1.1 500 Internal Server Error');
             echo json_encode(['errore' => 'Errore del database: impossibile caricare i turni.', 'codice' => 'DB_ERROR']);
         } else {
+            // Generazione fasce
+            $fasce = [];
+            $cur = $inizio_ts;
+            while ($cur <= $fine_ts) {
+                if ((int) date('w', $cur) !== 0 && $cur > $adesso_ts) {
+                    $iso = date('Y-m-d H:i:s', $cur);
+                    $conteggio = $conteggi[$iso] ?? 0;
+
+                    $fasce[] = [
+                        'fascia_oraria' => $iso,
+                        'etichetta' => date('D d/m/Y H:i', $cur),
+                        'iscritti' => $conteggio,
+                        'max' => 2,
+                        'piena' => ($conteggio >= 2),
+                        'gia_iscritto' => isset($iscrizioni[$iso]),
+                    ];
+                }
+
+                // Passo di un'ora: 3600 secondi.
+                $cur += 3600;
+                // Oltre le 18:00 si salta al giorno successivo alle 09:00.
+                if ((int) date('H', $cur) >= 18) {
+                    $cur = mktime(
+                        9,
+                        0,
+                        0,
+                        (int) date('n', $cur),
+                        (int) date('j', $cur) + 1,
+                        (int) date('Y', $cur)
+                    );
+                }
+            }
+
             echo json_encode(['successo' => true, 'fasce' => $fasce], JSON_UNESCAPED_UNICODE);
         }
     }
+
     // Effettua una prenotazione
-} else if ($metodo === 'POST') {
+} elseif ($metodo === 'POST') {
 
     $profilo = profiloAttivo();
     if (!$profilo) {
@@ -136,12 +157,9 @@ if ($metodo === 'GET') {
                 continue;
             }
             $pezzi = explode(' ', $f);
-            if (count($pezzi) !== 2) {
-                continue;
-            }
-            $parte_data = explode('-', $pezzi[0]);
-            $parte_ora = explode(':', $pezzi[1]);
-            if (count($parte_data) !== 3 || count($parte_ora) < 2) {
+            $parte_data = explode('-', $pezzi[0] ?? '');
+            $parte_ora = explode(':', $pezzi[1] ?? '');
+            if (count($pezzi) !== 2 || count($parte_data) !== 3 || count($parte_ora) < 2) {
                 continue;
             }
             $ts = mktime(
@@ -167,73 +185,96 @@ if ($metodo === 'GET') {
                 header('HTTP/1.1 500 Internal Server Error');
                 echo json_encode(['errore' => 'Errore del database durante la prenotazione.', 'codice' => 'DB_ERROR']);
             } else {
-                $avvisi_turni = [];
-                $inseriti = 0;
                 $utente_id = (int) $profilo['id'];
+                $avvisi_turni = [];
                 $errore_db = false;
+                $inseriti = 0;
 
-                foreach ($fasce_richieste as $fascia) {
+                // conteggi + flag iscrizione
+                $n = count($fasce_richieste);
+                $placeholders = implode(',', array_fill(0, $n, '?'));
+                $tipi = 'i' . str_repeat('s', $n);
 
-                    // Limite volontari (massimo 2 per fascia).
-                    $stm = mysqli_prepare($conn, 'SELECT COUNT(*) AS c FROM turni_volontariato WHERE fascia_oraria = ?');
-                    if (!$stm) {
-                        scriviLog('errore', 'turni POST: prepare conteggio fallita - ' . mysqli_error($conn));
-                        $errore_db = true;
-                        break;
-                    }
-                    mysqli_stmt_bind_param($stm, 's', $fascia);
+                $stm = mysqli_prepare(
+                    $conn,
+                    "SELECT fascia_oraria,
+                            COUNT(*) AS iscritti,
+                            SUM(utente_id = ?) AS gia_iscritto
+                     FROM turni_volontariato
+                     WHERE fascia_oraria IN ($placeholders)
+                     GROUP BY fascia_oraria"
+                );
+
+                if (!$stm) {
+                    scriviLog('errore', 'turni POST: prepare stato fasce fallita - ' . mysqli_error($conn));
+                    $errore_db = true;
+                } else {
+                    mysqli_stmt_bind_param($stm, $tipi, $utente_id, ...$fasce_richieste);
                     mysqli_stmt_execute($stm);
-                    mysqli_stmt_bind_result($stm, $conteggio_letto);
-                    $conteggio = mysqli_stmt_fetch($stm) ? (int) $conteggio_letto : 0;
+                    $col_fascia = '';
+                    $col_iscritti = 0;
+                    $col_gia_iscr = 0;
+                    mysqli_stmt_bind_result($stm, $col_fascia, $col_iscritti, $col_gia_iscr);
+                    $stato = [];
+                    while (mysqli_stmt_fetch($stm)) {
+                        $stato[$col_fascia] = [
+                            'iscritti' => $col_iscritti,
+                            'gia_iscritto' => $col_gia_iscr,
+                        ];
+                    }
                     mysqli_stmt_close($stm);
 
-                    if ($conteggio >= 2) {
-                        $avvisi_turni[] = [
-                            'codice' => 'SHIFT_FULL',
-                            'fascia' => $fascia,
-                            'msg' => 'Fascia del ' . formattaFascia($fascia) . ' già piena (2/2 volontari).',
-                        ];
-                        continue;
+                    //  Classificazione fasce
+                    $da_inserire = [];
+                    foreach ($fasce_richieste as $fascia) {
+                        $info = $stato[$fascia] ?? ['iscritti' => 0, 'gia_iscritto' => 0];
+                        if ((int) $info['iscritti'] >= 2) {
+                            $avvisi_turni[] = [
+                                'codice' => 'SHIFT_FULL',
+                                'fascia' => $fascia,
+                                'msg' => 'Fascia del ' . formattaFascia($fascia) . ' già piena (2/2 volontari).',
+                            ];
+                        } elseif ((int) $info['gia_iscritto'] > 0) {
+                            $avvisi_turni[] = [
+                                'codice' => 'ALREADY_BOOKED',
+                                'fascia' => $fascia,
+                                'msg' => 'Sei già iscritto alla fascia del ' . formattaFascia($fascia) . '.',
+                            ];
+                        } else {
+                            $da_inserire[] = $fascia;
+                        }
                     }
 
-                    // L'utente non deve essere già iscritto.
-                    $controllo = mysqli_prepare($conn, 'SELECT id FROM turni_volontariato WHERE utente_id = ? AND fascia_oraria = ? LIMIT 1');
-                    if (!$controllo) {
-                        scriviLog('errore', 'turni POST: prepare controllo iscrizione fallita - ' . mysqli_error($conn));
-                        $errore_db = true;
-                        break;
-                    }
-                    mysqli_stmt_bind_param($controllo, 'is', $utente_id, $fascia);
-                    mysqli_stmt_execute($controllo);
-                    mysqli_stmt_bind_result($controllo, $id_turno_trovato);
-                    $gia_presente = (mysqli_stmt_fetch($controllo) === true);
-                    mysqli_stmt_close($controllo);
+                    //  Insert multiplo
+                    if (!empty($da_inserire)) {
+                        mysqli_begin_transaction($conn);
+                        $stm_ins = mysqli_prepare(
+                            $conn,
+                            'INSERT INTO turni_volontariato (utente_id, fascia_oraria) VALUES (?, ?)'
+                        );
+                        if (!$stm_ins) {
+                            scriviLog('errore', 'turni POST: prepare inserimento fallita - ' . mysqli_error($conn));
+                            mysqli_rollback($conn);
+                            $errore_db = true;
+                        } else {
+                            foreach ($da_inserire as $fascia) {
+                                mysqli_stmt_bind_param($stm_ins, 'is', $utente_id, $fascia);
+                                if (!mysqli_stmt_execute($stm_ins)) {
+                                    scriviLog('errore', 'turni POST: execute inserimento fallita - ' . mysqli_stmt_error($stm_ins));
+                                    $errore_db = true;
+                                    break;
+                                }
+                            }
+                            mysqli_stmt_close($stm_ins);
 
-                    if ($gia_presente) {
-                        $avvisi_turni[] = [
-                            'codice' => 'ALREADY_BOOKED',
-                            'fascia' => $fascia,
-                            'msg' => 'Sei già iscritto alla fascia del ' . formattaFascia($fascia) . '.',
-                        ];
-                        continue;
+                            if ($errore_db) {
+                                mysqli_rollback($conn);
+                            } else {
+                                mysqli_commit($conn);
+                                $inseriti = count($da_inserire);
+                            }
+                        }
                     }
-
-                    // Inserisce il turno.
-                    $inserimento = mysqli_prepare($conn, 'INSERT INTO turni_volontariato (utente_id, fascia_oraria) VALUES (?, ?)');
-                    if (!$inserimento) {
-                        scriviLog('errore', 'turni POST: prepare inserimento fallita - ' . mysqli_error($conn));
-                        $errore_db = true;
-                        break;
-                    }
-                    mysqli_stmt_bind_param($inserimento, 'is', $utente_id, $fascia);
-                    if (!mysqli_stmt_execute($inserimento)) {
-                        scriviLog('errore', 'turni POST: execute inserimento fallita - ' . mysqli_stmt_error($inserimento));
-                        mysqli_stmt_close($inserimento);
-                        $errore_db = true;
-                        break;
-                    }
-                    mysqli_stmt_close($inserimento);
-                    $inseriti++;
                 }
 
                 mysqli_close($conn);
@@ -241,7 +282,7 @@ if ($metodo === 'GET') {
                 if ($errore_db) {
                     header('HTTP/1.1 500 Internal Server Error');
                     echo json_encode(['errore' => 'Errore del database durante la prenotazione.', 'codice' => 'DB_ERROR']);
-                } else if ($inseriti === 0 && !empty($avvisi_turni)) {
+                } elseif ($inseriti === 0 && !empty($avvisi_turni)) {
                     header('HTTP/1.1 409 Conflict');
                     echo json_encode([
                         'errore' => 'Nessun turno è stato prenotato.',

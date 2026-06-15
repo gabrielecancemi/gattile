@@ -234,7 +234,8 @@ tutta la grafica sta nei fogli di stile.
 Oltre al foglio principale, ce ne sono altri per esigenze specifiche: uno
 per il tema scuro, uno legato alla preferenza di sistema
 prefers-reduced-motion per chi non vuole animazioni, e uno per la stampa,
-che porta il testo in nero su bianco e nasconde le parti inutili su carta.
+che porta il testo in nero su bianco e nasconde le parti inutili su carta,
+oltre alle caratteristiche del font).
 
 La preferenza del tema (chiaro, scuro o "come il sistema") e' salvata nel
 localStorage e non in un cookie, perche' e' una semplice impostazione
@@ -250,9 +251,13 @@ e imposti lo stile in maniera univoca.
 
 9. TURNI DI VOLONTARIATO
 
-Ogni utente puo' prenotarsi per quante fasce orarie vuole, ma ogni
-singola fascia accetta al massimo due volontari. Il controllo avviene in
-due punti distinti, ed e' voluto.
+Per scelta implementativa i turni durano 1 ora l'uno e sono disponibili 
+negli orari di apertura del gattile (lunedì - sabato dalle 9 alle 18). 
+Vengono visualizzati i turni dal giorno corrente fino a due settimane dopo,
+ma questo può essere modificato a scelta nella pagina recupera_turni.php.
+Ogni utente puo' prenotarsi per quante fasce orarie vuole, ma ogni singola 
+fascia accetta al massimo due volontari.Il controllo avviene in due punti distinti, 
+ed e' voluto.
 
 Lato client, il JavaScript chiede al server quanti iscritti ci sono in
 ogni fascia e disabilita visivamente quelle gia' al completo, cosi'
@@ -303,7 +308,20 @@ Le chiamate in POST sono:
   semanticamente sbagliato.
 
 
-11. ACCESSIBILITA' E STANDARD W3C
+11. GESTIONE PRIVACY
+
+Il sito, come da GDPR, dispone di una pagina privacy per la gestione 
+dei dati salvati nei cookie. In particolare è possibile eliminare tutti 
+i cookie con un tasto accessibile e non nascosto, il quale azzera tutti i 
+dati memorizzati nel browser. Un banner richiede l'accettazione del consenso 
+ai cookie per permettere funzionalità come il 'ricordami' (che utilizza i cookie).
+Tutti i dati salvati non includono informazioni private o sensibili e sono 
+chiaramente descritti nella pagina privacy.
+In particolare i cookie salvati sono relativi a consenso all'utilizzo di essi, 
+ricorda username e cookie di sessione (salvato anche senza consenso).
+
+
+12. ACCESSIBILITA' E STANDARD W3C
 
 I contenuti sono pensati per essere aderenti agli standard W3C e accessibili.
 Ogni pagina dichiara la lingua, ha una sola intestazione di primo livello
@@ -317,7 +335,16 @@ anche da tastiera. I contrasti rispettano le soglie AA wcag, anche in
 modalita' scura.
 
 
-12. GESTIONE DEGLI ERRORI E REGISTRO DEGLI EVENTI
+13. RESPONSIVE DESIGN
+
+L'intero sito è stato pensato in logica mobile-first per essere indicizzato
+meglio dagli algoritmi. Sono state utilizzate unità relative, dimensioni della
+viewport e media query per adattare il contenuto ai diversi formati di schermo.
+Si sottolinea che per le dimensioni generali è stata utilizzata la funzione
+'clamp' del CSS che permette di definire valori minimi, massimi e standard.
+
+
+14. GESTIONE DEGLI ERRORI E REGISTRO DEGLI EVENTI
 
 Il valore di ritorno di ogni operazione delicata (connessione, preparazione 
 della query, esecuzione, lettura dei risultati) è controllata con delle condizioni. 
@@ -336,7 +363,7 @@ secondo gestisce l'errore di rete. Il codice che ripristina l'interfaccia
 richiamata in entrambi i casi, cosi' non viene ripetuto.
 
 
-13. DIPENDENZE ESTERNE E COMPILAZIONE DI REACT
+15. DIPENDENZE ESTERNE E COMPILAZIONE DI REACT
 
 React e ReactDOM sono caricati da CDN con la versione bloccata a un
 numero preciso, cosi' un aggiornamento automatico non puo' cambiarmi il

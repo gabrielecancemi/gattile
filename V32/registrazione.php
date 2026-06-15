@@ -219,6 +219,16 @@ if (!$reindirizzato):
 
                     </fieldset>
 
+                    <fieldset>
+                        <legend class="campo-obbligatorio">Consenso privacy</legend>
+                        <label class="campo-checkbox" for="gdpr">
+                            <input type="checkbox" id="gdpr" name="gdpr" required aria-describedby="gdpr-description">
+                            Dichiaro di aver letto l'Informativa Privacy e acconsento al trattamento dei miei dati personali
+                            ai sensi del Regolamento (UE) 2016/679 (GDPR).
+                        </label>
+                        <output class="errore-campo" id="err-gdpr" role="alert" aria-live="polite" hidden></output>
+                    </fieldset>
+
                     <p>
                         <label for="progresso-form" class="sr-solo">Completamento modulo</label>
                         <progress id="progresso-form" max="6" value="0"

@@ -100,3 +100,14 @@
 2026-06-15 13:41:52 [info] login: accesso riuscito - anna_admin
 2026-06-15 13:42:56 [info] login: accesso riuscito - anna_admin
 2026-06-15 13:43:12 [info] login: accesso riuscito - anna_admin
+2026-06-15 13:50:26 [errore] recupera_home: connessione al database non riuscita
+2026-06-15 13:50:32 [errore] recupera_gatti: connessione al database non riuscita
+2026-06-15 13:50:38 [errore] turni GET: connessione al database non riuscita
+2026-06-15 13:50:46 [errore] recupera_home: connessione al database non riuscita
+2026-06-15 17:01:36 [info] login: accesso riuscito - luca_neri
+2026-06-15 17:35:13 [info] registrazione: nuovo utente registrato - ssss
+2026-06-15 17:42:24 [info] login: accesso riuscito - luca_neri
+2026-06-15 17:43:08 [info] turni POST: 2 turno/i prenotati da utente 5
+2026-06-15 17:43:48 [errore] turni GET: connessione al database non riuscita
+2026-06-15 17:43:56 [errore] recupera_home: connessione al database non riuscita
+2026-06-15 17:44:06 [errore] turni GET: connessione al database non riuscita
