@@ -74,7 +74,7 @@
                             <li className="tag">{etichetta_sesso}</li>
                             <li className="tag">{etaInParole(gatto.eta)}</li>
                             <li className="tag">{gatto.colore_mantello}</li>
-                            <li className="tag">{gatto.lunghezza_pelo}</li>
+                            <li className="tag">Pelo {gatto.lunghezza_pelo}</li>
                             <li className="tag">{gatto.razza}</li>
                         </ul>
 
@@ -115,7 +115,7 @@
             setErrore('');
             // Errori di risposta
             function gestisciErrore() {
-                console.error('[GattiComponent] errore');
+                console.error('[GattiReact] errore');
                 setErrore('Impossibile caricare i gatti, riprova tra qualche minuto.');
                 setCaricamento(false);
             }
@@ -329,7 +329,7 @@
 
     const radice = document.getElementById('react-gatti-root');
     if (!radice) {
-        console.error('[GattiComponent] elemento root non trovato');
+        console.error('[GattiReact] elemento root non trovato');
         return;
     }
 

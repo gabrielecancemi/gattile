@@ -94,7 +94,7 @@
       className: "tag"
     }, gatto.colore_mantello), /*#__PURE__*/React.createElement("li", {
       className: "tag"
-    }, gatto.lunghezza_pelo), /*#__PURE__*/React.createElement("li", {
+    }, "Pelo ", gatto.lunghezza_pelo), /*#__PURE__*/React.createElement("li", {
       className: "tag"
     }, gatto.razza)), /*#__PURE__*/React.createElement("p", {
       className: "card-gatto-descr"
@@ -125,7 +125,7 @@
       setErrore('');
       // Errori di risposta
       function gestisciErrore() {
-        console.error('[GattiComponent] errore');
+        console.error('[GattiReact] errore');
         setErrore('Impossibile caricare i gatti, riprova tra qualche minuto.');
         setCaricamento(false);
       }
@@ -315,7 +315,7 @@
 
   const radice = document.getElementById('react-gatti-root');
   if (!radice) {
-    console.error('[GattiComponent] elemento root non trovato');
+    console.error('[GattiReact] elemento root non trovato');
     return;
   }
   const utente_loggato = radice.getAttribute('data-utente-loggato') === 'true';

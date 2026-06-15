@@ -4,7 +4,7 @@
   "private": true,
   "description": "Build del componente React (compilazione JSX -> JS).",
   "scripts": {
-    "build-react": "babel --config-file ./babel.config.json ../js/GattiComponent.jsx -o ../js/GattiComponent.js"
+    "build-react": "babel --config-file ./babel.config.json ../js/GattiReact.jsx -o ../js/GattiReact.js"
   },
   "keywords": [],
   "author": "",

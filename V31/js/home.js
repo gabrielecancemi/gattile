@@ -60,7 +60,7 @@
         html += '<li class="tag">' + sesso + '</li>';
         html += '<li class="tag">' + eta + '</li>';
         html += '<li class="tag">' + ripuliscihtml(gatto.colore_mantello) + '</li>';
-        html += '<li class="tag">' + ripuliscihtml(gatto.lunghezza_pelo) + '</li>';
+        html += '<li class="tag">Pelo ' + ripuliscihtml(gatto.lunghezza_pelo) + '</li>';
         html += '<li class="tag">' + ripuliscihtml(gatto.razza) + '</li>';
         html += '</ul>';
         html += '<p class="card-gatto-descr">' + ripuliscihtml(gatto.descrizione) + '</p>';

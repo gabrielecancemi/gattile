@@ -330,8 +330,8 @@ funzione richiamata in entrambi i casi, cosi' non lo ripeto.
 
 React e ReactDOM sono caricati da una CDN con la versione bloccata a un numero preciso,
 cosi' un aggiornamento automatico non puo' cambiarmi il comportamento sotto i piedi. Il
-sorgente del componente e' scritto in JSX (GattiComponent.jsx) e viene compilato in
-JavaScript puro (GattiComponent.js) con Babel; la pagina carica il file gia' compilato.
+sorgente del componente e' scritto in JSX (GattiReact.jsx) e viene compilato in
+JavaScript puro (GattiReact.js) con Babel; la pagina carica il file gia' compilato.
 Nella cartella build/ ci sono la configurazione e lo script che fanno la compilazione.
 
 

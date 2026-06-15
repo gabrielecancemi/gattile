@@ -3,6 +3,7 @@
 'use strict';
 
 (function () {
+    /* componenti della pagina */
     const form = document.getElementById('form-prenotazione');
     const input_gatti_ids = document.getElementById('gatti-ids');
     const riepilogo = document.getElementById('gatti-selezionati-riepilogo');

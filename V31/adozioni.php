@@ -121,7 +121,7 @@ $descrizione_pagina = 'Sfoglia i gatti disponibili per l\'adozione al Gattile Sa
     <!-- React -->
     <script src="https://unpkg.com/react@18.3.1/umd/react.production.min.js" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js" crossorigin="anonymous"></script>
-    <script defer src="js/GattiComponent.js"></script>
+    <script defer src="js/GattiReact.js"></script>
 
     <?php if ($loggato && !$is_admin): ?>
         <script src="js/prenotazione.js" defer></script>

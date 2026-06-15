@@ -17,5 +17,5 @@
     <link rel="stylesheet" href="css/movimento-ridotto.css" media="(prefers-reduced-motion: reduce)">
     <link rel="stylesheet" href="css/stampa.css" media="print">
     <script src="js/tema-iniziale.js"></script>
-    <script src="js/comuni.js" defer></script>
+    <script src="js/funzioni_comuni.js" defer></script>
 </head>
