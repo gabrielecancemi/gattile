@@ -1,0 +1,96 @@
+2026-06-14 15:09:40 [errore] recupera_gatti: connessione al database non riuscita
+2026-06-14 15:11:50 [errore] recupera_gatti: connessione al database non riuscita
+2026-06-14 15:12:01 [errore] recupera_home: connessione al database non riuscita
+2026-06-14 15:12:16 [errore] recupera_gatti: connessione al database non riuscita
+2026-06-14 15:12:23 [errore] recupera_home: connessione al database non riuscita
+2026-06-14 15:13:11 [errore] verificaCredenziali: connessione al database non riuscita
+2026-06-14 15:13:11 [errore] login: errore database durante la verifica credenziali
+2026-06-14 15:13:45 [errore] verificaCredenziali: connessione al database non riuscita
+2026-06-14 15:13:45 [errore] login: errore database durante la verifica credenziali
+2026-06-14 15:14:00 [errore] verificaCredenziali: connessione al database non riuscita
+2026-06-14 15:14:00 [errore] login: errore database durante la verifica credenziali
+2026-06-14 15:15:42 [errore] recupera_home: connessione al database non riuscita
+2026-06-14 15:15:48 [errore] recupera_gatti: connessione al database non riuscita
+2026-06-14 15:15:58 [errore] verificaCredenziali: connessione al database non riuscita
+2026-06-14 15:15:58 [errore] login: errore database durante la verifica credenziali
+2026-06-14 15:16:51 [info] login: accesso riuscito - gabricanci
+2026-06-14 15:17:00 [info] prenota_visita: visita 15 prenotata da utente 7
+2026-06-14 15:39:21 [info] turni POST: 1 turno/i prenotati da utente 7
+2026-06-14 15:39:50 [errore] recupera_home: connessione al database non riuscita
+2026-06-14 15:39:56 [errore] recupera_gatti: connessione al database non riuscita
+2026-06-14 15:40:01 [errore] turni GET: connessione al database non riuscita
+2026-06-14 15:40:18 [errore] recupera_home: connessione al database non riuscita
+2026-06-14 15:40:56 [info] login: accesso riuscito - anna_admin
+2026-06-14 15:41:17 [info] inserisci_gatto: nuovo gatto inserito - dd
+2026-06-14 15:46:42 [info] inserisci_gatto: nuovo gatto inserito - ricc
+2026-06-14 15:49:14 [info] registrazione: nuovo utente registrato - eeeeeeeee
+2026-06-14 15:53:51 [info] registrazione: nuovo utente registrato - ssssss
+2026-06-14 15:54:07 [info] login: accesso riuscito - anna_admin
+2026-06-14 15:54:23 [info] inserisci_gatto: nuovo gatto inserito - w
+2026-06-14 15:54:36 [info] turni POST: 1 turno/i prenotati da utente 1
+2026-06-14 15:54:51 [info] login: accesso riuscito - gabricanci
+2026-06-14 15:55:04 [info] prenota_visita: visita 16 prenotata da utente 7
+2026-06-14 17:12:45 [info] login: accesso riuscito - gabricanci
+2026-06-14 17:12:55 [info] prenota_visita: visita 17 prenotata da utente 7
+2026-06-14 17:13:04 [info] turni POST: 1 turno/i prenotati da utente 7
+2026-06-14 17:13:33 [avviso] login: username inesistente - admin
+2026-06-14 17:13:44 [info] login: accesso riuscito - anna_admin
+2026-06-14 17:14:04 [info] inserisci_gatto: nuovo gatto inserito - ddd
+2026-06-14 18:17:01 [info] login: accesso riuscito - gabricanci
+2026-06-14 18:36:32 [info] login: accesso riuscito - anna_admin
+2026-06-14 18:48:44 [info] login: accesso riuscito - gabricanci
+2026-06-14 18:49:16 [info] turni POST: 1 turno/i prenotati da utente 7
+2026-06-14 19:43:22 [info] login: accesso riuscito - gabricanci
+2026-06-15 09:13:39 [errore] recupera_home: connessione al database non riuscita
+2026-06-15 09:13:52 [errore] recupera_home: connessione al database non riuscita
+2026-06-15 09:13:58 [errore] recupera_home: connessione al database non riuscita
+2026-06-15 09:14:05 [errore] recupera_home: connessione al database non riuscita
+2026-06-15 09:14:06 [errore] recupera_home: connessione al database non riuscita
+2026-06-15 09:14:06 [errore] recupera_home: connessione al database non riuscita
+2026-06-15 09:14:06 [errore] recupera_home: connessione al database non riuscita
+2026-06-15 09:14:06 [errore] recupera_home: connessione al database non riuscita
+2026-06-15 09:14:07 [errore] recupera_home: connessione al database non riuscita
+2026-06-15 09:14:07 [errore] recupera_home: connessione al database non riuscita
+2026-06-15 09:14:07 [errore] recupera_home: connessione al database non riuscita
+2026-06-15 09:14:07 [errore] recupera_home: connessione al database non riuscita
+2026-06-15 09:14:08 [errore] recupera_home: connessione al database non riuscita
+2026-06-15 09:14:08 [errore] recupera_home: connessione al database non riuscita
+2026-06-15 09:14:08 [errore] recupera_home: connessione al database non riuscita
+2026-06-15 09:14:09 [errore] recupera_home: connessione al database non riuscita
+2026-06-15 09:14:09 [errore] recupera_home: connessione al database non riuscita
+2026-06-15 09:14:09 [errore] recupera_home: connessione al database non riuscita
+2026-06-15 09:14:10 [errore] recupera_home: connessione al database non riuscita
+2026-06-15 09:14:17 [errore] recupera_home: connessione al database non riuscita
+2026-06-15 09:14:27 [errore] recupera_home: connessione al database non riuscita
+2026-06-15 09:14:31 [errore] recupera_gatti: connessione al database non riuscita
+2026-06-15 09:14:32 [errore] recupera_home: connessione al database non riuscita
+2026-06-15 09:14:47 [errore] recupera_home: connessione al database non riuscita
+2026-06-15 09:14:47 [errore] recupera_home: connessione al database non riuscita
+2026-06-15 09:14:48 [errore] recupera_home: connessione al database non riuscita
+2026-06-15 09:14:48 [errore] recupera_home: connessione al database non riuscita
+2026-06-15 09:14:48 [errore] recupera_home: connessione al database non riuscita
+2026-06-15 09:14:48 [errore] recupera_home: connessione al database non riuscita
+2026-06-15 09:14:48 [errore] recupera_home: connessione al database non riuscita
+2026-06-15 09:14:49 [errore] recupera_home: connessione al database non riuscita
+2026-06-15 09:14:49 [errore] recupera_home: connessione al database non riuscita
+2026-06-15 09:14:49 [errore] recupera_home: connessione al database non riuscita
+2026-06-15 10:14:13 [avviso] login: username inesistente - gabricanci
+2026-06-15 10:14:24 [info] login: accesso riuscito - anna_admin
+2026-06-15 10:16:37 [info] login: accesso riuscito - anna_admin
+2026-06-15 10:17:21 [info] inserisci_gatto: nuovo gatto inserito - Gabri
+2026-06-15 10:18:00 [info] turni POST: 1 turno/i prenotati da utente 1
+2026-06-15 10:18:58 [info] login: accesso riuscito - elena_b
+2026-06-15 10:19:12 [info] prenota_visita: visita 3 prenotata da utente 4
+2026-06-15 10:21:30 [avviso] login: username inesistente - luca_b
+2026-06-15 10:21:46 [info] login: accesso riuscito - luca_neri
+2026-06-15 10:24:18 [info] login: accesso riuscito - luca_neri
+2026-06-15 10:24:34 [info] turni POST: 1 turno/i prenotati da utente 5
+2026-06-15 10:29:04 [info] prenota_visita: visita 4 prenotata da utente 5
+2026-06-15 10:29:19 [info] turni POST: 1 turno/i prenotati da utente 5
+2026-06-15 10:29:45 [avviso] login: password errata per username - luca_neri
+2026-06-15 10:30:06 [info] registrazione: nuovo utente registrato - ddddd
+2026-06-15 10:38:20 [info] login: accesso riuscito - luca_neri
+2026-06-15 10:39:06 [info] login: accesso riuscito - luca_neri
+2026-06-15 10:39:52 [info] login: accesso riuscito - luca_neri
+2026-06-15 10:56:10 [info] login: accesso riuscito - luca_neri
+2026-06-15 11:16:05 [info] login: accesso riuscito - luca_neri
