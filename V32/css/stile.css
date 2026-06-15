@@ -1518,6 +1518,9 @@ input[type="radio"] {
     margin-bottom: .5rem;
 }
 
+#aiuto-gdpr, #gdpr {
+    display: inline;
+}
 
 /* Contatore caratteri */
 .contatore-basso {

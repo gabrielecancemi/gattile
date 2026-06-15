@@ -215,7 +215,7 @@ if (!$reindirizzato):
 
                         <label for="reg-conferma" class="campo-obbligatorio">
                             Conferma password</label>
-                        <input type="password" id="reg-conferma" name="conferma_password" autocomplete="new-password" required
+                        <input type="password" id="reg-conferma" name="conferma_password" autocomplete="off" required
                             minlength="8" maxlength="16">
                         <output class="errore-campo" id="err-reg-conferma" role="alert" aria-live="polite" hidden></output>
 
@@ -223,13 +223,10 @@ if (!$reindirizzato):
 
                     <fieldset>
                         <legend>Consenso privacy</legend>
-                        <label class="campo-checkbox" for="gdpr">
-                            <input type="checkbox" id="gdpr" name="gdpr" required>
-                            <div class="campo-obbligatorio">
-                                Dichiaro di aver letto l'<a href="privacy.php#sez-dati">Informativa Privacy</a> e acconsento al
-                                trattamento dei miei dati personali
-                                ai sensi del Regolamento (UE) 2016/679 (GDPR).
-                            </div>
+                        <input type="checkbox" id="gdpr" name="gdpr" required aria-describedby="aiuto-gdpr">
+                        <label id="aiuto-gdpr" for="gdpr" class="campo-obbligatorio">
+                            Dichiaro di aver letto l'<a href="privacy.php#sez-dati">Informativa Privacy</a> e acconsento al
+                            trattamento dei miei dati personali ai sensi del Regolamento (UE) 2016/679 (GDPR)
                         </label>
                         <output class="errore-campo" id="err-gdpr" role="alert" aria-live="polite" hidden></output>
                     </fieldset>
