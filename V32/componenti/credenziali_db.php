@@ -11,4 +11,3 @@ return [
         'registrator' => ['user' => 'registrator', 'pass' => 'ToB31nsert?'],
     ],
 ];
-?>

@@ -35,4 +35,3 @@ function connessioneDb(string $ruolo = 'reader'): ?mysqli
 
     return $conn;
 }
-?>

@@ -7,4 +7,3 @@ aprireSessione();
 chiudiProfilo();
 
 header('Location: ../home.php');
-?>

@@ -269,4 +269,3 @@ function chiudiProfilo(): void
     $_SESSION = [];
     session_destroy();
 }
-?>

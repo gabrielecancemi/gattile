@@ -44,4 +44,3 @@ function leggiMessaggioFlash(): ?array
     }
     return null;
 }
-?>
