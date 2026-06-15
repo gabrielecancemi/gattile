@@ -91,6 +91,18 @@ accorgersi quando cambia senza controllarla a intervalli. Una callback
 passata da React al form avrebbe creato esattamente l'accoppiamento che
 volevo evitare.
 
+
+3.2 PLACEHOLDER GATTI
+
+Con l'obiettivo di una futura relase avente la possibilità di inserire le 
+immagini del gatto nel db, il codice implementato effettua un controllo
+sulla presenza o meno della colonna 'foto' nel db. In caso negativo viene 
+assegnata l'immagine placeholder. Inoltre è presente il tag picture per
+gestire i casi futuri in cui l'immagine ricavata dal db non sia supportata
+dal browser (a causa dei formati), inserendo anche in questi casi 
+l'immagine placeholder come sostituzione.
+
+
 3.1 COERENZA VISIVA TRA PAGINE
 
 I due nuovi arrivi compaiono anche in home, ma li' non c'e' React: un

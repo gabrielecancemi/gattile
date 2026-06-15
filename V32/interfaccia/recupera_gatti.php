@@ -68,7 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
                     'sesso' => $sesso,
                     'data_arrivo' => $data_arrivo,
                     // Placeholder fisso (foto reali in una versione futura).
-                    'foto' => 'img/placeholder-gatto.jpg',
+                    'foto' => 'img/placeholder_gatto.png',
                 ];
             }
 
