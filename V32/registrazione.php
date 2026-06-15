@@ -41,6 +41,8 @@ if (!$reindirizzato && $_SERVER['REQUEST_METHOD'] === 'POST') {
         $errori[] = 'Password: 8-16 caratteri con almeno una maiuscola, minuscola, numero e carattere speciale.';
     if ($password !== $conferma)
         $errori[] = 'Le due password non coincidono.';
+    if (empty($_POST['gdpr']))
+        $errori[] = 'Devi accettare l\'Informativa Privacy per procedere con la registrazione.';
 
     if (empty($errori)) {
 
@@ -220,18 +222,21 @@ if (!$reindirizzato):
                     </fieldset>
 
                     <fieldset>
-                        <legend class="campo-obbligatorio">Consenso privacy</legend>
+                        <legend>Consenso privacy</legend>
                         <label class="campo-checkbox" for="gdpr">
-                            <input type="checkbox" id="gdpr" name="gdpr" required aria-describedby="gdpr-description">
-                            Dichiaro di aver letto l'Informativa Privacy e acconsento al trattamento dei miei dati personali
-                            ai sensi del Regolamento (UE) 2016/679 (GDPR).
+                            <input type="checkbox" id="gdpr" name="gdpr" required>
+                            <div class="campo-obbligatorio">
+                                Dichiaro di aver letto l'<a href="privacy.php#sez-dati">Informativa Privacy</a> e acconsento al
+                                trattamento dei miei dati personali
+                                ai sensi del Regolamento (UE) 2016/679 (GDPR).
+                            </div>
                         </label>
                         <output class="errore-campo" id="err-gdpr" role="alert" aria-live="polite" hidden></output>
                     </fieldset>
 
                     <p>
                         <label for="progresso-form" class="sr-solo">Completamento modulo</label>
-                        <progress id="progresso-form" max="6" value="0"
+                        <progress id="progresso-form" max="7" value="0"
                             aria-label="Completamento modulo di registrazione"></progress>
                         <em id="progresso-testo" class="aiuto-campo" aria-live="polite">Compila tutti i campi per
                             procedere.</em>

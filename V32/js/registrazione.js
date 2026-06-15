@@ -12,7 +12,8 @@
         indirizzo: { input: document.getElementById('reg-indirizzo'), errore: document.getElementById('err-indirizzo') },
         username: { input: document.getElementById('reg-username'), errore: document.getElementById('err-reg-username') },
         password: { input: document.getElementById('reg-password'), errore: document.getElementById('err-reg-password') },
-        conferma: { input: document.getElementById('reg-conferma'), errore: document.getElementById('err-reg-conferma') }
+        conferma: { input: document.getElementById('reg-conferma'), errore: document.getElementById('err-reg-conferma') },
+        gdpr: { input: document.getElementById('gdpr'), errore: document.getElementById('err-gdpr') }
     };
 
     let meter_forza = document.getElementById('forza-password');
@@ -69,6 +70,7 @@
         if (validaUsername(false)) completati++;
         if (validaPassword(false)) completati++;
         if (validaConferma(false)) completati++;
+        if (validaGdpr(false)) completati++;
 
         if (barra_progresso) {
             barra_progresso.value = completati;
@@ -76,7 +78,7 @@
 
         if (testo_progresso) {
             testo_progresso.textContent =
-                completati + ' di 6 campi completati correttamente.';
+                completati + ' di 7 campi completati correttamente.';
         }
     }
 
@@ -235,12 +237,23 @@
         return true;
     }
 
+    function validaGdpr(mostra = true) {
+        let el = campi.gdpr.input;
+        if (!el || el.checked) {
+            if (mostra) mostraErrore(campi.gdpr, '');
+            return true;
+        }
+        if (mostra) mostraErrore(campi.gdpr, 'Devi accettare l\'Informativa Privacy per procedere.');
+        return false;
+    }
+
     campi.nome.input?.addEventListener('blur', validaNome);
     campi.cognome.input?.addEventListener('blur', validaCognome);
     campi.indirizzo.input?.addEventListener('blur', validaIndirizzo);
     campi.username.input?.addEventListener('blur', validaUsername);
     campi.password.input?.addEventListener('blur', validaPassword);
     campi.conferma.input?.addEventListener('blur', validaConferma);
+    campi.gdpr.input?.addEventListener('change', validaGdpr);
 
     const validatori = {
         nome: validaNome,
@@ -248,7 +261,8 @@
         indirizzo: validaIndirizzo,
         username: validaUsername,
         password: validaPassword,
-        conferma: validaConferma
+        conferma: validaConferma,
+        gdpr: validaGdpr
     };
 
     for (let chiave in campi) {
@@ -257,6 +271,15 @@
         let elemento = info.input;
 
         if (!elemento) {
+            continue;
+        }
+
+        // Il checkbox gdpr usa 'change'
+        if (chiave === 'gdpr') {
+            elemento.addEventListener('change', function () {
+                aggiornaProgresso();
+                validaGdpr();
+            });
             continue;
         }
 
@@ -293,7 +316,8 @@
             validaIndirizzo(),
             validaUsername(),
             validaPassword(),
-            validaConferma()
+            validaConferma(),
+            validaGdpr()
         ];
 
         if (esiti.includes(false)) {

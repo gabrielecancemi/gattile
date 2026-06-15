@@ -42,7 +42,7 @@ if ($metodo === 'GET') {
         $adesso_ts = time();
         // Inizio: oggi alle 09:00.
         $inizio_ts = mktime(9, 0, 0, (int) date('n'), (int) date('j'), (int) date('Y'));
-        // Fine: tra 3 mesi alle 17:00 (mktime normalizza eventuali sconfini).
+        // Fine: tra 3 mesi alle 17:00.
         $fine_ts = mktime(17, 0, 0, (int) date('n') + 3, (int) date('j'), (int) date('Y'));
         $inizio_iso = date('Y-m-d H:i:s', $inizio_ts);
         $fine_iso = date('Y-m-d H:i:s', $fine_ts);
