@@ -1,0 +1,21 @@
+/* MOVIMENTO RIDOTTO */
+
+
+/* Annulla gli spostamenti */
+.card-gatto[role="checkbox"]:hover {
+    transform: none;
+}
+
+.faq-button:hover,
+.faq-button:focus-visible {
+    transform: none;
+}
+
+.faq-button:active {
+    zoom: 100%
+}
+
+.btn:active {
+    transform: none;
+    zoom: 100%
+}

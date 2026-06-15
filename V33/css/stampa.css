@@ -1,0 +1,178 @@
+/* Stile per la stampa */
+
+@media print {
+
+    html * {
+        background: white;
+        color: black;
+        box-shadow: none;
+    }
+
+    /* Corpo del testo */
+    html body {
+        font-family: Georgia, 'Times New Roman', serif;
+        font-size: 12pt;
+        line-height: 1.5;
+    }
+
+    html h1 {
+        font-size: 18pt;
+        border-bottom: 2pt solid black;
+        padding-bottom: 6pt;
+    }
+
+    html h2 {
+        font-size: 14pt;
+    }
+
+    html h3 {
+        font-size: 12pt;
+    }
+
+    html h1,
+    html h2,
+    html h3 {
+        color: black;
+    }
+
+
+    /* Nasconde elementi inutili su carta */
+    html .header nav,
+    html .menu-toggle,
+    html .stato-autenticazione,
+    html .banner-cookie,
+    html .faq-button,
+    html .btn,
+    html .barra-controlli,
+    html #btn-elimina-cookie,
+    html #btn-elimina-cookie-privacy,
+    html .azioni-account-nav,
+    html .azioni-principali,
+    html form {
+        display: none;
+    }
+
+    /* Header: solo logo */
+    html .header {
+        display: block;
+        border-bottom: 2pt solid black;
+        padding: .4cm 0;
+        background: white;
+    }
+
+    html .brand-logo {
+        display: flex;
+        align-items: center;
+        gap: 6pt;
+        text-decoration: none;
+        color: black;
+    }
+
+    html .logo-img {
+        width: 32px;
+        height: 32px;
+    }
+
+    /* Footer */
+    html .footer {
+        display: block;
+        background: white;
+        border-top: 2pt solid black;
+        padding-top: .5cm;
+        margin-top: 1cm;
+        font-size: 9pt;
+    }
+
+    html .footer .brand-logo,
+    html .footer nav {
+        display: none;
+    }
+
+    html .footer-info {
+        display: block;
+    }
+
+    html .footer-copy {
+        font-size: 8pt;
+        margin-top: .3cm;
+    }
+
+    html .footer-url {
+        display: block;
+        font-size: 8pt;
+    }
+
+    /* URL della pagina corrente in fondo */
+    html .footer::after {
+        content: "Pagina: " attr(data-url);
+        display: block;
+        font-size: 8pt;
+        margin-top: .3cm;
+        font-style: italic;
+    }
+
+    /* Link con URL tra parentesi */
+    html a {
+        text-decoration: underline;
+        color: black;
+    }
+
+    html a[href]:not([href^="#"]):not([href^="javascript"])::after {
+        content: " (" attr(href) ")";
+        font-size: 9pt;
+        font-style: italic;
+    }
+
+    /* Card gatti */
+    html .griglia-gatti {
+        display: block;
+    }
+
+    html .card-gatto {
+        page-break-inside: avoid;
+        border: 1pt solid gray;
+        margin-bottom: 1cm;
+        padding: .5cm;
+    }
+
+    html .card-gatto picture img {
+        display: block;
+        max-width: 8cm;
+        height: auto;
+    }
+
+    /* Details: apre tutto */
+    html details {
+        display: block;
+        border: 1pt solid gray;
+        margin-bottom: .3cm;
+    }
+
+    html summary {
+        font-weight: bold;
+        padding: 4pt;
+    }
+
+    html details>*:not(summary) {
+        display: block;
+        padding: 4pt 8pt;
+    }
+
+    html details::details-content {
+        display: block;
+        content-visibility: visible;
+        padding: 4pt 8pt;
+    }
+
+    html figcaption {
+        font-style: italic;
+        font-size: 9pt;
+        margin-top: 4pt;
+    }
+
+    /* imposta le dimensioni della pagina */
+    @page {
+        size: A4;
+        margin: 2cm 2.5cm;
+    }
+}
