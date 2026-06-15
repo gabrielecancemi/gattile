@@ -25,7 +25,7 @@ function connessioneSicura(): bool
 
 function percorsoToken(): string
 {
-    $cartella = __DIR__ . '/gattile_tokens';
+    $cartella = __DIR__ . '/tokens';
     // crea cartella se non esiste
     if (!is_dir($cartella)) {
         mkdir($cartella, 0700, true);

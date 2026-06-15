@@ -59,7 +59,7 @@ $descrizione_pagina = 'Sfoglia i gatti disponibili per l\'adozione al Gattile Sa
 
             <aside id="successo-prenotazione" aria-live="polite"></aside>
 
-            <form id="form-prenotazione" method="post" action="api/prenota_visita.php" novalidate
+            <form id="form-prenotazione" method="post" action="interfaccia/prenota_visita.php" novalidate
                 aria-label="Modulo prenotazione visita">
 
                 <fieldset id="gatti-selezionati-riepilogo" aria-live="polite"

@@ -25,7 +25,7 @@ React per la pagina di visualizzazione dei gatti e Vanilla JavaScript per tutti 
 altri form. Ho diviso i file in cartelle con un criterio chiaro: nella cartella
 principale stanno le pagine vere e proprie (index.php, gatti.php, login.php,
 registrazione.php, volontariato.php, inserisci_gatto.php, faq.php, privacy.php,
-logout.php); nella cartella api/ stanno gli script che non restituiscono una pagina
+logout.php); nella cartella interfaccia/ stanno gli script che non restituiscono una pagina
 HTML ma solo dati in formato JSON; in includes/ c'e' tutto il codice condiviso
 (connessione al database, gestione della sessione, intestazione e pie' di pagina,
 registro degli eventi, costruzione della scheda gatto); poi css/ per i fogli di
@@ -57,14 +57,14 @@ Questo e' il punto centrale della pagina gatti.php ed e' anche quello su cui la
 traccia chiede piu' attenzione, quindi lo spiego con calma.
 
 Nella pagina convivono tre attori. Il primo e' il backend PHP, che vive nella
-cartella api/ e non disegna nulla: risponde alle richieste asincrone restituendo
+cartella interfaccia/ e non disegna nulla: risponde alle richieste asincrone restituendo
 dati in JSON. Il secondo e' il componente React, che si occupa di tutta la parte di
 visualizzazione, ordinamento, ricerca e selezione dei gatti, come imposto dalla
 traccia. Il terzo e' il form di prenotazione della visita, che NON fa parte di React
 ed e' scritto in Vanilla JavaScript, anch'esso come imposto dalla traccia.
 
 Il flusso e' questo. Quando la pagina si carica, il componente React chiede i gatti
-all'endpoint api/recupera_gatti.php con una fetch asincrona; il PHP esegue la query,
+all'endpoint interfaccia/recupera_gatti.php con una fetch asincrona; il PHP esegue la query,
 costruisce un array di gatti e lo restituisce in JSON; React riceve quel JSON e
 disegna le card. Da quel momento l'utente puo' ordinare la lista (per eta', per
 colore del mantello o per data di arrivo), filtrarla scrivendo nel campo di ricerca
@@ -116,7 +116,7 @@ CustomEvent dava il giusto disaccoppiamento con il minimo di codice.
 
 Una nota sulla coerenza visiva. Gli ultimi due arrivati compaiono anche in home, ma
 li' non c'e' React: e' un piccolo script (home.js) che chiede i dati a
-api/recupera_home.php e disegna le card. React e home.js sono quindi due modi diversi
+interfaccia/recupera_home.php e disegna le card. React e home.js sono quindi due modi diversi
 di costruire le stesse card, pero' producono esattamente la stessa struttura HTML e
 usano le stesse classi CSS. Cosi' il foglio di stile descrive la scheda gatto una
 volta sola e vale per entrambe le pagine, senza duplicazioni. Il badge "Nuovo" segue

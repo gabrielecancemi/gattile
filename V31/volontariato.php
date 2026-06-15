@@ -55,7 +55,7 @@ $descrizione_pagina = 'Diventa volontario al Gattile San Paolo di Torino: scegli
         <section>
             <h2>Prenota i turni</h2>
             <aside id="successo-volontariato" aria-live="polite"></aside>
-            <form id="form-volontariato" method="post" action="api/turni.php" novalidate
+            <form id="form-volontariato" method="post" action="interfaccia/recupera_turni.php" novalidate
                 aria-label="Modulo prenotazione turni volontariato">
                 <fieldset>
                     <legend>Seleziona giorno e fasce orarie</legend>

@@ -104,7 +104,7 @@
         mostraArrivi(null, 'Impossibile caricare i nuovi arrivi. Riprova tra qualche minuto.');
     }
 
-    fetch('api/recupera_home.php', { credentials: 'same-origin' })
+    fetch('interfaccia/recupera_home.php', { credentials: 'same-origin' })
         .then(function (r) {
             if (!r.ok) return null;
             return r.json();

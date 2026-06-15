@@ -4,7 +4,7 @@
 
 function percorsoLog(): string
 {
-    $cartella = __DIR__ . '/gattile_log';
+    $cartella = __DIR__ . '/log';
     if (!is_dir($cartella)) {
         mkdir($cartella, 0700, true);
     }

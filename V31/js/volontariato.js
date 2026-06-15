@@ -67,7 +67,7 @@
         }
 
         // Elabora la risposta del server
-        fetch('api/turni.php', { credentials: 'same-origin' })
+        fetch('interfaccia/recupera_turni.php', { credentials: 'same-origin' })
             .then(function (r) {
 
                 if (!r.ok) {
@@ -264,7 +264,7 @@
         }
 
         // Elabora la risposta del server
-        fetch('api/turni.php', { method: 'POST', body: corpo, credentials: 'same-origin' })
+        fetch('interfaccia/recupera_turni.php', { method: 'POST', body: corpo, credentials: 'same-origin' })
             .then(function (r) { return r.json(); })
             .then(function (dati) {
                 if (dati.errore) {

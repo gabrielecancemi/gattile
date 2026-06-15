@@ -175,7 +175,7 @@
             bottone_prenota.textContent = 'Conferma prenotazione';
         }
 
-        fetch('api/prenota_visita.php', { method: 'POST', body: corpo, credentials: 'same-origin' })
+        fetch('interfaccia/prenota_visita.php', { method: 'POST', body: corpo, credentials: 'same-origin' })
             .then(function (r) { return r.json(); })
             .then(function (dati) {
                 if (dati.errore) {
