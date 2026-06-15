@@ -349,3 +349,91 @@ utenti distinti. Ho cercato di farlo tenendo separate struttura, grafica e
 comportamento, dando al database solo i permessi minimi pagina per pagina, validando i
 dati sia sul client sia sul server, e curando l'accessibilita' e la leggibilita' allo
 stesso modo su tutte le pagine.
+
+
+APPENDICE A - SCELTA DEL METODO GET O POST, CHIAMATA PER CHIAMATA
+
+Per ogni chiamata al server ho scelto consapevolmente tra GET e POST seguendo la
+regola generale: GET per le operazioni di sola lettura (sicure e idempotenti,
+cioe' ripetibili senza effetti e senza cambiare nulla sul server), POST per le
+operazioni che modificano lo stato o che trasportano dati che non devono finire
+nell'URL. Di seguito il motivo, chiamata per chiamata, per cui il metodo scelto
+e' migliore dell'altro.
+
+CHIAMATE IN GET (sola lettura)
+
+- recupera_gatti.php (chiamata da GattiReact): legge l'elenco completo dei gatti.
+  GET e' meglio di POST perche' e' un'operazione sicura, senza
+  effetti collaterali: puo' essere ripetuta, messa in cache o eseguita da un
+  prefetch del browser senza alcun rischio, e semanticamente "recuperare dati"
+  e' esattamente cio' che GET esprime. Con POST si suggerirebbe a torto una
+  modifica dei dati e si perderebbe la possibilita' di caching.
+
+- recupera_home.php (chiamata da home.js): legge i due nuovi arrivi e le
+  statistiche della home. Vale lo stesso ragionamento: e' una lettura pura,
+  idempotente, che non ha bisogno di un corpo nella richiesta, quindi GET e' il
+  metodo corretto e POST sarebbe ingiustificato.
+
+- recupera_turni.php in modalita' GET (chiamata da volontariato.js): legge le
+  fasce orarie disponibili con il numero di iscritti, per disabilitare quelle
+  gia' piene. Essendo una semplice lettura senza effetti, GET batte POST per gli
+  stessi motivi: sicurezza, idempotenza e possibilita' di caching.
+
+CHIAMATE IN POST (scrittura o azioni con effetti)
+
+- recupera_turni.php in modalita' POST (chiamata da volontariato.js e, come
+  fallback senza JavaScript, dal form-volontariato): registra le prenotazioni
+  dei turni e quindi scrive nel database. POST e' meglio di GET perche' cambia lo
+  stato del server: non deve essere cacheabile, non deve poter
+  essere innescato per sbaglio da un prefetch, da un link o da una semplice
+  ricarica della pagina, e i dati viaggiano nel corpo della richiesta invece che
+  nell'URL. Un GET che scrive sarebbe semanticamente sbagliato e pericoloso.
+
+- prenota_visita.php (chiamata da prenotazione.js e, come fallback, dal
+  form-prenotazione): inserisce una prenotazione di visita. POST per le stesse
+  ragioni: e' un'operazione che modifica i dati, non idempotente, con il corpo
+  che trasporta gli id dei gatti scelti e la data e l'ora; non deve finire in
+  cache ne' essere innescata da un prefetch.
+
+- elimina_cookie.php (chiamata da privacy.js): distrugge la sessione ed elimina i
+  cookie del sito. Qui POST e' particolarmente importante perche' si tratta di
+  un'azione distruttiva: con GET potrebbe essere innescata involontariamente da
+  un prefetch, da un link, dal caricamento di un'immagine o da un'anteprima del
+  browser, cancellando la sessione dell'utente senza che l'abbia chiesto. POST la
+  rende un'azione deliberata.
+
+- login.php (invio del form-login): trasmette username e password. POST e' meglio
+  di GET perche' le credenziali non devono comparire nell'URL, dove finirebbero
+  nella cronologia del browser, nei log del server e nell'intestazione Referer;
+  inoltre l'accesso cambia lo stato (apre la sessione), quindi non e'
+  un'operazione che ha senso ripetere o mettere in cache.
+
+- registrazione.php (invio del form-registrazione): crea un nuovo utente. POST
+  perche' scrive nel database e perche' i dati personali e la password non devono
+  stare nell'URL; e' inoltre un'operazione non idempotente, dato che due invii
+  corrisponderebbero a due distinte richieste di creazione.
+
+- inserisci_gatto.php (invio del form-inserisci-gatto): inserisce un nuovo gatto
+  ed e' riservato agli amministratori. POST perche' e' una scrittura con effetti
+  sul database e con i dati nel corpo della richiesta; un GET sarebbe cacheabile,
+  ripetibile e semanticamente errato per un'operazione di inserimento.
+
+
+APPENDICE B - COMPILAZIONE DEL COMPONENTE REACT
+
+Il componente React e' scritto in JSX nel file js/GattiReact.jsx e la pagina carica
+la versione gia' compilata in JavaScript puro, js/GattiReact.js. Per (ri)compilarlo
+bisogna spostarsi nella cartella build/ ed eseguire due comandi nell'ordine:
+
+  1) npm install
+     scarica le dipendenze elencate in package.json (@babel/cli, @babel/core e
+     @babel/preset-react). Va eseguito almeno la prima volta e ogni volta che
+     cambiano le dipendenze; senza di esso lo script di build non troverebbe Babel.
+
+  2) npm run build-react
+     e' lo script definito in package.json: lancia Babel sul sorgente
+     js/GattiReact.jsx e produce il file compilato js/GattiReact.js, quello
+     effettivamente incluso dalla pagina adozioni.php.
+
+Va rieseguito "npm run build-react" ogni volta che si modifica il file .jsx, perche'
+la pagina non legge il JSX direttamente ma solo il .js gia' compilato.

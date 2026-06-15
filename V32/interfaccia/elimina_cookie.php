@@ -41,3 +41,4 @@ setcookie(session_name(), '', [
 ]);
 
 echo json_encode(['successo' => true]);
+?>

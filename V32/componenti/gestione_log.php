@@ -19,3 +19,4 @@ function scriviLog(string $livello, string $messaggio): void
     // scrive sul file
     file_put_contents(percorsoLog(), $riga, FILE_APPEND | LOCK_EX);
 }
+?>

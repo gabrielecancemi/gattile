@@ -121,3 +121,4 @@ if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
         'errore_statistiche' => $errore_statistiche,
     ], JSON_UNESCAPED_UNICODE);
 }
+?>

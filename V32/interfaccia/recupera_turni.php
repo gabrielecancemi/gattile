@@ -266,3 +266,4 @@ if ($metodo === 'GET') {
     header('HTTP/1.1 405 Method Not Allowed');
     echo json_encode(['errore' => 'Metodo non consentito', 'codice' => 'METHOD_NOT_ALLOWED']);
 }
+?>

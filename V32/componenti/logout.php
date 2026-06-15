@@ -6,5 +6,5 @@ require_once 'gestione_sessione.php';
 aprireSessione();
 chiudiProfilo();
 
-header('Location: ../home.php?azione=logout');
-
+header('Location: ../home.php');
+?>

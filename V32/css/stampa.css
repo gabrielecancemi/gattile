@@ -158,6 +158,12 @@
         padding: 4pt 8pt;
     }
 
+    html details::details-content {
+        display: block;
+        content-visibility: visible;
+        padding: 4pt 8pt;
+    }
+
     html figcaption {
         font-style: italic;
         font-size: 9pt;
