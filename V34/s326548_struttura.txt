@@ -1,0 +1,8 @@
+home.php
+login.php,form:form-login,text:in-login-username,password:in-login-password,checkbox:in-login-ricordami,reset:btn-reset-login,submit:btn-login
+registrazione.php,form:form-registrazione,text:in-reg-nome,text:in-reg-cognome,text:in-reg-indirizzo,text:in-reg-username,password:in-reg-password,password:in-reg-conferma,checkbox:in-reg-gdpr,reset:btn-reset-registra,submit:btn-registra
+adozioni.php,form:form-ricerca-gatti,search:in-cerca-nome,select:in-cerca-ordine,form:form-prenotazione,hidden:in-prenota-ids,date:in-prenota-data,select:in-prenota-ora,reset:btn-reset-prenota,submit:btn-prenota
+inserisci_gatto.php,form:form-inserisci-gatto,text:in-gatto-nome,text:in-gatto-razza,select:in-gatto-sesso,number:in-gatto-eta,number:in-gatto-peso,text:in-gatto-mantello,select:in-gatto-pelo,text:in-gatto-occhi,date:in-gatto-arrivo,textarea:in-gatto-descrizione,reset:btn-reset-inserisci,submit:btn-inserisci
+volontariato.php,form:form-volontariato,date:in-vol-data,reset:btn-reset-volontariato,submit:btn-volontariato
+faq.php
+privacy.php,button:btn-privacy-elimina-cookie
