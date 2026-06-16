@@ -162,7 +162,7 @@ if (!$reindirizzato):
                     aria-label="Modulo inserimento nuovo gatto">
 
                     <fieldset>
-                        <legend>Identità del gatto</legend>
+                        <legend>Informazioni sul gatto</legend>
                         <label for="in-gatto-nome" class="campo-obbligatorio">Nome</label>
                         <input type="text" id="in-gatto-nome" name="nome" required maxlength="50"
                             aria-describedby="aiuto-gatto-nome" placeholder="Es. Fuffi">

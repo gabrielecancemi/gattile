@@ -218,7 +218,7 @@ struttura della query la decide il codice, e i valori dell'utente non
 possono cambiarla.
 
 Contro l'XSS, ogni dato che torna in pagina passa da una funzione di
-pulizia: lato PHP e' un wrapper attorno a htmlspecialchars, lato
+pulizia: lato PHP e' un controllo attorno a htmlspecialchars, lato
 JavaScript c'e' una funzione analoga usata prima di inserire qualsiasi
 testo nel DOM.
 

@@ -6,7 +6,7 @@ require_once 'gestione_sessione.php';
 // HTML senza simboli strani
 function ripulisci(mixed $valore): string
 {
-    return htmlspecialchars((string) $valore, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+    return htmlspecialchars((string) $valore, ENT_QUOTES, 'UTF-8');
 }
 
 // Messaggio per l'utente: 'errore' - 'successo' - 'avviso'
