@@ -13,8 +13,8 @@
     <meta name="color-scheme" content="light dark">
     <link rel="icon" href="img/logo_piccolo.png" type="image/png">
     <link rel="stylesheet" href="css/stile.css">
-    <link rel="stylesheet" href="css/tema-scuro.css">
-    <link rel="stylesheet" href="css/movimento-ridotto.css" media="(prefers-reduced-motion: reduce)">
+    <link rel="stylesheet" href="css/tema_scuro.css">
+    <link rel="stylesheet" href="css/movimento_ridotto.css" media="(prefers-reduced-motion: reduce)">
     <link rel="stylesheet" href="css/stampa.css" media="print">
     <script src="js/gestione_tema.js"></script>
     <script src="js/funzioni_comuni.js" defer></script>
