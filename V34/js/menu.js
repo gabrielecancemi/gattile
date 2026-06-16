@@ -42,7 +42,7 @@
 
         const nav = document.getElementById('menu-principale');
         const account = document.getElementById('autenticazione');
-        const tema = document.getElementById('toggle-tema');
+        const tema = document.getElementById('controlli-testata');
         impostaClasse(nav, 'aperto', nuovo_stato);
         impostaClasse(account, 'aperto', nuovo_stato);
         impostaClasse(tema, 'aperto', nuovo_stato);

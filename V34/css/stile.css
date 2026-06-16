@@ -139,12 +139,36 @@ summary:focus-visible {
     height: 16px;
 }
 
-.testo-tema {
-    font-style: normal;
+/* tema e lingua */
+.controlli-testata {
+    grid-area: tema;
+    align-self: stretch;
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+    height: fit-content;
+
 }
 
+.controlli-testata>.btn {
+    flex: 0 0 0;
+    justify-content: center;
+    border: none;
+    background-color: #3e5022;
+}
 
+.controlli-testata>.btn:hover {
+    color: cornsilk;
+}
 
+.icona-lingua {
+    flex-shrink: 0;
+}
+
+.testo-tema,
+.testo-lingua {
+    font-style: normal;
+}
 
 
 /* logo */
@@ -1518,7 +1542,8 @@ input[type="radio"] {
     margin-bottom: .5rem;
 }
 
-#aiuto-gdpr, #gdpr {
+#aiuto-gdpr,
+#gdpr {
     display: inline;
 }
 
@@ -1949,13 +1974,14 @@ main aside.messaggio p,
     }
 
     .stato-autenticazione,
-    .toggle-tema {
+    .controlli-testata {
         justify-self: center;
         width: fit-content;
     }
 
-    .toggle-tema {
+    .controlli-testata {
         margin-top: 1rem;
+        align-self: center;
         justify-content: center;
     }
 
@@ -1978,13 +2004,13 @@ main aside.messaggio p,
     /* Nav e account nascosti finché non si apre il menu */
     .header>nav,
     .stato-autenticazione,
-    .toggle-tema {
+    .controlli-testata {
         display: none;
     }
 
     .header>nav.aperto,
     .stato-autenticazione.aperto,
-    .toggle-tema.aperto {
+    .controlli-testata.aperto {
         display: flex;
     }
 

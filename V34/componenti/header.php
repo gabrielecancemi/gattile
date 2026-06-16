@@ -70,17 +70,29 @@ $icone_nav = [
             </ul>
         </nav>
 
-        <!-- tema -->
-        <button type="button" id="toggle-tema" class="toggle-tema btn" aria-label="Cambia tema (attuale: sistema)"
-            title="Cambia tema: Sistema / Chiaro / Scuro">
-            <svg class="icona-tema" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
-                <circle class="icona-tema-bordo" cx="8" cy="8" r="6" fill="none" stroke="currentColor"
-                    stroke-width="2" />
-                <path class="icona-tema-meta" d="M8 2a6 6 0 0 1 0 12z" fill="currentColor" />
-                <circle class="icona-tema-pieno" cx="8" cy="8" r="6" fill="currentColor" />
-            </svg>
-            <em class="testo-tema">Tema: sistema</em>
-        </button>
+        <!-- tema e lingua -->
+        <div class="controlli-testata" id="controlli-testata">
+            <button type="button" id="toggle-tema" class="toggle-tema btn" aria-label="Cambia tema (attuale: sistema)"
+                title="Cambia tema: Sistema / Chiaro / Scuro">
+                <svg class="icona-tema" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+                    <circle class="icona-tema-bordo" cx="8" cy="8" r="6" fill="none" stroke="currentColor"
+                        stroke-width="2" />
+                    <path class="icona-tema-meta" d="M8 2a6 6 0 0 1 0 12z" fill="currentColor" />
+                    <circle class="icona-tema-pieno" cx="8" cy="8" r="6" fill="currentColor" />
+                </svg>
+                <em class="testo-tema">Tema: sistema</em>
+            </button>
+
+            <button type="button" id="toggle-lingua" class="toggle-tema btn" lang="it"
+                aria-label="Cambia lingua (attuale: Italiano)" title="Passa a English">
+                <svg class="icona-lingua" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+                    <circle cx="8" cy="8" r="6" fill="none" stroke="currentColor" stroke-width="1.4" />
+                    <path d="M8 2c2 2 2 10 0 12M8 2c-2 2-2 10 0 12M2.3 6h11.4M2.3 10h11.4" fill="none"
+                        stroke="currentColor" stroke-width="1.4" />
+                </svg>
+                <em class="testo-lingua">Italiano</em>
+            </button>
+        </div>
 
         <!-- account -->
         <section class="stato-autenticazione" id="autenticazione" aria-label="Stato autenticazione">

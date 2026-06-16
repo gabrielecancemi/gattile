@@ -344,6 +344,10 @@ Tutti i dati salvati non includono informazioni private o sensibili e sono
 chiaramente descritti nella pagina privacy.
 In particolare i cookie salvati sono relativi a consenso all'utilizzo di essi, 
 ricorda username e cookie di sessione (salvato anche senza consenso).
+Oltre ai cookie, nel localStorage del browser sono salvate due semplici
+preferenze tecniche di interfaccia, il tema (chiaro/scuro) e la lingua
+(italiano/inglese): non sono cookie, non contengono dati personali e non
+vengono inviate al server. Sono descritte anch'esse nella pagina privacy.
 
 
 12. ACCESSIBILITA' E STANDARD W3C
@@ -410,6 +414,27 @@ su schermi piccoli diventano orizzontali e si posizionano all'inizio o alla fine
 del main. Ovviamente vegono eliminati dalla rappresentazione per la stampa 
 della pagina web.
 
+
+
+17. SCELTA DELLA LINGUA (ITALIANO / INGLESE)
+
+Il sito nasce in italiano ma puo' essere mostrato anche in inglese. Ho
+scelto la strada piu' veloce e meno invasiva: invece di riscrivere tutte
+le pagine PHP con un sistema di internazionalizzazione lato server, ho
+aggiunto un solo file (js/lingua.js) che traduce il testo gia' presente
+nella pagina direttamente nel browser. In questo modo la struttura, la
+grafica e il comportamento delle pagine restano identici, cambia solo la
+lingua delle scritte.
+
+La lingua si decide come per il tema. Se l'utente la sceglie a mano dal
+pulsante in alto, la scelta viene salvata nel localStorage (chiave
+"lingua"); se non c'e' una scelta salvata si usa la lingua preferita del
+browser (navigator.language). Anche questa, come la preferenza del tema, e'
+una semplice impostazione tecnica di interfaccia: non usa cookie, e'
+disponibile anche senza accettare il banner e non viene mai inviata al
+server. Al cambio di lingua la pagina viene semplicemente ricaricata, cosi'
+il DOM riparte dall'italiano originale e la traduzione resta semplice e
+affidabile, senza dover gestire la trasformazione inversa.
 
 
 GABRIELE CANCEMI (s326548)

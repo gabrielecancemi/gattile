@@ -18,4 +18,5 @@
     <link rel="stylesheet" href="css/stampa.css" media="print">
     <script src="js/tema-iniziale.js"></script>
     <script src="js/funzioni_comuni.js" defer></script>
+    <script src="js/lingua.js" defer></script>
 </head>

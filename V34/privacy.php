@@ -119,6 +119,13 @@ $descrizione_pagina = 'Informativa sulla privacy e gestione dei cookie del sito 
                         di interfaccia, è disponibile anche senza accettare i cookie e non
                         viene trasmessa al server.
                     </p>
+                    <p class="privacy-nota">
+                        La preferenza di lingua (italiano/inglese) <strong>non</strong> usa cookie:
+                        è salvata nel <code>localStorage</code> del browser (chiave
+                        <code>lingua</code>). Senza una scelta manuale viene usata la lingua
+                        preferita del browser. Anche questa impostazione è solo tecnica e non
+                        viene trasmessa al server.
+                    </p>
                     <p class="privacy-nota">Nessun cookie di profilazione o di terze parti è presente sul sito.</p>
                 </article>
 
