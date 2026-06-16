@@ -322,6 +322,15 @@
         color: #f3ece1;
     }
 
+    html:not([data-tema]) .controlli-testata>.btn {
+        background-color: darkolivegreen;
+        border: none;
+    }
+
+    html:not([data-tema]) .controlli-testata>.btn:hover {
+        background-color: #2a3618;
+    }
+
     /* Messaggi di feedback (errore / successo / avviso) */
     html:not([data-tema]) .messaggio-errore {
         background: #3a2020;
@@ -967,6 +976,15 @@ html[data-tema="scuro"] .btn-secondario:focus {
     background: #3a2010;
     border-color: #a3bf6e;
     color: #f3ece1;
+}
+
+html[data-tema="scuro"] .controlli-testata>.btn {
+    background-color: darkolivegreen;
+    border: none;
+}
+
+html[data-tema="scuro"] .controlli-testata>.btn:hover {
+    background-color: #2a3618;
 }
 
 /* Messaggi di feedback (errore / successo / avviso) */

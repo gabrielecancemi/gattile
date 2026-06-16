@@ -225,7 +225,7 @@ if (!$reindirizzato):
                         <legend>Consenso privacy</legend>
                         <input type="checkbox" id="in-reg-gdpr" name="gdpr" required aria-describedby="aiuto-gdpr">
                         <label id="aiuto-gdpr" for="in-reg-gdpr" class="campo-obbligatorio">
-                            Dichiaro di aver letto l'<a href="privacy.php#sez-dati">Informativa Privacy</a> e acconsento al
+                            Dichiaro di aver letto l' <a href="privacy.php#sez-dati">Informativa Privacy</a> e acconsento al
                             trattamento dei miei dati personali ai sensi del Regolamento (UE) 2016/679 (GDPR)
                         </label>
                         <output class="errore-campo" id="err-gdpr" role="alert" aria-live="polite" hidden></output>

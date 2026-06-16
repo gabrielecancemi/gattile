@@ -25,6 +25,12 @@ abbinato in un caso all'utilizzo di media query. Questo permette il
 totale adattamento delle figure alle dimensioni o preferenze del browser,
 fornendo risultati validi anche in caso di formati non supportati.
 
+Ogni pagina è stata sottoposta ai test di CLS, INP, e LCP, superandoli e
+rientrando nella fascia migliore.
+
+Ogni pagina è stata controllata tramite il validatore HTML w3c per pagine 
+dinamiche, risultando priva di errori o segnalazioni.
+
 
 1. PANORAMICA DEL SITO
 
