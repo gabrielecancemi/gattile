@@ -1,6 +1,31 @@
 RELAZIONE
 
 
+0. PREMESSE
+
+Da interpretazione del testo, ho supposto che la pagina per l'adozione 
+dei gatti non fosse accessibile agli amministratori, ma solo agli utenti.
+Questo è modificabile ovviamente tramite la rimozione di un semplice
+controllo sul ruolo dello username loggato.
+
+La scrittura e lettura da file utilizzata per i log e per il token di
+ricorda username non è stata trattata nel corso, ma ho eseguito delle
+ricerche per l'implementazione di tale funzionalità (in seguito spiegata
+nel dettaglio).
+
+L'utilizzo delle componenti React sono state implementate mediante 
+l'utilizzo di Babel e non di Vite in quanto ho ritenuto più veloce e 
+'plug and play' un file js ricavato mediante prompt dal jsx (descritto 
+successivamente). Questo permette a futuri utilizzatori (anche per la correzione) 
+l'utilizzo del programma senza la necessità di installare o avviare pacchetti e
+librerie aggiuntive.
+
+Tutte le immagini presenti sono state implementate tramite il tag <picture> 
+abbinato in un caso all'utilizzo di media query. Questo permette il 
+totale adattamento delle figure alle dimensioni o preferenze del browser,
+fornendo risultati validi anche in caso di formati non supportati.
+
+
 1. PANORAMICA DEL SITO
 
 Il sito ha due scopi principali: mettere in contatto chi cerca un gatto
@@ -374,3 +399,17 @@ build/ si trovano la configurazione e lo script che eseguono la
 compilazione. Per ricompilare basta spostarsi in quella cartella,
 eseguire "npm install" la prima volta (o quando cambiano le dipendenze),
 e poi "npm run build-react" ogni volta che si modifica il file .jsx.
+
+
+16. SVILUPPI FUTURI
+
+Gli spazi laterali vuoti presenti nelle schermate di dispositivi grandi
+sono pensati per una successiva implementazione di banner pubblicitari verticali
+per creare una fonte di guadagno per il sito. Questi, tramite media query,
+su schermi piccoli diventano orizzontali e si posizionano all'inizio o alla fine
+del main. Ovviamente vegono eliminati dalla rappresentazione per la stampa 
+della pagina web.
+
+
+
+GABRIELE CANCEMI (s326548)

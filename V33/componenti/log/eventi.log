@@ -132,3 +132,5 @@
 2026-06-15 21:59:44 [errore] turni GET: connessione al database non riuscita
 2026-06-15 22:00:12 [info] login: accesso riuscito - anna_admin
 2026-06-15 22:19:37 [info] login: accesso riuscito - anna_admin
+2026-06-15 22:24:36 [info] login: accesso riuscito - anna_admin
+2026-06-15 22:24:47 [info] turni POST: 1 turno/i prenotati da utente 1

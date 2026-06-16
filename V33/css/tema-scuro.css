@@ -37,7 +37,7 @@
     }
 
     html:not([data-tema]) a {
-        color: white;
+        color: #f3ece1;
     }
 
     html:not([data-tema]) a:hover,
@@ -684,7 +684,7 @@ html[data-tema="scuro"] code {
 }
 
 html[data-tema="scuro"] a {
-    color: white;
+    color: #f3ece1;
 }
 
 html[data-tema="scuro"] a:hover,
