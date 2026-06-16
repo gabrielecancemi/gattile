@@ -34,7 +34,8 @@ dinamiche, risultando priva di errori o segnalazioni.
 Per migliorare accessibilità, usabilità, indicizzazione e adattamento del 
 sito sono state utilizzate tutte le norme di buona programmazione.
 La scelta di tema e lingua del sito offre maggiore flessibilità di utilizzo 
-e personalizzazione, rispettando i principi di Nielsen.
+e personalizzazione, rispettando i principi di Nielsen (con accento a
+stato del sistema e prevenzione degli errori).
 
 Tutti gli id rispettano la notazione kebab-case, le variabili snake_case
 e le funzioni camelCase e sono stati inseriti i log per facilitare la
@@ -43,11 +44,14 @@ comprensione del codice.
 Il progetto rispetta la norma del SRP e della modularità, ogni file è dedicato
 a una specifica sezione del sito e ogni funzione accetta parametri in input 
 e in modo indipendente fornisce risultati in output.
+Il codice è leggibile, commentato, completo di log e gestisce i possibili errori
+per aumentarne la robustezza.
 
 L'intero sito è basato sugli stessi colori e colori uguali indicano la stessa azione
 per consistenza visiva. La leggibilità è garantita dai contrasti e font usati (
-per schermi: senza grazia e non corsivi).
+per schermi: senza grazia e non corsivi, 1 solo font).
 Performance, sicurezza e adattabilità sono state prese in considerazione.
+
 
 Di seguito i dettagli:
 
