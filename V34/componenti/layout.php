@@ -15,7 +15,10 @@ function avvisoUtente(string $testo, string $tipo = 'errore'): string
     $ruolo = ($tipo === 'errore') ? 'alert' : 'status';
     $cls = "messaggio messaggio-{$tipo}";
     $testo_pulito = ripulisci($testo);
-    return "<output class=\"{$cls}\" role=\"{$ruolo}\" aria-live=\"assertive\">{$testo_pulito}</output>";
+
+    $role = ($ruolo === 'status') ? '' : ' role="' . $ruolo . '"';
+
+    return "<output class=\"{$cls}\"{$role} aria-live=\"assertive\">{$testo_pulito}</output>";
 }
 
 // Memorizza un messaggio (errore o successo) per la pagina nuova

@@ -193,7 +193,7 @@
                 } else {
                     if (successo_prenotazione) {
                         successo_prenotazione.innerHTML =
-                            '<output class="messaggio messaggio-successo" role="status" aria-live="assertive">' +
+                            '<output class="messaggio messaggio-successo" aria-live="assertive">' +
                             ripuliscihtml(dati.messaggio) + '</output>';
                         bottoniConferma(successo_prenotazione, [
                             { href: 'adozioni.php', testo: 'Prenota un\'altra visita' },

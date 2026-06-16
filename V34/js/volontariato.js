@@ -292,7 +292,7 @@
                     }
                     if (successo_volontariato) {
                         successo_volontariato.innerHTML =
-                            '<output class="messaggio messaggio-successo" role="status" aria-live="assertive">' +
+                            '<output class="messaggio messaggio-successo" aria-live="assertive">' +
                             ripuliscihtml(testo) + '</output>';
                         bottoniConferma(successo_volontariato, [
                             { href: 'volontariato.php', testo: 'Prenota altri turni' },
