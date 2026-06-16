@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="css/tema-scuro.css">
     <link rel="stylesheet" href="css/movimento-ridotto.css" media="(prefers-reduced-motion: reduce)">
     <link rel="stylesheet" href="css/stampa.css" media="print">
-    <script src="js/tema-iniziale.js"></script>
+    <script src="js/gestione_tema.js"></script>
     <script src="js/funzioni_comuni.js" defer></script>
     <script src="js/lingua.js" defer></script>
 </head>

@@ -89,7 +89,6 @@ if (!empty($_SESSION['utente']['is_admin'])) {
 <a href="faq.php" id="faq" class="faq-button <?= $pagina_corrente === 'faq.php' ? 'active' : '' ?>"
     aria-label="Domande frequenti" title="FAQ — Domande frequenti">?</a>
 
-<script src="js/tema.js" defer></script>
 <script src="js/footer.js" defer></script>
 
 </body>
