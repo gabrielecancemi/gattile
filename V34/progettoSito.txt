@@ -396,6 +396,9 @@ reader e gli errori sono marcati in modo da essere letti subito. Nel
 componente React le card selezionabili sono raggiungibili e azionabili
 anche da tastiera. I contrasti rispettano le soglie AA wcag, anche in
 modalita' scura.
+Sono stati inseriti gli outline all'evento focus-visible per essere 
+utilizzabile da tastiera. Per i tag dei form, tuttavia, in base al
+browser, essi sono visibile anche con l'utilizzo da mouse.
 
 
 13. RESPONSIVE DESIGN
