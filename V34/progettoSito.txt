@@ -213,6 +213,10 @@ la non modifica del db lo rende l'alternativa migliore. Se questa richiesta non
 fosse stata presente, avrei creato una nuova tabella nel db contenente la 
 relazione tra il token e lo username reale, rendendola più sicura.
 
+Inoltre, nel caso in cui il browser limitasse a JS la lettura dei file, 
+questa funzione potrebbe non funzionare. I test effettuati sul mio pc 
+hanno dato esito positivo.
+
 
 6. VALIDAZIONE E SICUREZZA DEI FORM
 

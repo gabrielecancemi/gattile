@@ -101,7 +101,7 @@ $descrizione_pagina = 'Informativa sulla privacy e gestione dei cookie del sito 
                             </dl>
                         </li>
                         <li class="privacy-cookie-card">
-                            <h3><code>consenso_cookie</code></h3>
+                            <h3><code>consenso</code></h3>
                             <dl>
                                 <dt>Tipo</dt>
                                 <dd>Persistente (tecnico)</dd>

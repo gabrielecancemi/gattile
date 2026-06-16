@@ -106,12 +106,12 @@ if (!$reindirizzato):
                     <output class="errore-campo" id="err-password" role="alert" aria-live="polite" hidden></output>
                 </fieldset>
 
-                <?php $consenso_cookie = isset($_COOKIE['consenso_cookie']); ?>
+                <?php $consenso = isset($_COOKIE['consenso']); ?>
 
                 <fieldset class="blocco-ricordami">
                     <legend>Ricordami</legend>
 
-                    <?php if (!$consenso_cookie): ?>
+                    <?php if (!$consenso): ?>
                         <p class="messaggio messaggio-avviso" role="note">
                             Per usare <strong>&ldquo;Ricordami&rdquo;</strong> devi prima
                             <strong>accettare i cookie</strong> dal banner in basso.
@@ -120,7 +120,7 @@ if (!$reindirizzato):
 
                     <label class="campo-checkbox" for="in-login-ricordami">
                         <input type="checkbox" id="in-login-ricordami" name="ricordami" value="1" aria-describedby="aiuto-ricordami"
-                            <?= $consenso_cookie ? '' : 'disabled' ?>>
+                            <?= $consenso ? '' : 'disabled' ?>>
                         Ricordami su questo browser per 72 ore
                     </label>
                     <em id="aiuto-ricordami" class="aiuto-campo">

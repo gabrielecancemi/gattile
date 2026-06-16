@@ -18,7 +18,7 @@
     const pezzi_cookie = document.cookie.split('; ');
     let consenso_presente = false;
     for (let i = 0; i < pezzi_cookie.length; i++) {
-        if (pezzi_cookie[i].startsWith('consenso_cookie=')) {
+        if (pezzi_cookie[i].startsWith('consenso=')) {
             consenso_presente = true;
             console.info('[footer] Cookie consenso trovato');
         }
@@ -38,7 +38,7 @@
             console.group('[footer] Consenso cookie accettato');
             // Scadenza impostata con max-age.
             const un_anno = 365 * 24 * 3600;
-            document.cookie = 'consenso_cookie=1; max-age=' + un_anno + '; path=/; SameSite=Strict';
+            document.cookie = 'consenso=1; max-age=' + un_anno + '; path=/; SameSite=Strict';
             console.info('Cookie consenso impostato con scadenza: 1 anno');
             console.info('Pagina in ricaricamento...');
             console.groupEnd();
