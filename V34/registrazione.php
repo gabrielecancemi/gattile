@@ -160,7 +160,7 @@ if (!$reindirizzato):
                         <label for="in-reg-nome" class="campo-obbligatorio">
                             Nome</label>
                         <input type="text" id="in-reg-nome" name="nome" value="<?= ripulisci($campi['nome']) ?>"
-                            autocomplete="given-name" required maxlength="50" aria-describedby="aiuto-reg-nome">
+                            autocomplete="given-name" required minlength="2" aria-describedby="aiuto-reg-nome">
                         <em id="aiuto-reg-nome" class="aiuto-campo">
                             Solo lettere; almeno 2 caratteri.
                         </em>
@@ -169,7 +169,7 @@ if (!$reindirizzato):
                         <label for="in-reg-cognome" class="campo-obbligatorio">
                             Cognome</label>
                         <input type="text" id="in-reg-cognome" name="cognome" value="<?= ripulisci($campi['cognome']) ?>"
-                            autocomplete="family-name" required maxlength="50" aria-describedby="aiuto-reg-cognome">
+                            autocomplete="family-name" required minlength="2" aria-describedby="aiuto-reg-cognome">
                         <em id="aiuto-reg-cognome" class="aiuto-campo">
                             Solo lettere; almeno 2 caratteri.
                         </em>
@@ -178,7 +178,7 @@ if (!$reindirizzato):
                         <label for="in-reg-indirizzo" class="campo-obbligatorio">
                             Indirizzo</label>
                         <input type="text" id="in-reg-indirizzo" name="indirizzo" value="<?= ripulisci($campi['indirizzo']) ?>"
-                            required maxlength="100" placeholder="Via/Corso, numero, città"
+                            required minlength="5" placeholder="Via/Corso, numero, città"
                             aria-describedby="aiuto-reg-indirizzo">
                         <em id="aiuto-reg-indirizzo" class="aiuto-campo">
                             Almeno 5 caratteri.
@@ -192,7 +192,7 @@ if (!$reindirizzato):
                         <label for="in-reg-username" class="campo-obbligatorio">
                             Username</label>
                         <input type="text" id="in-reg-username" name="username" value="<?= ripulisci($campi['username']) ?>"
-                            autocomplete="username" required aria-describedby="aiuto-reg-username" maxlength="50"
+                            autocomplete="username" required aria-describedby="aiuto-reg-username" minlength="3" maxlength="50"
                             pattern="[a-zA-Z][a-zA-Z0-9_]{2,49}">
                         <em id="aiuto-reg-username" class="aiuto-campo">
                             Inizia con una lettera; solo lettere, numeri e underscore; 3-50 caratteri.
