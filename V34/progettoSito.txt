@@ -37,7 +37,8 @@ La scelta di tema e lingua del sito offre maggiore flessibilità di utilizzo
 e personalizzazione, rispettando i principi di Nielsen.
 
 Tutti gli id rispettano la notazione kebab-case, le variabili snake_case
-e le funzioni camelCase.
+e le funzioni camelCase e sono stati inseriti i log per facilitare la
+comprensione del codice.
 
 
 1. PANORAMICA DEL SITO

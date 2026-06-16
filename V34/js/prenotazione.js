@@ -3,6 +3,7 @@
 'use strict';
 
 (function () {
+    console.group('[prenotazione] Inizializzazione form prenotazione');
     /* componenti della pagina */
     const form = document.getElementById('form-prenotazione');
     const input_gatti_ids = document.getElementById('in-prenota-ids');
@@ -17,7 +18,12 @@
     const messaggio_prenotazione = document.getElementById('msg-prenotazione');
     const successo_prenotazione = document.getElementById('successo-prenotazione');
 
-    if (!form) return;
+    if (!form) {
+        console.warn('[prenotazione] Form non trovato');
+        console.groupEnd();
+        return;
+    }
+    console.info('[prenotazione] Form trovato');
 
     let gatti_correnti = [];
 
@@ -73,6 +79,8 @@
     function aggiornaRiepilogo(gatti) {
         gatti_correnti = gatti;
         if (!riepilogo || !input_gatti_ids) return;
+
+        console.info('[prenotazione] Gatti selezionati', gatti.length);
 
         input_gatti_ids.value = gatti.map(g => g.id).join(',');
 
@@ -142,10 +150,12 @@
     }
 
     form.addEventListener('submit', function (evento) {
+        console.group('[prenotazione] Invio prenotazione');
         evento.preventDefault();
 
         const gatti_ok = gatti_correnti.length > 0;
         if (!gatti_ok) {
+            console.warn('[prenotazione] Nessun gatto selezionato');
             mostraErroreCampo(null, errore_gatti, 'Seleziona almeno un gatto prima di prenotare.');
         } else {
             mostraErroreCampo(null, errore_gatti, '');
@@ -156,12 +166,18 @@
         const quando_ok = validaQuando();
 
         if (!gatti_ok || !giorno_ok || !ora_ok || !quando_ok) {
+            console.warn('[prenotazione] Validazione fallita');
             if (!giorno_ok && input_data) input_data.focus();
             else if (!ora_ok && select_ora) select_ora.focus();
+            console.groupEnd();
             return;
         }
 
         const data_ora = valoreDataOra();
+        console.info('[prenotazione] Prenotazione:', {
+            data_ora: data_ora,
+            gatti: gatti_correnti.length
+        });
 
         const corpo =
             'data_ora=' + data_ora +
@@ -176,6 +192,7 @@
             bottone_prenota.textContent = 'Conferma prenotazione';
         }
 
+        console.info('[prenotazione] Invio fetch...');
         fetch('interfaccia/prenota_visita.php', {
             method: 'POST',
             headers: {
@@ -188,9 +205,10 @@
             .then(function (dati) {
                 if (dati.errore) {
                     mostraMessaggio(dati.errore, 'errore');
-                    console.error('[Prenotazione] errore server:', dati.errore, '— codice:', dati.codice);
+                    console.error('[prenotazione] Errore server:', dati.errore, '— codice:', dati.codice);
                     ripristinaPulsante();
                 } else {
+                    console.log('✓ Prenotazione confermata');
                     if (successo_prenotazione) {
                         successo_prenotazione.innerHTML =
                             '<output class="messaggio messaggio-successo" aria-live="assertive">' +
@@ -204,10 +222,12 @@
                     // Chiede al componente React di deselezionare tutte le card.
                     document.dispatchEvent(new CustomEvent('gattiDeselezionaTutti'));
                 }
+                console.groupEnd();
             }, function (err) {
-                console.error('[Prenotazione] errore fetch:', err);
+                console.error('[prenotazione] Errore fetch:', err);
                 mostraMessaggio('Errore di rete durante la prenotazione. Controlla la connessione e riprova.', 'errore');
                 ripristinaPulsante();
+                console.groupEnd();
             });
     });
 
@@ -215,4 +235,6 @@
         mostraMessaggioComune(messaggio_prenotazione, testo, tipo);
     }
 
+    console.log('✓ Prenotazione inizializzato');
+    console.groupEnd();
 })();

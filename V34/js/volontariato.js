@@ -3,6 +3,7 @@
 'use strict';
 
 (function () {
+    console.group('[volontariato] Inizializzazione volontariato');
     const contenitore = document.getElementById('contenitore-turni');
     const input_data = document.getElementById('in-vol-data');
     const form = document.getElementById('form-volontariato');
@@ -12,7 +13,12 @@
     const errore_fasce = document.getElementById('err-fasce-turni');
     const successo_volontariato = document.getElementById('successo-volontariato');
 
-    if (!form || !contenitore) return;
+    if (!form || !contenitore) {
+        console.warn('[volontariato] Form o contenitore non trovati');
+        console.groupEnd();
+        return;
+    }
+    console.info('[volontariato] Form e contenitore trovati');
 
     const fasce_selezionate = [];
     let fasce_per_data = {};
@@ -55,12 +61,13 @@
     }
 
     function caricaTurni() {
+        console.info('[volontariato] Caricamento turni in corso');
         contenitore.setAttribute('aria-busy', 'true');
         contenitore.innerHTML =
             '<p class="caricamento">Caricamento fasce orarie in corso…</p>';
 
         function gestisciErrore(messaggio) {
-            console.error('[Volontariato] errore caricamento turni:', messaggio);
+            console.error('[volontariato] Errore caricamento turni:', messaggio);
             contenitore.innerHTML =
                 '<output class="messaggio messaggio-errore" role="alert">' +
                 messaggio +
@@ -69,14 +76,17 @@
         }
 
         // Elabora la risposta del server
+        console.info('[volontariato] Fetch da recupera_turni.php');
         fetch('interfaccia/recupera_turni.php', { credentials: 'same-origin' })
             .then(function (r) {
 
                 if (!r.ok) {
+                    console.error('[volontariato] Risposta server non ok:', r.status);
                     gestisciErrore('Impossibile caricare le fasce. Riprova tra qualche minuto.');
                     return;
                 }
 
+                console.info('[volontariato] Parsing JSON...');
                 return r.json();
 
             })
@@ -85,15 +95,18 @@
                 if (!dati) return;
 
                 if (dati.errore) {
+                    console.error('[volontariato] Errore nei dati:', dati.errore);
                     gestisciErrore(dati.errore);
                     return;
                 }
 
+                console.info('[volontariato] Turni caricati:', (dati.fasce || []).length);
                 preparaDati(dati.fasce || []);
                 contenitore.removeAttribute('aria-busy');
 
-            }, function () {
+            }, function (err) {
 
+                console.error('[volontariato] Errore fetch:', err);
                 gestisciErrore(
                     'Impossibile caricare i turni. Riprova tra qualche minuto.'
                 );

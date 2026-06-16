@@ -3,8 +3,14 @@
 'use strict';
 
 (function () {
+    console.group('[inserisci_gatto] Inizializzazione validazione');
     const form = document.getElementById('form-inserisci-gatto');
-    if (!form) return;
+    if (!form) {
+        console.warn('[inserisci_gatto] Form non trovato');
+        console.groupEnd();
+        return;
+    }
+    console.info('[inserisci_gatto] Form trovato');
 
     const campi = {
         nome: { el: document.getElementById('in-gatto-nome'), err: document.getElementById('err-gatto-nome') },
@@ -317,12 +323,14 @@
 
     // submit del form
     form.addEventListener('submit', function (evento) {
+        console.group('[inserisci_gatto] Validazione completa prima invio');
         const esiti = [
             validaNome(), validaRazza(), validaSesso(), validaEta(), validaPeso(),
             validaColoreMantello(), validaLunghezzaPelo(), validaColoreOcchi(),
             validaDataArrivo(), validaDescrizione()
         ];
         if (esiti.indexOf(false) !== -1) {
+            console.warn('[inserisci_gatto] Validazione fallita');
             evento.preventDefault();
             // decide a chi mettere il focus
             let primo;
@@ -335,6 +343,13 @@
             if (primo && campi[primo].el) {
                 campi[primo].el.focus();
             }
+            console.groupEnd();
+        } else {
+            console.info('[inserisci_gatto] Validazione ok, form inviato');
+            console.log('✓ Inserisci gatto confermato');
+            console.groupEnd();
         }
     });
+    console.log('✓ Inserisci gatto inizializzato');
+    console.groupEnd();
 })();

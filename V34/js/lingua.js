@@ -3,7 +3,8 @@
 'use strict';
 
 (function () {
-
+    console.group('[lingua] Inizializzazione traduzione');
+    
     // Dizionario: chiave = testo italiano, valore = inglese
     const DIZIONARIO = {
         // Header / menu
@@ -715,16 +716,22 @@
     // Avvio
 
     function avvia() {
+        console.info('[lingua] Lingua attiva:', LINGUA);
         aggiornaPulsante();
         collegaPulsante();
 
         // italiano: nessuna traduzione
         if (LINGUA !== 'en') {
+            console.info('[lingua] Italiano selezionato, nessuna traduzione');
+            console.log('✓ Lingua inizializzata');
+            console.groupEnd();
             return;
         }
 
+        console.info('[lingua] English selezionato, inizio traduzione');
         document.documentElement.lang = 'en';
         traduciAlbero(document.body);
+        console.info('[lingua] DOM principale tradotto');
 
         // Contenuti dinamici (React, fetch, tema)
         // MutationObserver si attiva quando viene modificato il DOM
@@ -751,9 +758,13 @@
             attributes: true,
             attributeFilter: ATTRIBUTI
         });
+        console.info('[lingua] MutationObserver attivato per contenuti dinamici');
+        console.log('✓ Lingua inizializzata');
+        console.groupEnd();
     }
 
     if (document.readyState === 'loading') {
+        console.info('[lingua] Attesa DOMContentLoaded');
         document.addEventListener('DOMContentLoaded', avvia);
     } else {
         avvia();

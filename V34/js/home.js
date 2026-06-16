@@ -3,12 +3,20 @@
 'use strict';
 
 (function () {
+    console.group('[home] Inizializzazione home');
     const contenitore_statistiche = document.getElementById('contenitore-statistiche');
     const caricamento_statistiche = document.getElementById('caricamento-statistiche');
     const contenitore_arrivi = document.getElementById('contenitore-arrivi');
     const caricamento_arrivi = document.getElementById('caricamento-arrivi');
 
-    if (!contenitore_statistiche && !contenitore_arrivi) return;
+    console.info('Contenitore statistiche:', !!contenitore_statistiche);
+    console.info('Contenitore arrivi:', !!contenitore_arrivi);
+
+    if (!contenitore_statistiche && !contenitore_arrivi) {
+        console.warn('[home] Nessun contenitore trovato');
+        console.groupEnd();
+        return;
+    }
 
     function dataItaliana(iso) {
         if (!iso) return '';
@@ -23,10 +31,12 @@
         caricamento_statistiche.style.display = "none"
 
         if (errore) {
+            console.error('[home] Errore statistiche:', errore);
             contenitore_statistiche.innerHTML += messaggioErrore(errore);
             return;
         }
 
+        console.info('[home] Statistiche caricate:', statistiche);
         let html = '<dl class="statistiche">';
         html += '<dt>Gatti ospitati</dt><dd>' + statistiche.gatti + '</dd>';
         html += '<dt>Incontri organizzati</dt><dd>' + statistiche.visite + '</dd>';
@@ -82,15 +92,18 @@
         caricamento_arrivi.style.display = "none";
 
         if (errore) {
+            console.error('[home] Errore arrivi:', errore);
             contenitore_arrivi.innerHTML += messaggioErrore(errore);
             return;
         }
 
         if (!arrivi || arrivi.length === 0) {
+            console.info('[home] Nessun gatto da visualizzare');
             contenitore_arrivi.innerHTML += '<p>Nessun gatto registrato al momento. Torna presto!</p>';
             return;
         }
 
+        console.info('[home] Gatti carichi:', arrivi.length);
         let html = '<ul class="griglia-gatti" aria-label="Nuovi arrivi">';
         arrivi.forEach(function (gatto) {
             html += schedaGatto(gatto);
@@ -100,13 +113,19 @@
     }
 
     function gestisciErroreGenerale() {
+        console.error('[home] Errore generale nel caricamento dati');
         mostraStatistiche(null, 'Statistiche non disponibili al momento. Riprova tra qualche minuto.');
         mostraArrivi(null, 'Impossibile caricare i nuovi arrivi. Riprova tra qualche minuto.');
     }
 
+    console.info('[home] Inizio caricamento dati...');
     fetch('interfaccia/recupera_home.php', { credentials: 'same-origin' })
         .then(function (r) {
-            if (!r.ok) return null;
+            if (!r.ok) {
+                console.error('[home] Risposta server non ok:', r.status);
+                return null;
+            }
+            console.info('[home] Risposta ricevuta, parsing JSON...');
             return r.json();
         })
         .then(function (dati) {
@@ -114,9 +133,14 @@
                 gestisciErroreGenerale();
                 return;
             }
+            console.info('[home] Dati parsati:', dati);
             mostraStatistiche(dati.statistiche, dati.errore_statistiche);
             mostraArrivi(dati.nuovi_arrivi, dati.errore_arrivi);
+            console.log('✓ Home caricata');
+            console.groupEnd();
         }, function () {
+            console.error('[home] Errore fetch');
             gestisciErroreGenerale();
+            console.groupEnd();
         });
 })();

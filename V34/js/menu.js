@@ -3,10 +3,14 @@
 'use strict';
 
 (function () {
+    console.group('[menu] Inizializzazione menu mobile');
     const bottone = document.querySelector('.menu-toggle');
     if (!bottone) {
+        console.warn('[menu] Bottone .menu-toggle non trovato');
+        console.groupEnd();
         return;
     }
+    console.info('Bottone menu trovato');
 
     //testo "Menu"
     const etichetta = bottone.lastChild;
@@ -31,6 +35,7 @@
     bottone.addEventListener('click', function () {
         const era_aperto = this.getAttribute('aria-expanded') === 'true';
         const nuovo_stato = !era_aperto;
+        console.info('[menu] Cambio stato menu:', era_aperto ? 'chiuso' : 'aperto');
         this.setAttribute('aria-expanded', String(nuovo_stato));
         this.setAttribute('aria-label', nuovo_stato ? 'Chiudi menu di navigazione' : 'Apri menu di navigazione');
         impostaClasse(this, 'aperto', nuovo_stato);
@@ -46,5 +51,8 @@
         impostaClasse(nav, 'aperto', nuovo_stato);
         impostaClasse(account, 'aperto', nuovo_stato);
         impostaClasse(tema, 'aperto', nuovo_stato);
+        console.log('✓ Menu', nuovo_stato ? 'aperto' : 'chiuso');
     });
+    console.log('✓ Menu mobile inizializzato');
+    console.groupEnd();
 })();

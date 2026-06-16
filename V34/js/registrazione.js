@@ -3,8 +3,14 @@
 'use strict';
 
 (function () {
+    console.group('[registrazione] Inizializzazione validazione registrazione');
     let form = document.getElementById('form-registrazione');
-    if (!form) return;
+    if (!form) {
+        console.warn('[registrazione] Form non trovato');
+        console.groupEnd();
+        return;
+    }
+    console.info('[registrazione] Form trovato');
 
     let campi = {
         nome: { input: document.getElementById('in-reg-nome'), errore: document.getElementById('err-nome') },
@@ -325,6 +331,7 @@
 
     // submit del form
     form.addEventListener('submit', function (evento) {
+        console.group('[registrazione] Validazione completa prima invio');
 
         let esiti = [
             validaNome(),
@@ -337,6 +344,7 @@
         ];
 
         if (esiti.includes(false)) {
+            console.warn('[registrazione] Validazione fallita');
             evento.preventDefault();
 
             let primo = null;
@@ -353,8 +361,15 @@
             if (primo && campi[primo].input) {
                 campi[primo].input.focus();
             }
+            console.groupEnd();
+        } else {
+            console.info('[registrazione] Validazione ok, form inviato');
+            console.log('✓ Registrazione confermata');
+            console.groupEnd();
         }
     });
 
     aggiornaProgresso();
+    console.log('✓ Registrazione inizializzata');
+    console.groupEnd();
 })();
