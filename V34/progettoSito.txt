@@ -319,6 +319,10 @@ generale: GET per le operazioni di sola lettura (sicure e
 cacheabili), POST per quelle che modificano lo stato o che trasportano
 dati che non devono finire nell'URL.
 
+Utilizzando il GET è possibile inoltre effettuare il cache delle richieste
+in un ipotetico scenario futuro con il sito pubblicato sul web e connesso 
+a server remoti.
+
 Le chiamate in GET sono: il recupero dei gatti per GattiReact, il
 recupero dei nuovi arrivi e delle statistiche per home.js, e la lettura
 delle fasce di volontariato. In tutti questi casi si tratta di lettura
