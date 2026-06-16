@@ -116,6 +116,14 @@ summary:focus-visible {
     color: white;
 }
 
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+    outline: 3px solid orange;
+    outline-offset: 3px;
+    border-radius: .5rem;
+}
+
 
 /* HEADER */
 
@@ -1495,7 +1503,6 @@ input:focus,
 select:focus,
 textarea:focus {
     border-color: #1a5ea8;
-    outline: none;
 }
 
 /* Stato di errore */
