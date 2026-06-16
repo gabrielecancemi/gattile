@@ -79,6 +79,7 @@ $descrizione_pagina = 'Diventa volontario al Gattile San Paolo di Torino: scegli
                 </fieldset>
 
                 <output id="msg-volontariato" aria-live="polite" class="sr-solo"></output>
+                <p class="campo-obbligatorio nota-obbligatori">Campi obbligatori</p>
                 <button type="reset" id="btn-reset-volontariato" class="btn btn-secondario">
                     Cancella
                 </button>

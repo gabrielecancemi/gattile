@@ -80,7 +80,7 @@ tutte le pagine senza doverlo ripetere.
 
 3. COME COMUNICANO REACT, VANILLA JS E IL BACKEND PHP
 
-Nella pagina gatti.php convivono tre attori distinti. Il backend PHP,
+Nella pagina adozioni.php convivono tre elementi distinti. Il backend PHP,
 nella cartella interfaccia/, non produce HTML: risponde alle richieste
 asincrone con dati in formato JSON. Il componente React gestisce la
 visualizzazione, l'ordinamento, la ricerca e la selezione dei gatti.
@@ -126,7 +126,7 @@ volevo evitare.
 3.2 PLACEHOLDER GATTI
 
 Con l'obiettivo di una futura relase avente la possibilità di inserire le 
-immagini del gatto nel db, il codice implementato effettua un controllo
+immagini del gatto nel db, il codice implementato potrebbe effettuare un controllo
 sulla presenza o meno della colonna 'foto' nel db. In caso negativo viene 
 assegnata l'immagine placeholder. Inoltre è presente il tag picture per
 gestire i casi futuri in cui l'immagine ricavata dal db non sia supportata
@@ -284,7 +284,7 @@ e imposti lo stile in maniera univoca.
 
 Per scelta implementativa i turni durano 1 ora l'uno e sono disponibili 
 negli orari di apertura del gattile (lunedì - sabato dalle 9 alle 18). 
-Vengono visualizzati i turni dal giorno corrente fino a due settimane dopo,
+Vengono visualizzati i turni dal giorno corrente fino a tre mesi dopo,
 ma questo può essere modificato a scelta nella pagina recupera_turni.php.
 Ogni utente puo' prenotarsi per quante fasce orarie vuole, ma ogni singola 
 fascia accetta al massimo due volontari.Il controllo avviene in due punti distinti, 

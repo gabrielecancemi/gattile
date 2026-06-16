@@ -248,7 +248,7 @@ if (!$reindirizzato):
                         <output class="errore-campo" id="err-gatto-descrizione" role="alert" aria-live="polite" hidden></output>
 
                     </fieldset>
-                    <label class="campo-obbligatorio nota-obbligatori">Campi obbligatori</label>
+                    <p class="campo-obbligatorio nota-obbligatori">Campi obbligatori</p>
                     <button type="reset" id="btn-reset-inserisci" class="btn btn-secondario">
                         Cancella
                     </button>
